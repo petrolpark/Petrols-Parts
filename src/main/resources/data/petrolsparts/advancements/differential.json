@@ -1,0 +1,25 @@
+{
+    "parent": "petrolsparts:coaxial_gear",
+    "criteria": {
+      "use": {
+        "trigger": "petrolsparts:differential"
+      }
+    },
+    "display": {
+      "description": {
+        "color": "#DBA213",
+        "translate": "advancement.petrolsparts.differential.description"
+      },
+      "icon": {
+        "item": "petrolsparts:differential"
+      },
+      "title": {
+        "translate": "advancement.petrolsparts.differential"
+      }
+    },
+    "requirements": [
+      [
+        "use"
+      ]
+    ]
+  }

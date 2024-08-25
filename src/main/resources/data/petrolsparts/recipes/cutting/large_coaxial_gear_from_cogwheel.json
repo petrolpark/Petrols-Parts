@@ -1,0 +1,17 @@
+{
+    "type": "create:cutting",
+    "ingredients": [
+      {
+        "item": "create:large_cogwheel"
+      }
+    ],
+    "results": [
+      {
+        "item": "create:shaft"
+      },
+      {
+        "item": "petrolsparts:large_coaxial_gear"
+      }
+    ],
+    "processingTime": 50
+  }

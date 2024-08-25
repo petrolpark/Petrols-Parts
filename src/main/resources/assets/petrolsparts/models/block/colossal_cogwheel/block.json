@@ -1,0 +1,11 @@
+{
+	"parent": "block/block",
+	"loader": "forge:obj",
+	"flip_v": true,
+	"model": "petrolsparts:models/block/colossal_cogwheel/colossal_cogwheel.obj",
+	"textures": {
+		"block_texture": "petrolsparts:block/colossal_cogwheel",
+		"particle": "create:block/andesite_casing"
+	},
+	"render_type": "cutout"
+}

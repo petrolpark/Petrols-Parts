@@ -1,0 +1,26 @@
+{
+    "variants": {
+        "full_model=false,axis=x": {
+            "model": "petrolsparts:block/differential/block"
+        },
+        "full_model=false,axis=y": {
+            "model": "petrolsparts:block/differential/block"
+        },
+        "full_model=false,axis=z": {
+            "model": "petrolsparts:block/differential/block"
+        },
+        "full_model=true,axis=x": {
+            "model": "petrolsparts:block/differential/all",
+            "x": 90,
+            "y": 90
+        },
+        "full_model=true,axis=y": {
+            "model": "petrolsparts:block/differential/all"
+        },
+        "full_model=true,axis=z": {
+            "model": "petrolsparts:block/differential/all",
+            "x": 90,
+            "y": 180
+        }
+    }
+  }

@@ -1,0 +1,15 @@
+{
+    "required": "true",
+    "package": "com.petrolpark.petrolsparts.mixin",
+    "compatibilityLevel": "JAVA_17",
+    "refmap": "petrolsparts.refmap.json",
+    "mixins": [
+        "accessor.RotationPropagatorAccessor",
+        "KineticBlockEntityMixin",
+        "RotationPropagatorMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    },
+    "minVersion": "0.8"
+}

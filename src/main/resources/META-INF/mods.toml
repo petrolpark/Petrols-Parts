@@ -1,0 +1,50 @@
+modLoader="javafml"
+loaderVersion="[40,)"
+# issueTrackerURL="https://github.com/petrolpark/Destroy/issues"
+license="All Rights Reserved"
+
+[[mods]]
+modId="petrolsparts"
+version="${file.jarVersion}"
+displayName="Petrol's Parts"
+#updateJSONURL=""
+displayURL="https://www.modrinth.com/mod/petrolsparts"
+logoFile="logo.png"
+#credits=""
+authors="petrolpark"
+description='''New and unique kinetic components for Create'''
+
+[[dependencies.petrolsparts]]
+    modId="forge"
+    mandatory=true
+    versionRange="[43,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.petrolsparts]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1]"
+    ordering="NONE"
+    side="BOTH"
+    
+[[dependencies.petrolsparts]]
+	modId="create"
+	mandatory=true
+	versionRange="[0.5.1.e,)"
+	ordering="AFTER"
+	side="BOTH"
+
+[[dependencies.petrolsparts]]
+	modId="petrolpark"
+	mandatory=true
+	versionRange="[1.0.0,)"
+	ordering="AFTER"
+	side="BOTH"
+
+[[dependencies.petrolsparts]]
+	modId="destroy"
+	mandatory=false
+	versionRange="[0.1.0,)"
+	ordering="AFTER"
+	side="BOTH"

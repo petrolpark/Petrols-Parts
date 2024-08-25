@@ -1,0 +1,21 @@
+{
+    "type": "create:mechanical_crafting",
+    "pattern": [
+      " SSS ",
+      "SPPPS",
+      "SP PS",
+      "SPPPS",
+      " SSS "
+    ],
+    "key": {
+      "P":{
+        "tag": "minecraft:planks"
+      },
+      "S": {
+        "item": "create:shaft"
+      }
+    },
+    "result": {
+      "item": "petrolsparts:colossal_cogwheel"
+    }
+  }

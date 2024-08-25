@@ -1,0 +1,26 @@
+{
+    "parent": "petrolsparts:differential",
+    "criteria": {
+      "power": {
+        "trigger": "petrolsparts:colossal_cogwheel_power_many"
+      }
+    },
+    "display": {
+      "description": {
+        "color": "#DBA213",
+        "translate": "advancement.petrolsparts.colossal_cogwheel_power_many.description"
+      },
+      "icon": {
+        "item": "petrolsparts:colossal_cogwheel"
+      },
+      "title": {
+        "translate": "advancement.petrolsparts.colossal_cogwheel_power_many"
+      },
+      "frame": "goal"
+    },
+    "requirements": [
+      [
+        "power"
+      ]
+    ]
+  }

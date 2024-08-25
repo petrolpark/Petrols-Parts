@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      {
+        "item": "create:shaft"
+      },
+      {
+        "item": "petrolsparts:large_coaxial_gear"
+      }
+    ],
+    "result": {
+      "item": "create:large_cogwheel"
+    }
+  }

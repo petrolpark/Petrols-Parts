@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "petrolsparts:block/coaxial_gear",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "petrolsparts:block/coaxial_gear"
+    },
+    "axis=z": {
+      "model": "petrolsparts:block/coaxial_gear",
+      "x": 90,
+      "y": 180
+    }
+  }
+}

@@ -1,0 +1,206 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+        jcenter()
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public' } // Mixins
+        maven { url = 'https://maven.parchmentmc.org' } // Parchment
+        maven { url = 'https://api.modrinth.com/maven' } // Modrinth
+    }
+    dependencies {
+        classpath "net.minecraftforge.gradle:ForgeGradle:${forgegradle_version}" // Forge
+        classpath "org.spongepowered:mixingradle:${mixingradle_version}" // Mixins
+        classpath "org.parchmentmc:librarian:${librarian_version}" // Parchment
+        classpath files("libs/petrolpark-1.20.1-1.0.1-all.jar") // Petrolpark library (temporary)
+    }
+}
+
+plugins {
+    id 'com.matthewprenger.cursegradle' version "${cursegradle_version}"
+}
+apply plugin: 'net.minecraftforge.gradle'
+apply plugin: 'org.parchmentmc.librarian.forgegradle'
+apply plugin: 'maven-publish'
+apply plugin: 'eclipse'
+apply plugin: 'org.spongepowered.mixin'
+
+jarJar.enable()
+
+sourceSets.main.resources {
+    srcDir 'src/generated/resources'
+    exclude '.cache/'
+}
+
+mixin {
+    add sourceSets.main, "petrolsparts.refmap.json"
+}
+
+// Workaround for SpongePowered/MixinGradle#38, copied from Create source code
+afterEvaluate {
+    tasks.configureReobfTaskForReobfJar.mustRunAfter(tasks.compileJava)
+    tasks.configureReobfTaskForReobfJarJar.mustRunAfter(tasks.compileJava)
+}
+
+// Mod Details
+version = "${mod_version}"
+group = 'com.petrolpark.petrolsparts'
+archivesBaseName = "petrolsparts-${minecraft_version}"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17) //Set Java version
+
+println "Java: ${System.getProperty 'java.version'}, JVM: ${System.getProperty 'java.vm.version'} (${System.getProperty 'java.vendor'}), Arch: ${System.getProperty 'os.arch'}"
+minecraft {
+    mappings channel: 'parchment', version: "${parchment_version}-${minecraft_version}"
+    accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg') // Currently, this location cannot be changed from the default.
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+            arg '-mixin.config=create.mixins.json'
+            arg '-mixin.config=petrolpark.mixins.json'
+            arg '-mixin.config=petrolsparts.mixins.json'
+            arg '-mixin.config=flywheel.mixins.json'
+            property 'forge.logging.console.level', 'info'
+            mods {
+                petrolsparts {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        server {
+            workingDirectory project.file('run/server')
+            arg '-mixin.config=create.mixins.json'
+            arg '-mixin.config=petrolpark.mixins.json'
+            arg '-mixin.config=petrolsparts.mixins.json'
+            property 'forge.logging.console.level', 'info'
+            mods {
+                petrolsparts {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        data {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES,REGISTRYDUMP'
+            //property 'forge.logging.console.level', 'debug'
+            args '--mod', 'petrolsparts', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources')
+            mods {
+                petrolsparts {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+repositories {
+    maven { // JEI
+        name = "Jared's maven"
+        url = "https://maven.blamejared.com/"
+    }
+    maven { // JEI mirror
+        name = "ModMaven"
+        url = "https://modmaven.dev"
+    }
+    maven { // Create, Flywheel and Registrate
+        name = 'tterag maven'
+        url = 'https://www.cursemaven.com'
+    }
+
+    exclusiveContent {
+        forRepository {
+            maven {
+                name = "Modrinth"
+                url = "https://api.modrinth.com/maven"
+            }
+        }
+        forRepositories(fg.repository)
+        filter {
+            includeGroup "maven.modrinth"
+        }
+    }
+}
+
+configurations {
+	// Create the library configuration, where our non-mod libraries will be added to
+	library
+	// Any dependency in the library configuration will also be added to the implementation configuration
+	implementation.extendsFrom library
+}
+
+// Configure all runs with the following
+minecraft.runs.all {
+	// Set the minecraft_classpath token to the paths of all jars in the library configuration
+	// This is added with the actual Minecraft classpath to get the real classpath information later on
+	lazyToken('minecraft_classpath') {
+		configurations.library.copyRecursive().resolve().collect { it.absolutePath }.join(File.pathSeparator)
+	}
+}
+
+dependencies {
+
+    // HARD DEPENDENCIES
+
+    // Minecraft
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    
+    // Create
+    implementation fg.deobf("com.simibubi.create:create-${minecraft_version}:${create_version}:slim") { transitive = false }
+
+    // Flywheel
+    implementation fg.deobf("com.jozufozu.flywheel:flywheel-forge-${flywheel_minecraft_version}:${flywheel_version}")
+
+    // Registrate
+    implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
+
+    // Petrolpark Library (temporary)
+    compileOnly fileTree(dir: 'libs', include: '*.jar')
+    
+    // ANNOTATION PROCESSORS
+
+    annotationProcessor "org.spongepowered:mixin:${mixin_version}:processor"
+}
+
+jar {
+    manifest {
+        attributes([
+                "Specification-Title"     : "petrolsparts",
+                "Specification-Vendor"    : "petrolpark",
+                "Specification-Version"   : "1", // We are version 1 of ourselves
+                "Implementation-Title"    : project.name,
+                "Implementation-Version"  : project.jar.archiveVersion,
+                "Implementation-Vendor"   : "petrolpark",
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "MixinConfigs"            : 'petrolsparts.mixins.json'
+        ])
+    }
+}
+
+// Example configuration to allow publishing using the maven-publish plugin
+// This is the preferred method to reobfuscate your jar file
+jar.finalizedBy('reobfJar')
+// However if you are in a multi-project build, dev time needs unobfed jar files, so you can delay the obfuscation until publishing by doing
+// publish.dependsOn('reobfJar')
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            artifact jar
+        }
+    }
+    repositories {
+        maven {  
+            url "file://${project.projectDir}/mcmodsrepo"
+        }
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+tasks.withType(Copy) {
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}

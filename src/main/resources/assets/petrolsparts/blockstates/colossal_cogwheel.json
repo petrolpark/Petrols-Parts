@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "petrolsparts:block/colossal_cogwheel/block",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "petrolsparts:block/colossal_cogwheel/block"
+    },
+    "axis=z": {
+      "model": "petrolsparts:block/colossal_cogwheel/block",
+      "x": 90,
+      "y": 180
+    }
+  }
+}
