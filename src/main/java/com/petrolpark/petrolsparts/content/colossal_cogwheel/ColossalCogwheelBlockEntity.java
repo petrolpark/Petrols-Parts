@@ -84,7 +84,7 @@ public class ColossalCogwheelBlockEntity extends KineticBlockEntity {
 
     public void tryAwardCogsPoweringAdvancement() {
         BlockPos center = getBlockPos().offset(ColossalCogwheelBlock.getRelativeCenterPosition(getBlockState()));
-        advancementBehaviour.awardDestroyAdvancementIf(PetrolsPartsAdvancementTrigger.COLOSSAL_COGWHEEL_POWER_MANY, () -> Connection.getAll(center, getBlockState().getValue(RotatedPillarKineticBlock.AXIS)).stream()
+        advancementBehaviour.awardAdvancementIf(PetrolsPartsAdvancementTrigger.COLOSSAL_COGWHEEL_POWER_MANY, () -> Connection.getAll(center, getBlockState().getValue(RotatedPillarKineticBlock.AXIS)).stream()
             .filter(pair -> {
                 BlockPos pos = pair.getFirst();
                 BlockEntity be = getLevel().getBlockEntity(pos);

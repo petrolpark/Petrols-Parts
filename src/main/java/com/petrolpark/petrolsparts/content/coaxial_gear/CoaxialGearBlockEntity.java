@@ -63,7 +63,7 @@ public class CoaxialGearBlockEntity extends BracketedKineticBlockEntity {
                     if (speed != 0f && advancementBehaviour.getPlayer() != null && getLevel().getBlockEntity(longShaftPos, PetrolsPartsBlockEntityTypes.LONG_SHAFT.get()).map(
                         be -> be.getSpeed() != 0f && be.getSpeed() != speed
                     ).orElse(false)) {
-                        advancementBehaviour.awardDestroyAdvancement(PetrolsPartsAdvancementTrigger.COAXIAL_GEAR);
+                        advancementBehaviour.awardAdvancement(PetrolsPartsAdvancementTrigger.COAXIAL_GEAR);
                     };
                     break;
                 };

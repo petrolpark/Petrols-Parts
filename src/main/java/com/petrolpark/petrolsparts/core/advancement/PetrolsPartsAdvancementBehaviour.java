@@ -21,8 +21,8 @@ public class PetrolsPartsAdvancementBehaviour extends AbstractRememberPlacerBeha
         this.advancements = Set.of(advancements);
     };
 
-    public void awardDestroyAdvancement(PetrolsPartsAdvancementTrigger advancement) {
-		awardDestroyAdvancementIf(advancement, () -> true);
+    public void awardAdvancement(PetrolsPartsAdvancementTrigger advancement) {
+		awardAdvancementIf(advancement, () -> true);
 	};
 
     /**
@@ -30,7 +30,7 @@ public class PetrolsPartsAdvancementBehaviour extends AbstractRememberPlacerBeha
      * @param advancement
      * @param condition Computation of this is saved until after we have checked whether the Player actually exists and doesn't already have the Advancement
      */
-    public void awardDestroyAdvancementIf(PetrolsPartsAdvancementTrigger advancement, Supplier<Boolean> condition) {
+    public void awardAdvancementIf(PetrolsPartsAdvancementTrigger advancement, Supplier<Boolean> condition) {
         Player placer = getPlayer();
         if (placer == null || !(placer instanceof ServerPlayer player) || advancement.isAlreadyAwardedTo(player)) return;
         if (condition.get()) advancement.award(getWorld(), player);

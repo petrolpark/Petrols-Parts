@@ -15,7 +15,7 @@
       "frame": "task",
       "hidden": false,
       "icon": {
-        "item": "petrolsparts:coaxial_gear"
+        "item": "petrolsparts:double_cardan_shaft"
       },
       "show_toast": false,
       "title": {

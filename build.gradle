@@ -11,7 +11,6 @@ buildscript {
         classpath "net.minecraftforge.gradle:ForgeGradle:${forgegradle_version}" // Forge
         classpath "org.spongepowered:mixingradle:${mixingradle_version}" // Mixins
         classpath "org.parchmentmc:librarian:${librarian_version}" // Parchment
-        classpath files("libs/petrolpark-1.20.1-1.0.1-all.jar") // Petrolpark library (temporary)
     }
 }
 
@@ -66,6 +65,8 @@ minecraft {
                     source sourceSets.main
                 }
             }
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         server {
@@ -79,6 +80,8 @@ minecraft {
                     source sourceSets.main
                 }
             }
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         data {
@@ -156,7 +159,8 @@ dependencies {
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
     // Petrolpark Library (temporary)
-    compileOnly fileTree(dir: 'libs', include: '*.jar')
+    compileOnly fg.deobf("maven.modrinth:petrolpark:1.20.1-1.0.1:sources")
+    runtimeOnly fg.deobf("maven.modrinth:petrolpark:1.20.1-1.0.1:all")
     
     // ANNOTATION PROCESSORS
 

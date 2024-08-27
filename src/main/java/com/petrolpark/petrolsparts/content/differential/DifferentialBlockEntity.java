@@ -86,7 +86,7 @@ public class DifferentialBlockEntity extends SplitShaftBlockEntity {
         Direction direction = DirectionalRotatedPillarKineticBlock.getDirection(getBlockState());
         BlockPos otherAdjacentPos = getBlockPos().relative(direction.getOpposite());
         if (propagatesToMe(otherAdjacentPos, direction) && getLevel().getBlockEntity(otherAdjacentPos) instanceof KineticBlockEntity kbe) {
-            if (kbe.getSpeed() != 0f) advancementBehaviour.awardDestroyAdvancement(PetrolsPartsAdvancementTrigger.DIFFERENTIAL);
+            if (kbe.getSpeed() != 0f) advancementBehaviour.awardAdvancement(PetrolsPartsAdvancementTrigger.DIFFERENTIAL);
         };
     };
 
