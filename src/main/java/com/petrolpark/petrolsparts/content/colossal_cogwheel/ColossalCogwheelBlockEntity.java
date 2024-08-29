@@ -6,6 +6,7 @@ import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelBlo
 import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelBlock.Position;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementBehaviour;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementTrigger;
+import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
@@ -61,6 +62,7 @@ public class ColossalCogwheelBlockEntity extends KineticBlockEntity {
         boolean toLargeCog = ICogWheel.isLargeCog(otherCogState);
         if (toLargeCog || ICogWheel.isSmallCog(otherCogState)) {
             Axis axis = colossalState.getValue(RotatedPillarKineticBlock.AXIS);
+            if (((IRotate)otherCogState.getBlock()).getRotationAxis(otherCogState) != axis) return 0f;
             Position.Clock posClock = colossalState.getValue(ColossalCogwheelBlock.POSITION_CLOCK);
             for (Connection.Type connectionType : Connection.Type.values()) {
                 if (relCenter.subtract(connectionType.relativeCenterPos.apply(axis, posClock.getDirection(axis))).equals(diff)) {

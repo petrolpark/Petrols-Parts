@@ -53,5 +53,7 @@
     "petrolsparts.ponder.planetary_gearset.text_1": "Planetary Gearsets connect almost identically to Large Cogwheels (press Q to learn more about these).",
     "petrolsparts.ponder.planetary_gearset.text_2": "However, the Shaft of a Planetary Gearset rotates twice as fast, and in the opposite direction to the teeth.",
 
-    "petrolsparts.tooltip.coaxial_gear.shaft_too_short": "Shafts must be at least two blocks in length to go through a Coaxial Cogwheel"
+    "petrolsparts.tooltip.coaxial_gear.shaft_too_short": "Shafts must be at least two blocks in length to go through a Coaxial Cogwheel",
+
+    "itemGroup.petrolsparts.base": "Petrol's Parts"
 }

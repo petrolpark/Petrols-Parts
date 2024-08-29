@@ -2,6 +2,7 @@ package com.petrolpark.petrolsparts;
 
 import com.petrolpark.petrolsparts.ponder.PetrolsPartsPonderIndex;
 
+import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 public class PetrolsPartsClient {
@@ -12,5 +13,9 @@ public class PetrolsPartsClient {
         });
         PetrolsPartsPonderIndex.register();
         PetrolsPartsPonderIndex.registerTags();
-    };  
+    };
+
+    public static final void clientCtor(IEventBus forgeEventBus, IEventBus modEventBus) {
+        PetrolsPartsPartials.init();
+    };
 };

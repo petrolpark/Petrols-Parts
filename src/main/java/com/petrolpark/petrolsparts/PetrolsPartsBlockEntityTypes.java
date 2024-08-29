@@ -17,6 +17,7 @@ import com.petrolpark.petrolsparts.content.double_cardan_shaft.DoubleCardanShaft
 import com.petrolpark.petrolsparts.content.planetary_gearset.PlanetaryGearsetBlockEntity;
 import com.petrolpark.petrolsparts.content.planetary_gearset.PlanetaryGearsetInstance;
 import com.petrolpark.petrolsparts.content.planetary_gearset.PlanetaryGearsetRenderer;
+import com.simibubi.create.content.kinetics.base.SingleRotatingInstance;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityInstance;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
@@ -31,7 +32,7 @@ public class PetrolsPartsBlockEntityTypes {
 
     public static final BlockEntityEntry<CoaxialGearBlockEntity> COAXIAL_GEAR = REGISTRATE
         .blockEntity("coaxial_gear", CoaxialGearBlockEntity::new)
-        .instance(() -> BracketedKineticBlockEntityInstance::new, false)
+        .instance(() -> SingleRotatingInstance::new, false)
         .validBlocks(PetrolsPartsBlocks.COAXIAL_GEAR, PetrolsPartsBlocks.LARGE_COAXIAL_GEAR)
         .renderer(() -> BracketedKineticBlockEntityRenderer::new)
         .register();

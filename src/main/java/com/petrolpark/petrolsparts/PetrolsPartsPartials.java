@@ -32,4 +32,6 @@ public class PetrolsPartsPartials {
     private static PartialModel block(String path) {
         return new PartialModel(PetrolsParts.asResource("block/"+path));
     };
+
+    public static final void init() {};
 };

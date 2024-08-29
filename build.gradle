@@ -32,6 +32,8 @@ sourceSets.main.resources {
 
 mixin {
     add sourceSets.main, "petrolsparts.refmap.json"
+    debug.verbose = true
+    env.disableRefMap = true
 }
 
 // Workaround for SpongePowered/MixinGradle#38, copied from Create source code
@@ -54,6 +56,8 @@ minecraft {
 
     runs {
         client {
+            //property 'mixin.env.remapRefMap', "true"
+            //property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             workingDirectory project.file('run')
             arg '-mixin.config=create.mixins.json'
             arg '-mixin.config=petrolpark.mixins.json'
@@ -65,14 +69,11 @@ minecraft {
                     source sourceSets.main
                 }
             }
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         server {
             workingDirectory project.file('run/server')
             arg '-mixin.config=create.mixins.json'
-            arg '-mixin.config=petrolpark.mixins.json'
             arg '-mixin.config=petrolsparts.mixins.json'
             property 'forge.logging.console.level', 'info'
             mods {
@@ -80,8 +81,6 @@ minecraft {
                     source sourceSets.main
                 }
             }
-            property 'mixin.env.remapRefMap', 'true'
-            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
         }
 
         data {
@@ -124,6 +123,10 @@ repositories {
             includeGroup "maven.modrinth"
         }
     }
+
+    flatDir {
+        dirs '../petrolpark_local_maven/petrolpark/petrolpark-1.20.1/1.0.2'
+    }
 }
 
 configurations {
@@ -159,8 +162,7 @@ dependencies {
     implementation fg.deobf("com.tterrag.registrate:Registrate:${registrate_version}")
 
     // Petrolpark Library (temporary)
-    compileOnly fg.deobf("maven.modrinth:petrolpark:1.20.1-1.0.1:sources")
-    runtimeOnly fg.deobf("maven.modrinth:petrolpark:1.20.1-1.0.1:all")
+    implementation "com.petrolpark:petrolpark:1.20.1-1.0.2"
     
     // ANNOTATION PROCESSORS
 
