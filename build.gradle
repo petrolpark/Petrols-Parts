@@ -32,8 +32,6 @@ sourceSets.main.resources {
 
 mixin {
     add sourceSets.main, "petrolsparts.refmap.json"
-    debug.verbose = true
-    env.disableRefMap = true
 }
 
 // Workaround for SpongePowered/MixinGradle#38, copied from Create source code
@@ -56,8 +54,6 @@ minecraft {
 
     runs {
         client {
-            //property 'mixin.env.remapRefMap', "true"
-            //property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
             workingDirectory project.file('run')
             arg '-mixin.config=create.mixins.json'
             arg '-mixin.config=petrolpark.mixins.json'

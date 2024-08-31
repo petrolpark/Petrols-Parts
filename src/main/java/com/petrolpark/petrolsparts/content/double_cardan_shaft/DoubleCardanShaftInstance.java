@@ -227,11 +227,17 @@ public class DoubleCardanShaftInstance extends KineticBlockEntityInstance<Double
         super.update();
         updateSourceFacing();
         updateRotation(shaft1, shaft1Direction.getAxis(), getSpeed(shaft1Direction));
-        updateRotation(grip1, shaft1Direction.getAxis(), getSpeed(shaft1Direction));
-        grip1.setRotationOffset(getAxis() == Axis.Z ? 90f : 0f);
+        //updateRotation(grip1, shaft1Direction.getAxis(), getSpeed(shaft1Direction));
+        grip1
+            .setRotationAxis(Direction.get(AxisDirection.POSITIVE, shaft1Direction.getAxis()).step())
+            .setRotationalSpeed(getSpeed(shaft1Direction))
+            .setRotationOffset((getAxis() == Axis.Z ? 90f : 0f));
         updateRotation(shaft2, shaft2Direction.getAxis(), getSpeed(shaft2Direction));
-        updateRotation(grip2, shaft2Direction.getAxis(), getSpeed(shaft2Direction));
-        grip2.setRotationOffset(0f);
+        //updateRotation(grip2, shaft2Direction.getAxis(), getSpeed(shaft2Direction));
+        grip2
+            .setRotationAxis(Direction.get(AxisDirection.POSITIVE, shaft2Direction.getAxis()).step())
+            .setRotationalSpeed(getSpeed(shaft2Direction))
+            .setRotationOffset(0f);
     };
 
     @Override

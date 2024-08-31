@@ -3,7 +3,6 @@ package com.petrolpark.petrolsparts.content.double_cardan_shaft;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jozufozu.flywheel.backend.Backend;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.petrolpark.petrolsparts.PetrolsPartsPartials;
@@ -30,7 +29,7 @@ public class DoubleCardanShaftRenderer extends KineticBlockEntityRenderer<Double
 
     @Override
     protected void renderSafe(DoubleCardanShaftBlockEntity doubleCardanShaftBlockEntity, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-        if (Backend.canUseInstancing(doubleCardanShaftBlockEntity.getLevel())) return;
+        //if (Backend.canUseInstancing(doubleCardanShaftBlockEntity.getLevel())) return; //TODO fix
 
         float time = AnimationTickHolder.getRenderTime(doubleCardanShaftBlockEntity.getLevel());
         BlockState state = doubleCardanShaftBlockEntity.getBlockState();

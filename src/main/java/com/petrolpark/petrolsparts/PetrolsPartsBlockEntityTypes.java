@@ -12,7 +12,6 @@ import com.petrolpark.petrolsparts.content.differential.DifferentialBlockEntity;
 import com.petrolpark.petrolsparts.content.differential.DifferentialRenderer;
 import com.petrolpark.petrolsparts.content.differential.DummyDifferentialBlockEntity;
 import com.petrolpark.petrolsparts.content.double_cardan_shaft.DoubleCardanShaftBlockEntity;
-import com.petrolpark.petrolsparts.content.double_cardan_shaft.DoubleCardanShaftInstance;
 import com.petrolpark.petrolsparts.content.double_cardan_shaft.DoubleCardanShaftRenderer;
 import com.petrolpark.petrolsparts.content.planetary_gearset.PlanetaryGearsetBlockEntity;
 import com.petrolpark.petrolsparts.content.planetary_gearset.PlanetaryGearsetInstance;
@@ -45,7 +44,7 @@ public class PetrolsPartsBlockEntityTypes {
 
         public static final BlockEntityEntry<DoubleCardanShaftBlockEntity> DOUBLE_CARDAN_SHAFT = REGISTRATE
         .blockEntity("double_cardan_shaft", DoubleCardanShaftBlockEntity::new)
-        .instance(() -> DoubleCardanShaftInstance::new)
+        //.instance(() -> DoubleCardanShaftInstance::new) //TODO fix
         .validBlock(PetrolsPartsBlocks.DOUBLE_CARDAN_SHAFT)
         .renderer(() -> DoubleCardanShaftRenderer::new)
         .register();
