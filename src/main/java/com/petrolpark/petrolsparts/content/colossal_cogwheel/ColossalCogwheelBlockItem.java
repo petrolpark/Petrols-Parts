@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelBlock.Connection;
 import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelBlock.Position;
 import com.simibubi.create.CreateClient;
+import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
@@ -161,7 +162,7 @@ public class ColossalCogwheelBlockItem extends BlockItem {
 
         @Override
         public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
-            Axis axis = state.getValue(CogWheelBlock.AXIS);
+            Axis axis = ((IRotate)state.getBlock()).getRotationAxis(state);
             return Connection.getAll(BlockPos.ZERO, axis).stream()
                 .filter(
                     pair -> pair.getSecond().toLargeCog() == large)

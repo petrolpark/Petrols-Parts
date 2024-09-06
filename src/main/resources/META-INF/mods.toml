@@ -31,7 +31,7 @@ description='''New and unique kinetic components for Create.'''
 [[dependencies.petrolsparts]]
 	modId="create"
 	mandatory=true
-	versionRange="[0.5.1.e,)"
+	versionRange="[0.5.1.h,)"
 	ordering="AFTER"
 	side="BOTH"
 
