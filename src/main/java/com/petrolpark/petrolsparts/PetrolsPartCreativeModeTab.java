@@ -21,7 +21,7 @@ public class PetrolsPartCreativeModeTab {
 		() -> new CustomTab.Builder(CreativeModeTab.Row.TOP, 0)
 			.add(
 
-                i(PetrolsPartsBlocks.COAXIAL_GEAR::asStack), i(PetrolsPartsBlocks.LARGE_COAXIAL_GEAR::asStack), i(PetrolsPartsBlocks.DOUBLE_CARDAN_SHAFT::asStack), i(PetrolsPartsBlocks.DIFFERENTIAL::asStack), i(PetrolsPartsBlocks.PLANETARY_GEARSET::asStack), i(PetrolsPartsBlocks.COLOSSAL_COGWHEEL::asStack), i(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION::asStack)
+                i(PetrolsPartsBlocks.COAXIAL_GEAR::asStack), i(PetrolsPartsBlocks.LARGE_COAXIAL_GEAR::asStack), i(PetrolsPartsBlocks.DOUBLE_CARDAN_SHAFT::asStack), i(PetrolsPartsBlocks.DIFFERENTIAL::asStack), i(PetrolsPartsBlocks.PLANETARY_GEARSET::asStack), i(PetrolsPartsBlocks.COLOSSAL_COGWHEEL::asStack), i(PetrolsPartsBlocks.PNEUMATIC_TUBE::asStack), i(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION::asStack)
 			
 			).title(Component.translatable("itemGroup.petrolsparts.base"))
 			.withTabsBefore(AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getId())
