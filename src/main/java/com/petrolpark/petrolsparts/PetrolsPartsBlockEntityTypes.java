@@ -7,6 +7,7 @@ import com.petrolpark.petrolsparts.content.chained_cogwheel.ChainedCogwheelRende
 import com.petrolpark.petrolsparts.content.coaxial_gear.CoaxialGearBlockEntity;
 import com.petrolpark.petrolsparts.content.coaxial_gear.CoaxialGearVisual;
 import com.petrolpark.petrolsparts.content.coaxial_gear.LongShaftBlockEntity;
+import com.petrolpark.petrolsparts.content.coaxial_gear.LongShaftVisual;
 import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelBlockEntity;
 import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelRenderer;
 import com.petrolpark.petrolsparts.content.differential.DifferentialBlockEntity;
@@ -21,7 +22,6 @@ import com.petrolpark.petrolsparts.content.planetary_gearset.PlanetaryGearsetRen
 import com.petrolpark.petrolsparts.content.pneumatic_tube.PneumaticTubeBlockEntity;
 import com.petrolpark.petrolsparts.content.pneumatic_tube.PneumaticTubeRenderer;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
-import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityVisual;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class PetrolsPartsBlockEntityTypes {
@@ -73,7 +73,7 @@ public class PetrolsPartsBlockEntityTypes {
 
     public static final BlockEntityEntry<LongShaftBlockEntity> LONG_SHAFT = REGISTRATE
         .blockEntity("long_shaft", LongShaftBlockEntity::new)
-        .visual(() -> BracketedKineticBlockEntityVisual::create, false)
+        .visual(() -> LongShaftVisual::new, false)
         .validBlocks(PetrolsPartsBlocks.LONG_SHAFT)
         .renderer(() -> BracketedKineticBlockEntityRenderer::new)
         .register();
