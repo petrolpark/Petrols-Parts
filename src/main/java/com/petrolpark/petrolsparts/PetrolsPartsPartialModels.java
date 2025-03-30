@@ -11,6 +11,7 @@ public class PetrolsPartsPartialModels {
     // Coaxial Gears
     COAXIAL_GEAR = block("coaxial_gear"),
     LARGE_COAXIAL_GEAR = block("large_coaxial_gear"),
+    LONG_SHAFT = block("long_shaft"),
 
     // Double Cardan Shaft
     DCS_CENTER_SHAFT = block("double_cardan_shaft/center_shaft"),
