@@ -2,7 +2,6 @@ package com.petrolpark.petrolsparts.core.ponder;
 
 import com.petrolpark.petrolsparts.PetrolsParts;
 import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
-import com.simibubi.create.Create;
 import com.simibubi.create.infrastructure.ponder.AllCreatePonderTags;
 import com.tterrag.registrate.util.entry.ItemProviderEntry;
 import com.tterrag.registrate.util.entry.RegistryEntry;
@@ -22,10 +21,11 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
     @Override
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
         final PonderSceneRegistrationHelper<ItemProviderEntry<?>> HELPER = helper.withKeyFunction(RegistryEntry::getId);
+        //TODO figure out way to add Create scenes to non-Create components
 
         // Coaxial Gear
         HELPER.forComponents(PetrolsPartsBlocks.COAXIAL_GEAR)
-            .addStoryBoard(Create.asResource("cog/small"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::cogAsRelay)
+            //.addStoryBoard(Create.asResource("cog/small"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::cogAsRelay)
             .addStoryBoard("coaxial_gear/shaftless", PetrolsPartsScenes::coaxialGearShaftless)
             .addStoryBoard("coaxial_gear/through", PetrolsPartsScenes::coaxialGearThrough);
 
@@ -47,15 +47,15 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
 
         // Large Coaxial Cogwheel
         HELPER.forComponents(PetrolsPartsBlocks.LARGE_COAXIAL_GEAR)
-            .addStoryBoard(Create.asResource("cog/speedup"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::cogsSpeedUp)
-            .addStoryBoard(Create.asResource("cog/large"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::largeCogAsRelay, AllCreatePonderTags.KINETIC_RELAYS)
+            //.addStoryBoard(Create.asResource("cog/speedup"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::cogsSpeedUp)
+            //.addStoryBoard(Create.asResource("cog/large"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::largeCogAsRelay, AllCreatePonderTags.KINETIC_RELAYS)
             .addStoryBoard("coaxial_gear/shaftless", PetrolsPartsScenes::coaxialGearShaftless)
             .addStoryBoard("coaxial_gear/through", PetrolsPartsScenes::coaxialGearThrough);
 
         // Planetary Gearset
         HELPER.forComponents(PetrolsPartsBlocks.PLANETARY_GEARSET)
-            .addStoryBoard(Create.asResource("cog/speedup"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::cogsSpeedUp)
-            .addStoryBoard(Create.asResource("cog/large"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::largeCogAsRelay)
+            //.addStoryBoard(Create.asResource("cog/speedup"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::cogsSpeedUp)
+            //.addStoryBoard(Create.asResource("cog/large"), com.simibubi.create.infrastructure.ponder.scenes.KineticsScenes::largeCogAsRelay)
             .addStoryBoard("planetary_gearset", PetrolsPartsScenes::planetaryGearset);
     
         HELPER.forComponents(PetrolsPartsBlocks.PNEUMATIC_TUBE)
