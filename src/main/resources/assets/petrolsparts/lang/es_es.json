@@ -5,6 +5,8 @@
     "advancement.petrolsparts.colossal_cogwheel_power_many.description": "Haz funcionar otras 7 engranajes con un solo engranaje colosal",
     "advancement.petrolsparts.differential": "Eso suma",
     "advancement.petrolsparts.differential.description": "Usa un diferencial para combinar dos velocidades",
+    "advancement.petrolsparts.pneumatic_tube": "Totalmente tubular",
+    "advancement.petrolsparts.pneumatic_tube.description": "Usar un tubo neumático para transportar un item",
     "advancement.petrolsparts.root": "Petrol's Parts",
     "advancement.petrolsparts.root.description": "Nuevos y modernos componentes cinéticos",
 
@@ -17,6 +19,10 @@
     "block.petrolsparts.large_coaxial_gear": "Rueda dentada coaxial grande",
     "block.petrolsparts.long_shaft": "Eje largo",
     "block.petrolsparts.planetary_gearset": "Engranaje planetario",
+    "block.petrolsparts.pneumatic_tube": "Tubo neumático",
+    "block.petrolsparts.pneumatic_tube.cant_flip": "El tubo neumático debe estar vacío para cambiar de dirección",
+    "block.petrolsparts.pneumatic_tube.jammed": "¡Atascado!",
+    "block.petrolsparts.pneumatic_tube.jammed.hint": "Hay objetos atascados en este tubo neumático que _no pueden salir_.",
 
     "petrolsparts.ponder.coaxial_gear_shaftless.header": "Uso de engranajes coaxiales como engranajes sin eje",
     "petrolsparts.ponder.coaxial_gear_shaftless.text_1": "Los engranajes coaxiales se conectan de manera similar a sus contrapartes de engranajes normales.",
@@ -56,6 +62,12 @@
     "petrolsparts.ponder.planetary_gearset.header": "Un engranaje de otro mundo con el juego de engranajes planetarios",
     "petrolsparts.ponder.planetary_gearset.text_1": "Los juegos de engranajes planetarios se conectan de manera casi idéntica a las ruedas dentadas grandes (presione W para obtener más información sobre ellos).",
     "petrolsparts.ponder.planetary_gearset.text_2": "Sin embargo, el eje de un juego de engranajes planetarios gira el doble de rápido y en la dirección opuesta a los dientes.",
+    "petrolsparts.ponder.pneumatic_tube.header": "Transportando objetos con el tubo neumático",
+    "petrolsparts.ponder.pneumatic_tube.text_1": "Coloca dos bloques de tubo neumático y usa algunos más para conectarlos.",
+    "petrolsparts.ponder.pneumatic_tube.text_2": "Si uno (o ambos) de los extremos recibe potencia de rotación, los tubos neumáticos pueden mover objetos entre inventarios, pila a pila.",
+    "petrolsparts.ponder.pneumatic_tube.text_3": "Los objetos extraídos se pueden filtrar en el extremo de entrada.",
+    "petrolsparts.ponder.pneumatic_tube.text_4": "Si el extremo de salida no tiene inventario conectado, expulsará los objetos.",
+    "petrolsparts.ponder.pneumatic_tube.text_5": "La dirección de transporte se puede invertir mientras el tubo esté vacío.",
 
     "petrolsparts.tooltip.coaxial_gear.shaft_too_short": "Los ejes deben tener al menos dos bloques de longitud para pasar por una rueda dentada coaxial",
 
