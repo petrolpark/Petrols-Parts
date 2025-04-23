@@ -262,8 +262,12 @@ public class PneumaticTubeBlockEntity extends KineticBlockEntity implements ITub
         };
 
         public Direction getOutputFace() {
-            return getBlockState().getValue(PneumaticTubeBlock.FACING).getOpposite();
-        };
+	    BlockState state = getBlockState();
+	    if (!state.hasProperty(PneumaticTubeBlock.FACING)) {
+	        return Direction.NORTH; // or whatever default makes sense
+	    }
+	    return state.getValue(PneumaticTubeBlock.FACING).getOpposite();
+	}
 
         public Vec3 getOutputLocation() {
             final Direction outputFace = getOutputFace();
