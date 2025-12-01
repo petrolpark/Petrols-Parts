@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="${loader_version_range}"
 license="${mod_license}"
-#issueTrackerURL="https://github.com/petrolpark/Create-Library/issues/10"
+issueTrackerURL="https://github.com/petrolpark/Petrols-Parts/issues/1"
 
 [[mods]]
 modId="${mod_id}"
@@ -29,13 +29,13 @@ file="META-INF/accesstransformer.cfg"
 [[dependencies.${mod_id}]]
 	modId="create"
 	type="required"
-	versionRange="[6.0.4,7.0.0)"
+	versionRange="[6.0.8,6.1.0)"
 	ordering="AFTER"
 	side="BOTH"
 
 [[dependencies.${mod_id}]]
 	modId="petrolpark"
 	type="required"
-	versionRange="[1.4.9,1.5.0)"
-	ordering="AFTER"
+	versionRange="[1.4.24,1.5.0)"
+	ordering="BEFORE"
 	side="BOTH"

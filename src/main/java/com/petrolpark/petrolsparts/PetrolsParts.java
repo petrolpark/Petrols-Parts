@@ -3,6 +3,8 @@ package com.petrolpark.petrolsparts;
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
+import com.petrolpark.compat.GetPetrolparkSharedFeatures;
+import com.petrolpark.compat.SharedFeatureFlag;
 import com.petrolpark.petrolsparts.content.coaxial_gear.CoaxialGearBlockItem.GearOnShaftPlacementHelper;
 import com.petrolpark.petrolsparts.content.coaxial_gear.CoaxialGearBlockItem.ShaftOnGearPlacementHelper;
 import com.petrolpark.petrolsparts.core.PetrolsPartsRegistrate;
@@ -62,6 +64,11 @@ public class PetrolsParts {
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::onRegister);
         modEventBus.addListener(EventPriority.LOWEST, PetrolsPartsDatagen::gatherData);
+    };
+
+    @GetPetrolparkSharedFeatures
+    public static final SharedFeatureFlag[] getEnabledSharedFeatureFlags() {
+        return new SharedFeatureFlag[]{SharedFeatureFlag.REDSTONE_PROGRAMMER};
     };
 
     private void onRegister(final RegisterEvent event) {
