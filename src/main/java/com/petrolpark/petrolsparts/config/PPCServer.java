@@ -7,9 +7,9 @@ public class PPCServer extends ConfigBase {
     public final PPCStress stress = nested(1, PPCStress::new, Comments.stress);
 
     public final ConfigGroup tubes = group(1, "tubes", Comments.tubes);
-    public final ConfigFloat hydraulicTransmissionCost = f(2f, 0f, Float.MAX_VALUE, "hydraulicTransmissionCost", Comments.hydraulicTransmissionCost);
-    public final ConfigFloat pneumaticTubeCost = f(0.5f, 0f, Float.MAX_VALUE, "pneumaticTubeCost", Comments.pneumaticTubeCost);
-    public final ConfigFloat pneumaticTubeSpacing = f(1f, 0f, Float.MAX_VALUE, "pneumaticTubeSpacing", Comments.pneumaticTubeSpacing, Comments.meters);
+        public final ConfigFloat hydraulicTransmissionCost = f(2f, 0f, Float.MAX_VALUE, "hydraulicTransmissionCost", Comments.hydraulicTransmissionCost);
+        public final ConfigFloat pneumaticTubeCost = f(0.5f, 0f, Float.MAX_VALUE, "pneumaticTubeCost", Comments.pneumaticTubeCost);
+        public final ConfigFloat pneumaticTubeSpacing = f(1f, 0f, Float.MAX_VALUE, "pneumaticTubeSpacing", Comments.pneumaticTubeSpacing, Comments.meters);
 
     @Override
     public String getName() {

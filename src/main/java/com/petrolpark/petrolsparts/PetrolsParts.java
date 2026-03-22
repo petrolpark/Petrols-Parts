@@ -5,15 +5,11 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import com.petrolpark.compat.GetPetrolparkSharedFeatures;
 import com.petrolpark.compat.SharedFeatureFlag;
-import com.petrolpark.petrolsparts.content.coaxial_gear.CoaxialGearBlockItem.GearOnShaftPlacementHelper;
-import com.petrolpark.petrolsparts.content.coaxial_gear.CoaxialGearBlockItem.ShaftOnGearPlacementHelper;
+import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockItem.GearOnShaftPlacementHelper;
+import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockItem.ShaftOnGearPlacementHelper;
 import com.petrolpark.petrolsparts.core.PetrolsPartsRegistrate;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementTriggers;
-import com.simibubi.create.foundation.item.ItemDescription;
-import com.simibubi.create.foundation.item.KineticStats;
-import com.simibubi.create.foundation.item.TooltipModifier;
 
-import net.createmod.catnip.lang.FontHelper.Palette;
 import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
@@ -30,14 +26,9 @@ public class PetrolsParts {
     public static final String MOD_ID = "petrolsparts";
 
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final StackWalker STACK_WALKER = StackWalker.getInstance(StackWalker.Option.RETAIN_CLASS_REFERENCE);
 
-    public static final PetrolsPartsRegistrate REGISTRATE = new PetrolsPartsRegistrate(MOD_ID);
-
-    static {
-		REGISTRATE.setTooltipModifierFactory(item -> {
-			return new ItemDescription.Modifier(item, Palette.STANDARD_CREATE).andThen(TooltipModifier.mapNull(KineticStats.create(item)));
-		});
-	};
+    public static final PetrolsPartsRegistrate REGISTRATE = new PetrolsPartsRegistrate();
 
     public static ResourceLocation asResource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
@@ -54,6 +45,7 @@ public class PetrolsParts {
 
         REGISTRATE.registerEventListeners(modEventBus);
 
+        PetrolsPartsArmInteractionPointTypes.register();
         PetrolsPartsPackets.register();
         PetrolsPartCreativeModeTab.register(modEventBus);
         PetrolsPartsBlocks.register();

@@ -6,8 +6,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import com.petrolpark.petrolsparts.content.coaxial_gear.CoaxialGearBlock;
-import com.petrolpark.petrolsparts.content.coaxial_gear.LongShaftBlock;
+import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlock;
+import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlock;
 import com.petrolpark.petrolsparts.core.block.DirectionalRotatedPillarKineticBlock;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;

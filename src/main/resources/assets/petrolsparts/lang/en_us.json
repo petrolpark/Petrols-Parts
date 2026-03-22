@@ -11,6 +11,7 @@
     "advancement.petrolsparts.root.description": "New and funky kinetic components",
 
     "block.petrolsparts.andesite_encased_corner_shaft": "Andesite Encased Corner Shaft",
+    "block.petrolsparts.brass_depot": "Brass Depot",
     "block.petrolsparts.brass_encased_corner_shaft": "Brass Encased Corner Shaft",
     "block.petrolsparts.coaxial_gear": "Coaxial Cogwheel",
     "block.petrolsparts.colossal_cogwheel": "Colossal Cogwheel",
@@ -26,6 +27,9 @@
     "block.petrolsparts.pneumatic_tube.jammed": "Jammed!",
     "block.petrolsparts.pneumatic_tube.jammed.hint": "There are Items stuck in this Pneumatic Tube that _can't get out_.",
 
+    "petrolsparts.ponder.brass_depot.header": "Filtering Recipes with the Brass Depot",
+    "petrolsparts.ponder.brass_depot.text_1": "Brass Depots have a filter slot that can be used in case of conflicting recipes",
+    "petrolsparts.ponder.brass_depot.text_2": "This works for a variety of Recipe types",
     "petrolsparts.ponder.coaxial_gear_shaftless.header": "Using Coaxial Cogwheels as shaftless Cogwheels",
     "petrolsparts.ponder.coaxial_gear_shaftless.text_1": "Coaxial Cogwheels connect similarly to their regular Cogwheel counterparts.",
     "petrolsparts.ponder.coaxial_gear_shaftless.text_2": "However, they have no Shaft, allowing for configurations that would be impossible with regular Cogwheels.",

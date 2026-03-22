@@ -1,7 +1,7 @@
 package com.petrolpark.petrolsparts;
 
 import com.petrolpark.Petrolpark;
-import com.petrolpark.petrolsparts.content.pneumatic_tube.PneumaticTubeItemTransportPacket;
+import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeItemTransportPacket;
 
 import net.createmod.catnip.net.base.BasePacketPayload;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;

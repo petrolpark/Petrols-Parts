@@ -5,9 +5,14 @@
     "refmap": "petrolsparts.refmap.json",
     "plugin": "com.petrolpark.petrolsparts.mixin.plugin.PetrolsPartsMixinPlugin",
     "mixins": [
+        "accessor.DeployerRecipeSearchEventAccessor",
         "accessor.RotationPropagatorAccessor",
+        "AirCurrentMixin",
+        "AssemblyOperatorBlockItemMixin",
         "KineticBlockEntityMixin",
-        "RotationPropagatorMixin"
+        "MechanicalPressBlockEntityMixin",
+        "RotationPropagatorMixin",
+        "SpoutBlockEntityMixin"
     ],
     "injectors": {
         "defaultRequire": 1

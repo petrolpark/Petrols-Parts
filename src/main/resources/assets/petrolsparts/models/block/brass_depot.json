@@ -1,0 +1,9 @@
+{
+    "parent": "create:block/depot/block",
+    "textures": {
+        "1": "petrolsparts:block/brass_depot_side",
+        "2": "petrolsparts:block/brass_depot_top",
+		"3": "create:block/brass_casing",
+		"particle": "create:block/brass_casing"
+    }
+}

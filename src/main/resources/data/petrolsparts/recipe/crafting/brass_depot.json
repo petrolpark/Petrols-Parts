@@ -1,0 +1,14 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+      {
+        "tag": "c:plates/brass"
+      },
+      {
+        "item": "create:brass_casing"
+      }
+    ],
+    "result": {
+      "id": "petrolsparts:brass_depot"
+    }
+  }

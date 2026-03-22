@@ -1,0 +1,16 @@
+// 1.21.1	2026-03-22T14:38:06.0837546	Registrate Provider for petrolsparts [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Conditional Loot Tables, Tags (block_entity_types), Tags (mob_effects), Tags (potions), Registries]
+04fe6ba33c8ef1d6a10da37ef1fd29eb6b2a351b data/minecraft/tags/block/mineable/axe.json
+42dbf14179ba1d8b503e8805308c26376d5f2c52 data/minecraft/tags/block/mineable/pickaxe.json
+5683eee12195da9245992c9f2b151aca8fc53fe8 data/petrolsparts/loot_table/blocks/andesite_encased_corner_shaft.json
+781d93b9a19196f8ca01a2974e20af5b22cd5ce7 data/petrolsparts/loot_table/blocks/brass_depot.json
+e394de59880eea7381d3ed264ca724a36751d4e7 data/petrolsparts/loot_table/blocks/brass_encased_corner_shaft.json
+fe5dfb2f92e4f5f620df864abe1db8e071ede868 data/petrolsparts/loot_table/blocks/coaxial_gear.json
+f599038eb9f0e530cc4491a7dd74362c7020b156 data/petrolsparts/loot_table/blocks/colossal_cogwheel.json
+1a61563f63a4eeda3ad1b5601d9d995941fb7195 data/petrolsparts/loot_table/blocks/corner_shaft.json
+bda4bbb440582177be1093635873c4869b21cbd6 data/petrolsparts/loot_table/blocks/differential.json
+1b22b2440f6588fd3adc23edabfc0d06edc8f832 data/petrolsparts/loot_table/blocks/dummy_differential.json
+b8a42e30b698309d9aa4d37f29fcd15966b16814 data/petrolsparts/loot_table/blocks/hydraulic_transmission.json
+39e87cbac0b7232f235ad9a39cf9182dcb6c54f0 data/petrolsparts/loot_table/blocks/large_coaxial_gear.json
+173d3d3a53b22c45f0a90fe009db71fd706884f1 data/petrolsparts/loot_table/blocks/long_shaft.json
+d8c0c21ff5fb5252a05638ca18cb1ee43bc39ab2 data/petrolsparts/loot_table/blocks/planetary_gearset.json
+f248059ae818c59a93455fe11d5ec9fbfc47c71b data/petrolsparts/loot_table/blocks/pneumatic_tube.json

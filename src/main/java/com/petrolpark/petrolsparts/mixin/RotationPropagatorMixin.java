@@ -6,9 +6,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.petrolpark.petrolsparts.content.coaxial_gear.LongShaftBlockEntity;
-import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelBlock;
-import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock;
+import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockEntity;
 import com.petrolpark.petrolsparts.core.block.DirectionalRotatedPillarKineticBlock;
 import com.petrolpark.petrolsparts.mixin.accessor.RotationPropagatorAccessor;
 import com.simibubi.create.content.kinetics.RotationPropagator;

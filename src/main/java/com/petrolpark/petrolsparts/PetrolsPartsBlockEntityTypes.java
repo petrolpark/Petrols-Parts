@@ -2,96 +2,98 @@ package com.petrolpark.petrolsparts;
 
 import static com.petrolpark.petrolsparts.PetrolsParts.REGISTRATE;
 
-import com.petrolpark.petrolsparts.content.coaxial_gear.CoaxialGearBlockEntity;
-import com.petrolpark.petrolsparts.content.coaxial_gear.CoaxialGearVisual;
-import com.petrolpark.petrolsparts.content.coaxial_gear.LongShaftBlockEntity;
-import com.petrolpark.petrolsparts.content.coaxial_gear.LongShaftVisual;
-import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelBlockEntity;
-import com.petrolpark.petrolsparts.content.colossal_cogwheel.ColossalCogwheelRenderer;
-import com.petrolpark.petrolsparts.content.corner_shaft.CornerShaftBlockEntity;
-import com.petrolpark.petrolsparts.content.corner_shaft.CornerShaftRenderer;
-import com.petrolpark.petrolsparts.content.corner_shaft.EncasedCornerShaftRenderer;
-import com.petrolpark.petrolsparts.content.differential.DifferentialBlockEntity;
-import com.petrolpark.petrolsparts.content.differential.DifferentialRenderer;
-import com.petrolpark.petrolsparts.content.differential.DummyDifferentialBlockEntity;
-import com.petrolpark.petrolsparts.content.hydraulic_transmission.HydraulicTransmissionBlockEntity;
-import com.petrolpark.petrolsparts.content.hydraulic_transmission.HydraulicTransmissionRenderer;
-import com.petrolpark.petrolsparts.content.planetary_gearset.PlanetaryGearsetBlockEntity;
-import com.petrolpark.petrolsparts.content.planetary_gearset.PlanetaryGearsetRenderer;
-import com.petrolpark.petrolsparts.content.pneumatic_tube.PneumaticTubeBlockEntity;
-import com.petrolpark.petrolsparts.content.pneumatic_tube.PneumaticTubeRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearVisual;
+import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftVisual;
+import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.CornerShaftRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.EncasedCornerShaftRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.differential.DifferentialBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.differential.DifferentialRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.differential.DummyDifferentialBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetRenderer;
+import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
+import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeRenderer;
+import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotBlockEntity;
+import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotRenderer;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class PetrolsPartsBlockEntityTypes {
     
-    // public static final BlockEntityEntry<ChainedCogwheelBlockEntity> CHAINED_COGWHEEL = REGISTRATE
-    //     .blockEntity("chained_cogwheel", ChainedCogwheelBlockEntity::new)
-    //     .validBlocks(PetrolsPartsBlocks.CHAINED_COGWHEEL, PetrolsPartsBlocks.CHAINED_LARGE_COGWHEEL)
-    //     .renderer(() -> ChainedCogwheelRenderer::new)
-    //     .register();
+    public static final BlockEntityEntry<BrassDepotBlockEntity> BRASS_DEPOT = REGISTRATE
+        .createBlockEntity("brass_depot", BrassDepotBlockEntity::new)
+        .validBlock(PetrolsPartsBlocks.BRASS_DEPOT)
+        .renderer(() -> BrassDepotRenderer::new)
+        .register();
 
     public static final BlockEntityEntry<CoaxialGearBlockEntity> COAXIAL_GEAR = REGISTRATE
-        .blockEntity("coaxial_gear", CoaxialGearBlockEntity::new)
+        .createBlockEntity("coaxial_gear", CoaxialGearBlockEntity::new)
         .visual(() -> CoaxialGearVisual::create, false)
         .validBlocks(PetrolsPartsBlocks.COAXIAL_GEAR, PetrolsPartsBlocks.LARGE_COAXIAL_GEAR)
         .renderer(() -> BracketedKineticBlockEntityRenderer::new)
         .register();
 
     public static final BlockEntityEntry<ColossalCogwheelBlockEntity> COLOSSAL_COGWHEEL = REGISTRATE
-        .blockEntity("colossal_cogwheel", ColossalCogwheelBlockEntity::new)
+        .createBlockEntity("colossal_cogwheel", ColossalCogwheelBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.COLOSSAL_COGWHEEL)
         .renderer(() -> ColossalCogwheelRenderer::new)
         .register();
 
     public static final BlockEntityEntry<CornerShaftBlockEntity> CORNER_SHAFT = REGISTRATE
-        .blockEntity("corner_shaft", CornerShaftBlockEntity::new)
+        .createBlockEntity("corner_shaft", CornerShaftBlockEntity::new)
         //.visual(() -> CornerShaftvisual::new) //TODO fix
         .validBlock(PetrolsPartsBlocks.CORNER_SHAFT)
         .renderer(() -> CornerShaftRenderer::new)
         .register();
 
     public static final BlockEntityEntry<CornerShaftBlockEntity> ENCASED_CORNER_SHAFT = REGISTRATE
-        .blockEntity("encased_corner_shaft", CornerShaftBlockEntity::new)
+        .createBlockEntity("encased_corner_shaft", CornerShaftBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.ANDESITE_ENCASED_CORNER_SHAFT, PetrolsPartsBlocks.BRASS_ENCASED_CORNER_SHAFT)
         .renderer(() -> EncasedCornerShaftRenderer::new)
         .register();
 
     public static final BlockEntityEntry<DifferentialBlockEntity> DIFFERENTIAL = REGISTRATE
-        .blockEntity("differential", DifferentialBlockEntity::new)
+        .createBlockEntity("differential", DifferentialBlockEntity::new)
         //TODO visual
         .validBlock(PetrolsPartsBlocks.DIFFERENTIAL)
         .renderer(() -> DifferentialRenderer::new)
         .register();
 
     public static final BlockEntityEntry<DummyDifferentialBlockEntity> DUMMY_DIFFERENTIAL = REGISTRATE
-        .blockEntity("dummy_differential", DummyDifferentialBlockEntity::new)
+        .createBlockEntity("dummy_differential", DummyDifferentialBlockEntity::new)
         .validBlock(PetrolsPartsBlocks.DUMMY_DIFFERENTIAL)
         .register();
 
     public static final BlockEntityEntry<HydraulicTransmissionBlockEntity> HYDRAULIC_TRANSMISSION = REGISTRATE
-        .blockEntity("hydraulic_transmission", HydraulicTransmissionBlockEntity::new)
+        .createBlockEntity("hydraulic_transmission", HydraulicTransmissionBlockEntity::new)
         //.visual(() -> HydraulicTransmissionVisual::new)
         .validBlock(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION)
         .renderer(() -> HydraulicTransmissionRenderer::new)
         .register();
 
     public static final BlockEntityEntry<LongShaftBlockEntity> LONG_SHAFT = REGISTRATE
-        .blockEntity("long_shaft", LongShaftBlockEntity::new)
+        .createBlockEntity("long_shaft", LongShaftBlockEntity::new)
         .visual(() -> LongShaftVisual::new, false)
         .validBlocks(PetrolsPartsBlocks.LONG_SHAFT)
         .renderer(() -> BracketedKineticBlockEntityRenderer::new)
         .register();
 
     public static final BlockEntityEntry<PlanetaryGearsetBlockEntity> PLANETARY_GEARSET = REGISTRATE
-        .blockEntity("planetary_gearset", PlanetaryGearsetBlockEntity::new)
+        .createBlockEntity("planetary_gearset", PlanetaryGearsetBlockEntity::new)
         //.visual(() -> PlanetaryGearsetVisual::new, false)
         .validBlocks(PetrolsPartsBlocks.PLANETARY_GEARSET)
         .renderer(() -> PlanetaryGearsetRenderer::new)
         .register();
 
     public static final BlockEntityEntry<PneumaticTubeBlockEntity> PNEUMATIC_TUBE = REGISTRATE
-        .blockEntity("pneumatic_tube", PneumaticTubeBlockEntity::new)
+        .createBlockEntity("pneumatic_tube", PneumaticTubeBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.PNEUMATIC_TUBE)
         .renderer(() -> PneumaticTubeRenderer::new)
         .register();

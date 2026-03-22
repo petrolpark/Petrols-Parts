@@ -1,6 +1,7 @@
 package com.petrolpark.petrolsparts;
 
 import com.petrolpark.petrolsparts.core.ponder.PetrolsPartsPonderPlugin;
+import com.petrolpark.petrolsparts.core.ponder.PetrolsPartsPonderPlugin.PetrolsPartsCreatePonderPlugin;
 
 import net.createmod.ponder.foundation.PonderIndex;
 import net.neoforged.api.distmarker.Dist;
@@ -16,6 +17,7 @@ public class PetrolsPartsClient {
     };
 
     public static void clientInit(final FMLClientSetupEvent event) {
+        PonderIndex.addPlugin(new PetrolsPartsCreatePonderPlugin());
         PonderIndex.addPlugin(new PetrolsPartsPonderPlugin());
     };
 
