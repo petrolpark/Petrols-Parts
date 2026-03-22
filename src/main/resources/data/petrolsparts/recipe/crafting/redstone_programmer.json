@@ -1,13 +1,17 @@
 {
   "neoforge:conditions": [
-      {
-        "type": "neoforge:not",
-        "value": {
-          "type": "neoforge:mod_loaded",
-          "modid": "destroy"
-        }
+    {
+      "type": "neoforge:not",
+      "value": {
+        "type": "neoforge:mod_loaded",
+        "modid": "destroy"
       }
-    ],  
+    },
+    {
+      "type": "petrolpark:config_bool",
+      "key": "petrolsparts:common.recipes.redstoneProgrammer"
+    }
+  ],  
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "L L",

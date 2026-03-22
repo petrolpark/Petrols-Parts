@@ -1,32 +1,38 @@
 {
-    "type": "create:mechanical_crafting",
-    "pattern": [
-      "CBM",
-      " P ",
-      "BWB",
-      " P ",
-      "MBC"
-    ],
-    "accept_mirrored": true,
-    "key": {
-      "B": {
-        "tag": "c:plates/brass"
-      },
-      "M":{
-        "item": "create:precision_mechanism"
-      },
-      "P": {
-        "item": "create:fluid_pipe"
-      },
-      "C": {
-        "item": "create:cogwheel"
-      },
-      "W": {
-        "item": "minecraft:water_bucket"
-      }
-    },
-    "result": {
-      "id": "petrolsparts:hydraulic_transmission",
-      "count": 4
+  "neoforge:conditions": [
+    {
+      "type": "petrolpark:config_bool",
+      "key": "petrolsparts:common.recipes.hydraulicTransmission"
     }
+  ],
+  "type": "create:mechanical_crafting",
+  "pattern": [
+    "CBM",
+    " P ",
+    "BWB",
+    " P ",
+    "MBC"
+  ],
+  "accept_mirrored": true,
+  "key": {
+    "B": {
+      "tag": "c:plates/brass"
+    },
+    "M":{
+      "item": "create:precision_mechanism"
+    },
+    "P": {
+      "item": "create:fluid_pipe"
+    },
+    "C": {
+      "item": "create:cogwheel"
+    },
+    "W": {
+      "item": "minecraft:water_bucket"
+    }
+  },
+  "result": {
+    "id": "petrolsparts:hydraulic_transmission",
+    "count": 4
   }
+}

@@ -1,19 +1,25 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-      "S ",
-      "AS"
-    ],
-    "key": {
-      "A": {
-        "item": "create:andesite_alloy"
-      },
-      "S": {
-        "item": "create:shaft"
-      }
-    },
-    "result": {
-      "id": "petrolsparts:corner_shaft",
-      "count": 2
+  "neoforge:conditions": [
+    {
+      "type": "petrolpark:config_bool",
+      "key": "petrolsparts:common.recipes.cornerShaft"
     }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S ",
+    "AS"
+  ],
+  "key": {
+    "A": {
+      "item": "create:andesite_alloy"
+    },
+    "S": {
+      "item": "create:shaft"
+    }
+  },
+  "result": {
+    "id": "petrolsparts:corner_shaft",
+    "count": 2
   }
+}

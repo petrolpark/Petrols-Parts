@@ -1,14 +1,20 @@
 {
-    "type": "create:cutting",
-    "ingredients": [
-      {
-        "tag": "minecraft:planks"
-      }
-    ],
-    "results": [
-      {
-        "id": "petrolsparts:coaxial_gear"
-      }
-    ],
-    "processingTime": 50
-  }
+  "neoforge:conditions": [
+    {
+      "type": "petrolpark:config_bool",
+      "key": "petrolsparts:common.recipes.coaxialGears"
+    }
+  ],
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "tag": "minecraft:planks"
+    }
+  ],
+  "results": [
+    {
+      "id": "petrolsparts:coaxial_gear"
+    }
+  ],
+  "processingTime": 50
+}

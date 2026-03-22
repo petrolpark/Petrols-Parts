@@ -1,29 +1,35 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-      "KMK",
-      "KPK",
-      "ICI"
-    ],
-    "key": {
-      "K": {
-        "item": "minecraft:dried_kelp"
-      },
-      "M": {
-        "item": "create:precision_mechanism"
-      },
-      "P": {
-        "item": "create:propeller"
-      },
-      "C": {
-        "item": "create:cogwheel"
-      },
-      "I": {
-        "tag": "c:plates/iron"
-      }
-    },
-    "result": {
-      "id": "petrolsparts:pneumatic_tube",
-      "count": 8
+  "neoforge:conditions": [
+    {
+      "type": "petrolpark:config_bool",
+      "key": "petrolsparts:common.recipes.pneumaticTube"
     }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "KMK",
+    "KPK",
+    "ICI"
+  ],
+  "key": {
+    "K": {
+      "item": "minecraft:dried_kelp"
+    },
+    "M": {
+      "item": "create:precision_mechanism"
+    },
+    "P": {
+      "item": "create:propeller"
+    },
+    "C": {
+      "item": "create:cogwheel"
+    },
+    "I": {
+      "tag": "c:plates/iron"
+    }
+  },
+  "result": {
+    "id": "petrolsparts:pneumatic_tube",
+    "count": 8
   }
+}

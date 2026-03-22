@@ -1,22 +1,28 @@
 {
-    "type": "minecraft:crafting_shaped",
-    "pattern": [
-      "ASA",
-      "SLS",
-      "ASA"
-    ],
-    "key": {
-      "A": {
-        "item": "create:andesite_alloy"
-      },
-      "S": {
-        "item": "create:cogwheel"
-      },
-      "L": {
-        "item": "create:large_cogwheel"
-      }
-    },
-    "result": {
-      "id": "petrolsparts:differential"
+  "neoforge:conditions": [
+    {
+      "type": "petrolpark:config_bool",
+      "key": "petrolsparts:common.recipes.differential"
     }
+  ],
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "ASA",
+    "SLS",
+    "ASA"
+  ],
+  "key": {
+    "A": {
+      "item": "create:andesite_alloy"
+    },
+    "S": {
+      "item": "create:cogwheel"
+    },
+    "L": {
+      "item": "create:large_cogwheel"
+    }
+  },
+  "result": {
+    "id": "petrolsparts:differential"
   }
+}

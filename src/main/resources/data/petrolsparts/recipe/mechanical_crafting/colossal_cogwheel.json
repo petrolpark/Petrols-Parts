@@ -1,22 +1,28 @@
 {
-    "type": "create:mechanical_crafting",
-    "pattern": [
-      " SSS ",
-      "SPPPS",
-      "SP PS",
-      "SPPPS",
-      " SSS "
-    ],
-    "accept_mirrored": true,
-    "key": {
-      "P":{
-        "tag": "minecraft:planks"
-      },
-      "S": {
-        "item": "create:shaft"
-      }
-    },
-    "result": {
-      "id": "petrolsparts:colossal_cogwheel"
+  "neoforge:conditions": [
+    {
+      "type": "petrolpark:config_bool",
+      "key": "petrolsparts:common.recipes.colossalCogwheel"
     }
+  ],
+  "type": "create:mechanical_crafting",
+  "pattern": [
+    " SSS ",
+    "SPPPS",
+    "SP PS",
+    "SPPPS",
+    " SSS "
+  ],
+  "accept_mirrored": true,
+  "key": {
+    "P":{
+      "tag": "minecraft:planks"
+    },
+    "S": {
+      "item": "create:shaft"
+    }
+  },
+  "result": {
+    "id": "petrolsparts:colossal_cogwheel"
   }
+}

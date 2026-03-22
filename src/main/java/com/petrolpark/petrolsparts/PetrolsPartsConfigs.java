@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 
 import org.apache.commons.lang3.tuple.Pair;
 
+import com.petrolpark.petrolsparts.config.PPCCommon;
 import com.petrolpark.petrolsparts.config.PPCServer;
 import com.petrolpark.petrolsparts.config.PPCStress;
 import com.simibubi.create.api.stress.BlockStressValues;
@@ -26,16 +27,16 @@ public class PetrolsPartsConfigs {
     private static final Map<ModConfig.Type, ConfigBase> CONFIGS = new EnumMap<>(ModConfig.Type.class);
 
 	// private static CClient client;
-	// private static CCommon common;
+	private static PPCCommon common;
 	private static PPCServer server;
 
 	// public static CClient client() {
 	// 	return client;
 	// };
 
-	// public static CCommon common() {
-	// 	return common;
-	// };
+	public static PPCCommon common() {
+		return common;
+	};
 
 	public static PPCServer server() {
 		return server;
@@ -60,7 +61,7 @@ public class PetrolsPartsConfigs {
 
 	public static void register(ModLoadingContext context, ModContainer container) {
 		//client = register(CClient::new, ModConfig.Type.CLIENT);
-		//common = register(CCommon::new, ModConfig.Type.COMMON);
+		common = register(PPCCommon::new, ModConfig.Type.COMMON);
 		server = register(PPCServer::new, ModConfig.Type.SERVER);
 
 		for (Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet()) container.registerConfig(pair.getKey(), pair.getValue().specification);
