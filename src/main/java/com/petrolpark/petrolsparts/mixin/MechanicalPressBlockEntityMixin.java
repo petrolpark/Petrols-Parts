@@ -7,6 +7,7 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
+import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotBlockEntity;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.kinetics.press.MechanicalPressBlockEntity;
 import com.simibubi.create.content.kinetics.press.PressingRecipe;
@@ -38,9 +39,10 @@ public abstract class MechanicalPressBlockEntityMixin extends BasinOperatingBloc
     public Optional<RecipeHolder<PressingRecipe>> petrolsparts$filterRecipes(Optional<RecipeHolder<PressingRecipe>> original, ItemStack item) {
         if (original.isEmpty()) return original;
         final SingleRecipeInput input = new SingleRecipeInput(item);
-        return getLevel().getBlockEntity(getBlockPos().below(2), PetrolsPartsBlockEntityTypes.BRASS_DEPOT.get())
-            .filter(depot -> depot.getHeldItem() == item) // Ensure we are actually Pressing the Depot, not an Item Entity above it
-            .flatMap(depot ->
+        final Optional<BrassDepotBlockEntity> depotOp = getLevel().getBlockEntity(getBlockPos().below(2), PetrolsPartsBlockEntityTypes.BRASS_DEPOT.get())
+            .filter(depot -> depot.getHeldItem() == item); // Ensure we are actually Pressing the Depot, not an Item Entity above it
+        if (depotOp.isEmpty()) return original;
+        return depotOp.flatMap(depot ->
                 original.filter(depot::matches) // Check if the existing Recipe (if added by another mixin) is acceptable
                     .or(() -> depot.pick(SequencedAssemblyRecipe.getRecipes(level, item, AllRecipeTypes.PRESSING.getType(), PressingRecipe.class, depot::matches)))
                     .or(() -> depot.pick(getLevel().getRecipeManager().getRecipesFor(AllRecipeTypes.PRESSING.getType(), input, level)
