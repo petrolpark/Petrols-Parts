@@ -11,6 +11,7 @@
     "advancement.petrolsparts.root.description": "新しくてファンキーな動力コンポーネント",
 
     "block.petrolsparts.andesite_encased_corner_shaft": "安山岩ケース入りコーナーシャフト",
+    "block.petrolsparts.brass_depot": "真鍮デポ",
     "block.petrolsparts.brass_encased_corner_shaft": "真鍮ケース入りコーナーシャフト",
     "block.petrolsparts.coaxial_gear": "同軸歯車",
     "block.petrolsparts.colossal_cogwheel": "巨大歯車",
@@ -26,6 +27,9 @@
     "block.petrolsparts.pneumatic_tube.jammed": "詰まった！",
     "block.petrolsparts.pneumatic_tube.jammed.hint": "この空気圧チューブには、_出られない_アイテムが詰まっています",
 
+    "petrolsparts.ponder.brass_depot.header": "真鍮デポによるレシピの選別",
+    "petrolsparts.ponder.brass_depot.text_1": "真鍮デポには、レシピが競合する場合に使用できるフィルタースロットがあります",
+    "petrolsparts.ponder.brass_depot.text_2": "これは様々な種類のレシピに対応しています",
     "petrolsparts.ponder.coaxial_gear_shaftless.header": "シャフトレス歯車としての同軸歯車の使用",
     "petrolsparts.ponder.coaxial_gear_shaftless.text_1": "同軸歯車は、通常の歯車と同様に接続します",
     "petrolsparts.ponder.coaxial_gear_shaftless.text_2": "ただし、シャフトがないため、通常の歯車では不可能な構成が可能です",
