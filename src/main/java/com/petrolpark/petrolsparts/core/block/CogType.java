@@ -9,4 +9,12 @@ public enum CogType {
     public boolean isNone(){
         return this == NONE;
     };
+
+    public boolean isSmall() {
+        return this == SMALL;
+    };
+
+    public boolean isLarge() {
+        return this == LARGE;
+    };
 };
