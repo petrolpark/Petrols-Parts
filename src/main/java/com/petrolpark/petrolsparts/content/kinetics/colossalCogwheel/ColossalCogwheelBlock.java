@@ -67,8 +67,8 @@ import net.neoforged.neoforge.client.extensions.common.IClientBlockExtensions;
 
 public class ColossalCogwheelBlock extends KineticBlock implements IBE<ColossalCogwheelBlockEntity>, IProxyHoveringInformation {
 
-    public static EnumProperty<Position.Clock> POSITION_CLOCK = EnumProperty.create("position_clock", Position.Clock.class);
-    public static EnumProperty<Position.Type> POSITION_TYPE = EnumProperty.create("position_type", Position.Type.class);
+    public static final EnumProperty<Position.Clock> POSITION_CLOCK = EnumProperty.create("position_clock", Position.Clock.class);
+    public static final EnumProperty<Position.Type> POSITION_TYPE = EnumProperty.create("position_type", Position.Type.class);
 
     public ColossalCogwheelBlock(Properties properties) {
         super(properties);

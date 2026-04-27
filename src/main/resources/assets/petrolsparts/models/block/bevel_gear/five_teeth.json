@@ -1,0 +1,12 @@
+{
+	"parent": "block/block",
+	"loader": "neoforge:obj",
+	"flip_v": true,
+	"model": "petrolsparts:models/block/bevel_gear/five_teeth.obj",
+	"textures": {
+		"cogwheel": "create:block/large_cogwheel",
+		"shaft": "create:block/cogwheel_axis",
+		"shaft_end": "create:block/axis_top",
+		"particle": "create:block/large_cogwheel"
+	}
+}

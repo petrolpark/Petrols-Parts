@@ -57,7 +57,7 @@ public class ColossalCogwheelBlockEntity extends KineticBlockEntity {
         return propagateFromColossalCogwheel(stateFrom, stateTo, diff);
     };
 
-    public static float propagateFromColossalCogwheel(BlockState colossalState, BlockState otherCogState, BlockPos diff) {
+    public static final float propagateFromColossalCogwheel(BlockState colossalState, BlockState otherCogState, BlockPos diff) {
         BlockPos relCenter = ColossalCogwheelBlock.getRelativeCenterPosition(colossalState);
         boolean toLargeCog = ICogWheel.isLargeCog(otherCogState);
         if (toLargeCog || ICogWheel.isSmallCog(otherCogState)) {

@@ -2,6 +2,9 @@ package com.petrolpark.petrolsparts;
 
 import static com.petrolpark.petrolsparts.PetrolsParts.REGISTRATE;
 
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageRenderer;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearVisual;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlockEntity;
@@ -26,6 +29,16 @@ import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEn
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class PetrolsPartsBlockEntityTypes {
+
+    public static final BlockEntityEntry<AssemblageBlockEntity> SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE
+        .createBlockEntity("separate_shaft_halves_assemblage", AssemblageBlockEntity::new)
+        .validBlock(PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
+        .renderer(() -> AssemblageRenderer::new)
+        .register();
+
+    public static final BlockEntityEntry<AssemblageBlockEntityPart> ASSEMBLAGE_PART = REGISTRATE
+        .<AssemblageBlockEntityPart>blockEntity("assemblage_part", (t, p, s) -> new AssemblageBlockEntity(SEPARATE_SHAFT_HALVES_ASSEMBLAGE.get(), p, s).new AssemblageBlockEntityPart())
+        .register();
     
     public static final BlockEntityEntry<BrassDepotBlockEntity> BRASS_DEPOT = REGISTRATE
         .createBlockEntity("brass_depot", BrassDepotBlockEntity::new)

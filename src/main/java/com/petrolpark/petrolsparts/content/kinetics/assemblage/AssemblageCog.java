@@ -24,38 +24,58 @@ public enum AssemblageCog implements StringRepresentable {
         name = Lang.asId(name());
     };
 
+    public boolean isNone() {
+        return this == NONE;
+    };
+
     @Override
     public String getSerializedName() {
         return name;
     };
 
     public void addTopPart(Axis axis, Consumer<AssemblagePart> partAdder) {
-        switch (this) {
-            case NONE: return;
-            case SMALL: partAdder.accept(AssemblagePart.COGWHEELS.get(Direction.get(AxisDirection.POSITIVE, axis)));
-            case LARGE: partAdder.accept(AssemblagePart.LARGE_COGWHEELS.get(Direction.get(AxisDirection.POSITIVE, axis)));
-            case SMALL_COAXIAL: partAdder.accept(AssemblagePart.COAXIAL_COGWHEELS.get(Direction.get(AxisDirection.POSITIVE, axis)));
-            case LARGE_COAXIAL: partAdder.accept(AssemblagePart.LARGE_COAXIAL_COGWHEELS.get(Direction.get(AxisDirection.POSITIVE, axis)));
-        };
+        addFaceAlignedPart(axis, AxisDirection.POSITIVE, partAdder);
     };
 
     public void addMiddlePart(Axis axis, Consumer<AssemblagePart> partAdder) {
         switch (this) {
             case NONE: return;
-            case SMALL: partAdder.accept(AssemblagePart.MIDDLE_COGWHEELS.get(axis));
-            case LARGE: partAdder.accept(AssemblagePart.LARGE_MIDDLE_COGWHEELS.get(axis));
-            case SMALL_COAXIAL: partAdder.accept(AssemblagePart.MIDDLE_COAXIAL_COGWHEELS.get(axis));
-            case LARGE_COAXIAL: partAdder.accept(AssemblagePart.LARGE_MIDDLE_COAXIAL_COGWHEELS.get(axis));
+            case SMALL: {
+                partAdder.accept(AssemblagePart.MIDDLE_COGWHEELS.get(axis));
+                return;
+            } case LARGE: {
+                partAdder.accept(AssemblagePart.LARGE_MIDDLE_COGWHEELS.get(axis));
+                return;
+            } case SMALL_COAXIAL: {
+                partAdder.accept(AssemblagePart.MIDDLE_COAXIAL_COGWHEELS.get(axis));
+                return;
+            } case LARGE_COAXIAL: {
+                partAdder.accept(AssemblagePart.LARGE_MIDDLE_COAXIAL_COGWHEELS.get(axis));
+                return;
+            }
         };
     };
 
     public void addBottomPart(Axis axis, Consumer<AssemblagePart> partAdder) {
+        addFaceAlignedPart(axis, AxisDirection.NEGATIVE, partAdder);
+    };
+
+    public void addFaceAlignedPart(Axis axis, AxisDirection direction, Consumer<AssemblagePart> partAdder) {
         switch (this) {
             case NONE: return;
-            case SMALL: partAdder.accept(AssemblagePart.COGWHEELS.get(Direction.get(AxisDirection.NEGATIVE, axis)));
-            case LARGE: partAdder.accept(AssemblagePart.LARGE_COGWHEELS.get(Direction.get(AxisDirection.NEGATIVE, axis)));
-            case SMALL_COAXIAL: partAdder.accept(AssemblagePart.COAXIAL_COGWHEELS.get(Direction.get(AxisDirection.NEGATIVE, axis)));
-            case LARGE_COAXIAL: partAdder.accept(AssemblagePart.LARGE_COAXIAL_COGWHEELS.get(Direction.get(AxisDirection.NEGATIVE, axis)));
+            case SMALL: {
+                partAdder.accept(AssemblagePart.COGWHEELS.get(Direction.get(direction, axis)));
+                return;
+            } case LARGE: {
+                partAdder.accept(AssemblagePart.LARGE_COGWHEELS.get(Direction.get(direction, axis)));
+                return;
+            } case SMALL_COAXIAL: {
+                partAdder.accept(AssemblagePart.COAXIAL_COGWHEELS.get(Direction.get(direction, axis)));
+                return;
+            } case LARGE_COAXIAL: {
+                partAdder.accept(AssemblagePart.LARGE_COAXIAL_COGWHEELS.get(Direction.get(direction, axis)));
+                return;
+            }
         };
     };
 

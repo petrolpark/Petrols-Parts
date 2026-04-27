@@ -11,10 +11,10 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
-public interface IFaceAlignedCogwheel {
+public interface IFaceAlignedCogWheelBlockEntity {
 
     public static CogType getCogType(KineticBlockEntity kbe, Direction face) {
-        if (kbe instanceof IFaceAlignedCogwheel cogwheel) return cogwheel.getCogType(face);
+        if (kbe instanceof IFaceAlignedCogWheelBlockEntity cogwheel) return cogwheel.getCogType(face);
         if (kbe.getBlockState().is(PetrolsPartsTags.THICK_SMALL_COGWHEELS) &&
             kbe.getBlockState().hasProperty(BlockStateProperties.AXIS) &&
             face.getAxis() == kbe.getBlockState().getValue(BlockStateProperties.AXIS)
@@ -24,7 +24,7 @@ public interface IFaceAlignedCogwheel {
     
     public CogType getCogType(Direction face);
 
-    public static float getConnection(KineticBlockEntity from, KineticBlockEntity to, BlockPos diff) {
+    public static float propagateFaceAlignedCogwheels(KineticBlockEntity from, KineticBlockEntity to, BlockPos diff) {
 
         for (Direction face : Iterate.directions) {
             final CogType fromCog = getCogType(from, face);

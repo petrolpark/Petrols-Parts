@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 import com.petrolpark.core.world.block.multiPart.MultiPartBlock;
 import com.petrolpark.petrolsparts.PetrolsParts;
 import com.petrolpark.petrolsparts.PetrolsPartsShapes;
+import com.simibubi.create.Create;
 
 import net.createmod.catnip.math.VoxelShaper;
 import net.minecraft.core.Direction;
@@ -28,6 +29,7 @@ public class AssemblagePart implements MultiPartBlock.IPart {
     public static final VoxelShaper LARGE_COGWHEEL_SHAPER = PetrolsPartsShapes.shape(0, 12, 0, 116, 16, 16).forDirectional();
     public static final VoxelShaper LARGE_MIDDLE_COGWHEEL_SHAPER = PetrolsPartsShapes.shape(0, 6, 0, 16, 10, 16).forAxis();
 
+    public static final ResourceKey<LootTable> SHAFT_LOOT = ResourceKey.create(Registries.LOOT_TABLE, Create.asResource("block/shaft"));
     public static final ResourceKey<LootTable> SHAFT_HALF_LOOT = ResourceKey.create(Registries.LOOT_TABLE, PetrolsParts.asResource("blocks/shaft_half"));
     public static final ResourceKey<LootTable> COGWHEEL_LOOT = ResourceKey.create(Registries.LOOT_TABLE, PetrolsParts.asResource("blocks/shaftless_cogwheel"));
     public static final ResourceKey<LootTable> LARGE_COGWHEEL_LOOT = ResourceKey.create(Registries.LOOT_TABLE, PetrolsParts.asResource("blocks/large_shaftless_cogwheel"));

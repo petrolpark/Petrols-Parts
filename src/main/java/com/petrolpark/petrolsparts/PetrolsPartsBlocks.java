@@ -4,6 +4,7 @@ import static com.petrolpark.petrolsparts.PetrolsParts.REGISTRATE;
 
 import com.petrolpark.compat.create.core.tube.TubeBlockItem;
 import com.petrolpark.petrolsparts.config.PPCStress;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.SeparateShaftHalvesAssemblageBlock;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlock;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockItem;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlock;
@@ -38,6 +39,13 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.MapColor;
 
 public class PetrolsPartsBlocks {
+
+    public static final BlockEntry<SeparateShaftHalvesAssemblageBlock> SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("separate_shaft_halves_assemblage", SeparateShaftHalvesAssemblageBlock::new)
+        .initialProperties(AllBlocks.COGWHEEL)
+        .properties(p -> p.noOcclusion())
+        .transform(PPCStress.setNoImpact())
+        .transform(TagGen.axeOrPickaxe())
+        .register();
 
     public static final BlockEntry<BrassDepotBlock> BRASS_DEPOT = REGISTRATE.block("brass_depot", BrassDepotBlock::new)
         .initialProperties(SharedProperties::softMetal)

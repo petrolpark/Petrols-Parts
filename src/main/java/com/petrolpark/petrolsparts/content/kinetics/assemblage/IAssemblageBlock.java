@@ -1,6 +1,7 @@
 package com.petrolpark.petrolsparts.content.kinetics.assemblage;
 
-import com.simibubi.create.content.kinetics.base.IRotate;
+import com.petrolpark.petrolsparts.core.block.CogType;
+import com.petrolpark.petrolsparts.core.block.IStateDependentCogWheelBlock;
 
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.block.state.BlockState;
@@ -8,7 +9,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 
-public interface IAssemblageBlock extends IRotate {
+public interface IAssemblageBlock extends IStateDependentCogWheelBlock {
 
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
     public static final BooleanProperty TOP_SHAFT_HALF = BooleanProperty.create("top_shaft_half");
@@ -20,4 +21,9 @@ public interface IAssemblageBlock extends IRotate {
     public boolean hasTopShaft(BlockState state);
 
     public boolean hasBottomShaft(BlockState state);
+
+    @Override
+    public default CogType getCogType(BlockState state) {
+        return state.getValue(MIDDLE_COG).getCogType();
+    };
 };

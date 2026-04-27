@@ -5,13 +5,17 @@ import java.util.Collection;
 import java.util.List;
 
 import com.petrolpark.compat.create.core.block.composite.MultiPartCompositeKineticBlock;
+import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -21,6 +25,19 @@ public class SeparateShaftHalvesAssemblageBlock extends MultiPartCompositeKineti
 
     public SeparateShaftHalvesAssemblageBlock(BlockBehaviour.Properties properties) {
         super(properties);
+        registerDefaultState(defaultBlockState()
+            .setValue(WATERLOGGED, false)
+            .setValue(TOP_SHAFT_HALF, false)
+            .setValue(BOTTOM_SHAFT_HALF, false)
+            .setValue(TOP_COG, AssemblageCog.NONE)
+            .setValue(MIDDLE_COG, AssemblageCog.NONE)
+            .setValue(BOTTOM_COG, AssemblageCog.NONE)
+        );
+    };
+
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        withBlockEntityDo(level, pos, AssemblageBlockEntity::invalidateParts);
     };
 
     @Override
@@ -48,7 +65,9 @@ public class SeparateShaftHalvesAssemblageBlock extends MultiPartCompositeKineti
 
     @Override
     public BlockState withoutPart(BlockState state, AssemblagePart part) {
-        return part.remover.apply(state);
+        state = part.remover.apply(state);
+        if (state.getValue(TOP_COG).isNone() && state.getValue(MIDDLE_COG).isNone() && state.getValue(BOTTOM_COG).isNone() && !state.getValue(TOP_SHAFT_HALF) && !state.getValue(BOTTOM_SHAFT_HALF)) return Blocks.AIR.defaultBlockState(); //TODO water
+        return state;
     };
 
     @Override
@@ -68,8 +87,7 @@ public class SeparateShaftHalvesAssemblageBlock extends MultiPartCompositeKineti
 
     @Override
     public BlockEntityType<? extends AssemblageBlockEntity> getBlockEntityType() {
-        // TODO Auto-generated method stub
-        return null;
+        return PetrolsPartsBlockEntityTypes.SEPARATE_SHAFT_HALVES_ASSEMBLAGE.get();
     };
     
 };
