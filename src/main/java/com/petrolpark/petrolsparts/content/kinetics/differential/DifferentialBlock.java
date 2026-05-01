@@ -2,13 +2,10 @@ package com.petrolpark.petrolsparts.content.kinetics.differential;
 
 import com.petrolpark.compat.create.core.block.entity.behaviour.AbstractRememberPlacerBehaviour;
 import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
-import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
-import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementBehaviour;
 import com.petrolpark.petrolsparts.core.block.DirectionalRotatedPillarKineticBlock;
 import com.petrolpark.util.KineticsHelper;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
-import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -22,7 +19,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
@@ -73,30 +69,26 @@ public class DifferentialBlock extends CogWheelBlock {
     @SuppressWarnings("null")
     public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
         withBlockEntityDo(level, pos, be -> {
-            BlockEntity neighborBE = level.getBlockEntity(neighbor);
-            Direction directionBetween = KineticsHelper.directionBetween(pos, neighbor);
-            Direction differentialDirection = DirectionalRotatedPillarKineticBlock.getDirection(state);
-            if (be instanceof DifferentialBlockEntity differential && differential.hasLevel() && directionBetween == differentialDirection.getOpposite()) {
-                float newControlSpeed = 0f;
-                if (neighborBE instanceof KineticBlockEntity kbe) newControlSpeed = differential.getPropagatedSpeed(kbe, differentialDirection);
-                if (differential.oldControlSpeed != newControlSpeed) {
-                    differential.getLevel().scheduleTick(pos, this, 1);
-                };
-            };
+            if (!(be instanceof DifferentialBlockEntity diff) || !diff.hasLevel()) return;
+            Direction face = DirectionalRotatedPillarKineticBlock.getDirection(state);
+            Direction between = KineticsHelper.directionBetween(pos, neighbor);
+            if (between == face || between == face.getOpposite()) {
+                diff.updateGeneratedRotation();
+            }
         });
         super.onNeighborChange(state, level, pos, neighbor);
     };
 
     @Override
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
-        level.setBlockAndUpdate(pos, PetrolsPartsBlocks.DUMMY_DIFFERENTIAL.getDefaultState().setValue(AXIS, state.getValue(AXIS)).setValue(DirectionalRotatedPillarKineticBlock.POSITIVE_AXIS_DIRECTION, state.getValue(DirectionalRotatedPillarKineticBlock.POSITIVE_AXIS_DIRECTION))); // It thinks getLevel() might be null
-        PetrolsPartsAdvancementBehaviour behaviour = BlockEntityBehaviour.get(level, pos, PetrolsPartsAdvancementBehaviour.TYPE);
-        AbstractRememberPlacerBehaviour.setPlacedBy(level, pos, behaviour.getPlayer());
+        withBlockEntityDo(level, pos, be -> {
+            if (be instanceof DifferentialBlockEntity diff) diff.updateGeneratedRotation();
+        });
     };
 
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-        return face == DirectionalRotatedPillarKineticBlock.getDirection(state);
+        return false;
     };
 
     @Override
@@ -110,7 +102,7 @@ public class DifferentialBlock extends CogWheelBlock {
     };
 
     @Override
-	public BlockEntityType<? extends KineticBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends KineticBlockEntity> getBlockEntityType() {
         return PetrolsPartsBlockEntityTypes.DIFFERENTIAL.get();
     };
 
@@ -118,5 +110,5 @@ public class DifferentialBlock extends CogWheelBlock {
     public Axis getRotationAxis(BlockState state) {
         return state.getValue(AXIS);
     };
-    
+
 };

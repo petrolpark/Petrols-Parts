@@ -6,10 +6,12 @@
     "plugin": "com.petrolpark.petrolsparts.mixin.plugin.PetrolsPartsMixinPlugin",
     "mixins": [
         "accessor.DeployerRecipeSearchEventAccessor",
+        "accessor.KineticNetworkAccessor",
         "accessor.RotationPropagatorAccessor",
         "AirCurrentMixin",
         "AssemblyOperatorBlockItemMixin",
         "KineticBlockEntityMixin",
+        "KineticNetworkMixin",
         "MechanicalPressBlockEntityMixin",
         "RotationPropagatorMixin",
         "SpoutBlockEntityMixin"
