@@ -31,6 +31,11 @@ public class DifferentialBlockEntity extends GeneratingKineticBlockEntity {
     private DifferentialSink controlSink;
     private Long lastInputNetwork = null;
     private Long lastControlNetwork = null;
+    // Last observed non-zero speed per side. Used as fallback for the proportional stress
+    // split when a side is stopped due to overstress (kbeA still connected but getSpeed()=0).
+    // Reset to 0 when the side is genuinely disconnected (removeSink fires on network change).
+    private float lastNonZeroAbsA = 0f;
+    private float lastNonZeroAbsB = 0f;
 
     public DifferentialBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -62,8 +67,14 @@ public class DifferentialBlockEntity extends GeneratingKineticBlockEntity {
         float absA = kbeA != null ? Math.abs(getPropagatedSpeed(kbeA, face.getOpposite())) : 0f;
         float absB = kbeB != null ? Math.abs(getPropagatedSpeed(kbeB, face)) : 0f;
 
-        float capacityA = absA > 0f ? getNetworkCapacity(inputSink, lastInputNetwork) : 0f;
-        float capacityB = absB > 0f
+        // Use effective speed: if a side is overstress-stopped (connected but speed=0),
+        // it still contributes capacity — its network is still live, just halted.
+        // If genuinely disconnected (kbe==null), it contributes nothing.
+        boolean aLive = absA > 0f || (kbeA != null && lastInputNetwork   != null);
+        boolean bLive = absB > 0f || (kbeB != null && lastControlNetwork != null);
+
+        float capacityA = aLive ? getNetworkCapacity(inputSink, lastInputNetwork) : 0f;
+        float capacityB = bLive
                 ? (Objects.equals(lastInputNetwork, lastControlNetwork) ? 0f : getNetworkCapacity(controlSink, lastControlNetwork))
                 : 0f;
         float coefficient = (capacityA + capacityB) / Math.abs(speed);
@@ -135,11 +146,13 @@ public class DifferentialBlockEntity extends GeneratingKineticBlockEntity {
             removeSink(inputSink, lastInputNetwork);
             injectSink(inputSink, netA);
             lastInputNetwork = netA;
+            if (netA == null) lastNonZeroAbsA = 0f; // genuinely disconnected — forget last speed
         }
         if (!Objects.equals(netB, lastControlNetwork)) {
             removeSink(controlSink, lastControlNetwork);
             injectSink(controlSink, netB);
             lastControlNetwork = netB;
+            if (netB == null) lastNonZeroAbsB = 0f; // genuinely disconnected — forget last speed
         }
 
         // Proportional split with capacity-aware redistribution:
@@ -149,11 +162,25 @@ public class DifferentialBlockEntity extends GeneratingKineticBlockEntity {
         // demand, both become overstressed
         float absA = kbeA != null ? Math.abs(getPropagatedSpeed(kbeA, face.getOpposite())) : 0f;
         float absB = kbeB != null ? Math.abs(getPropagatedSpeed(kbeB, face)) : 0f;
-        float totalAbs = absA + absB;
+
+        // Update last-known non-zero speeds. When a network is overstressed, all its KBEs
+        // report speed=0 even though the motor is still physically connected. We use the
+        // last non-zero speed to keep the proportional split meaningful in that state.
+        if (absA > 0f) lastNonZeroAbsA = absA;
+        if (absB > 0f) lastNonZeroAbsB = absB;
+
+        // Effective speeds for splitting:
+        // - If abs>0: use it directly (normal operation, or input running while output stopped)
+        // - If abs=0 but still connected (kbe!=null, network registered): use lastNonZero
+        //   This is the overstress case — the motor is trying to run but the network stopped
+        // - If abs=0 and disconnected (kbe==null): use 0 (clutch/removed motor — no contribution)
+        float effA = absA > 0f ? absA : (kbeA != null && lastInputNetwork   != null ? lastNonZeroAbsA : 0f);
+        float effB = absB > 0f ? absB : (kbeB != null && lastControlNetwork != null ? lastNonZeroAbsB : 0f);
+        float totalEff = effA + effB;
         float totalDemand = this.stress;
 
-        float requestedA = totalAbs > 0f ? totalDemand * (absA / totalAbs) : totalDemand * 0.5f;
-        float requestedB = totalAbs > 0f ? totalDemand * (absB / totalAbs) : totalDemand * 0.5f;
+        float requestedA = totalEff > 0f ? totalDemand * (effA / totalEff) : totalDemand * 0.5f;
+        float requestedB = totalEff > 0f ? totalDemand * (effB / totalEff) : totalDemand * 0.5f;
 
         // Available headroom on each input network.
         float capacityA = absA > 0f ? getNetworkCapacity(inputSink, lastInputNetwork) : 0f;
@@ -162,8 +189,8 @@ public class DifferentialBlockEntity extends GeneratingKineticBlockEntity {
         float stressB   = absB > 0f ? getNetworkStress(controlSink, lastControlNetwork)   : 0f;
         float sinkOwnDrawA = inputSink  != null ? inputSink.getStressImpact()  : 0f;
         float sinkOwnDrawB = controlSink != null ? controlSink.getStressImpact() : 0f;
-        float headroomA = absA > 0f ? Math.max(0f, capacityA - (stressA - sinkOwnDrawA)) : 0f;
-        float headroomB = absB > 0f ? Math.max(0f, capacityB - (stressB - sinkOwnDrawB)) : 0f;
+        float headroomA = Math.max(0f, capacityA - (stressA - sinkOwnDrawA));
+        float headroomB = Math.max(0f, capacityB - (stressB - sinkOwnDrawB));
 
         float allocA = distributeStress(requestedA, requestedB, headroomA, headroomB)[0];
         float allocB = distributeStress(requestedA, requestedB, headroomA, headroomB)[1];
@@ -211,6 +238,27 @@ public class DifferentialBlockEntity extends GeneratingKineticBlockEntity {
     };
 
     private float[] distributeStress(float requestedA, float requestedB, float headroomA, float headroomB) {
+        float totalDemand    = requestedA + requestedB;
+        float totalHeadroom  = headroomA  + headroomB;
+
+        if (totalDemand > totalHeadroom) {
+            // Stage 3: combined capacity is insufficient.
+            // Give each side its full headroom plus its proportional share of the excess.
+            // This ensures both networks overstress symmetrically rather than one absorbing all overflow.
+            float excess = totalDemand - totalHeadroom;
+            float totalReq = requestedA + requestedB; // == totalDemand, kept for clarity
+            float shareA = totalReq > 0f ? requestedA / totalReq : 0.5f;
+            float shareB = totalReq > 0f ? requestedB / totalReq : 0.5f;
+            float allocA = headroomA + excess * shareA;
+            float allocB = headroomB + excess * shareB;
+            PetrolsParts.LOGGER.debug(
+                "[Differential {}] distributeStress STAGE3: excess={} shareA={} shareB={} → allocA={} allocB={}",
+                worldPosition, excess, shareA, shareB, allocA, allocB
+            );
+            return new float[]{allocA, allocB};
+        }
+
+        // Stages 1 & 2: combined capacity is sufficient — redistribute from saturated to unsaturated.
         float allocA = requestedA;
         float allocB = requestedB;
 
