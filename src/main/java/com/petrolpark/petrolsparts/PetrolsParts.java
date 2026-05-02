@@ -50,6 +50,7 @@ public class PetrolsParts {
         PetrolsPartCreativeModeTab.register(modEventBus);
         PetrolsPartsBlocks.register();
         PetrolsPartsBlockEntityTypes.register();
+        PetrolsPartsItems.register();
 
         PetrolsPartsConfigs.register(modLoadingContext, modContainer);
     

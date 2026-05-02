@@ -14,13 +14,11 @@
     "block.petrolsparts.bevel_gear": "Bevel Gear",
     "block.petrolsparts.brass_depot": "Brass Depot",
     "block.petrolsparts.brass_encased_corner_shaft": "Brass Encased Corner Shaft",
-    "block.petrolsparts.coaxial_gear": "Coaxial Cogwheel",
     "block.petrolsparts.colossal_cogwheel": "Colossal Cogwheel",
     "block.petrolsparts.differential": "Differential",
     "block.petrolsparts.corner_shaft": "Corner Shaft",
     "block.petrolsparts.dummy_differential": "Differential",
     "block.petrolsparts.hydraulic_transmission": "Hydraulic Transmission",
-    "block.petrolsparts.large_coaxial_gear": "Large Coaxial Cogwheel",
     "block.petrolsparts.long_shaft": "Long Shaft",
     "block.petrolsparts.planetary_gearset": "Planetary Gearset",
     "block.petrolsparts.pneumatic_tube": "Pneumatic Tube",
@@ -77,6 +75,11 @@
     "petrolsparts.ponder.pneumatic_tube.text_5": "The direction of transport can be inverted as long as the Tube is empty.",
 
     "petrolsparts.tooltip.coaxial_gear.shaft_too_short": "Shafts must be at least two blocks in length to go through a Coaxial Cogwheel",
+
+    "item.petrolsparts.coaxial_cogwheel": "Coaxial Cogwheel",
+    "item.petrolsparts.large_coaxial_cogwheel": "Large Coaxial Cogwheel",
+    "item.petrolsparts.large_shaftless_cogwheel": "Large Shaftless Cogwheel",
+    "item.petrolsparts.shaftless_cogwheel": "Shaftless Cogwheel",
 
     "itemGroup.petrolsparts.base": "Petrol's Parts"
 }

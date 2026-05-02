@@ -9,8 +9,8 @@ public class PetrolsPartsPartialModels {
     //CHAIN_LINK = block("chain_link"),
 
     // Coaxial Gears
-    COAXIAL_GEAR = block("coaxial_gear"),
-    LARGE_COAXIAL_GEAR = block("large_coaxial_gear"),
+    COAXIAL_GEAR = block("coaxial_cogwheel"),
+    LARGE_COAXIAL_GEAR = block("large_coaxial_cogwheel"),
     LONG_SHAFT = block("long_shaft"),
 
     // Corner Shaft

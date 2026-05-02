@@ -5,6 +5,7 @@ import static com.petrolpark.petrolsparts.PetrolsParts.REGISTRATE;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.SingleShaftAssemblageRenderer;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearVisual;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlockEntity;
@@ -34,6 +35,12 @@ public class PetrolsPartsBlockEntityTypes {
         .createBlockEntity("separate_shaft_halves_assemblage", AssemblageBlockEntity::new)
         .validBlock(PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
         .renderer(() -> AssemblageRenderer::new)
+        .register();
+
+    public static final BlockEntityEntry<AssemblageBlockEntity> SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE
+        .createBlockEntity("single_shaft_assemblage", AssemblageBlockEntity::new)
+        .validBlock(PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE)
+        .renderer(() -> SingleShaftAssemblageRenderer::new)
         .register();
 
     public static final BlockEntityEntry<AssemblageBlockEntityPart> ASSEMBLAGE_PART = REGISTRATE

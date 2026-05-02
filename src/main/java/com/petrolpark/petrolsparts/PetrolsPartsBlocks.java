@@ -5,8 +5,8 @@ import static com.petrolpark.petrolsparts.PetrolsParts.REGISTRATE;
 import com.petrolpark.compat.create.core.tube.TubeBlockItem;
 import com.petrolpark.petrolsparts.config.PPCStress;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.SeparateShaftHalvesAssemblageBlock;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.SingleShaftAssemblageBlock;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlock;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockItem;
 import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlock;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockItem;
@@ -47,6 +47,12 @@ public class PetrolsPartsBlocks {
         .transform(TagGen.axeOrPickaxe())
         .register();
 
+    public static final BlockEntry<SingleShaftAssemblageBlock> SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("single_shaft_assemblage", SingleShaftAssemblageBlock::new)
+        .initialProperties(SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
+        .transform(PPCStress.setNoImpact())
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
     public static final BlockEntry<BrassDepotBlock> BRASS_DEPOT = REGISTRATE.block("brass_depot", BrassDepotBlock::new)
         .initialProperties(SharedProperties::softMetal)
 		.properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
@@ -69,8 +75,6 @@ public class PetrolsPartsBlocks {
         .transform(PPCStress.setNoImpact())
         .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
         .transform(TagGen.axeOrPickaxe())
-        .item(CoaxialGearBlockItem::new)
-        .build()
         .register();
 
     public static final BlockEntry<CoaxialGearBlock> LARGE_COAXIAL_GEAR = REGISTRATE.block("large_coaxial_gear", CoaxialGearBlock::large)
@@ -79,8 +83,6 @@ public class PetrolsPartsBlocks {
         .transform(PPCStress.setNoImpact())
         .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
         .transform(TagGen.axeOrPickaxe())
-        .item(CoaxialGearBlockItem::new)
-        .build()
         .register();
 
     // public static final BlockEntry<ChainedCogwheelBlock> CHAINED_COGWHEEL = REGISTRATE.block("chained_cogwheel", ChainedCogwheelBlock::small)

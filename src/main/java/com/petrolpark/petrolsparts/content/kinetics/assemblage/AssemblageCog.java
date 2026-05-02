@@ -2,26 +2,33 @@ package com.petrolpark.petrolsparts.content.kinetics.assemblage;
 
 import java.util.function.Consumer;
 
+import com.google.common.base.Supplier;
+import com.google.common.base.Suppliers;
 import com.petrolpark.petrolsparts.core.block.CogType;
 import com.petrolpark.util.Lang;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.util.StringRepresentable;
+import net.minecraft.world.item.Item;
 
 public enum AssemblageCog implements StringRepresentable {
     
-    NONE,
-    SMALL,
-    LARGE,
-    SMALL_COAXIAL,
-    LARGE_COAXIAL;
+    //TODO Item Requirements
+    NONE(() -> ItemRequirement.NONE),
+    SMALL(() -> ItemRequirement.NONE),
+    LARGE(() -> ItemRequirement.NONE),
+    SMALL_COAXIAL(() -> ItemRequirement.NONE),
+    LARGE_COAXIAL(() -> ItemRequirement.NONE);
 
     protected final String name;
+    protected final Supplier<ItemRequirement> itemRequirement;
 
-    AssemblageCog() {
+    AssemblageCog(Supplier<ItemRequirement> itemRequirement) {
         name = Lang.asId(name());
+        this.itemRequirement = Suppliers.memoize(itemRequirement);
     };
 
     public boolean isNone() {
@@ -91,5 +98,13 @@ public enum AssemblageCog implements StringRepresentable {
 
     public boolean hasShaftConnection() {
         return this == SMALL || this == LARGE;
+    };
+
+    public ItemRequirement itemRequirement() {
+        return itemRequirement.get();
+    };
+
+    public AssemblageCogWheelBlockItem item(Item.Properties properties) {
+        return new AssemblageCogWheelBlockItem(this, properties);
     };
 };

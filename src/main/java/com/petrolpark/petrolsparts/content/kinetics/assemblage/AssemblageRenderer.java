@@ -40,7 +40,7 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.topCogPart,
                 CachedBuffers.partialFacingVertical(getModel(topCog), be.topCogPart.getBlockState(), facing)
-                    .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(6 / 16d)),
+                    .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(5 / 16d)),
                 ms, buffer, light
             );
         };
@@ -57,7 +57,7 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.bottomCogPart,
                 CachedBuffers.partialFacingVertical(getModel(bottomCog), be.bottomCogPart.getBlockState(), facing)
-                    .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(-6 / 16d)),
+                    .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(-5 / 16d)),
                 ms, buffer, light
             );
         };
