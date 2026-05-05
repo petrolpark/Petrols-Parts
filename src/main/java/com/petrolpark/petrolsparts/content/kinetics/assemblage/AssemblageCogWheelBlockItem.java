@@ -2,11 +2,13 @@ package com.petrolpark.petrolsparts.content.kinetics.assemblage;
 
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.minecraft.world.phys.Vec3;
 
 public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 
@@ -15,15 +17,6 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
     public AssemblageCogWheelBlockItem(AssemblageCog cog, Item.Properties properties) {
         super(properties);
         this.cog = cog;
-    };
-
-    @Override
-    public BlockPlaceContext updatePlacementContext(BlockPlaceContext context) {
-        final AssemblagePart part = getTargetedPart(context);
-        if (part != null && (context.getClickedFace().getAxis() == context.getLevel().getBlockState(context.getClickedPos()).getValue(IAssemblageBlock.AXIS) ? part.isOnEnd(context.getClickedFace()) : !part.isShaft())) {
-            context.replaceClicked = false; // Don't replace this Block, place in the next one
-        };
-        return context;
     };
 
     @Override
@@ -66,6 +59,17 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
             };
         };
         return ProperWaterloggedBlock.withWater(context.getLevel(), getBlock().getReplacedState(context.getLevel(), context.getClickedPos(), existingState, state, context.getPlayer()), context.getClickedPos());
+    };
+
+    public static final EnumProperty<AssemblageCog> getClosestTargetedCog(BlockPos pos, BlockState state, Vec3 location) {
+        final double coord = location.get(state.getValue(IAssemblageBlock.AXIS)) - (double)pos.get(state.getValue(IAssemblageBlock.AXIS));
+        if (coord < 5 / 16d) {
+            return IAssemblageBlock.BOTTOM_COG;
+        } else if (coord < 11 / 16d) {
+            return IAssemblageBlock.MIDDLE_COG;
+        } else {
+            return IAssemblageBlock.TOP_COG;
+        }
     };
     
 };

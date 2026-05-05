@@ -3,26 +3,32 @@ package com.petrolpark.petrolsparts.content.kinetics.assemblage;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import com.petrolpark.compat.create.core.block.IReplaceableBlock;
 import com.petrolpark.compat.create.core.block.composite.MultiPartCompositeKineticBlock;
+import com.petrolpark.petrolsparts.PetrolsParts;
 import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import com.petrolpark.util.BlockHelper;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.encasing.EncasableBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
-import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -33,8 +39,13 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBlock<AssemblagePart> implements IBE<AssemblageBlockEntity>, ProperWaterloggedBlock, IAssemblageBlock, EncasableBlock, IReplaceableBlock permits SeparateShaftHalvesAssemblageBlock, SingleShaftAssemblageBlock{
+
+    @Nullable
+    protected static final String DESCRIPTION_ID = Util.makeDescriptionId("block", PetrolsParts.asResource("assemblage"));
 
     public AssemblageBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -45,6 +56,37 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
             .setValue(MIDDLE_COG, AssemblageCog.NONE)
             .setValue(BOTTOM_COG, AssemblageCog.NONE)
         );
+    };
+
+    @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder);
+        builder.add(WATERLOGGED, AXIS, TOP_COG, MIDDLE_COG, BOTTOM_COG);
+    };
+
+    @Override
+    protected FluidState getFluidState(BlockState state) {
+        return fluidState(state);
+    };
+
+    @Override
+    public Axis getRotationAxis(BlockState state) {
+        return state.getValue(AXIS);
+    };
+
+    @Override
+    public List<AssemblagePart> getParts(BlockState state) {
+        final List<AssemblagePart> parts = new ArrayList<>(5);
+        final Axis axis = state.getValue(AXIS);
+        state.getValue(TOP_COG).addTopPart(axis, parts::add);
+        state.getValue(MIDDLE_COG).addMiddlePart(axis, parts::add);
+        state.getValue(BOTTOM_COG).addBottomPart(axis, parts::add);
+        return parts;
+    };
+
+    @Override
+    public BlockState withoutPart(BlockState state, AssemblagePart part) {
+        return part.remover.apply(state);
     };
 
     @Override
@@ -104,49 +146,13 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
         } else {
             return state;
         }
-        return state.setValue(AXIS, state.getValue(BlockStateProperties.AXIS));
+        return state.setValue(AXIS, oldState.getValue(BlockStateProperties.AXIS));
     };
 
     @Override
     public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
         // Deferred update of usual KineticBlockEntity/CompositeKineticBlockEntity is no good
         withBlockEntityDo(level, pos, AssemblageBlockEntity::invalidateParts);
-    };
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder);
-        builder.add(WATERLOGGED, AXIS, TOP_COG, MIDDLE_COG, BOTTOM_COG);
-    };
-
-    @Override
-    protected FluidState getFluidState(BlockState state) {
-        return fluidState(state);
-    };
-
-    @Override
-    public Axis getRotationAxis(BlockState state) {
-        return state.getValue(AXIS);
-    };
-
-    @Override
-    public List<AssemblagePart> getParts(BlockState state) {
-        final List<AssemblagePart> parts = new ArrayList<>(5);
-        final Axis axis = state.getValue(AXIS);
-        state.getValue(TOP_COG).addTopPart(axis, parts::add);
-        state.getValue(MIDDLE_COG).addMiddlePart(axis, parts::add);
-        state.getValue(BOTTOM_COG).addBottomPart(axis, parts::add);
-        return parts;
-    };
-
-    @Override
-    public BlockState withoutPart(BlockState state, AssemblagePart part) {
-        return part.remover.apply(state);
-    };
-    
-    // TEMP
-    public AssemblagePart getSelectedPart(BlockState state, BlockPos pos, Entity entity) {
-        return clipperCache.get(state).clip(pos, entity);
     };
 
     @Override
@@ -161,6 +167,23 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     };
 
+    @Override
+    public String getDescriptionId() {
+        return DESCRIPTION_ID;
+    };
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public AssemblageBlockEntityPart getTargetedKineticPart(AssemblageBlockEntity be, Player player) {
+        final AssemblagePart part = getTargetedPart(be.getBlockState(), be.getBlockPos(), player);
+        return part == null ? null : part.getKineticPart(be);
+    };
+
+    @Override
+    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+        return face.getAxis() == state.getValue(AXIS) && (face.getAxisDirection() == AxisDirection.POSITIVE ? hasTopShaft(state) : hasBottomShaft(state));
+    };
+    
     @Override
     protected BlockState rotate(BlockState state, Rotation rotation) {
         return IAssemblageBlock.rotate(state, Axis.Y, rotation);

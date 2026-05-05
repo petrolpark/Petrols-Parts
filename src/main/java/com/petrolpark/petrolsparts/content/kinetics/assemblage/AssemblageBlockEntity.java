@@ -2,41 +2,46 @@ package com.petrolpark.petrolsparts.content.kinetics.assemblage;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.petrolpark.Petrolpark;
 import com.petrolpark.compat.create.core.block.composite.CompositeKineticBlockEntity;
 import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.petrolpark.petrolsparts.core.block.CogType;
 import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.kinetics.RotationPropagator;
+import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
-public class AssemblageBlockEntity extends CompositeKineticBlockEntity {
+public class AssemblageBlockEntity extends CompositeKineticBlockEntity implements IHaveHoveringInformation, IHaveGoggleInformation {
 
     protected AssemblageBlockEntityPart topCogPart = null;
     protected AssemblageBlockEntityPart middleCogPart = null;
     protected AssemblageBlockEntityPart bottomCogPart = null;
-    protected AssemblageBlockEntityPart topShaftPart = null;
-    protected AssemblageBlockEntityPart bottomShaftPart = null;
+    protected AssemblageBlockEntityPart shaftPart = null;
     protected List<CompositeKineticBlockEntityPart> parts = null;
 
     public AssemblageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -62,44 +67,35 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity {
         final AssemblageCog middleCog = state.getValue(IAssemblageBlock.MIDDLE_COG);
         final AssemblageCog bottomCog = state.getValue(IAssemblageBlock.BOTTOM_COG);
 
-        topCogPart = middleCogPart = bottomCogPart = topShaftPart = bottomShaftPart = null;
+        topCogPart = middleCogPart = bottomCogPart = shaftPart = null;
         
-        final Set<AssemblageBlockEntityPart> parts = new HashSet<>();
+        final Set<AssemblageBlockEntityPart> parts = new LinkedHashSet<>(); // Deterministic ordering required
 
-        topShaftPart = new AssemblageBlockEntityPart();
+        shaftPart = new AssemblageBlockEntityPart();
         if (block.hasTopShaft(state)) {
-            topShaftPart.withTopShaft();
-            parts.add(topShaftPart);
+            shaftPart.withTopShaft();
+            parts.add(shaftPart);
+        };
+        if (block.hasBottomShaft(state)) {
+            shaftPart.withBottomShaft();
+            parts.add(shaftPart);
         };
 
-        topCogPart = topCog.hasShaftConnection() ? topShaftPart.withTopShaft() : new AssemblageBlockEntityPart();
+        topCogPart = topCog.hasShaftConnection() && block.hasTopShaft(state) ? shaftPart : new AssemblageBlockEntityPart();
         topCogPart.topCogType = topCog.getCogType();
         if (!topCogPart.topCogType.isNone()) parts.add(topCogPart);
 
-        bottomShaftPart = block.hasTopShaft(state) ? topShaftPart : new AssemblageBlockEntityPart();
-        if (block.hasBottomShaft(state)) {
-            bottomShaftPart.withBottomShaft();
-            parts.add(bottomShaftPart);
-        };
-
-        bottomCogPart = bottomCog.hasShaftConnection() ? bottomShaftPart.withBottomShaft() : new AssemblageBlockEntityPart();
+        bottomCogPart = bottomCog.hasShaftConnection() && block.hasBottomShaft(state) ? shaftPart : new AssemblageBlockEntityPart();
         bottomCogPart.bottomCogType = bottomCog.getCogType();
         if (!bottomCogPart.bottomCogType.isNone()) parts.add(bottomCogPart);
 
-        middleCogPart = middleCog.hasShaftConnection()
-            ? (block.hasTopShaft(state)
-                ? topShaftPart
-                : (block.hasBottomShaft(state)
-                    ? bottomShaftPart
-                    : new AssemblageBlockEntityPart()
-                ) 
-            ) : new AssemblageBlockEntityPart();
+        middleCogPart = middleCog.hasShaftConnection() && (block.hasTopShaft(state) || block.hasBottomShaft(state)) ? shaftPart : new AssemblageBlockEntityPart();
         middleCogPart.middleCogType = middleCog.getCogType();
         if (!middleCogPart.middleCogType.isNone()) parts.add(middleCogPart);
 
         this.parts = new ArrayList<>(parts);
 
-        if (!getLevel().isClientSide()) {
+        if (hasLevel() && !getLevel().isClientSide()) {
             parts.forEach(part -> part.updateSpeed = true);
             sendData();
         };
@@ -115,6 +111,22 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity {
     protected void read(CompoundTag tag, HolderLookup.Provider registries, boolean clientPacket) {
         invalidateParts();
         super.read(tag, registries, clientPacket);
+    };
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        final AssemblageBlockEntityPart part = ((IAssemblageBlock)(getBlockState().getBlock())).getTargetedKineticPart(this, Minecraft.getInstance().player);
+        if (part != null) return part.addToTooltip(tooltip, isPlayerSneaking);
+        return false;
+    };
+
+    @Override
+    @OnlyIn(Dist.CLIENT)
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        final AssemblageBlockEntityPart part = ((IAssemblageBlock)(getBlockState().getBlock())).getTargetedKineticPart(this, Minecraft.getInstance().player);
+        if (part != null) return part.addToGoggleTooltip(tooltip, isPlayerSneaking);
+        return false;
     };
 
     public class AssemblageBlockEntityPart extends CompositeKineticBlockEntityPart implements IFaceAlignedCogWheelBlockEntity {
@@ -147,6 +159,11 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity {
         };
 
         @Override
+        public int getIndex() {
+            return getParts().indexOf(this);
+        };
+
+        @Override
         public boolean isValidBlockState(BlockState state) {
             return true;
         };
@@ -166,14 +183,13 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity {
         };
 
         @Override
-        public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
-            return IFaceAlignedCogWheelBlockEntity.propagateFaceAlignedCogwheels(this, target, diff);
+        protected boolean canPropagateDiagonally(IRotate block, BlockState state) {
+            return !topCogType.isNone() || !middleCogType.isNone() || !bottomCogType.isNone();
         };
 
         @Override
-        public void setSpeed(float speed) {
-            Petrolpark.LOGGER.info("set speed to " + speed);
-            super.setSpeed(speed);
+        public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
+            return IFaceAlignedCogWheelBlockEntity.propagateFaceAlignedCogwheels(this, target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
         };
 
         // Unregistered - might be weird

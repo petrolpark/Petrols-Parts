@@ -54,7 +54,7 @@ public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlo
     @Override
     public BlockState withoutPart(BlockState state, AssemblagePart part) {
         state = super.withoutPart(state, part);
-        if (state.getValue(TOP_COG).isNone() && state.getValue(MIDDLE_COG).isNone() && state.getValue(BOTTOM_COG).isNone() && !state.getValue(TOP_SHAFT_HALF) && !state.getValue(BOTTOM_SHAFT_HALF)) return Blocks.AIR.defaultBlockState(); //TODO water
+        if (state.getValue(TOP_COG).isNone() && state.getValue(MIDDLE_COG).isNone() && state.getValue(BOTTOM_COG).isNone() && !state.getValue(TOP_SHAFT_HALF) && !state.getValue(BOTTOM_SHAFT_HALF)) return Blocks.AIR.defaultBlockState();
         return state;
     };
 

@@ -24,8 +24,8 @@ public class SingleShaftAssemblageRenderer extends AssemblageRenderer {
         if (be.getParts().isEmpty()) return;
 
         KineticBlockEntityRenderer.renderRotatingBuffer(
-            be.topShaftPart,
-            CachedBuffers.partialFacingVertical(AllPartialModels.SHAFT, be.topShaftPart.getBlockState(), Direction.fromAxisAndDirection(be.getBlockState().getValue(IAssemblageBlock.AXIS), AxisDirection.POSITIVE)),
+            be.shaftPart,
+            CachedBuffers.partialFacingVertical(AllPartialModels.SHAFT, be.shaftPart.getBlockState(), Direction.fromAxisAndDirection(be.getBlockState().getValue(IAssemblageBlock.AXIS), AxisDirection.POSITIVE)),
             ms, bufferSource.getBuffer(RenderType.solid()), light
         );
     };

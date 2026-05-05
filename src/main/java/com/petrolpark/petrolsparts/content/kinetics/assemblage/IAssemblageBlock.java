@@ -6,6 +6,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 
 import com.petrolpark.compat.create.core.block.composite.ICompositeKineticBlock;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import com.petrolpark.petrolsparts.core.block.CogType;
 import com.petrolpark.petrolsparts.core.block.IStateDependentCogWheelBlock;
 import com.simibubi.create.api.contraption.transformable.TransformableBlock;
@@ -14,12 +15,15 @@ import com.simibubi.create.content.contraptions.StructureTransform;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 
 public interface IAssemblageBlock extends IStateDependentCogWheelBlock, ICompositeKineticBlock, TransformableBlock {
 
@@ -35,6 +39,9 @@ public interface IAssemblageBlock extends IStateDependentCogWheelBlock, IComposi
     public boolean hasTopShaft(BlockState state);
 
     public boolean hasBottomShaft(BlockState state);
+
+    @OnlyIn(Dist.CLIENT)
+    public AssemblageBlockEntityPart getTargetedKineticPart(AssemblageBlockEntity be, Player player);
 
     @Override
     public default CogType getCogType(BlockState state) {

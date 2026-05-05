@@ -5,7 +5,10 @@ import java.util.List;
 import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.simibubi.create.AllBlocks;
 
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,6 +50,11 @@ public non-sealed class SingleShaftAssemblageBlock extends AssemblageBlock {
     @Override
     public boolean hasBottomShaft(BlockState state) {
         return true;
+    };
+
+    @Override
+    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+        return face.getAxis() == state.getValue(AXIS);
     };
 
     @Override

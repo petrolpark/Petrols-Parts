@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.petrolpark.petrolsparts.PetrolsPartsPartialModels;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 
 import dev.engine_room.flywheel.lib.model.baked.PartialModel;
@@ -13,6 +14,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
@@ -30,7 +32,8 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         if (be.getParts().isEmpty()) return;
 
         final BlockState state = be.getBlockState();
-        final Direction facing = Direction.get(AxisDirection.POSITIVE, state.getValue(IAssemblageBlock.AXIS));
+        final Axis axis = state.getValue(IAssemblageBlock.AXIS);
+        final Direction facing = Direction.get(AxisDirection.POSITIVE, axis);
         final AssemblageCog topCog = state.getValue(IAssemblageBlock.TOP_COG);
         final AssemblageCog middleCog = state.getValue(IAssemblageBlock.MIDDLE_COG);
         final AssemblageCog bottomCog = state.getValue(IAssemblageBlock.BOTTOM_COG);
@@ -40,7 +43,8 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.topCogPart,
                 CachedBuffers.partialFacingVertical(getModel(topCog), be.topCogPart.getBlockState(), facing)
-                    .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(5 / 16d)),
+                    .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(5 / 16d))
+                    .rotateCenteredDegrees(!KineticBlockEntityVisual.shouldOffset(axis, be.getBlockPos()) && be.topCogPart.topCogType.isLarge() ? 11.25f : 0f, facing),
                 ms, buffer, light
             );
         };
@@ -49,6 +53,7 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.middleCogPart,
                 CachedBuffers.partialFacingVertical(getModel(middleCog), be.middleCogPart.getBlockState(), facing),
+                // Large Cog offset already applied
                 ms, buffer, light
             );
         };
@@ -57,7 +62,8 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.bottomCogPart,
                 CachedBuffers.partialFacingVertical(getModel(bottomCog), be.bottomCogPart.getBlockState(), facing)
-                    .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(-5 / 16d)),
+                    .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(-5 / 16d))
+                    .rotateCenteredDegrees(!KineticBlockEntityVisual.shouldOffset(axis, be.getBlockPos()) && be.bottomCogPart.bottomCogType.isLarge() ? 11.25f : 0f, facing),
                 ms, buffer, light
             );
         };
