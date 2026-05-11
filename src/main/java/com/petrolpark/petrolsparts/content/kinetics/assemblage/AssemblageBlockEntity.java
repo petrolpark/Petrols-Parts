@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import com.petrolpark.compat.create.core.block.composite.CompositeKineticBlockEntity;
+import com.petrolpark.core.world.block.DummyBlock;
 import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.petrolpark.petrolsparts.core.block.CogType;
 import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
@@ -193,7 +194,7 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         };
 
         // Unregistered - might be weird
-        public class DummyCogWheelBlock extends Block implements ICogWheel {
+        public class DummyCogWheelBlock extends DummyBlock implements ICogWheel {
 
             public DummyCogWheelBlock() {
                 super(BlockBehaviour.Properties.of());

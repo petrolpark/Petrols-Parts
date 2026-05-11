@@ -16,6 +16,7 @@ import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.EncasedCornerSha
 import com.petrolpark.petrolsparts.content.kinetics.differential.DifferentialBlock;
 import com.petrolpark.petrolsparts.content.kinetics.differential.DummyDifferentialBlock;
 import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlock;
+import com.petrolpark.petrolsparts.content.kinetics.movement.MovementBlock;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlock;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlock;
 import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotBlock;
@@ -181,6 +182,12 @@ public class PetrolsPartsBlocks {
         .loot((lt, b) -> lt.dropOther(b, AllBlocks.SHAFT))
         .transform(PPCStress.setNoImpact())
         .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
+        .register();
+
+    public static final BlockEntry<MovementBlock> MOVEMENT = REGISTRATE.block("movement", MovementBlock::new)
+        .initialProperties(SharedProperties::softMetal)
+        .item()
+        .build()
         .register();
 
     public static final BlockEntry<PlanetaryGearsetBlock> PLANETARY_GEARSET = REGISTRATE.block("planetary_gearset", PlanetaryGearsetBlock::new)

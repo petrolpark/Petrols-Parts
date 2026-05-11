@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "H",
+    "H"
+  ],
+  "key": {
+    "H": {
+      "item": "petrolsparts:shaft_half"
+    }
+  },
+  "result": {
+    "id": "create:shaft",
+    "count": 1
+  }
+}

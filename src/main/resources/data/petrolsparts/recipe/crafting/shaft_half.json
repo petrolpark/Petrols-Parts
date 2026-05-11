@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "create:andesite_alloy"
+    }
+  ],
+  "result": {
+    "id": "petrolsparts:shaft_half",
+    "count": 4
+  }
+}

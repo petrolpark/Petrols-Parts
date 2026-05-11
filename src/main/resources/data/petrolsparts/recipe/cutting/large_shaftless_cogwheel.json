@@ -1,0 +1,21 @@
+{
+  "conditions": [
+    {
+      "type": "petrolpark:config_boolean",
+      "key": "petrolsparts:common.recipes.assemblage"
+    }
+  ],
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "tag": "minecraft:planks"
+    }
+  ],
+  "processing_time": 50,
+  "results": [
+    {
+      "count": 1,
+      "id": "petrolsparts:large_shaftless_cogwheel"
+    }
+  ]
+}

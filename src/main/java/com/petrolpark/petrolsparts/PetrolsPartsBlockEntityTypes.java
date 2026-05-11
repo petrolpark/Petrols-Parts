@@ -20,6 +20,7 @@ import com.petrolpark.petrolsparts.content.kinetics.differential.DifferentialRen
 import com.petrolpark.petrolsparts.content.kinetics.differential.DummyDifferentialBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.movement.MovementBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetRenderer;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
@@ -103,6 +104,18 @@ public class PetrolsPartsBlockEntityTypes {
         .visual(() -> LongShaftVisual::new, false)
         .validBlocks(PetrolsPartsBlocks.LONG_SHAFT)
         .renderer(() -> BracketedKineticBlockEntityRenderer::new)
+        .register();
+
+    public static final BlockEntityEntry<MovementBlockEntity> MOVEMENT = REGISTRATE
+        .createBlockEntity("movement", MovementBlockEntity::new)
+        .register();
+
+    public static final BlockEntityEntry<MovementBlockEntity.GeneratingPart> MOVEMENT_GENERATING_PART = REGISTRATE
+        .<MovementBlockEntity.GeneratingPart>blockEntity("movement_part", (t, p, s) -> new MovementBlockEntity(MOVEMENT.get(), p, s).new GeneratingPart())
+        .register();
+
+    public static final BlockEntityEntry<MovementBlockEntity.GeneratingPart> MOVEMENT_WINDING_PART = REGISTRATE
+        .<MovementBlockEntity.GeneratingPart>blockEntity("winding_part", (t, p, s) -> new MovementBlockEntity(MOVEMENT.get(), p, s).new GeneratingPart())
         .register();
 
     public static final BlockEntityEntry<PlanetaryGearsetBlockEntity> PLANETARY_GEARSET = REGISTRATE

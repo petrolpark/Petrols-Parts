@@ -9,7 +9,6 @@
         "accessor.RotationPropagatorAccessor",
         "AirCurrentMixin",
         "AssemblyOperatorBlockItemMixin",
-        "BlockMixin",
         "ICogWheelMixin",
         "KineticBlockEntityMixin",
         "MechanicalPressBlockEntityMixin",

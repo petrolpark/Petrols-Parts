@@ -22,7 +22,15 @@ public class PetrolsPartCreativeModeTab {
 		() -> new CustomTab.Builder(CreativeModeTab.Row.TOP, 0)
 			.add(
 
-                i(PetrolsPartsBlocks.BRASS_DEPOT::asStack), i(PetrolsPartsItems.SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.COAXIAL_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL::asStack), i(PetrolsPartsBlocks.CORNER_SHAFT::asStack), i(PetrolsPartsBlocks.DIFFERENTIAL::asStack), i(PetrolsPartsBlocks.PLANETARY_GEARSET::asStack), i(PetrolsPartsBlocks.COLOSSAL_COGWHEEL::asStack), i(PetrolsPartsBlocks.PNEUMATIC_TUBE::asStack), i(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION::asStack), i(PetrolparkCreateBlocks.REDSTONE_PROGRAMMER::asStack)
+                i(PetrolsPartsBlocks.BRASS_DEPOT::asStack),
+				i(PetrolsPartsItems.SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.COAXIAL_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL::asStack), i(PetrolsPartsItems.SHAFT_HALF::asStack),
+				i(PetrolsPartsBlocks.CORNER_SHAFT::asStack),
+				i(PetrolsPartsBlocks.DIFFERENTIAL::asStack),
+				i(PetrolsPartsBlocks.PLANETARY_GEARSET::asStack),
+				i(PetrolsPartsBlocks.COLOSSAL_COGWHEEL::asStack),
+				i(PetrolsPartsBlocks.PNEUMATIC_TUBE::asStack), i(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION::asStack),
+				i(PetrolparkCreateBlocks.HORSE_MILL_BEARING::asStack), i(PetrolparkCreateBlocks.HARNESS::asStack),
+				i(PetrolparkCreateBlocks.REDSTONE_PROGRAMMER::asStack)
 			
 			).title(Component.translatable("itemGroup.petrolsparts.base"))
 			.withTabsBefore(AllCreativeModeTabs.PALETTES_CREATIVE_TAB.getId())

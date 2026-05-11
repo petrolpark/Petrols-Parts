@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "S",
+    "C",
+    "S"
+  ],
+  "key": {
+    "C": {
+      "item": "petrolsparts:large_shaftless_cogwheel"
+    },
+    "S": {
+      "item": "petrolsparts:shaft_half"
+    }
+  },
+  "result": {
+    "id": "create:large_cogwheel",
+    "count": 1
+  }
+}

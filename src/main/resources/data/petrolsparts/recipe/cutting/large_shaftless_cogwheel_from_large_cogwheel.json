@@ -1,0 +1,25 @@
+{
+  "conditions": [
+    {
+      "type": "petrolpark:config_boolean",
+      "key": "petrolsparts:common.recipes.assemblage"
+    }
+  ],
+  "type": "create:cutting",
+  "ingredients": [
+    {
+      "item": "create:large_cogwheel"
+    }
+  ],
+  "processing_time": 50,
+  "results": [
+    {
+        "id": "petrolsparts:large_shaftless_cogwheel",
+        "count": 1
+    },
+    {
+        "id": "petrolsparts:shaft_half",
+        "count": 2
+    }
+  ]
+}

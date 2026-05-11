@@ -20,7 +20,7 @@
     "block.petrolsparts.corner_shaft": "Corner Shaft",
     "block.petrolsparts.dummy_differential": "Differential",
     "block.petrolsparts.hydraulic_transmission": "Hydraulic Transmission",
-    "block.petrolsparts.long_shaft": "Long Shaft",
+    "block.petrolsparts.movement": "Movement",
     "block.petrolsparts.planetary_gearset": "Planetary Gearset",
     "block.petrolsparts.pneumatic_tube": "Pneumatic Tube",
     "block.petrolsparts.pneumatic_tube.cant_flip": "The Pneumatic Tube must be empty to change its direction",
