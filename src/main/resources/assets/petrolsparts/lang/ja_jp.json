@@ -11,16 +11,16 @@
     "advancement.petrolsparts.root.description": "新しくてファンキーな動力コンポーネント",
 
     "block.petrolsparts.andesite_encased_corner_shaft": "安山岩ケース入りコーナーシャフト",
+    "block.petrolsparts.assemblage": "Assemblage",
+    "block.petrolsparts.bevel_gear": "かさ歯車",
     "block.petrolsparts.brass_depot": "真鍮デポ",
     "block.petrolsparts.brass_encased_corner_shaft": "真鍮ケース入りコーナーシャフト",
-    "block.petrolsparts.coaxial_gear": "同軸歯車",
     "block.petrolsparts.colossal_cogwheel": "巨大歯車",
     "block.petrolsparts.differential": "差動装置",
     "block.petrolsparts.corner_shaft": "コーナーシャフト",
     "block.petrolsparts.dummy_differential": "差動装置",
     "block.petrolsparts.hydraulic_transmission": "油圧トランスミッション",
-    "block.petrolsparts.large_coaxial_gear": "大型同軸歯車",
-    "block.petrolsparts.long_shaft": "長いシャフト",
+    "block.petrolsparts.movement": "Movement",
     "block.petrolsparts.planetary_gearset": "惑星歯車機構",
     "block.petrolsparts.pneumatic_tube": "空気圧チューブ",
     "block.petrolsparts.pneumatic_tube.cant_flip": "空気圧チューブを方向変更するには、空にする必要があります",
@@ -77,5 +77,10 @@
 
     "petrolsparts.tooltip.coaxial_gear.shaft_too_short": "同軸歯車に通すには、シャフトは少なくとも2ブロックの長さが必要です",
 
+    "item.petrolsparts.coaxial_cogwheel": "同軸歯車",
+    "item.petrolsparts.large_coaxial_cogwheel": "大きな同軸歯車",
+    "item.petrolsparts.large_shaftless_cogwheel": "大きな無軸歯車",
+    "item.petrolsparts.shaftless_cogwheel": "無軸歯車",
+    
     "itemGroup.petrolsparts.base": "Petrol's Parts"
 }
