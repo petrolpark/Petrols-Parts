@@ -1,0 +1,6 @@
+{
+    "parent": "create:block/shaft",
+    "textures": {
+        "0": "petrolsparts:block/assemblage_shaft"
+    }
+}

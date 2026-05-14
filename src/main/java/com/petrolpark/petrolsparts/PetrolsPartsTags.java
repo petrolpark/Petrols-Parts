@@ -7,4 +7,5 @@ import net.minecraft.world.level.block.Block;
 public class PetrolsPartsTags {
     
     public static final TagKey<Block> THICK_SMALL_COGWHEELS = TagKey.create(Registries.BLOCK, PetrolsParts.asResource("thick_small_cogwheels"));
+    public static final TagKey<Block> THICK_LARGE_COGWHEELS = TagKey.create(Registries.BLOCK, PetrolsParts.asResource("thick_large_cogwheels"));
 };

@@ -46,8 +46,8 @@ public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlo
     public List<AssemblagePart> getParts(BlockState state) {
         final List<AssemblagePart> parts = super.getParts(state);
         final Axis axis = state.getValue(AXIS);
-        if (state.getValue(TOP_SHAFT_HALF)) parts.add(AssemblagePart.SHAFT_HALVES.get(Direction.get(AxisDirection.NEGATIVE, axis)));
-        if (state.getValue(BOTTOM_SHAFT_HALF)) parts.add(AssemblagePart.SHAFT_HALVES.get(Direction.get(AxisDirection.POSITIVE, axis)));
+        if (state.getValue(TOP_SHAFT_HALF)) parts.add(AssemblagePart.SHAFT_HALVES.get(Direction.get(AxisDirection.POSITIVE, axis)));
+        if (state.getValue(BOTTOM_SHAFT_HALF)) parts.add(AssemblagePart.SHAFT_HALVES.get(Direction.get(AxisDirection.NEGATIVE, axis)));
         return parts;
     };
 
@@ -87,7 +87,7 @@ public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlo
 
     @Override
     public BlockEntityType<? extends AssemblageBlockEntity> getBlockEntityType() {
-        return PetrolsPartsBlockEntityTypes.SEPARATE_SHAFT_HALVES_ASSEMBLAGE.get();
+        return PetrolsPartsBlockEntityTypes.ASSEMBLAGE.get();
     };
     
 };

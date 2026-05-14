@@ -34,9 +34,19 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         final BlockState state = be.getBlockState();
         final Axis axis = state.getValue(IAssemblageBlock.AXIS);
         final Direction facing = Direction.get(AxisDirection.POSITIVE, axis);
+
         final AssemblageCog topCog = state.getValue(IAssemblageBlock.TOP_COG);
         final AssemblageCog middleCog = state.getValue(IAssemblageBlock.MIDDLE_COG);
         final AssemblageCog bottomCog = state.getValue(IAssemblageBlock.BOTTOM_COG);
+        final boolean hasTopShaft;
+        final boolean hasBottomShaft;
+        if (state.getBlock() instanceof IAssemblageBlock asssemblage) {
+            hasTopShaft = asssemblage.hasTopShaft(state);
+            hasBottomShaft = asssemblage.hasBottomShaft(state);
+        } else { // Should never be called
+            hasTopShaft = hasBottomShaft = false;
+        };
+
         final VertexConsumer buffer = bufferSource.getBuffer(RenderType.cutoutMipped());
 
         if (!topCog.isNone()) {
@@ -45,6 +55,11 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
                 CachedBuffers.partialFacingVertical(getModel(topCog), be.topCogPart.getBlockState(), facing)
                     .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(5 / 16d))
                     .rotateCenteredDegrees(!KineticBlockEntityVisual.shouldOffset(axis, be.getBlockPos()) && be.topCogPart.topCogType.isLarge() ? 11.25f : 0f, facing),
+                ms, buffer, light
+            );
+            if (topCog.hasShaftConnection() && !hasTopShaft) KineticBlockEntityRenderer.renderRotatingBuffer(
+                be.topCogPart,
+                CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.COGWHEEL_SHAFT, be.topCogPart.getBlockState(), facing),
                 ms, buffer, light
             );
         };
@@ -66,16 +81,26 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
                     .rotateCenteredDegrees(!KineticBlockEntityVisual.shouldOffset(axis, be.getBlockPos()) && be.bottomCogPart.bottomCogType.isLarge() ? 11.25f : 0f, facing),
                 ms, buffer, light
             );
+            if (bottomCog.hasShaftConnection() && !hasBottomShaft) KineticBlockEntityRenderer.renderRotatingBuffer(
+                be.bottomCogPart,
+                CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.COGWHEEL_SHAFT, be.bottomCogPart.getBlockState(), facing.getOpposite()),
+                ms, buffer, light
+            );
         };
 
-        //TODO shafts
+        if (!hasBottomShaft && !hasTopShaft) return;
+        KineticBlockEntityRenderer.renderRotatingBuffer(
+            be.shaftPart,
+            CachedBuffers.partialFacingVertical(hasTopShaft ? hasBottomShaft ? PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT : PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_TOP : PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_BOTTOM, be.shaftPart.getBlockState(), facing),
+            ms, buffer, light
+        );
     };
 
     public static final PartialModel getModel(AssemblageCog cog) {
         return switch (cog) {
             case LARGE -> AllPartialModels.SHAFTLESS_LARGE_COGWHEEL;
-            case SMALL_COAXIAL -> PetrolsPartsPartialModels.COAXIAL_GEAR;
-            case LARGE_COAXIAL -> PetrolsPartsPartialModels.LARGE_COAXIAL_GEAR;
+            case SMALL_COAXIAL -> PetrolsPartsPartialModels.COAXIAL_COGWHEEL;
+            case LARGE_COAXIAL -> PetrolsPartsPartialModels.LARGE_COAXIAL_COGWHEEL;
             default -> AllPartialModels.SHAFTLESS_COGWHEEL;
         };
     };

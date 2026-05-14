@@ -2,6 +2,7 @@ package com.petrolpark.petrolsparts.core.ponder;
 
 import com.petrolpark.petrolsparts.PetrolsParts;
 import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
+import com.petrolpark.petrolsparts.PetrolsPartsItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.infrastructure.ponder.AllCreatePonderTags;
 import com.simibubi.create.infrastructure.ponder.scenes.BeltScenes;
@@ -28,11 +29,6 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
         itemProviderHelper.forComponents(PetrolsPartsBlocks.BRASS_DEPOT)
             .addStoryBoard("brass_depot", PetrolsPartsScenes::brassDepot);
 
-        // Coaxial Gear
-        itemProviderHelper.forComponents(PetrolsPartsBlocks.COAXIAL_GEAR)
-            .addStoryBoard("coaxial_gear/shaftless", PetrolsPartsScenes::coaxialGearShaftless)
-            .addStoryBoard("coaxial_gear/through", PetrolsPartsScenes::coaxialGearThrough);
-
         // Colossal Cogwheel
         itemProviderHelper.forComponents(PetrolsPartsBlocks.COLOSSAL_COGWHEEL)
             .addStoryBoard("colossal_cogwheel", PetrolsPartsScenes::colossalCogwheel);
@@ -48,11 +44,6 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
         // Hydraulic Transmission
         itemProviderHelper.forComponents(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION)
             .addStoryBoard("hydraulic_transmission", PetrolsPartsScenes::hydraulicTransmission);
-
-        // Large Coaxial Cogwheel
-        itemProviderHelper.forComponents(PetrolsPartsBlocks.LARGE_COAXIAL_GEAR)
-            .addStoryBoard("coaxial_gear/shaftless", PetrolsPartsScenes::coaxialGearShaftless)
-            .addStoryBoard("coaxial_gear/through", PetrolsPartsScenes::coaxialGearThrough);
 
         // Planetary Gearset
         itemProviderHelper.forComponents(PetrolsPartsBlocks.PLANETARY_GEARSET)
@@ -70,11 +61,14 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .add(PetrolsPartsBlocks.BRASS_DEPOT);
 
         HELPER.addToTag(AllCreatePonderTags.KINETIC_RELAYS)
-            .add(PetrolsPartsBlocks.COAXIAL_GEAR)
+            .add(PetrolsPartsItems.SHAFT_HALF)
+            .add(PetrolsPartsItems.SHAFTLESS_COGWHEEL)
+            .add(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL)
+            .add(PetrolsPartsItems.COAXIAL_COGWHEEL)
+            .add(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL)
             .add(PetrolsPartsBlocks.COLOSSAL_COGWHEEL)
             .add(PetrolsPartsBlocks.DIFFERENTIAL)
             .add(PetrolsPartsBlocks.CORNER_SHAFT)
-            .add(PetrolsPartsBlocks.LARGE_COAXIAL_GEAR)
             .add(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION)
             .add(PetrolsPartsBlocks.PLANETARY_GEARSET)
         ;
@@ -99,13 +93,6 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
 
             itemProviderHelper.forComponents(PetrolsPartsBlocks.BRASS_DEPOT)
                 .addStoryBoard("depot", BeltScenes::depot, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "brass_depot"));
-
-            itemProviderHelper.forComponents(PetrolsPartsBlocks.COAXIAL_GEAR)
-                .addStoryBoard("cog/small", KineticsScenes::cogAsRelay, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "coaxial_gear/shaftless"));
-
-            itemProviderHelper.forComponents(PetrolsPartsBlocks.LARGE_COAXIAL_GEAR)
-                .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore("cog/large"))
-                .addStoryBoard("cog/large", KineticsScenes::largeCogAsRelay, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "coaxial_gear/shaftless"));
 
             itemProviderHelper.forComponents(PetrolsPartsBlocks.PLANETARY_GEARSET)
                 .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore("cog/large"))

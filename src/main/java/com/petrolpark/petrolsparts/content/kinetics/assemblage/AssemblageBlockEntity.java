@@ -74,19 +74,21 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
 
         shaftPart = new AssemblageBlockEntityPart();
         if (block.hasTopShaft(state)) {
-            shaftPart.withTopShaft();
+            shaftPart.withTopShaftConnection();
             parts.add(shaftPart);
         };
         if (block.hasBottomShaft(state)) {
-            shaftPart.withBottomShaft();
+            shaftPart.withBottomShaftConnection();
             parts.add(shaftPart);
         };
 
         topCogPart = topCog.hasShaftConnection() && block.hasTopShaft(state) ? shaftPart : new AssemblageBlockEntityPart();
+        if (topCog.hasShaftConnection()) topCogPart.withTopShaftConnection();
         topCogPart.topCogType = topCog.getCogType();
         if (!topCogPart.topCogType.isNone()) parts.add(topCogPart);
 
         bottomCogPart = bottomCog.hasShaftConnection() && block.hasBottomShaft(state) ? shaftPart : new AssemblageBlockEntityPart();
+        if (bottomCog.hasShaftConnection()) bottomCogPart.withBottomShaftConnection();
         bottomCogPart.bottomCogType = bottomCog.getCogType();
         if (!bottomCogPart.bottomCogType.isNone()) parts.add(bottomCogPart);
 
@@ -132,8 +134,8 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
 
     public class AssemblageBlockEntityPart extends CompositeKineticBlockEntityPart implements IFaceAlignedCogWheelBlockEntity {
 
-        protected boolean topShaft = false;
-        protected boolean bottomShaft = false;
+        protected boolean hasTopShaftConnection = false;
+        protected boolean hasBottomShaftConnection = false;
         protected CogType topCogType = CogType.NONE;
         protected CogType middleCogType = CogType.NONE;
         protected CogType bottomCogType = CogType.NONE;
@@ -144,13 +146,13 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
             super(PetrolsPartsBlockEntityTypes.ASSEMBLAGE_PART.get());
         };
 
-        public AssemblageBlockEntityPart withTopShaft() {
-            topShaft = true;
+        protected AssemblageBlockEntityPart withTopShaftConnection() {
+            hasTopShaftConnection = true;
             return this;
         };
 
-        public AssemblageBlockEntityPart withBottomShaft() {
-            bottomShaft = true;
+        protected AssemblageBlockEntityPart withBottomShaftConnection() {
+            hasBottomShaftConnection = true;
             return this;
         };
 
@@ -218,7 +220,7 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
             @Override
             public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
                 if (face.getAxis() != getRotationAxis(state)) return false;
-                return face.getAxisDirection() == AxisDirection.POSITIVE ? topShaft : bottomShaft;
+                return face.getAxisDirection() == AxisDirection.POSITIVE ? hasTopShaftConnection : hasBottomShaftConnection;
             };
 
             @Override

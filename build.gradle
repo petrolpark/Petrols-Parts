@@ -136,6 +136,9 @@ dependencies {
     // JEI
     implementation("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
 
+    // Testing
+    implementation("maven.modrinth:gears-n-kinetics:1.0m")
+
 }
 
 jar {

@@ -1,0 +1,12 @@
+{
+    "values": [
+        {
+            "id": "gnkinetics:large_industrial_gear",
+            "required": false
+        },
+        {
+            "id": "gnkinetics:shaftless_large_industrial_gear",
+            "required": false
+        }
+    ]
+}

@@ -3,14 +3,11 @@ package com.petrolpark.petrolsparts.core.ponder;
 import com.petrolpark.client.ponder.instruction.CameraShakeInstruction;
 import com.petrolpark.client.ponder.particle.PetrolparkEmitters;
 import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlock;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeTransportInstruction;
-import com.petrolpark.petrolsparts.core.block.DirectionalRotatedPillarKineticBlock;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.fluids.spout.SpoutBlockEntity;
-import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
 import com.simibubi.create.content.kinetics.press.MechanicalPressBlockEntity;
 import com.simibubi.create.content.kinetics.press.PressingBehaviour;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
@@ -24,7 +21,6 @@ import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -161,101 +157,6 @@ public class PetrolsPartsScenes {
         scene.effects().rotationDirectionIndicator(util.grid().at(1, 1, 1));
 		scene.effects().rotationDirectionIndicator(util.grid().at(1, 1, 2));
         scene.idle(100);
-
-        scene.markAsFinished();
-    };
-
-    public static void coaxialGearThrough(SceneBuilder baseScene, SceneBuildingUtil util) {
-        CreateSceneBuilder scene = new CreateSceneBuilder(baseScene);
-        scene.title("coaxial_gear_through", "This text is defined in a language file.");
-        scene.configureBasePlate(0, 0, 5);
-        scene.showBasePlate();
-
-        Selection verticalShaft1 = util.select().fromTo(3, 2, 2, 3, 3, 2);
-        scene.world().setKineticSpeed(verticalShaft1, 0);
-        scene.world().showSection(verticalShaft1, Direction.DOWN);
-        scene.idle(30);
-
-        BlockPos coaxialGear1 = util.grid().at(3, 2, 2);
-        BlockPos longShaft1 = util.grid().at(3, 3, 2);
-
-        scene.overlay().showText(60)
-            .text("This text is defined in a language file.")
-            .attachKeyFrame()
-            .pointAt(util.vector().blockSurface(coaxialGear1, Direction.UP));
-        scene.idle(20);
-        scene.overlay().showControls(util.vector().blockSurface(coaxialGear1, Direction.NORTH), Pointing.RIGHT, 60)
-            .withItem(PetrolsPartsBlocks.COAXIAL_GEAR.asStack());
-        scene.idle(5);
-        scene.world().setBlock(coaxialGear1, PetrolsPartsBlocks.COAXIAL_GEAR.getDefaultState().setValue(CoaxialGearBlock.HAS_SHAFT, true), false);
-        scene.world().setBlock(longShaft1, PetrolsPartsBlocks.LONG_SHAFT.getDefaultState().setValue(RotatedPillarKineticBlock.AXIS, Axis.Y).setValue(DirectionalRotatedPillarKineticBlock.POSITIVE_AXIS_DIRECTION, false), false);
-        scene.idle(55);
-
-        scene.world().showSection(util.select().fromTo(1, 2, 2, 1, 3, 2), Direction.DOWN);
-        scene.idle(20);
-
-        BlockPos coaxialGear2 = util.grid().at(1, 2, 2);
-        BlockPos longShaft2 = util.grid().at(1, 3, 2);
-
-        scene.overlay().showText(60)
-            .text("This text is defined in a language file.")
-            .pointAt(util.vector().blockSurface(coaxialGear2, Direction.UP));
-        scene.idle(20);
-        scene.overlay().showControls(util.vector().blockSurface(coaxialGear2, Direction.NORTH), Pointing.RIGHT, 60)
-            .withItem(AllBlocks.SHAFT.asStack());
-        scene.idle(5);
-        scene.world().setBlock(coaxialGear2, PetrolsPartsBlocks.COAXIAL_GEAR.getDefaultState().setValue(CoaxialGearBlock.HAS_SHAFT, true), false);
-        scene.world().setBlock(longShaft2, PetrolsPartsBlocks.LONG_SHAFT.getDefaultState().setValue(RotatedPillarKineticBlock.AXIS, Axis.Y).setValue(DirectionalRotatedPillarKineticBlock.POSITIVE_AXIS_DIRECTION, false), false);
-        scene.idle(65);
-
-        scene.overlay().showText(80)
-            .text("This text is defined in a language file.")
-            .placeNearTarget()
-            .attachKeyFrame()
-            .colored(PonderPalette.RED);
-        scene.idle(100);
-
-        scene.world().showSection(util.select().fromTo(1, 0, 5, 3, 1, 5), Direction.NORTH);
-        scene.idle(5);
-        scene.world().showSection(util.select().fromTo(1, 1, 4, 3, 1, 4), Direction.DOWN);
-        scene.idle(5);
-        scene.world().showSection(util.select().fromTo(1, 1, 3, 3, 1, 3), Direction.DOWN);
-        scene.idle(5);
-        scene.world().showSection(util.select().fromTo(1, 1, 2, 3, 1, 2), Direction.SOUTH);
-        scene.world().setKineticSpeed(util.select().position(longShaft1), -32);
-        scene.world().setKineticSpeed(util.select().position(longShaft2), -32);
-        scene.idle(10);
-
-        scene.overlay().showText(80)
-            .text("This text is defined in a language file.")
-            .attachKeyFrame()
-            .pointAt(util.vector().blockSurface(coaxialGear2, Direction.UP));
-        scene.idle(100);
-
-        BlockPos cogwheel = util.grid().at(2, 2, 2);
-
-        scene.world().showSection(util.select().position(5, 0, 2), Direction.WEST);
-        scene.idle(5);
-        scene.world().showSection(util.select().fromTo(4, 1, 2, 4, 2, 2), Direction.DOWN);
-        scene.world().setKineticSpeed(util.select().position(coaxialGear1), 8);
-        scene.idle(5);
-        scene.world().setKineticSpeed(util.select().position(cogwheel), -8);
-        scene.world().showSection(util.select().position(cogwheel), Direction.DOWN);
-        scene.world().setKineticSpeed(util.select().position(coaxialGear2), 8);
-        scene.idle(25);
-
-        scene.overlay().showText(80)
-            .text("This text is defined in a language file.")
-            .attachKeyFrame()
-            .pointAt(util.vector().blockSurface(coaxialGear2, Direction.EAST));
-        scene.idle(20);
-
-        scene.effects().rotationDirectionIndicator(coaxialGear1);
-		scene.effects().rotationDirectionIndicator(coaxialGear2);
-        scene.effects().rotationDirectionIndicator(longShaft1);
-		scene.effects().rotationDirectionIndicator(longShaft2);
-
-        scene.idle(80);
 
         scene.markAsFinished();
     };

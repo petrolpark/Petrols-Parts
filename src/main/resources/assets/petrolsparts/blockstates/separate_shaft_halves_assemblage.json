@@ -1,7 +1,7 @@
 {
     "variants": {
         "": {
-            "model": "petrolsparts:block/assemblage"
+            "model": "petrolsparts:block/assemblage/block"
         }
     }
   }

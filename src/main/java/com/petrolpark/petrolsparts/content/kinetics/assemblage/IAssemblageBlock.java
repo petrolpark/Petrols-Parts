@@ -9,13 +9,18 @@ import com.petrolpark.compat.create.core.block.composite.ICompositeKineticBlock;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import com.petrolpark.petrolsparts.core.block.CogType;
 import com.petrolpark.petrolsparts.core.block.IStateDependentCogWheelBlock;
+import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlock;
+import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockState;
@@ -25,7 +30,7 @@ import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 
-public interface IAssemblageBlock extends IStateDependentCogWheelBlock, ICompositeKineticBlock, TransformableBlock {
+public interface IAssemblageBlock extends IStateDependentCogWheelBlock, IFaceAlignedCogWheelBlock, ICompositeKineticBlock, TransformableBlock {
 
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
     public static final BooleanProperty TOP_SHAFT_HALF = BooleanProperty.create("top_shaft_half");
@@ -46,6 +51,19 @@ public interface IAssemblageBlock extends IStateDependentCogWheelBlock, IComposi
     @Override
     public default CogType getCogType(BlockState state) {
         return state.getValue(MIDDLE_COG).getCogType();
+    };
+
+    public default boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        final Axis axis = state.getValue(AXIS);
+        if (!state.getValue(TOP_COG).isNone() && !IFaceAlignedCogWheelBlockEntity.isValidFaceAlignedCogwheelPosition(state.getValue(TOP_COG).getCogType().isLarge(), level, pos, Direction.get(AxisDirection.POSITIVE, axis))) return false;
+        if (!state.getValue(BOTTOM_COG).isNone() && !IFaceAlignedCogWheelBlockEntity.isValidFaceAlignedCogwheelPosition(state.getValue(BOTTOM_COG).getCogType().isLarge(), level, pos, Direction.get(AxisDirection.NEGATIVE, axis))) return false;
+        if (!state.getValue(MIDDLE_COG).isNone() && !CogWheelBlock.isValidCogwheelPosition(state.getValue(MIDDLE_COG).getCogType().isLarge(), level, pos, axis)) return false;
+        return true;
+    };
+
+    @Override
+    public default BlockState getRotatedBlockState(BlockState originalState, Direction targetedFace) {
+        return rotate(originalState, targetedFace.getAxis(), Rotation.CLOCKWISE_90);
     };
 
     public static BlockState rotate(BlockState state, Axis axis, Rotation rotation) {
