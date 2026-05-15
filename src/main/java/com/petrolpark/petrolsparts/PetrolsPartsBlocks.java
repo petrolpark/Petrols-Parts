@@ -17,6 +17,7 @@ import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.Hydrau
 import com.petrolpark.petrolsparts.content.kinetics.legacy.LegacyCoaxialGearBlock;
 import com.petrolpark.petrolsparts.content.kinetics.movement.MovementBlock;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlock;
+import com.petrolpark.petrolsparts.content.kinetics.transmission.TransmissionBlock;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlock;
 import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotBlock;
 import com.simibubi.create.AllBlocks;
@@ -169,6 +170,9 @@ public class PetrolsPartsBlocks {
         .transform(TagGen.axeOrPickaxe())
         .item(TubeBlockItem::new)
         .build()
+        .register();
+
+    public static final BlockEntry<TransmissionBlock> TRANSMISSION = REGISTRATE.block("transmission", TransmissionBlock::new)
         .register();
 
     // OLD

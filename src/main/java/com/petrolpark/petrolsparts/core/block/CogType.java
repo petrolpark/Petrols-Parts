@@ -6,6 +6,10 @@ public enum CogType {
     SMALL,
     LARGE;
 
+    public static final CogType small(boolean small) {
+        return small ? SMALL : NONE;
+    };
+
     public boolean isNone(){
         return this == NONE;
     };
