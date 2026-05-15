@@ -6,8 +6,6 @@ import com.petrolpark.compat.create.core.tube.TubeBlockItem;
 import com.petrolpark.petrolsparts.config.PPCStress;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.SeparateShaftHalvesAssemblageBlock;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.SingleShaftAssemblageBlock;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlock;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlock;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockItem;
 import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.AbstractCornerShaftBlock;
@@ -16,6 +14,7 @@ import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.EncasedCornerSha
 import com.petrolpark.petrolsparts.content.kinetics.differential.DifferentialBlock;
 import com.petrolpark.petrolsparts.content.kinetics.differential.DummyDifferentialBlock;
 import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlock;
+import com.petrolpark.petrolsparts.content.kinetics.legacy.LegacyCoaxialGearBlock;
 import com.petrolpark.petrolsparts.content.kinetics.movement.MovementBlock;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlock;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlock;
@@ -28,7 +27,6 @@ import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
-import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.logistics.depot.MountedDepotInteractionBehaviour;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -65,40 +63,6 @@ public class PetrolsPartsBlocks {
 		.item()
         .build()
         .register();
-    
-    public static final BlockEntry<CoaxialGearBlock> COAXIAL_GEAR = REGISTRATE.block("coaxial_gear", CoaxialGearBlock::small)
-        .initialProperties(AllBlocks.COGWHEEL)
-        .properties(p -> p
-            .sound(SoundType.WOOD)
-            .mapColor(MapColor.DIRT)
-            .noOcclusion()
-        ).defaultLoot()
-        .transform(PPCStress.setNoImpact())
-        .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
-        .transform(TagGen.axeOrPickaxe())
-        .register();
-
-    public static final BlockEntry<CoaxialGearBlock> LARGE_COAXIAL_GEAR = REGISTRATE.block("large_coaxial_gear", CoaxialGearBlock::large)
-        .initialProperties(COAXIAL_GEAR)
-        .defaultLoot()
-        .transform(PPCStress.setNoImpact())
-        .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
-        .transform(TagGen.axeOrPickaxe())
-        .register();
-
-    // public static final BlockEntry<ChainedCogwheelBlock> CHAINED_COGWHEEL = REGISTRATE.block("chained_cogwheel", ChainedCogwheelBlock::small)
-    //     .initialProperties(AllBlocks.COGWHEEL)
-    //     .properties(p -> p
-    //         .noOcclusion()
-    //     ).transform(PPCStress.setNoImpact())
-    //     .register();
-
-    // public static final BlockEntry<ChainedCogwheelBlock> CHAINED_LARGE_COGWHEEL = REGISTRATE.block("chained_large_cogwheel", ChainedCogwheelBlock::large)
-    //     .initialProperties(CHAINED_COGWHEEL)
-    //     .properties(p -> p
-    //         .noOcclusion()
-    //     ).transform(PPCStress.setNoImpact())
-    //     .register();
 
     public static final BlockEntry<ColossalCogwheelBlock> COLOSSAL_COGWHEEL = REGISTRATE.block("colossal_cogwheel", ColossalCogwheelBlock::new)
         .initialProperties(AllBlocks.LARGE_WATER_WHEEL)
@@ -177,13 +141,6 @@ public class PetrolsPartsBlocks {
         .build()
         .register();
 
-    public static final BlockEntry<LongShaftBlock> LONG_SHAFT = REGISTRATE.block("long_shaft", LongShaftBlock::new)
-        .initialProperties(AllBlocks.SHAFT)
-        .loot((lt, b) -> lt.dropOther(b, AllBlocks.SHAFT))
-        .transform(PPCStress.setNoImpact())
-        .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
-        .register();
-
     public static final BlockEntry<MovementBlock> MOVEMENT = REGISTRATE.block("movement", MovementBlock::new)
         .initialProperties(SharedProperties::softMetal)
         .item()
@@ -213,6 +170,11 @@ public class PetrolsPartsBlocks {
         .item(TubeBlockItem::new)
         .build()
         .register();
+
+    // OLD
+
+    @Deprecated public static final BlockEntry<LegacyCoaxialGearBlock> LEGACY_COAXIAL_GEAR = REGISTRATE.block("coaxial_gear", LegacyCoaxialGearBlock::small).register();
+    @Deprecated public static final BlockEntry<LegacyCoaxialGearBlock> LEGACY_LARGE_COAXIAL_GEAR = REGISTRATE.block("large_coaxial_gear", LegacyCoaxialGearBlock::large).register();
 
     public static final void register() {};
 

@@ -1,0 +1,25 @@
+{
+    "values": [
+        "create:mechanical_pump",
+        {
+            "id": "gnkinetics:creative_gear_motor",
+            "required": false
+        },
+        {
+            "id": "gnkinetics:cogstone",
+            "required": false
+        },
+        {
+            "id": "gnkinetics:shaftless_cogstone",
+            "required": false
+        },
+        {
+            "id": "gnkinetics:industrial_gear",
+            "required": false
+        },
+        {
+            "id": "gnkinetics:shaftless_industrial_gear",
+            "required": false
+        }
+    ]
+}

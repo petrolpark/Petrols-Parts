@@ -5,11 +5,6 @@ import static com.petrolpark.petrolsparts.PetrolsParts.REGISTRATE;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageRenderer;
-import com.petrolpark.petrolsparts.content.kinetics.assemblage.SingleShaftAssemblageRenderer;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockEntity;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearVisual;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlockEntity;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftVisual;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelRenderer;
 import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlockEntity;
@@ -20,6 +15,7 @@ import com.petrolpark.petrolsparts.content.kinetics.differential.DifferentialRen
 import com.petrolpark.petrolsparts.content.kinetics.differential.DummyDifferentialBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.legacy.LegacyCoaxialGearBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.movement.MovementBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetRenderer;
@@ -27,38 +23,24 @@ import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTube
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeRenderer;
 import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotBlockEntity;
 import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotRenderer;
-import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 
 public class PetrolsPartsBlockEntityTypes {
 
-    public static final BlockEntityEntry<AssemblageBlockEntity> SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE
-        .createBlockEntity("separate_shaft_halves_assemblage", AssemblageBlockEntity::new)
-        .validBlock(PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
+    public static final BlockEntityEntry<AssemblageBlockEntity> ASSEMBLAGE = REGISTRATE
+        .createBlockEntity("assemblage", AssemblageBlockEntity::new)
+        .validBlocks(PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE)
         .renderer(() -> AssemblageRenderer::new)
         .register();
 
-    public static final BlockEntityEntry<AssemblageBlockEntity> SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE
-        .createBlockEntity("single_shaft_assemblage", AssemblageBlockEntity::new)
-        .validBlock(PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE)
-        .renderer(() -> SingleShaftAssemblageRenderer::new)
-        .register();
-
     public static final BlockEntityEntry<AssemblageBlockEntityPart> ASSEMBLAGE_PART = REGISTRATE
-        .<AssemblageBlockEntityPart>blockEntity("assemblage_part", (t, p, s) -> new AssemblageBlockEntity(SEPARATE_SHAFT_HALVES_ASSEMBLAGE.get(), p, s).new AssemblageBlockEntityPart())
+        .<AssemblageBlockEntityPart>blockEntity("assemblage_part", (t, p, s) -> new AssemblageBlockEntity(ASSEMBLAGE.get(), p, s).new AssemblageBlockEntityPart())
         .register();
     
     public static final BlockEntityEntry<BrassDepotBlockEntity> BRASS_DEPOT = REGISTRATE
         .createBlockEntity("brass_depot", BrassDepotBlockEntity::new)
         .validBlock(PetrolsPartsBlocks.BRASS_DEPOT)
         .renderer(() -> BrassDepotRenderer::new)
-        .register();
-
-    public static final BlockEntityEntry<CoaxialGearBlockEntity> COAXIAL_GEAR = REGISTRATE
-        .createBlockEntity("coaxial_gear", CoaxialGearBlockEntity::new)
-        .visual(() -> CoaxialGearVisual::create, false)
-        .validBlocks(PetrolsPartsBlocks.COAXIAL_GEAR, PetrolsPartsBlocks.LARGE_COAXIAL_GEAR)
-        .renderer(() -> BracketedKineticBlockEntityRenderer::new)
         .register();
 
     public static final BlockEntityEntry<ColossalCogwheelBlockEntity> COLOSSAL_COGWHEEL = REGISTRATE
@@ -99,13 +81,6 @@ public class PetrolsPartsBlockEntityTypes {
         .renderer(() -> HydraulicTransmissionRenderer::new)
         .register();
 
-    public static final BlockEntityEntry<LongShaftBlockEntity> LONG_SHAFT = REGISTRATE
-        .createBlockEntity("long_shaft", LongShaftBlockEntity::new)
-        .visual(() -> LongShaftVisual::new, false)
-        .validBlocks(PetrolsPartsBlocks.LONG_SHAFT)
-        .renderer(() -> BracketedKineticBlockEntityRenderer::new)
-        .register();
-
     public static final BlockEntityEntry<MovementBlockEntity> MOVEMENT = REGISTRATE
         .createBlockEntity("movement", MovementBlockEntity::new)
         .register();
@@ -129,6 +104,14 @@ public class PetrolsPartsBlockEntityTypes {
         .createBlockEntity("pneumatic_tube", PneumaticTubeBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.PNEUMATIC_TUBE)
         .renderer(() -> PneumaticTubeRenderer::new)
+        .register();
+
+    //OLD
+
+    @Deprecated
+    public static final BlockEntityEntry<LegacyCoaxialGearBlockEntity> LEGACY_COAXIAL_GEAR = REGISTRATE
+        .createBlockEntity("coaxial_gear", LegacyCoaxialGearBlockEntity::new)
+        .validBlocks(PetrolsPartsBlocks.LEGACY_COAXIAL_GEAR, PetrolsPartsBlocks.LEGACY_LARGE_COAXIAL_GEAR)
         .register();
 
     public static final void register() {};

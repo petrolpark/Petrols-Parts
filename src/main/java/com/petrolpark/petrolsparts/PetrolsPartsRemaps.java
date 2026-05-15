@@ -7,7 +7,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.petrolpark.compat.Mods;
-import com.tterrag.registrate.util.entry.ItemEntry;
+import com.simibubi.create.AllBlockEntityTypes;
+import com.simibubi.create.AllBlocks;
 
 import net.minecraft.core.Registry;
 import net.minecraft.core.registries.Registries;
@@ -20,13 +21,14 @@ import net.neoforged.neoforge.registries.RegisterEvent;
 @EventBusSubscriber
 public class PetrolsPartsRemaps {
 
-    //TODO recipes
-    public static final Map<ResourceLocation, CompatItemReplacement> COMPAT_ITEM_REPLACEMENTS = Stream.of(
-        gearsNKineticsItemReplacement("shaftless_cogwheel", PetrolsPartsItems.SHAFTLESS_COGWHEEL),
-        gearsNKineticsItemReplacement("shaftless_large_cogwheel", PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL),
-        gearsNKineticsItemReplacement("hollow_cogwheel", PetrolsPartsItems.COAXIAL_COGWHEEL),
-        gearsNKineticsItemReplacement("hollow_large_cogwheel", PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL)
-    ).collect(Collectors.toMap(CompatItemReplacement::id, Function.identity()));
+    public static final Map<ResourceLocation, CompatRecipeRemoval> COMPAT_RECIPE_REMOVALS = Stream.of(
+        gearsNKineticsRecipeRemoval("crafting/cogwheel_from_conversion"),
+        gearsNKineticsRecipeRemoval("crafting/large_cogwheel_from_conversion"),
+        gearsNKineticsRecipeRemoval("crafting/hollow_cogwheel_from_conversion"),
+        gearsNKineticsRecipeRemoval("crafting/hollow_large_cogwheel_from_conversion"),
+        gearsNKineticsRecipeRemoval("crafting/shaftless_cogwheel_from_conversion"),
+        gearsNKineticsRecipeRemoval("crafting/shaftless_large_cogwheel_from_conversion")
+    ).collect(Collectors.toMap(CompatRecipeRemoval::id, Function.identity()));
     
     @SubscribeEvent
     public static final void onRegister(RegisterEvent event) {
@@ -36,25 +38,17 @@ public class PetrolsPartsRemaps {
         // Replace old Petrol's Parts components
         if (key == Registries.BLOCK || key == Registries.ITEM || key == Registries.BLOCK_ENTITY_TYPE) {
             registry.addAlias(PetrolsParts.asResource("double_cardan_shaft"), PetrolsPartsBlocks.CORNER_SHAFT.getId());
+            registry.addAlias(PetrolsParts.asResource("long_shaft"), key == Registries.BLOCK_ENTITY_TYPE ? AllBlockEntityTypes.BRACKETED_KINETIC.getId() : AllBlocks.SHAFT.getId());
         };
         if (key == Registries.ITEM) {
             registry.addAlias(PetrolsParts.asResource("coaxial_gear"), PetrolsPartsItems.COAXIAL_COGWHEEL.getId());
             registry.addAlias(PetrolsParts.asResource("large_coaxial_gear"), PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL.getId());
         };
-
-        // Replace components of other mods, if enabled
-        if (key == Registries.ITEM) {
-            COMPAT_ITEM_REPLACEMENTS.forEach((id, r) -> registry.addAlias(id, r.replacement.getId()));
-        };
     };
 
-    // private static final ItemReplacement connected(String name, ItemEntry<?> replacement) {
-    //     return new ItemReplacement(Mods.CREATE_CONNECTED.asResource(name), () -> PetrolsPartsConfigs.common().replaceCreateConnectedComponents.get(), replacement);
-    // };
+    public record CompatRecipeRemoval(ResourceLocation id, Supplier<Boolean> condition) {};
 
-    private static final CompatItemReplacement gearsNKineticsItemReplacement(String name, ItemEntry<?> replacement) {
-        return new CompatItemReplacement(Mods.CREATE_GEARS_N_KINETICS.asResource(name), () -> PetrolsPartsConfigs.common().replaceCreateGearsNKineticsComponents.get(), replacement);
+    private static final CompatRecipeRemoval gearsNKineticsRecipeRemoval(String name) {
+        return new CompatRecipeRemoval(Mods.CREATE_GEARS_N_KINETICS.asResource(name), () -> PetrolsPartsConfigs.common().removeCreateGearsNKineticsRecipes.get());
     };
-
-    public record CompatItemReplacement(ResourceLocation id, Supplier<Boolean> condition, ItemEntry<?> replacement) {};
 };

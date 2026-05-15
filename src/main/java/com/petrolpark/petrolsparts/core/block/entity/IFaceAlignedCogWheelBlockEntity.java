@@ -1,30 +1,81 @@
 package com.petrolpark.petrolsparts.core.block.entity;
 
 import com.google.common.util.concurrent.AtomicDouble;
+import com.petrolpark.compat.create.core.block.composite.CompositeKineticBlockEntity;
+import com.petrolpark.compat.create.core.block.composite.CompositeKineticBlockEntity.CompositeKineticBlockEntityPart;
 import com.petrolpark.petrolsparts.PetrolsPartsTags;
 import com.petrolpark.petrolsparts.core.block.CogType;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 
 import net.createmod.catnip.data.Iterate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.core.Vec3i;
+import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 
 public interface IFaceAlignedCogWheelBlockEntity {
 
-    public static CogType getCogType(KineticBlockEntity kbe, Direction face) {
-        if (kbe instanceof IFaceAlignedCogWheelBlockEntity cogwheel) return cogwheel.getCogType(face);
-        if (kbe.getBlockState().is(PetrolsPartsTags.THICK_SMALL_COGWHEELS) &&
-            kbe.getBlockState().hasProperty(BlockStateProperties.AXIS) &&
-            face.getAxis() == kbe.getBlockState().getValue(BlockStateProperties.AXIS)
-        ) return CogType.SMALL;
+    public static CogType getPossibleCogType(BlockEntity be, Direction face) {
+        if (be instanceof KineticBlockEntity kbe) return getCogType(kbe, face);
+        if (be instanceof CompositeKineticBlockEntity ckbe) {
+            for (CompositeKineticBlockEntityPart part : ckbe.getParts()) {
+                final CogType cogType = getCogType(part, face);
+                if (!cogType.isNone()) return cogType;
+            };
+        };
         return CogType.NONE;
     };
+
+    public static CogType getCogType(KineticBlockEntity kbe, Direction face) {
+        if (kbe instanceof IFaceAlignedCogWheelBlockEntity cogwheel) return cogwheel.getCogType(face);
+
+        if (kbe instanceof MillstoneBlockEntity) return face == Direction.UP ? CogType.SMALL : CogType.NONE;
+
+        // Pumps and some Gears 'n' Kinetics blocks
+        if (
+            kbe.getBlockState().getBlock() instanceof IRotate rotate &&
+            face.getAxis() == rotate.getRotationAxis(kbe.getBlockState())
+        ) {
+            if (kbe.getBlockState().is(PetrolsPartsTags.THICK_SMALL_COGWHEELS)) return CogType.SMALL;
+            if (kbe.getBlockState().is(PetrolsPartsTags.THICK_LARGE_COGWHEELS)) return CogType.LARGE;
+        };
+
+        return CogType.NONE;
+    };
+
+    public static boolean isValidFaceAlignedCogwheelPosition(boolean large, LevelReader worldIn, BlockPos pos, Direction cogFace) {
+		for (Direction facing : Iterate.directions) {
+			if (facing.getAxis() == cogFace.getAxis()) continue;
+
+			final BlockPos offsetPos = pos.relative(facing);
+			final BlockState blockState = worldIn.getBlockState(offsetPos);
+			if (!blockState.hasProperty(BlockStateProperties.AXIS)) continue;
+            final Axis axis = blockState.getValue(BlockStateProperties.AXIS);
+            if (axis == facing.getAxis()) continue;
+
+            // Same axis, large Cogwheel directly next to another
+			if (!(worldIn.getBlockEntity(pos) instanceof KineticBlockEntity kbe)) continue;
+            final CogType cogType = getCogType(kbe, cogFace);
+            if (cogType.isLarge() || (large && cogType.isSmall())) return false;
+
+            // Perpendicular axes
+            if (axis != cogFace.getAxis()) {
+                final CogType rightAngleUpperCogType = getCogType(kbe, Direction.get(AxisDirection.POSITIVE, axis));
+                final CogType rightAngleLowerCogType = getCogType(kbe, Direction.get(AxisDirection.NEGATIVE, axis));
+                if (rightAngleUpperCogType.isLarge() || rightAngleLowerCogType.isLarge() || ICogWheel.isLargeCog(blockState)) return false;
+                if (large && rightAngleUpperCogType.isSmall() || rightAngleLowerCogType.isSmall() || ICogWheel.isSmallCog(blockState)) return false;
+            };
+		};
+		return true;
+	};
     
     public CogType getCogType(Direction face);
 

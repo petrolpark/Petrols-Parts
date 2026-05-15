@@ -10,8 +10,8 @@
         "AirCurrentMixin",
         "AssemblyOperatorBlockItemMixin",
         "ICogWheelMixin",
-        "KineticBlockEntityMixin",
         "MechanicalPressBlockEntityMixin",
+        "RecipeManagerMixin",
         "RotationPropagatorMixin",
         "SpoutBlockEntityMixin"
     ],

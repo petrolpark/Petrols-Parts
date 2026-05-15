@@ -5,12 +5,9 @@ import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
 import com.petrolpark.compat.GetPetrolparkSharedFeatures;
 import com.petrolpark.compat.SharedFeatureFlag;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockItem.GearOnShaftPlacementHelper;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.CoaxialGearBlockItem.ShaftOnGearPlacementHelper;
 import com.petrolpark.petrolsparts.core.PetrolsPartsRegistrate;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementTriggers;
 
-import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.EventPriority;
@@ -32,12 +29,6 @@ public class PetrolsParts {
 
     public static ResourceLocation asResource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
-    };
-
-    static {
-        // Placement Helpers which need to come before Create's
-        PlacementHelpers.register(new GearOnShaftPlacementHelper());
-        PlacementHelpers.register(new ShaftOnGearPlacementHelper());
     };
 
     public PetrolsParts(IEventBus modEventBus, ModContainer modContainer) {

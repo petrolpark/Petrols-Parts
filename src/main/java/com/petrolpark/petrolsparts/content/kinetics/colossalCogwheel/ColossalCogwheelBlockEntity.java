@@ -6,6 +6,8 @@ import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCog
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock.Position;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementBehaviour;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementTriggers;
+import com.petrolpark.petrolsparts.core.block.CogType;
+import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.RotatedPillarKineticBlock;
@@ -13,7 +15,9 @@ import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -54,13 +58,21 @@ public class ColossalCogwheelBlockEntity extends KineticBlockEntity {
     @Override
     public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
         if (stateTo.getBlock() instanceof ColossalCogwheelBlock && ColossalCogwheelBlock.getRelativeCenterPosition(stateFrom).equals(diff.offset(ColossalCogwheelBlock.getRelativeCenterPosition(stateTo)))) return 1f;
-        return propagateFromColossalCogwheel(stateFrom, stateTo, diff);
+        return propagateFromColossalCogwheel(target, stateFrom, stateTo, diff);
     };
 
-    public static final float propagateFromColossalCogwheel(BlockState colossalState, BlockState otherCogState, BlockPos diff) {
+    public static final float propagateFromColossalCogwheel(KineticBlockEntity target, BlockState colossalState, BlockState otherCogState, BlockPos diff) {
         BlockPos relCenter = ColossalCogwheelBlock.getRelativeCenterPosition(colossalState);
-        boolean toLargeCog = ICogWheel.isLargeCog(otherCogState);
-        if (toLargeCog || ICogWheel.isSmallCog(otherCogState)) {
+        
+        if (!(otherCogState.getBlock() instanceof IRotate rotate)) return 0f;
+        final Axis otherAxis = rotate.getRotationAxis(otherCogState);
+        // Check for non-central gears as the teeth on Colossal Cogwheels are very large
+        final CogType upperCogType = IFaceAlignedCogWheelBlockEntity.getCogType(target, Direction.get(AxisDirection.POSITIVE, otherAxis));
+        final CogType lowerCogType = IFaceAlignedCogWheelBlockEntity.getCogType(target, Direction.get(AxisDirection.NEGATIVE, otherAxis));
+        
+        final boolean toLargeCog = ICogWheel.isLargeCog(otherCogState) || upperCogType.isLarge() || lowerCogType.isLarge();
+
+        if (toLargeCog || ICogWheel.isSmallCog(otherCogState) || upperCogType.isSmall() || lowerCogType.isSmall()) {
             Axis axis = colossalState.getValue(RotatedPillarKineticBlock.AXIS);
             if (((IRotate)otherCogState.getBlock()).getRotationAxis(otherCogState) != axis) return 0f;
             Position.Clock posClock = colossalState.getValue(ColossalCogwheelBlock.POSITION_CLOCK);

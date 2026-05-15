@@ -6,11 +6,8 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockEntity;
-import com.petrolpark.petrolsparts.core.block.DirectionalRotatedPillarKineticBlock;
-import com.petrolpark.petrolsparts.mixin.accessor.RotationPropagatorAccessor;
 import com.simibubi.create.content.kinetics.RotationPropagator;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -38,19 +35,9 @@ public class RotationPropagatorMixin {
         remap = false
     )
     private static void inGetRotationSpeedModifier(KineticBlockEntity from, KineticBlockEntity to, CallbackInfoReturnable<Float> cir, BlockState stateFrom, BlockState stateTo, Block fromBlock, Block toBlock, IRotate definitionFrom, IRotate definitionTo, BlockPos diff, Direction direction, Level world) {
-
-        // Long Shaft <-> other components with Shafts
-        if (to instanceof LongShaftBlockEntity) {
-            Direction directionToOther = DirectionalRotatedPillarKineticBlock.getDirection(to.getBlockState());
-            if (LongShaftBlockEntity.connectedToLongShaft(from, to, diff)) {
-                /* Copied from Create (see Axis <-> Axis) */
-                cir.setReturnValue(1 / RotationPropagatorAccessor.invokeGetAxisModifier(from, directionToOther.getOpposite()));
-            };
-        };
-
         // Colossal Cogwheel <-> Cogwheels
         if (to.getBlockState().getBlock() instanceof ColossalCogwheelBlock) {
-            float ratio = ColossalCogwheelBlockEntity.propagateFromColossalCogwheel(stateTo, stateFrom, BlockPos.ZERO.subtract(diff));
+            float ratio = ColossalCogwheelBlockEntity.propagateFromColossalCogwheel(to, stateTo, stateFrom, BlockPos.ZERO.subtract(diff));
             if (ratio != 0f) cir.setReturnValue(1 / ratio);
         };
     };

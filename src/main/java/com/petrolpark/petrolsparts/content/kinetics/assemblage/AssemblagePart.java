@@ -31,7 +31,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
@@ -64,9 +63,8 @@ public final class AssemblagePart implements CreateMultiPartBlock.ICreatePart {
         return direction.getAxisDirection() == AxisDirection.POSITIVE ? be -> be.topCogPart : be -> be.bottomCogPart;
     };
 
-    //TODO shaft half
     public static final Map<Axis, AssemblagePart> SHAFTS = Stream.of(Axis.values()).collect(Collectors.toMap(Function.identity(), axis -> new AssemblagePart(true, dir -> dir.getAxis() == axis, AllShapes.SIX_VOXEL_POLE.get(axis), SHAFT_LOOT, state -> BlockHelper.copyAll(PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE.getDefaultState(), state), be -> be.shaftPart, AllBlocks.SHAFT)));
-    public static final Map<Direction, AssemblagePart> SHAFT_HALVES = Stream.of(Direction.values()).collect(Collectors.toMap(Function.identity(), dir -> new AssemblagePart(true, dir::equals, SHAFT_HALF_SHAPER.get(dir), SHAFT_HALF_LOOT, state -> state.setValue(dir.getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.TOP_SHAFT_HALF : IAssemblageBlock.BOTTOM_SHAFT_HALF, false), be -> be.shaftPart, Items.AIR)));
+    public static final Map<Direction, AssemblagePart> SHAFT_HALVES = Stream.of(Direction.values()).collect(Collectors.toMap(Function.identity(), dir -> new AssemblagePart(true, dir::equals, SHAFT_HALF_SHAPER.get(dir), SHAFT_HALF_LOOT, state -> state.setValue(dir.getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.TOP_SHAFT_HALF : IAssemblageBlock.BOTTOM_SHAFT_HALF, false), be -> be.shaftPart, PetrolsPartsItems.SHAFT_HALF)));
     public static final Map<Direction, AssemblagePart> COGWHEELS = Stream.of(Direction.values()).collect(Collectors.toMap(Function.identity(), dir -> new AssemblagePart(false, dir::equals, COGWHEEL_SHAPER.get(dir), COGWHEEL_LOOT, removeCog(dir), getCogPart(dir), PetrolsPartsItems.SHAFTLESS_COGWHEEL)));
     public static final Map<Axis, AssemblagePart> MIDDLE_COGWHEELS = Stream.of(Axis.values()).collect(Collectors.toMap(Function.identity(), axis -> new AssemblagePart(false, dir -> false, MIDDLE_COGWHEEL_SHAPER.get(axis), COGWHEEL_LOOT, REMOVE_MIDDLE_COG, be -> be.middleCogPart, PetrolsPartsItems.SHAFTLESS_COGWHEEL)));
     public static final Map<Direction, AssemblagePart> LARGE_COGWHEELS = Stream.of(Direction.values()).collect(Collectors.toMap(Function.identity(), dir -> new AssemblagePart(false, dir::equals, LARGE_COGWHEEL_SHAPER.get(dir), LARGE_COGWHEEL_LOOT, removeCog(dir), getCogPart(dir), PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL)));

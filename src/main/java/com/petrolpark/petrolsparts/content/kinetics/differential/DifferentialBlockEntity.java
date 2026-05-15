@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.petrolpark.compat.create.core.block.entity.behaviour.AbstractRememberPlacerBehaviour;
 import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlockEntity;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementBehaviour;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementTriggers;
 import com.petrolpark.petrolsparts.core.block.DirectionalRotatedPillarKineticBlock;
@@ -42,7 +41,7 @@ public class DifferentialBlockEntity extends SplitShaftBlockEntity {
 
     @Override
     public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
-        if (connectedViaAxes || LongShaftBlockEntity.connectedToLongShaft(this, target, diff)) {
+        if (connectedViaAxes) {
             if (target instanceof DifferentialBlockEntity) return 0f;
             return ratio(stateFrom) * Math.signum(RotationPropagatorAccessor.invokeGetAxisModifier(target, KineticsHelper.directionBetween(target.getBlockPos(), getBlockPos())));
         };

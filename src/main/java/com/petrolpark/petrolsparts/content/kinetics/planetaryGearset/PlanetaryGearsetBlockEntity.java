@@ -3,7 +3,6 @@ package com.petrolpark.petrolsparts.content.kinetics.planetaryGearset;
 import java.util.List;
 
 import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
-import com.petrolpark.petrolsparts.content.kinetics.coaxialGear.LongShaftBlockEntity;
 import com.petrolpark.petrolsparts.mixin.accessor.RotationPropagatorAccessor;
 import com.petrolpark.util.KineticsHelper;
 import com.simibubi.create.content.kinetics.base.IRotate;
@@ -23,7 +22,7 @@ public class PlanetaryGearsetBlockEntity extends SplitShaftBlockEntity {
 
     @Override
     public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
-        if (connectedViaAxes || LongShaftBlockEntity.connectedToLongShaft(this, target, diff)) {
+        if (connectedViaAxes) {
             if (PetrolsPartsBlocks.PLANETARY_GEARSET.has(stateTo)) return 0;
             return Math.signum(RotationPropagatorAccessor.invokeGetAxisModifier(target, KineticsHelper.directionBetween(target.getBlockPos(), getBlockPos()))) * -2;
         };

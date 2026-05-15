@@ -101,6 +101,8 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
 
     @Override
     public BlockState getReplacedState(Level level, BlockPos pos, BlockState existingState, BlockState newState, Player player) {
+        if (existingState.canBeReplaced()) return newState;
+        if (newState.canBeReplaced()) return existingState;
         existingState = getEquivalent(existingState);
         newState = getEquivalent(newState);
         if (
@@ -117,12 +119,14 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
             if (existingAssemblage.hasTopShaft(existingState) || existingAssemblage.hasBottomShaft(existingState)) return null;
         } else {
             if (existingAssemblage.hasTopShaft(existingState) != newAssemblage.hasTopShaft(newState)) {
-                if (newAssemblage.hasTopShaft(existingState)) return null;
                 newState = newState.setValue(TOP_SHAFT_HALF, true);
+            } else if (newAssemblage.hasTopShaft(newState)) {
+                return null;
             };
             if (existingAssemblage.hasBottomShaft(existingState) != newAssemblage.hasBottomShaft(newState)) {
-                if (newAssemblage.hasBottomShaft(existingState)) return null;
                 newState = newState.setValue(BOTTOM_SHAFT_HALF, true);
+            } else if (newAssemblage.hasBottomShaft(newState)) {
+                return null;
             };
         };
 
@@ -147,6 +151,11 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
             return state;
         }
         return state.setValue(AXIS, oldState.getValue(BlockStateProperties.AXIS));
+    };
+
+    @Override
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return IAssemblageBlock.super.canSurvive(state, level, pos);
     };
 
     @Override
@@ -181,7 +190,7 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
 
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
-        return face.getAxis() == state.getValue(AXIS) && (face.getAxisDirection() == AxisDirection.POSITIVE ? hasTopShaft(state) : hasBottomShaft(state));
+        return face.getAxis() == state.getValue(AXIS) && (face.getAxisDirection() == AxisDirection.POSITIVE ? hasTopShaft(state) || state.getValue(TOP_COG).hasShaftConnection() : hasBottomShaft(state) || state.getValue(BOTTOM_COG).hasShaftConnection());
     };
     
     @Override

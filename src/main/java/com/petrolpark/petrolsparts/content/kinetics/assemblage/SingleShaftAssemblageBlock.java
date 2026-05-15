@@ -33,8 +33,8 @@ public non-sealed class SingleShaftAssemblageBlock extends AssemblageBlock {
         if (state.getValue(TOP_COG).isNone() && state.getValue(BOTTOM_COG).isNone()) {
             final Axis axis = state.getValue(AXIS);
             state = (switch (state.getValue(MIDDLE_COG)) {
-                case SMALL -> AllBlocks.COGWHEEL.getDefaultState();
-                case LARGE -> AllBlocks.LARGE_COGWHEEL.getDefaultState();
+                // case SMALL -> AllBlocks.COGWHEEL.getDefaultState();
+                // case LARGE -> AllBlocks.LARGE_COGWHEEL.getDefaultState();
                 case NONE -> AllBlocks.SHAFT.getDefaultState();
                 default -> state;
             }).setValue(BlockStateProperties.AXIS, axis);
@@ -59,7 +59,7 @@ public non-sealed class SingleShaftAssemblageBlock extends AssemblageBlock {
 
     @Override
     public BlockEntityType<? extends AssemblageBlockEntity> getBlockEntityType() {
-        return PetrolsPartsBlockEntityTypes.SINGLE_SHAFT_ASSEMBLAGE.get();
+        return PetrolsPartsBlockEntityTypes.ASSEMBLAGE.get();
     };
     
 };
