@@ -81,6 +81,7 @@
     "item.petrolsparts.large_coaxial_cogwheel": "大きな同軸歯車",
     "item.petrolsparts.large_shaftless_cogwheel": "大きな無軸歯車",
     "item.petrolsparts.shaftless_cogwheel": "無軸歯車",
+    "item.petrolsparts.shaft_half": "ハーフシャフト",
     
     "itemGroup.petrolsparts.base": "Petrol's Parts"
 }
