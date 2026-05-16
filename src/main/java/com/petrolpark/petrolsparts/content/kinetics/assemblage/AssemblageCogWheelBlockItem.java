@@ -3,6 +3,7 @@ package com.petrolpark.petrolsparts.content.kinetics.assemblage;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import com.google.common.base.Predicates;
 import com.petrolpark.petrolsparts.core.block.CogType;
@@ -34,15 +35,19 @@ import net.minecraft.world.phys.Vec3;
 
 public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 
-    public final AssemblageCog cog;
+    public final Supplier<AssemblageCog> cog;
 
     protected final int[] placementHelperIds;
 
-    public AssemblageCogWheelBlockItem(AssemblageCog cog, Item.Properties properties) {
+    public AssemblageCogWheelBlockItem(Supplier<AssemblageCog> cog, Item.Properties properties) {
         super(properties);
         this.cog = cog;
         //TODO large placement helper
         placementHelperIds = new int[]{PlacementHelpers.register(new SmallPlacementHelper()), PlacementHelpers.register(new DiagonalPlacementHelper())};
+    };
+
+    public AssemblageCog getCog() {
+        return cog.get();
     };
 
     @Override
@@ -74,16 +79,16 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
             if (part != null) {
                 if (context.getClickedFace().getAxis() == existingState.getValue(IAssemblageBlock.AXIS)) {
                     if (part.isEndCog(context.getClickedFace().getOpposite()) || part.isShaft()) {
-                        state = state.setValue(IAssemblageBlock.MIDDLE_COG, cog);
+                        state = state.setValue(IAssemblageBlock.MIDDLE_COG, getCog());
                     } else if (part.isMiddleCog(context.getClickedFace().getAxis())) {
-                        state = state.setValue(context.getClickedFace().getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.TOP_COG : IAssemblageBlock.BOTTOM_COG, cog);
+                        state = state.setValue(context.getClickedFace().getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.TOP_COG : IAssemblageBlock.BOTTOM_COG, getCog());
                     } else {
                         return null;
                     }
                 } else {
                     final EnumProperty<AssemblageCog> cogProperty = getClosestTargetedCog(context.getClickedPos(), existingState, context.getClickLocation());
                     if (part.isShaft()) {
-                        state = state.setValue(cogProperty, cog);
+                        state = state.setValue(cogProperty, getCog());
                     } else {
                         return null;
                     }
@@ -95,12 +100,12 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
             if (existingState.getBlock() instanceof AssemblageBlock) {
                 state = state.setValue(IAssemblageBlock.AXIS, existingState.getValue(IAssemblageBlock.AXIS));
                 if (context.getClickedFace().getAxis() == existingState.getValue(IAssemblageBlock.AXIS)) {
-                    state = state.setValue(context.getClickedFace().getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.BOTTOM_COG : IAssemblageBlock.TOP_COG, cog);
+                    state = state.setValue(context.getClickedFace().getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.BOTTOM_COG : IAssemblageBlock.TOP_COG, getCog());
                 } else {
-                    state = state.setValue(getClosestTargetedCog(context.getClickedPos(), existingState, context.getClickLocation()), cog);
+                    state = state.setValue(getClosestTargetedCog(context.getClickedPos(), existingState, context.getClickLocation()), getCog());
                 };
             } else {
-                state = state.setValue(IAssemblageBlock.AXIS, context.getClickedFace().getAxis()).setValue(context.getClickedFace().getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.BOTTOM_COG : IAssemblageBlock.TOP_COG, cog);
+                state = state.setValue(IAssemblageBlock.AXIS, context.getClickedFace().getAxis()).setValue(context.getClickedFace().getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.BOTTOM_COG : IAssemblageBlock.TOP_COG, getCog());
                 return state.canSurvive(context.getLevel(), context.getClickedPos()) ? ProperWaterloggedBlock.withWater(context.getLevel(), state, context.getClickedPos()) : null;
             };
         };
@@ -147,19 +152,19 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
                     ? IAssemblageBlock.MIDDLE_COG
                     : part.isEndCog(Direction.get(AxisDirection.POSITIVE, axis))
                         ? IAssemblageBlock.TOP_COG
-                        : IAssemblageBlock.BOTTOM_COG, cog
+                        : IAssemblageBlock.BOTTOM_COG, getCog()
                     )
                 ); else return PlacementOffset.fail();
             } else {
                 final double coord = ray.getLocation().get(axis) - (float)pos.get(axis);
                 if (coord <= 5.5 / 16d) {
-                    attemptStates = List.of(defaultState.setValue(IAssemblageBlock.BOTTOM_COG, cog), defaultState.setValue(IAssemblageBlock.MIDDLE_COG, cog), defaultState.setValue(IAssemblageBlock.TOP_COG, cog));
+                    attemptStates = List.of(defaultState.setValue(IAssemblageBlock.BOTTOM_COG, getCog()), defaultState.setValue(IAssemblageBlock.MIDDLE_COG, getCog()), defaultState.setValue(IAssemblageBlock.TOP_COG, getCog()));
                 } else if (coord <= 8 / 16d) {
-                     attemptStates = List.of(defaultState.setValue(IAssemblageBlock.MIDDLE_COG, cog), defaultState.setValue(IAssemblageBlock.BOTTOM_COG, cog), defaultState.setValue(IAssemblageBlock.TOP_COG, cog));
+                     attemptStates = List.of(defaultState.setValue(IAssemblageBlock.MIDDLE_COG, getCog()), defaultState.setValue(IAssemblageBlock.BOTTOM_COG, getCog()), defaultState.setValue(IAssemblageBlock.TOP_COG, getCog()));
                 } else if (coord <= 10.5 / 16d) {
-                    attemptStates = List.of(defaultState.setValue(IAssemblageBlock.MIDDLE_COG, cog), defaultState.setValue(IAssemblageBlock.TOP_COG, cog), defaultState.setValue(IAssemblageBlock.BOTTOM_COG, cog));
+                    attemptStates = List.of(defaultState.setValue(IAssemblageBlock.MIDDLE_COG, getCog()), defaultState.setValue(IAssemblageBlock.TOP_COG, getCog()), defaultState.setValue(IAssemblageBlock.BOTTOM_COG, getCog()));
                 } else {
-                    attemptStates = List.of(defaultState.setValue(IAssemblageBlock.TOP_COG, cog), defaultState.setValue(IAssemblageBlock.MIDDLE_COG, cog), defaultState.setValue(IAssemblageBlock.BOTTOM_COG, cog));
+                    attemptStates = List.of(defaultState.setValue(IAssemblageBlock.TOP_COG, getCog()), defaultState.setValue(IAssemblageBlock.MIDDLE_COG, getCog()), defaultState.setValue(IAssemblageBlock.BOTTOM_COG, getCog()));
                 };
             }
 
@@ -204,7 +209,7 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 
         @Override
         public PlacementOffset getOffsetForState(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray, Axis axis, CogType cogType, BlockState stateToPlace) {
-            if (cogType == cog.getCogType()) return PlacementOffset.fail();
+            if (cogType == getCog().getCogType()) return PlacementOffset.fail();
 
             final Direction closestDirection = IPlacementHelper.orderedByDistanceExceptAxis(pos, ray.getLocation(), axis).get(0);
 			final List<Direction> directions = IPlacementHelper.orderedByDistanceExceptAxis(pos, ray.getLocation(), axis, d -> d.getAxis() != closestDirection.getAxis());

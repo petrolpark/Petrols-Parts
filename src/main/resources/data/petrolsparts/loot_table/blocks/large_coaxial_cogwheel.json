@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "create:shaft"
+          "name": "petrolsparts:large_coaxial_cogwheel"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "petrolsparts:blocks/long_shaft"
+  "random_sequence": "petrolsparts:blocks/large_coaxial_cogwheel"
 }

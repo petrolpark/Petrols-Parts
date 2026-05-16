@@ -1,0 +1,31 @@
+{
+	"parent": "petrolsparts:block/assemblage/encased/andesite/base",
+	"elements": [
+		{
+			"from": [0, 5, 0],
+			"to": [16, 6, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 5, 0]},
+			"faces": {
+				"north": {"uv": [0, 10, 16, 11], "texture": "#closed_side", "cullface": "north"},
+				"east": {"uv": [0, 10, 16, 11], "texture": "#closed_side", "cullface": "east"},
+				"south": {"uv": [0, 10, 16, 11], "texture": "#closed_side", "cullface": "south"},
+				"west": {"uv": [0, 10, 16, 11], "texture": "#closed_side", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#inside"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#inside"}
+			}
+		},
+		{
+			"from": [0, 10, 0],
+			"to": [16, 11, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, 10, 0]},
+			"faces": {
+				"north": {"uv": [0, 5, 16, 6], "texture": "#closed_side", "cullface": "north"},
+				"east": {"uv": [0, 5, 16, 6], "texture": "#closed_side", "cullface": "east"},
+				"south": {"uv": [0, 5, 16, 6], "texture": "#closed_side", "cullface": "south"},
+				"west": {"uv": [0, 5, 16, 6], "texture": "#closed_side", "cullface": "west"},
+				"up": {"uv": [0, 0, 16, 16], "texture": "#inside"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#inside"}
+			}
+		}
+	]
+}

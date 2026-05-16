@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "petrolsparts:large_coaxial_gear"
+          "name": "petrolsparts:shaftless_cogwheel"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "petrolsparts:blocks/large_coaxial_gear"
+  "random_sequence": "petrolsparts:blocks/shaftless_cogwheel"
 }

@@ -29,7 +29,11 @@ public class PetrolsPartsBlockEntityTypes {
 
     public static final BlockEntityEntry<AssemblageBlockEntity> ASSEMBLAGE = REGISTRATE
         .createBlockEntity("assemblage", AssemblageBlockEntity::new)
-        .validBlocks(PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE)
+        .validBlocks(
+            PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE,
+            PetrolsPartsBlocks.ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.ANDESITE_ENCASED_SINGLE_SHAFT_ASSEMBLAGE,
+            PetrolsPartsBlocks.BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.BRASS_ENCASED_SINGLE_SHAF_ASSEMBLAGE
+        )
         .renderer(() -> AssemblageRenderer::new)
         .register();
 

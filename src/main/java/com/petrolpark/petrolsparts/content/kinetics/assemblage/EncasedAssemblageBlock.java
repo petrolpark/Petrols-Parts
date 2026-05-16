@@ -5,34 +5,57 @@ import java.util.function.Supplier;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import com.petrolpark.petrolsparts.PetrolsParts;
+import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.petrolpark.util.BlockHelper;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.encasing.EncasedBlock;
 import com.simibubi.create.foundation.block.IBE;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.tterrag.registrate.util.nullness.NonNullConsumer;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import net.minecraft.world.phys.HitResult;
 
 public abstract class EncasedAssemblageBlock extends Block implements IBE<AssemblageBlockEntity>, IAssemblageBlock, EncasedBlock {
 
-    protected final Supplier<Block> casing;
+    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> andesite(EncasedAssemblageBlock.Factory<B> factory) {
+        return p -> factory.create(p, AllBlocks.ANDESITE_CASING::get, "andesite");
+    };
 
-    public EncasedAssemblageBlock(BlockBehaviour.Properties properties, Supplier<Block> casing) {
+    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> brass(EncasedAssemblageBlock.Factory<B> factory) {
+        return p -> factory.create(p, AllBlocks.BRASS_CASING::get, "brass");
+    };
+
+    protected final Supplier<Block> casing;
+    protected final String descriptionId;
+
+    public EncasedAssemblageBlock(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
         super(properties);
         this.casing = casing;
+        this.descriptionId = Util.makeDescriptionId("block", PetrolsParts.asResource(casingName + "_encased_assemblage"));
     };
 
     @Override
@@ -41,15 +64,25 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
         builder.add(AXIS, TOP_COG, MIDDLE_COG, BOTTOM_COG);
     };
 
+    public abstract BlockState getUnencasedDefaultState();
+
+    @Override
+	public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
+		if (context.getLevel().isClientSide()) return InteractionResult.SUCCESS;
+		context.getLevel().setBlockAndUpdate(context.getClickedPos(), BlockHelper.copyAll(getUnencasedDefaultState(), state));
+		return InteractionResult.SUCCESS;
+	};
+
     @Override
     public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return IAssemblageBlock.super.canSurvive(state, level, pos);
     };
 
     @Override
-	public void onPlace(@Nonnull BlockState state, @Nonnull Level level, @Nonnull BlockPos pos, @Nonnull BlockState oldState, boolean movedByPiston) {
-		IAssemblageBlock.super.onPlace(state, level, pos, oldState, movedByPiston);
-	};
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        // Deferred update of usual KineticBlockEntity/CompositeKineticBlockEntity is no good
+        withBlockEntityDo(level, pos, AssemblageBlockEntity::invalidateParts);
+    };
 
 	@Override
 	public void onRemove(@Nonnull BlockState pState, @Nonnull Level pLevel, @Nonnull BlockPos pPos, @Nonnull BlockState pNewState, boolean pIsMoving) {
@@ -72,6 +105,17 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
     };
 
     @Override
+    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+        return face.getAxis() == state.getValue(AXIS) && (face.getAxisDirection() == AxisDirection.POSITIVE ? hasTopShaft(state) || state.getValue(TOP_COG).hasShaftConnection() : hasBottomShaft(state) || state.getValue(BOTTOM_COG).hasShaftConnection());
+    };
+
+    public boolean hasShaftExposed(BlockState state, boolean top) {
+        return top
+            ? hasTopShaft(state) || state.getValue(IAssemblageBlock.TOP_COG).hasShaftConnection()
+            : hasBottomShaft(state) || state.getValue(IAssemblageBlock.BOTTOM_COG).hasShaftConnection();
+    };
+
+    @Override
     public Block getCasing() {
         return casing.get();
     };
@@ -80,6 +124,22 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
     public void handleEncasing(BlockState state, Level level, BlockPos pos, ItemStack heldItem, Player player, InteractionHand hand, BlockHitResult ray) {
         level.setBlock(pos, BlockHelper.copyAll(defaultBlockState(), state), Block.UPDATE_ALL);
     };
+
+    @Override
+    public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        return new ItemStack(getCasing());
+    };
+
+    @Override
+    public String getDescriptionId() {
+        return descriptionId;
+    };
+
+    @Override
+	public boolean skipRendering(BlockState pState, BlockState pAdjacentBlockState, Direction pDirection) {
+		return pAdjacentBlockState.getBlock() instanceof EncasedAssemblageBlock encasedAssemblage && encasedAssemblage.getCasing() == getCasing()
+			&& pState.getValue(AXIS) == pAdjacentBlockState.getValue(AXIS);
+	};
 
     @Override
     protected BlockState rotate(BlockState state, Rotation rotation) {
@@ -94,6 +154,24 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
     @Override
     public Class<AssemblageBlockEntity> getBlockEntityClass() {
         return AssemblageBlockEntity.class;
+    };
+
+    @Override
+    public BlockEntityType<? extends AssemblageBlockEntity> getBlockEntityType() {
+        return PetrolsPartsBlockEntityTypes.ASSEMBLAGE.get();
+    };
+
+    @FunctionalInterface
+    public interface Factory<B extends EncasedAssemblageBlock> {
+
+        public B create(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName);
+    };
+
+    public static final <B extends EncasedAssemblageBlock> NonNullConsumer<B> registerCTs(Supplier<EncasedAssemblageCTBehaviour> ctBehaviour) {
+        return b -> {
+            CreateRegistrate.connectedTextures(() -> ctBehaviour.get()).accept(b);
+            CreateRegistrate.casingConnectivity((b1, cc) -> cc.make(b1, ctBehaviour.get().getEndShift(), (s, f) -> s.getValue(IAssemblageBlock.AXIS) == f.getAxis() && !b.hasShaftExposed(s, f.getAxisDirection() == AxisDirection.POSITIVE))).accept(b);
+        };
     };
     
 };

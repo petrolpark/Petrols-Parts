@@ -1,0 +1,57 @@
+{
+	"parent": "petrolsparts:block/assemblage/encased/andesite/base",
+	"elements": [
+		{
+			"from": [0, 1, 0],
+			"to": [16, 5, 16],
+			"rotation": {"angle": 0, "axis": "y", "origin": [0, -1, 0]},
+			"faces": {
+				"north": {"uv": [0, 11, 16, 15], "texture": "#closed_side", "cullface": "north"},
+				"east": {"uv": [0, 11, 16, 15], "texture": "#closed_side", "cullface": "east"},
+				"south": {"uv": [0, 11, 16, 15], "texture": "#closed_side", "cullface": "south"},
+				"west": {"uv": [0, 11, 16, 15], "texture": "#closed_side", "cullface": "west"},
+				"down": {"uv": [0, 0, 16, 16], "texture": "#gearbox", "cullface": "down"}
+			}
+		},
+		{
+			"from": [0, 0, 0],
+			"to": [16, 1, 2],
+			"faces": {
+				"north": {"uv": [0, 15, 16, 16], "texture": "#closed_side", "cullface": "north"},
+				"east": {"uv": [14, 15, 16, 16], "texture": "#closed_side", "cullface": "east"},
+				"south": {"uv": [0, 0, 16, 1], "texture": "#closed_side"},
+				"west": {"uv": [0, 15, 2, 16], "texture": "#closed_side", "cullface": "west"},
+				"down": {"uv": [0, 14, 16, 16], "texture": "#end"}
+			}
+		},
+		{
+			"from": [14, 0, 2],
+			"to": [16, 1, 14],
+			"faces": {
+				"east": {"uv": [2, 15, 14, 16], "texture": "#closed_side", "cullface": "east"},
+				"west": {"uv": [2, 0, 14, 1], "texture": "#closed_side"},
+				"down": {"uv": [14, 2, 16, 14], "texture": "#end"}
+			}
+		},
+		{
+			"from": [0, 0, 14],
+			"to": [16, 1, 16],
+			"faces": {
+				"north": {"uv": [0, 0, 16, 1], "texture": "#closed_side"},
+				"east": {"uv": [0, 15, 2, 16], "texture": "#closed_side"},
+				"south": {"uv": [0, 15, 16, 16], "texture": "#closed_side", "cullface": "south"},
+				"west": {"uv": [14, 15, 16, 16], "texture": "#closed_side", "cullface": "west"},
+				"down": {"uv": [0, 0, 16, 2], "texture": "#end"}
+			}
+		},
+		{
+			"from": [0, 0, 2],
+			"to": [2, 1, 14],
+			"faces": {
+				"east": {"uv": [2, 0, 14, 1], "texture": "#closed_side"},
+				"west": {"uv": [2, 15, 14, 16], "texture": "#closed_side", "cullface": "west"},
+				"down": {"uv": [0, 2, 2, 14], "texture": "#end"}
+			}
+		}
+	]
+}

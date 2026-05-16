@@ -173,6 +173,7 @@ public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> i
         final Level level = context.getLevel();
         BlockPos clickedPos = context.getClickedPos().relative(context.getClickedFace().getOpposite());
         
+        return null; //TODO
     };
 
     @Override

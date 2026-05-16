@@ -10,10 +10,12 @@
     "advancement.petrolsparts.root": "Petrol's Parts",
     "advancement.petrolsparts.root.description": "New and funky kinetic components",
 
+    "block.petrolsparts.andesite_encased_assemblage": "Andesite Encased Assemblage",
     "block.petrolsparts.andesite_encased_corner_shaft": "Andesite Encased Corner Shaft",
     "block.petrolsparts.assemblage": "Assemblage",
     "block.petrolsparts.bevel_gear": "Bevel Gear",
     "block.petrolsparts.brass_depot": "Brass Depot",
+    "block.petrolsparts.brass_encased_assemblage": "Brass Encased Assemblage",
     "block.petrolsparts.brass_encased_corner_shaft": "Brass Encased Corner Shaft",
     "block.petrolsparts.colossal_cogwheel": "Colossal Cogwheel",
     "block.petrolsparts.differential": "Differential",

@@ -2,42 +2,65 @@ package com.petrolpark.petrolsparts.content.kinetics.assemblage;
 
 import java.util.function.Consumer;
 
-import com.google.common.base.Supplier;
-import com.google.common.base.Suppliers;
+import com.petrolpark.petrolsparts.PetrolsPartsItems;
 import com.petrolpark.petrolsparts.core.block.CogType;
 import com.petrolpark.util.Lang;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
+import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUseType;
+import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.StringRepresentable;
-import net.minecraft.world.item.Item;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootTable;
 
 public enum AssemblageCog implements StringRepresentable {
     
-    //TODO Item Requirements
-    NONE(() -> ItemRequirement.NONE),
-    SMALL(() -> ItemRequirement.NONE),
-    LARGE(() -> ItemRequirement.NONE),
-    SMALL_COAXIAL(() -> ItemRequirement.NONE),
-    LARGE_COAXIAL(() -> ItemRequirement.NONE);
+    NONE(),
+    SMALL(PetrolsPartsItems.SHAFTLESS_COGWHEEL),
+    LARGE(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL),
+    SMALL_COAXIAL(PetrolsPartsItems.COAXIAL_COGWHEEL),
+    LARGE_COAXIAL(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL);
 
     protected final String name;
-    protected final Supplier<ItemRequirement> itemRequirement;
+    protected final ItemEntry<? extends AssemblageBlockItem> item;
+    protected final ResourceKey<LootTable> lootTable;
 
-    AssemblageCog(Supplier<ItemRequirement> itemRequirement) {
+    AssemblageCog() {
         name = Lang.asId(name());
-        this.itemRequirement = Suppliers.memoize(itemRequirement);
+        this.item = null;
+        this.lootTable = BuiltInLootTables.EMPTY;
+    };
+
+    AssemblageCog(ItemEntry<? extends AssemblageBlockItem> item) {
+        name = Lang.asId(name());
+        this.item = item;
+        this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, item.getId().withPrefix("blocks/"));
     };
 
     public boolean isNone() {
         return this == NONE;
     };
 
+    public boolean isSmall() {
+        return this == SMALL || this == SMALL_COAXIAL;
+    };
+
+    public boolean isLarge() {
+        return this == LARGE || this == LARGE_COAXIAL;
+    };
+
     @Override
     public String getSerializedName() {
         return name;
+    };
+
+    public ResourceKey<LootTable> getLootTable() {
+        return lootTable;  
     };
 
     public void addTopPart(Axis axis, Consumer<AssemblagePart> partAdder) {
@@ -101,10 +124,7 @@ public enum AssemblageCog implements StringRepresentable {
     };
 
     public ItemRequirement itemRequirement() {
-        return itemRequirement.get();
-    };
-
-    public AssemblageCogWheelBlockItem item(Item.Properties properties) {
-        return new AssemblageCogWheelBlockItem(this, properties);
+        if (isNone()) return ItemRequirement.NONE;
+        return new ItemRequirement(ItemUseType.CONSUME, item.get());
     };
 };

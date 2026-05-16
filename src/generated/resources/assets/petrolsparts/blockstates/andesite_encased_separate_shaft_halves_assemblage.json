@@ -1,0 +1,444 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/core",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/middle_open",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "middle_gear": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_open",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "x"
+          },
+          {
+            "OR": [
+              {
+                "top_gear": "small_coaxial|large_coaxial",
+                "top_shaft_half": "true"
+              },
+              {
+                "top_gear": "small|large"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_open",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "x"
+          },
+          {
+            "OR": [
+              {
+                "bottom_gear": "small_coaxial|large_coaxial",
+                "bottom_half_shaft": "true"
+              },
+              {
+                "bottom_gear": "small|large"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_open_shaftless",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "top_gear": "small_coaxial|large_coaxial",
+        "top_shaft_half": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_open_shaftless",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "bottom_gear": "small_coaxial|large_coaxial",
+        "bottom_half_shaft": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/middle_closed",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "middle_gear": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_closed",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "top_gear": "none",
+        "top_shaft_half": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_closed",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "bottom_gear": "none",
+        "bottom_half_shaft": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_closed_shaftless",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "top_gear": "none",
+        "top_shaft_half": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_closed_shaftless",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "bottom_gear": "none",
+        "bottom_half_shaft": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/core"
+      },
+      "when": {
+        "axis": "y"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/middle_open"
+      },
+      "when": {
+        "axis": "y",
+        "middle_gear": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_open"
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "y"
+          },
+          {
+            "OR": [
+              {
+                "top_gear": "small_coaxial|large_coaxial",
+                "top_shaft_half": "true"
+              },
+              {
+                "top_gear": "small|large"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_open"
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "y"
+          },
+          {
+            "OR": [
+              {
+                "bottom_gear": "small_coaxial|large_coaxial",
+                "bottom_half_shaft": "true"
+              },
+              {
+                "bottom_gear": "small|large"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_open_shaftless"
+      },
+      "when": {
+        "axis": "y",
+        "top_gear": "small_coaxial|large_coaxial",
+        "top_shaft_half": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_open_shaftless"
+      },
+      "when": {
+        "axis": "y",
+        "bottom_gear": "small_coaxial|large_coaxial",
+        "bottom_half_shaft": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/middle_closed"
+      },
+      "when": {
+        "axis": "y",
+        "middle_gear": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_closed"
+      },
+      "when": {
+        "axis": "y",
+        "top_gear": "none",
+        "top_shaft_half": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_closed"
+      },
+      "when": {
+        "axis": "y",
+        "bottom_gear": "none",
+        "bottom_half_shaft": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_closed_shaftless"
+      },
+      "when": {
+        "axis": "y",
+        "top_gear": "none",
+        "top_shaft_half": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_closed_shaftless"
+      },
+      "when": {
+        "axis": "y",
+        "bottom_gear": "none",
+        "bottom_half_shaft": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/core",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/middle_open",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "middle_gear": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_open",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "z"
+          },
+          {
+            "OR": [
+              {
+                "top_gear": "small_coaxial|large_coaxial",
+                "top_shaft_half": "true"
+              },
+              {
+                "top_gear": "small|large"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_open",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "AND": [
+          {
+            "axis": "z"
+          },
+          {
+            "OR": [
+              {
+                "bottom_gear": "small_coaxial|large_coaxial",
+                "bottom_half_shaft": "true"
+              },
+              {
+                "bottom_gear": "small|large"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_open_shaftless",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "top_gear": "small_coaxial|large_coaxial",
+        "top_shaft_half": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_open_shaftless",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "bottom_gear": "small_coaxial|large_coaxial",
+        "bottom_half_shaft": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/middle_closed",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "middle_gear": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_closed",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "top_gear": "none",
+        "top_shaft_half": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_closed",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "bottom_gear": "none",
+        "bottom_half_shaft": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/top_closed_shaftless",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "top_gear": "none",
+        "top_shaft_half": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/andesite/bottom_closed_shaftless",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "bottom_gear": "none",
+        "bottom_half_shaft": "false"
+      }
+    }
+  ]
+}

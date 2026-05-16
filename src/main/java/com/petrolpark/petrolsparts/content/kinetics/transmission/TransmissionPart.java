@@ -10,7 +10,7 @@ import com.petrolpark.compat.create.core.block.CreateMultiPartBlock.ICreatePart;
 import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
 import com.petrolpark.petrolsparts.PetrolsPartsItems;
 import com.petrolpark.petrolsparts.PetrolsPartsShapes;
-import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblagePart;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageCog;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUseType;
 
@@ -30,7 +30,7 @@ public enum TransmissionPart implements ICreatePart {
     NORTH_COG(true, Direction.NORTH),
     SOUTH_COG(true, Direction.SOUTH),
     EAST_COG(true, Direction.EAST),
-    WEST_COG(true, Direction.EAST),
+    WEST_COG(true, Direction.WEST),
     UP_COG(true, Direction.UP),
     DOWN_COG(true, Direction.DOWN),
 
@@ -41,7 +41,7 @@ public enum TransmissionPart implements ICreatePart {
     NORTH_END_CASING(false, Direction.NORTH),
     SOUTH_END_CASING(false, Direction.SOUTH),
     EAST_END_CASING(false, Direction.EAST),
-    WEST_END_CASING(false, Direction.EAST),
+    WEST_END_CASING(false, Direction.WEST),
     UP_END_CASING(false, Direction.UP),
     DOWN_END_CASING(false, Direction.DOWN),
 
@@ -74,7 +74,7 @@ public enum TransmissionPart implements ICreatePart {
     TransmissionPart(boolean cog, Either<Direction, Axis> place) {
         this.cog = cog;
         this.place = place;
-        shape = cog ? place.map(PetrolsPartsShapes.FACIAL_COGWHEEL::get, PetrolsPartsShapes.MIDDLE_COGWHEEL::get) : place.map(PetrolsPartsShapes.TRANSMISSION_MIDDLE_CASING::get, PetrolsPartsShapes.TRANSMISSION_END_CASING::get);
+        shape = cog ? place.map(PetrolsPartsShapes.FACIAL_COGWHEEL::get, PetrolsPartsShapes.MIDDLE_COGWHEEL::get) : place.map(PetrolsPartsShapes.TRANSMISSION_END_CASING::get, PetrolsPartsShapes.TRANSMISSION_MIDDLE_CASING::get);
     };
 
     TransmissionPart(Axis axis) {
@@ -95,7 +95,7 @@ public enum TransmissionPart implements ICreatePart {
 
     @Override
     public ResourceKey<LootTable> loot() {
-        return AssemblagePart.COGWHEEL_LOOT; //TODO
+        return AssemblageCog.SMALL.getLootTable(); //TODO
     };
 
     @Override

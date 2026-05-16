@@ -1,0 +1,272 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "top_gear": "small"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/shaftless_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "middle_gear": "small"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/shaftless_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "bottom_gear": "small"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/shaftless_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "top_gear": "large"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/large_shaftless_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "middle_gear": "large"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/large_shaftless_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "bottom_gear": "large"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/large_shaftless_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "top_gear": "small_coaxial"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/coaxial_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "middle_gear": "small_coaxial"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/coaxial_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "bottom_gear": "small_coaxial"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/coaxial_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "top_gear": "large_coaxial"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/large_coaxial_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "middle_gear": "large_coaxial"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/large_coaxial_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "bottom_gear": "large_coaxial"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/large_coaxial_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "top_shaft_half": "true"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/shaft_half"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "block": "petrolsparts:brass_encased_separate_shaft_halves_assemblage",
+          "condition": "minecraft:block_state_property",
+          "properties": {
+            "bottom_half_shaft": "true"
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/shaft_half"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "petrolsparts:blocks/brass_encased_separate_shaft_halves_assemblage"
+}

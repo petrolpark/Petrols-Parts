@@ -1,0 +1,7 @@
+{
+	"parent": "petrolsparts:block/assemblage/encased/andesite/middle_closed",
+	"textures": {
+		"closed_side": "petrolsparts:block/closed_brass_encased_assemblage_side",
+		"particle": "create:block/brass_casing"
+	}
+}
