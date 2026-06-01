@@ -71,7 +71,7 @@
     "petrolsparts.ponder.pneumatic_tube.header": "Передачей предметов с помощью пневмотрубы",
     "petrolsparts.ponder.pneumatic_tube.text_1": "Разместите два блока пневмотрубы и используйте ещё несколько, чтобы соединить их.",
     "petrolsparts.ponder.pneumatic_tube.text_2": "Если на любой из концов (или на оба) подаётся энергия вращения, пневмотрубы могут перемещать предметы между инвентарями по целому стаку за раз.",
-    "petrolsparts.ponder.pneumatic_tube.text_3": "TИзвлекаемые предметы можно фильтровать на входном конце.",
+    "petrolsparts.ponder.pneumatic_tube.text_3": "Извлекаемые предметы можно фильтровать на входном конце.",
     "petrolsparts.ponder.pneumatic_tube.text_4": "Если к выходному концу не подключён инвентарь, труба будет выбрасывать предметы наружу.",
     "petrolsparts.ponder.pneumatic_tube.text_5": "Направление транспортного потока можно инвертировать, пока труба пуста.",
 
