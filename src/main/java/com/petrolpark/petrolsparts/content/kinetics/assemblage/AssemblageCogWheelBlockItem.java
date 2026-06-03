@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 import com.google.common.base.Predicates;
 import com.petrolpark.petrolsparts.core.block.CogType;
-import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlock;
+import com.petrolpark.petrolsparts.core.block.IFaceAlignedCogWheelBlock;
 import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
@@ -132,7 +132,7 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 
         @Override
         public Predicate<BlockState> getStatePredicate() {
-            return Predicates.or(ICogWheel::isSmallCog, ICogWheel::isLargeCog, IFaceAlignedCogWheelBlock::hasFaceAlignedCogwheels);
+            return Predicates.or(ICogWheel::isSmallCog, ICogWheel::isLargeCog, IFaceAlignedCogWheelBlock::canHaveFaceAlignedCogWheels);
         };
 
         public abstract PlacementOffset getOffsetForState(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray, Axis axis, CogType cogType, BlockState stateToPlace);

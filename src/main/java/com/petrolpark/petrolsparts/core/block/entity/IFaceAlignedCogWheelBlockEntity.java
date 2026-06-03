@@ -91,13 +91,13 @@ public interface IFaceAlignedCogWheelBlockEntity {
 
             // Large -> Small (same axis)
             if (isLargeToSmallCog(face.getAxis(), diff)) {
-                if (fromCog.isLarge() && toCog.isSmall()) if (trySetRatio(from, ratio, -2d)) return 0f;
-                if (fromCog.isSmall() && toCog.isLarge()) if (trySetRatio(from, ratio, -0.5d)) return 0f;
+                if (fromCog.isLarge() && toCog.isSmall()) if (cannotSetRatio(from, ratio, -2d)) return 0f;
+                if (fromCog.isSmall() && toCog.isLarge()) if (cannotSetRatio(from, ratio, -0.5d)) return 0f;
             };
 
             // Small -> Small
             if (diff.distManhattan(Vec3i.ZERO) == 1 && Direction.getNearest(diff.getX(), diff.getY(), diff.getZ()).getAxis() != face.getAxis() && fromCog.isSmall() && toCog.isSmall()) {
-                if (trySetRatio(from, ratio, -1d)) return 0f;
+                if (cannotSetRatio(from, ratio, -1d)) return 0f;
             };
 
         };
@@ -108,13 +108,13 @@ public interface IFaceAlignedCogWheelBlockEntity {
 
             // Large -> Small (same axis)
             if (isLargeToSmallCog(axis, diff)) {
-                if (ICogWheel.isLargeCog(stateFrom) && ICogWheel.isSmallCog(stateTo)) if (trySetRatio(from, ratio, -2d)) return 0f;
-                if (ICogWheel.isSmallCog(stateFrom) && ICogWheel.isLargeCog(stateTo)) if (trySetRatio(from, ratio, -0.5d)) return 0f;
+                if (ICogWheel.isLargeCog(stateFrom) && ICogWheel.isSmallCog(stateTo)) if (cannotSetRatio(from, ratio, -2d)) return 0f;
+                if (ICogWheel.isSmallCog(stateFrom) && ICogWheel.isLargeCog(stateTo)) if (cannotSetRatio(from, ratio, -0.5d)) return 0f;
             };
 
             // Small -> Small
             if (diff.distManhattan(Vec3i.ZERO) == 1 && Direction.getNearest(diff.getX(), diff.getY(), diff.getZ()).getAxis() != axis && connectedViaCogs) {
-                if (trySetRatio(from, ratio, -1d)) return 0f;
+                if (cannotSetRatio(from, ratio, -1d)) return 0f;
             };
         };
 
@@ -127,7 +127,7 @@ public interface IFaceAlignedCogWheelBlockEntity {
      * @param newRatio
      * @return {@code true} if different Cogwheel components of this block rotate at different speeds
      */
-    static boolean trySetRatio(KineticBlockEntity from, AtomicDouble ratio, double newRatio) {
+    static boolean cannotSetRatio(KineticBlockEntity from, AtomicDouble ratio, double newRatio) {
         double set = ratio.getAndSet(newRatio);
         if (set != 0d && set != newRatio) {
             from.getLevel().destroyBlock(from.getBlockPos(), true); // Incompatible

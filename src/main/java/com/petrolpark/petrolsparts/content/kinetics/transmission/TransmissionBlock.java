@@ -6,12 +6,14 @@ import java.util.Collection;
 import java.util.List;
 
 import com.petrolpark.compat.create.core.block.MultiPartKineticBlock;
+import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageCog;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.IAssemblageBlock;
 import com.petrolpark.petrolsparts.core.block.CogType;
+import com.petrolpark.petrolsparts.core.block.IFaceAlignedCogWheelBlock;
 import com.petrolpark.petrolsparts.core.block.IStateDependentCogWheelBlock;
-import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlock;
+import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 
 import net.minecraft.core.BlockPos;
@@ -25,6 +27,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -33,7 +36,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 
-public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> implements IStateDependentCogWheelBlock, IFaceAlignedCogWheelBlock, ProperWaterloggedBlock {
+public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> implements IBE<TransmissionBlockEntity>, IStateDependentCogWheelBlock, IFaceAlignedCogWheelBlock, ProperWaterloggedBlock {
 
     public static final DirectionProperty FACING = BlockStateProperties.FACING;
 
@@ -116,7 +119,8 @@ public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> i
 
         final int maxOffset = currentOffset + cogs.length - lastCogIndex - 1; // Maximum value 'first' can take
         power = Math.min(power, maxOffset);
-        if (power == currentOffset) return; // Already in position
+        final int displacement = power - currentOffset;
+        if (displacement == 0) return; // Already in position
 
         final boolean[] newCogs = new boolean[cogs.length];
         System.arraycopy(cogs, currentOffset, newCogs, power, cogs.length - maxOffset);
@@ -129,6 +133,15 @@ public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> i
                 .setValue(UPPER_COG, newCogs[3 * j + 2])
             );
         };
+
+        // Update rendering
+        withBlockEntityDo(level, originalPos, be -> {
+            be.cogs.clear();
+            for (int j = 0; j < newCogs.length; j++) {
+                be.cogs.set(j, newCogs[j]);  
+            };
+            be.displacement = displacement;
+        });
     };
 
     @Override
@@ -170,10 +183,10 @@ public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> i
 
     @Override
     public BlockState getStateForPlacement(BlockPlaceContext context) {
-        final Level level = context.getLevel();
-        BlockPos clickedPos = context.getClickedPos().relative(context.getClickedFace().getOpposite());
+        // final Level level = context.getLevel();
+        // BlockPos clickedPos = context.getClickedPos().relative(context.getClickedFace().getOpposite());
         
-        return null; //TODO
+        return withWater(super.getStateForPlacement(context), context); //TODO
     };
 
     @Override
@@ -222,6 +235,16 @@ public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> i
     @Override
     protected BlockState rotate(BlockState state, Rotation rotation) {
         return state.setValue(FACING, rotation.rotate(state.getValue(FACING)));
+    };
+    
+    @Override
+    public Class<TransmissionBlockEntity> getBlockEntityClass() {
+        return TransmissionBlockEntity.class;
+    };
+
+    @Override
+    public BlockEntityType<? extends TransmissionBlockEntity> getBlockEntityType() {
+        return PetrolsPartsBlockEntityTypes.TRANSMISSION.get();
     };
     
 };

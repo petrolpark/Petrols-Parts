@@ -15,7 +15,6 @@ public class PetrolsPartsPartialModels {
     COAXIAL_COGWHEEL = block("assemblage/coaxial_cogwheel"),
     LARGE_COAXIAL_COGWHEEL = block("assemblage/large_coaxial_cogwheel"),
     COGWHEEL_SHAFT = block("assemblage/cogwheel_shaft"),
-    LONG_SHAFT = block("long_shaft"), //TODO remove
 
     // Corner Shaft
     CORNER_SHAFT_CENTER = block("corner_shaft/center_shaft"),

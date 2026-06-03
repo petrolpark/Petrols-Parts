@@ -19,6 +19,8 @@ import com.petrolpark.petrolsparts.content.kinetics.legacy.LegacyCoaxialGearBloc
 import com.petrolpark.petrolsparts.content.kinetics.movement.MovementBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetRenderer;
+import com.petrolpark.petrolsparts.content.kinetics.transmission.TransmissionBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.transmission.TransmissionRenderer;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeRenderer;
 import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotBlockEntity;
@@ -108,6 +110,12 @@ public class PetrolsPartsBlockEntityTypes {
         .createBlockEntity("pneumatic_tube", PneumaticTubeBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.PNEUMATIC_TUBE)
         .renderer(() -> PneumaticTubeRenderer::new)
+        .register();
+
+    public static final BlockEntityEntry<TransmissionBlockEntity> TRANSMISSION = REGISTRATE
+        .createBlockEntity("transmission", TransmissionBlockEntity::new)
+        .validBlocks(PetrolsPartsBlocks.TRANSMISSION)
+        .renderer(() -> TransmissionRenderer::new)
         .register();
 
     //OLD

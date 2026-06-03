@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.mojang.datafixers.util.Either;
-import com.petrolpark.compat.create.core.block.CreateMultiPartBlock.ICreatePart;
+import com.petrolpark.compat.create.core.block.CreateMultiPartBlock;
 import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
 import com.petrolpark.petrolsparts.PetrolsPartsItems;
 import com.petrolpark.petrolsparts.PetrolsPartsShapes;
@@ -25,7 +25,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public enum TransmissionPart implements ICreatePart {
+public enum TransmissionPart implements CreateMultiPartBlock.ICreatePart {
     
     NORTH_COG(true, Direction.NORTH),
     SOUTH_COG(true, Direction.SOUTH),
