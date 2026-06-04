@@ -15,7 +15,10 @@ import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCog
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockItem;
 import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.AbstractCornerShaftBlock;
 import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlock;
+import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlockItem;
 import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.EncasedCornerShaftBlock;
+import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.EncasedStraightCornerShaftBlock;
+import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.StraightCornerShaftBlock;
 import com.petrolpark.petrolsparts.content.kinetics.differential.DifferentialBlock;
 import com.petrolpark.petrolsparts.content.kinetics.differential.DummyDifferentialBlock;
 import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlock;
@@ -36,9 +39,12 @@ import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.logistics.depot.MountedDepotInteractionBehaviour;
+import com.simibubi.create.foundation.data.BlockStateGen;
+import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
+import com.simibubi.create.infrastructure.config.CStress;
 import com.tterrag.registrate.util.entry.BlockEntry;
 
 import net.minecraft.world.level.block.SoundType;
@@ -156,7 +162,7 @@ public class PetrolsPartsBlocks {
         ).defaultLoot()
         .transform(PPCStress.setNoImpact())
         .transform(TagGen.pickaxeOnly())
-        .item()
+        .item(CornerShaftBlockItem::new)
         .build()
         .register();
 
@@ -183,6 +189,30 @@ public class PetrolsPartsBlocks {
 		.onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, AllSpriteShifts.BRASS_CASING, (s, f) -> !AbstractCornerShaftBlock.hasShaftTowards(s, f))))
 		.transform(TagGen.axeOrPickaxe())
 		.register();
+
+    public static final BlockEntry<StraightCornerShaftBlock> STRAIGHT_CORNER_SHAFT = REGISTRATE.block("straight_corner_shaft", StraightCornerShaftBlock::new)
+        .initialProperties(AllBlocks.SHAFT)
+        .loot((lt, b) -> lt.dropOther(b, CORNER_SHAFT))
+		.transform(CStress.setNoImpact())
+		.transform(TagGen.pickaxeOnly())
+		.blockstate(BlockStateGen.axisBlockProvider(false))
+        .register();
+
+    public static final BlockEntry<EncasedStraightCornerShaftBlock> ANDESITE_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("andesite_encased_straight_corner_shaft", p -> new EncasedStraightCornerShaftBlock(p, AllBlocks.ANDESITE_CASING::get))
+        .initialProperties(AllBlocks.ANDESITE_ENCASED_SHAFT)
+        .loot((lt, b) -> lt.dropOther(b, CORNER_SHAFT))
+        .transform(BuilderTransformers.encasedShaft("andesite", () -> AllSpriteShifts.ANDESITE_CASING))
+        .transform(EncasingRegistry.addVariantTo(STRAIGHT_CORNER_SHAFT))
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
+	public static final BlockEntry<EncasedStraightCornerShaftBlock> BRASS_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("brass_encased_straight_corner_shaft", p -> new EncasedStraightCornerShaftBlock(p, AllBlocks.BRASS_CASING::get))
+        .initialProperties(AllBlocks.BRASS_ENCASED_SHAFT)
+        .loot((lt, b) -> lt.dropOther(b, CORNER_SHAFT))
+        .transform(BuilderTransformers.encasedShaft("brass", () -> AllSpriteShifts.BRASS_CASING))
+        .transform(EncasingRegistry.addVariantTo(STRAIGHT_CORNER_SHAFT))
+        .transform(TagGen.axeOrPickaxe())
+        .register();
 
     public static final BlockEntry<HydraulicTransmissionBlock> HYDRAULIC_TRANSMISSION = REGISTRATE.block("hydraulic_transmission", HydraulicTransmissionBlock::new)
         .initialProperties(AllBlocks.MECHANICAL_CRAFTER)
