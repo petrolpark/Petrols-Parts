@@ -18,7 +18,7 @@
       },
       "when": {
         "axis": "x",
-        "middle_gear": "small|large|small_coaxial|large_coaxial"
+        "middle_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -29,7 +29,7 @@
       },
       "when": {
         "axis": "x",
-        "top_gear": "small|large|small_coaxial|large_coaxial"
+        "top_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -40,7 +40,7 @@
       },
       "when": {
         "axis": "x",
-        "bottom_gear": "small|large|small_coaxial|large_coaxial"
+        "bottom_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -51,7 +51,7 @@
       },
       "when": {
         "axis": "x",
-        "middle_gear": "none"
+        "middle_cog": "none"
       }
     },
     {
@@ -62,7 +62,7 @@
       },
       "when": {
         "axis": "x",
-        "top_gear": "none"
+        "top_cog": "none"
       }
     },
     {
@@ -73,7 +73,7 @@
       },
       "when": {
         "axis": "x",
-        "bottom_gear": "none"
+        "bottom_cog": "none"
       }
     },
     {
@@ -90,7 +90,7 @@
       },
       "when": {
         "axis": "y",
-        "middle_gear": "small|large|small_coaxial|large_coaxial"
+        "middle_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -99,7 +99,7 @@
       },
       "when": {
         "axis": "y",
-        "top_gear": "small|large|small_coaxial|large_coaxial"
+        "top_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -108,7 +108,7 @@
       },
       "when": {
         "axis": "y",
-        "bottom_gear": "small|large|small_coaxial|large_coaxial"
+        "bottom_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -117,7 +117,7 @@
       },
       "when": {
         "axis": "y",
-        "middle_gear": "none"
+        "middle_cog": "none"
       }
     },
     {
@@ -126,7 +126,7 @@
       },
       "when": {
         "axis": "y",
-        "top_gear": "none"
+        "top_cog": "none"
       }
     },
     {
@@ -135,7 +135,7 @@
       },
       "when": {
         "axis": "y",
-        "bottom_gear": "none"
+        "bottom_cog": "none"
       }
     },
     {
@@ -156,7 +156,7 @@
       },
       "when": {
         "axis": "z",
-        "middle_gear": "small|large|small_coaxial|large_coaxial"
+        "middle_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -167,7 +167,7 @@
       },
       "when": {
         "axis": "z",
-        "top_gear": "small|large|small_coaxial|large_coaxial"
+        "top_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -178,7 +178,7 @@
       },
       "when": {
         "axis": "z",
-        "bottom_gear": "small|large|small_coaxial|large_coaxial"
+        "bottom_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -189,7 +189,7 @@
       },
       "when": {
         "axis": "z",
-        "middle_gear": "none"
+        "middle_cog": "none"
       }
     },
     {
@@ -200,7 +200,7 @@
       },
       "when": {
         "axis": "z",
-        "top_gear": "none"
+        "top_cog": "none"
       }
     },
     {
@@ -211,7 +211,7 @@
       },
       "when": {
         "axis": "z",
-        "bottom_gear": "none"
+        "bottom_cog": "none"
       }
     }
   ]

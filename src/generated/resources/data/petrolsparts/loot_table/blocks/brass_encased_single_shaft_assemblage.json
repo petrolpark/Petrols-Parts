@@ -8,7 +8,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_gear": "small"
+            "top_cog": "small"
           }
         }
       ],
@@ -27,7 +27,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "middle_gear": "small"
+            "middle_cog": "small"
           }
         }
       ],
@@ -46,7 +46,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_gear": "small"
+            "bottom_cog": "small"
           }
         }
       ],
@@ -65,7 +65,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_gear": "large"
+            "top_cog": "large"
           }
         }
       ],
@@ -84,7 +84,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "middle_gear": "large"
+            "middle_cog": "large"
           }
         }
       ],
@@ -103,7 +103,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_gear": "large"
+            "bottom_cog": "large"
           }
         }
       ],
@@ -122,7 +122,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_gear": "small_coaxial"
+            "top_cog": "small_coaxial"
           }
         }
       ],
@@ -141,7 +141,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "middle_gear": "small_coaxial"
+            "middle_cog": "small_coaxial"
           }
         }
       ],
@@ -160,7 +160,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_gear": "small_coaxial"
+            "bottom_cog": "small_coaxial"
           }
         }
       ],
@@ -179,7 +179,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "top_gear": "large_coaxial"
+            "top_cog": "large_coaxial"
           }
         }
       ],
@@ -198,7 +198,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "middle_gear": "large_coaxial"
+            "middle_cog": "large_coaxial"
           }
         }
       ],
@@ -217,7 +217,7 @@
           "block": "petrolsparts:brass_encased_single_shaft_assemblage",
           "condition": "minecraft:block_state_property",
           "properties": {
-            "bottom_gear": "large_coaxial"
+            "bottom_cog": "large_coaxial"
           }
         }
       ],

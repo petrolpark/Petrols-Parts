@@ -32,10 +32,11 @@ public class AutoShaftRoutingClientHelper {
     public static final void cancel() {
         startFace = null;
         goalFace = null;
+        statesToPlace = null;
     };
 
     @SubscribeEvent
-    public static final void tick(ClientTickEvent event) {
+    public static final void tick(ClientTickEvent.Post event) {
         final Minecraft mc = Minecraft.getInstance();
         final ClientLevel level = mc.level;
         final LocalPlayer player = mc.player;
@@ -58,5 +59,8 @@ public class AutoShaftRoutingClientHelper {
             targetedFace = null;
         };
         if (Objects.equals(goalFace, targetedFace)) return; // Already matching, nevermind
+
+        goalFace = targetedFace;
+        statesToPlace = AutoShaftRouting.getPath(level, startFace, goalFace);
     };
 };

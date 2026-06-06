@@ -24,7 +24,8 @@ public class TransmissionRenderer extends KineticBlockEntityRenderer<Transmissio
     protected void renderSafe(TransmissionBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
         super.renderSafe(be, partialTicks, ms, bufferSource, light, overlay);
 
-        if (be.cogs.isEmpty()) return; //TODO visual
+        //TODO visual
+        if (be.cogs.isEmpty()) return;
 
         final BlockState state = be.getBlockState();
         final Direction axisFacing = Direction.get(AxisDirection.POSITIVE, state.getValue(TransmissionBlock.FACING).getAxis());

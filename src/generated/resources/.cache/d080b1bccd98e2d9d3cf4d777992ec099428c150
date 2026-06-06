@@ -1,17 +1,20 @@
-// 1.21.1	2026-05-16T18:23:59.407003	Registrate Provider for petrolsparts [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Conditional Loot Tables, Tags (block_entity_types), Tags (mob_effects), Tags (potions), Registries]
-86a1d2921a69dec652807154d51c3b6fb42ad7d0 assets/petrolsparts/blockstates/andesite_encased_separate_shaft_halves_assemblage.json
-02dee909cc214a27b511e3f99dd3d437f718207c assets/petrolsparts/blockstates/andesite_encased_single_shaft_assemblage.json
-ffb3cb2c2a07c61ff8479d2011476c941631cce2 assets/petrolsparts/blockstates/brass_encased_separate_shaft_halves_assemblage.json
-bdb4585b2fc5a696307506cb0419803743043bbf assets/petrolsparts/blockstates/brass_encased_single_shaft_assemblage.json
-a34e5c0135e8750c3ae1dd2b8b56ff7e6bde7722 data/minecraft/tags/block/mineable/axe.json
-c1fe5bb6dc3f2a1b7a32fbf8db1603e6a0006b3c data/minecraft/tags/block/mineable/pickaxe.json
+// 1.21.1	2026-06-06T18:13:13.1256925	Registrate Provider for petrolsparts [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Conditional Loot Tables, Tags (block_entity_types), Tags (mob_effects), Tags (potions), Registries]
+9719ef09b58439278cc3274face28267dd03dae4 assets/petrolsparts/blockstates/andesite_encased_separate_shaft_halves_assemblage.json
+d589cb0d4bb24cc766ecf73116462086fbf2f451 assets/petrolsparts/blockstates/andesite_encased_single_shaft_assemblage.json
+4cf62a4b7813eef292c68d71c1e14e77b80c8b8f assets/petrolsparts/blockstates/brass_encased_separate_shaft_halves_assemblage.json
+2e68a689bb77937dff5fb26eb2e2f59b3f7e633a assets/petrolsparts/blockstates/brass_encased_single_shaft_assemblage.json
+0553c581c0a66b81d88220f42a174a67f4aea247 assets/petrolsparts/blockstates/straight_corner_shaft.json
+d3e2876dde808e33253b6ae87de8b3570e836a35 data/minecraft/tags/block/mineable/axe.json
+a695811b941c27a4267e9a00461f9f9f81fe0f7e data/minecraft/tags/block/mineable/pickaxe.json
 5683eee12195da9245992c9f2b151aca8fc53fe8 data/petrolsparts/loot_table/blocks/andesite_encased_corner_shaft.json
-653683e153e78e1787266dc945f4c457b13bf3e7 data/petrolsparts/loot_table/blocks/andesite_encased_separate_shaft_halves_assemblage.json
-250bd1d447dc250e1c8e779e1987bd0b38c2f051 data/petrolsparts/loot_table/blocks/andesite_encased_single_shaft_assemblage.json
+47f0ddb0ddbd9baed08ca3fb239206723d270de7 data/petrolsparts/loot_table/blocks/andesite_encased_separate_shaft_halves_assemblage.json
+57112f5b8e1811f0ca5828bf42e0981e10b6b114 data/petrolsparts/loot_table/blocks/andesite_encased_single_shaft_assemblage.json
+313eb604eb2ba56ce90c2d522522c82c38af0926 data/petrolsparts/loot_table/blocks/andesite_encased_straight_corner_shaft.json
 781d93b9a19196f8ca01a2974e20af5b22cd5ce7 data/petrolsparts/loot_table/blocks/brass_depot.json
 e394de59880eea7381d3ed264ca724a36751d4e7 data/petrolsparts/loot_table/blocks/brass_encased_corner_shaft.json
-2990287cd58e6b6f50304f34f126925c510ef33a data/petrolsparts/loot_table/blocks/brass_encased_separate_shaft_halves_assemblage.json
-bcd912699028ca805538925ba1d7e3dbb2eb1a77 data/petrolsparts/loot_table/blocks/brass_encased_single_shaft_assemblage.json
+e9741b82c227c457da9b3221645defc88976f54a data/petrolsparts/loot_table/blocks/brass_encased_separate_shaft_halves_assemblage.json
+f051ef0e6c33782f082262ee54cf419316a2209c data/petrolsparts/loot_table/blocks/brass_encased_single_shaft_assemblage.json
+540a2fc68bb306a083713760f19c71220411a263 data/petrolsparts/loot_table/blocks/brass_encased_straight_corner_shaft.json
 f599038eb9f0e530cc4491a7dd74362c7020b156 data/petrolsparts/loot_table/blocks/colossal_cogwheel.json
 1a61563f63a4eeda3ad1b5601d9d995941fb7195 data/petrolsparts/loot_table/blocks/corner_shaft.json
 bda4bbb440582177be1093635873c4869b21cbd6 data/petrolsparts/loot_table/blocks/differential.json
@@ -20,4 +23,5 @@ b8a42e30b698309d9aa4d37f29fcd15966b16814 data/petrolsparts/loot_table/blocks/hyd
 feae0ea26e1b2e499693eec7c7ad335cf73653d3 data/petrolsparts/loot_table/blocks/movement.json
 d8c0c21ff5fb5252a05638ca18cb1ee43bc39ab2 data/petrolsparts/loot_table/blocks/planetary_gearset.json
 f248059ae818c59a93455fe11d5ec9fbfc47c71b data/petrolsparts/loot_table/blocks/pneumatic_tube.json
+87601739102ab82f4ff04f726814a2cd350117fd data/petrolsparts/loot_table/blocks/straight_corner_shaft.json
 f4194db769d30bb92d774e0fdcc16211d4e7570b data/petrolsparts/loot_table/blocks/transmission.json

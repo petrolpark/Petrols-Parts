@@ -21,6 +21,7 @@ public class PetrolsPartsPartialModels {
     CORNER_SHAFT_SIDE = block("corner_shaft/side_shaft"),
     CORNER_SHAFT_SIDE_GRIP = block("corner_shaft/side_grip"),
     CORNER_SHAFT_GIMBAL = block("corner_shaft/gimbal"),
+    STRAIGHT_CORNER_SHAFT = block("corner_shaft/straight"),
 
     // Planetary Gearset
     PG_SUN_GEAR = block("planetary_gearset/sun_gear"),

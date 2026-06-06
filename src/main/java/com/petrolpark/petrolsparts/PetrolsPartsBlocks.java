@@ -2,6 +2,8 @@ package com.petrolpark.petrolsparts;
 
 import static com.petrolpark.petrolsparts.PetrolsParts.REGISTRATE;
 
+import java.util.function.Supplier;
+
 import com.petrolpark.compat.create.core.tube.TubeBlockItem;
 import com.petrolpark.petrolsparts.config.PPCStress;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.EncasedAssemblageBlock;
@@ -37,15 +39,18 @@ import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
+import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedShaftBlock;
 import com.simibubi.create.content.logistics.depot.MountedDepotInteractionBehaviour;
+import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.simibubi.create.foundation.data.BlockStateGen;
-import com.simibubi.create.foundation.data.BuilderTransformers;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
-import com.simibubi.create.infrastructure.config.CStress;
+import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -193,23 +198,20 @@ public class PetrolsPartsBlocks {
     public static final BlockEntry<StraightCornerShaftBlock> STRAIGHT_CORNER_SHAFT = REGISTRATE.block("straight_corner_shaft", StraightCornerShaftBlock::new)
         .initialProperties(AllBlocks.SHAFT)
         .loot((lt, b) -> lt.dropOther(b, CORNER_SHAFT))
-		.transform(CStress.setNoImpact())
+		.transform(PPCStress.setNoImpact())
 		.transform(TagGen.pickaxeOnly())
-		.blockstate(BlockStateGen.axisBlockProvider(false))
+		.blockstate((ctx, prov) -> BlockStateGen.axisBlock(ctx, prov, $ -> prov.models().getExistingFile(prov.modLoc("block/corner_shaft/straight"))))
+        .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
         .register();
 
     public static final BlockEntry<EncasedStraightCornerShaftBlock> ANDESITE_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("andesite_encased_straight_corner_shaft", p -> new EncasedStraightCornerShaftBlock(p, AllBlocks.ANDESITE_CASING::get))
-        .initialProperties(AllBlocks.ANDESITE_ENCASED_SHAFT)
-        .loot((lt, b) -> lt.dropOther(b, CORNER_SHAFT))
-        .transform(BuilderTransformers.encasedShaft("andesite", () -> AllSpriteShifts.ANDESITE_CASING))
+        .transform(encasedStraightCornerShaft("andesite", () -> AllSpriteShifts.ANDESITE_CASING))
         .transform(EncasingRegistry.addVariantTo(STRAIGHT_CORNER_SHAFT))
         .transform(TagGen.axeOrPickaxe())
         .register();
 
 	public static final BlockEntry<EncasedStraightCornerShaftBlock> BRASS_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("brass_encased_straight_corner_shaft", p -> new EncasedStraightCornerShaftBlock(p, AllBlocks.BRASS_CASING::get))
-        .initialProperties(AllBlocks.BRASS_ENCASED_SHAFT)
-        .loot((lt, b) -> lt.dropOther(b, CORNER_SHAFT))
-        .transform(BuilderTransformers.encasedShaft("brass", () -> AllSpriteShifts.BRASS_CASING))
+        .transform(encasedStraightCornerShaft("brass", () -> AllSpriteShifts.BRASS_CASING))
         .transform(EncasingRegistry.addVariantTo(STRAIGHT_CORNER_SHAFT))
         .transform(TagGen.axeOrPickaxe())
         .register();
@@ -268,5 +270,18 @@ public class PetrolsPartsBlocks {
     @Deprecated public static final BlockEntry<LegacyCoaxialGearBlock> LEGACY_LARGE_COAXIAL_GEAR = REGISTRATE.block("large_coaxial_gear", LegacyCoaxialGearBlock::large).properties(BlockBehaviour.Properties::noLootTable).register();
 
     public static final void register() {};
+
+    private static final <B extends EncasedStraightCornerShaftBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> encasedStraightCornerShaft(String casing, Supplier<CTSpriteShiftEntry> casingShift) {
+		return builder -> builder.initialProperties(AllBlocks.ANDESITE_ENCASED_SHAFT)
+			.properties(BlockBehaviour.Properties::noOcclusion)
+			.transform(PPCStress.setNoImpact())
+			.loot((p, lb) -> p.dropOther(lb, CORNER_SHAFT))
+			.onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(casingShift.get())))
+			.onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, casingShift.get(), (s, f) -> f.getAxis() != s.getValue(EncasedShaftBlock.AXIS))))
+			// .item()
+			// .model(AssetLookup.customBlockItemModel("encased_shaft", "item_" + casing))
+			// .build()
+            ;
+	};
 
 };

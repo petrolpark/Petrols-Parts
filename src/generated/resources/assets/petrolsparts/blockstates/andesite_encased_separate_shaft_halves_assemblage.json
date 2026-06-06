@@ -18,7 +18,7 @@
       },
       "when": {
         "axis": "x",
-        "middle_gear": "small|large|small_coaxial|large_coaxial"
+        "middle_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -35,11 +35,11 @@
           {
             "OR": [
               {
-                "top_gear": "small_coaxial|large_coaxial",
+                "top_cog": "small_coaxial|large_coaxial",
                 "top_shaft_half": "true"
               },
               {
-                "top_gear": "small|large"
+                "top_cog": "small|large"
               }
             ]
           }
@@ -60,11 +60,11 @@
           {
             "OR": [
               {
-                "bottom_gear": "small_coaxial|large_coaxial",
+                "bottom_cog": "small_coaxial|large_coaxial",
                 "bottom_half_shaft": "true"
               },
               {
-                "bottom_gear": "small|large"
+                "bottom_cog": "small|large"
               }
             ]
           }
@@ -79,7 +79,7 @@
       },
       "when": {
         "axis": "x",
-        "top_gear": "small_coaxial|large_coaxial",
+        "top_cog": "small_coaxial|large_coaxial",
         "top_shaft_half": "false"
       }
     },
@@ -91,7 +91,7 @@
       },
       "when": {
         "axis": "x",
-        "bottom_gear": "small_coaxial|large_coaxial",
+        "bottom_cog": "small_coaxial|large_coaxial",
         "bottom_half_shaft": "false"
       }
     },
@@ -103,7 +103,7 @@
       },
       "when": {
         "axis": "x",
-        "middle_gear": "none"
+        "middle_cog": "none"
       }
     },
     {
@@ -114,7 +114,7 @@
       },
       "when": {
         "axis": "x",
-        "top_gear": "none",
+        "top_cog": "none",
         "top_shaft_half": "true"
       }
     },
@@ -126,7 +126,7 @@
       },
       "when": {
         "axis": "x",
-        "bottom_gear": "none",
+        "bottom_cog": "none",
         "bottom_half_shaft": "true"
       }
     },
@@ -138,7 +138,7 @@
       },
       "when": {
         "axis": "x",
-        "top_gear": "none",
+        "top_cog": "none",
         "top_shaft_half": "false"
       }
     },
@@ -150,7 +150,7 @@
       },
       "when": {
         "axis": "x",
-        "bottom_gear": "none",
+        "bottom_cog": "none",
         "bottom_half_shaft": "false"
       }
     },
@@ -168,7 +168,7 @@
       },
       "when": {
         "axis": "y",
-        "middle_gear": "small|large|small_coaxial|large_coaxial"
+        "middle_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -183,11 +183,11 @@
           {
             "OR": [
               {
-                "top_gear": "small_coaxial|large_coaxial",
+                "top_cog": "small_coaxial|large_coaxial",
                 "top_shaft_half": "true"
               },
               {
-                "top_gear": "small|large"
+                "top_cog": "small|large"
               }
             ]
           }
@@ -206,11 +206,11 @@
           {
             "OR": [
               {
-                "bottom_gear": "small_coaxial|large_coaxial",
+                "bottom_cog": "small_coaxial|large_coaxial",
                 "bottom_half_shaft": "true"
               },
               {
-                "bottom_gear": "small|large"
+                "bottom_cog": "small|large"
               }
             ]
           }
@@ -223,7 +223,7 @@
       },
       "when": {
         "axis": "y",
-        "top_gear": "small_coaxial|large_coaxial",
+        "top_cog": "small_coaxial|large_coaxial",
         "top_shaft_half": "false"
       }
     },
@@ -233,7 +233,7 @@
       },
       "when": {
         "axis": "y",
-        "bottom_gear": "small_coaxial|large_coaxial",
+        "bottom_cog": "small_coaxial|large_coaxial",
         "bottom_half_shaft": "false"
       }
     },
@@ -243,7 +243,7 @@
       },
       "when": {
         "axis": "y",
-        "middle_gear": "none"
+        "middle_cog": "none"
       }
     },
     {
@@ -252,7 +252,7 @@
       },
       "when": {
         "axis": "y",
-        "top_gear": "none",
+        "top_cog": "none",
         "top_shaft_half": "true"
       }
     },
@@ -262,7 +262,7 @@
       },
       "when": {
         "axis": "y",
-        "bottom_gear": "none",
+        "bottom_cog": "none",
         "bottom_half_shaft": "true"
       }
     },
@@ -272,7 +272,7 @@
       },
       "when": {
         "axis": "y",
-        "top_gear": "none",
+        "top_cog": "none",
         "top_shaft_half": "false"
       }
     },
@@ -282,7 +282,7 @@
       },
       "when": {
         "axis": "y",
-        "bottom_gear": "none",
+        "bottom_cog": "none",
         "bottom_half_shaft": "false"
       }
     },
@@ -304,7 +304,7 @@
       },
       "when": {
         "axis": "z",
-        "middle_gear": "small|large|small_coaxial|large_coaxial"
+        "middle_cog": "small|large|small_coaxial|large_coaxial"
       }
     },
     {
@@ -321,11 +321,11 @@
           {
             "OR": [
               {
-                "top_gear": "small_coaxial|large_coaxial",
+                "top_cog": "small_coaxial|large_coaxial",
                 "top_shaft_half": "true"
               },
               {
-                "top_gear": "small|large"
+                "top_cog": "small|large"
               }
             ]
           }
@@ -346,11 +346,11 @@
           {
             "OR": [
               {
-                "bottom_gear": "small_coaxial|large_coaxial",
+                "bottom_cog": "small_coaxial|large_coaxial",
                 "bottom_half_shaft": "true"
               },
               {
-                "bottom_gear": "small|large"
+                "bottom_cog": "small|large"
               }
             ]
           }
@@ -365,7 +365,7 @@
       },
       "when": {
         "axis": "z",
-        "top_gear": "small_coaxial|large_coaxial",
+        "top_cog": "small_coaxial|large_coaxial",
         "top_shaft_half": "false"
       }
     },
@@ -377,7 +377,7 @@
       },
       "when": {
         "axis": "z",
-        "bottom_gear": "small_coaxial|large_coaxial",
+        "bottom_cog": "small_coaxial|large_coaxial",
         "bottom_half_shaft": "false"
       }
     },
@@ -389,7 +389,7 @@
       },
       "when": {
         "axis": "z",
-        "middle_gear": "none"
+        "middle_cog": "none"
       }
     },
     {
@@ -400,7 +400,7 @@
       },
       "when": {
         "axis": "z",
-        "top_gear": "none",
+        "top_cog": "none",
         "top_shaft_half": "true"
       }
     },
@@ -412,7 +412,7 @@
       },
       "when": {
         "axis": "z",
-        "bottom_gear": "none",
+        "bottom_cog": "none",
         "bottom_half_shaft": "true"
       }
     },
@@ -424,7 +424,7 @@
       },
       "when": {
         "axis": "z",
-        "top_gear": "none",
+        "top_cog": "none",
         "top_shaft_half": "false"
       }
     },
@@ -436,7 +436,7 @@
       },
       "when": {
         "axis": "z",
-        "bottom_gear": "none",
+        "bottom_cog": "none",
         "bottom_half_shaft": "false"
       }
     }

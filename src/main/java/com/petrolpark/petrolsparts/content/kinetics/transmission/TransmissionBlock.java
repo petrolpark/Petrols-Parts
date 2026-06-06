@@ -21,7 +21,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.item.context.BlockPlaceContext;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -69,20 +68,20 @@ public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> i
         builder.add(FACING, LOWER_COG, MIDDLE_COG, UPPER_COG, UPPER_CONNECTION, LOWER_CONNECTION, WATERLOGGED);
     };
 
-    public void update(Level level, BlockPos pos, BlockState state) {
+    public void update(LevelAccessor levelAccessor, BlockPos pos, BlockState state) {
         int i = 1;
         final Direction facing = state.getValue(FACING);
         while (state.getValue(LOWER_CONNECTION)) {
             pos = pos.relative(facing.getOpposite());
-            state = level.getBlockState(pos);
+            state = levelAccessor.getBlockState(pos);
             if (!state.hasProperty(UPPER_CONNECTION) || !state.getValue(UPPER_CONNECTION) || state.getValue(FACING) != facing) return; // Badly formatted states
             i++;
             if (i > getMaxTransmissionLength()) return;
         };
-        updateController(level, pos, state);
+        updateController(levelAccessor, pos, state);
     };
 
-    public void updateController(Level level, BlockPos pos, BlockState state) {
+    public void updateController(LevelAccessor level, BlockPos pos, BlockState state) {
         final BlockPos originalPos = pos;
         final Direction facing = state.getValue(FACING);
 
@@ -125,21 +124,21 @@ public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> i
         final boolean[] newCogs = new boolean[cogs.length];
         System.arraycopy(cogs, currentOffset, newCogs, power, cogs.length - maxOffset);
 
-        for (int j = 0; j < length; j++) {
-            final BlockPos changePos = originalPos.relative(facing, j);
-            level.setBlockAndUpdate(changePos, level.getBlockState(changePos)
-                .setValue(LOWER_COG, newCogs[3 * j])
-                .setValue(MIDDLE_COG, newCogs[3 * j + 1])
-                .setValue(UPPER_COG, newCogs[3 * j + 2])
-            );
-        };
-
-        // Update rendering
         withBlockEntityDo(level, originalPos, be -> {
+
             be.cogs.clear();
+
             for (int j = 0; j < newCogs.length; j++) {
-                be.cogs.set(j, newCogs[j]);  
+                final BlockPos changePos = originalPos.relative(facing, j);
+                be.getLevel().setBlockAndUpdate(changePos, level.getBlockState(changePos)
+                    .setValue(LOWER_COG, newCogs[3 * j])
+                    .setValue(MIDDLE_COG, newCogs[3 * j + 1])
+                    .setValue(UPPER_COG, newCogs[3 * j + 2])
+                );
+
+                be.cogs.set(j, newCogs[j]);
             };
+
             be.displacement = displacement;
         });
     };
@@ -148,14 +147,7 @@ public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> i
     public Collection<TransmissionPart> getParts(BlockState state) {
         final Direction facing = state.getValue(FACING);
         final List<TransmissionPart> parts = new ArrayList<>(4);
-        parts.add(state.getValue(UPPER_CONNECTION)
-            ? state.getValue(LOWER_CONNECTION)
-                ? TransmissionPart.WHOLE_CASINGS.get(facing.getAxis())
-                : TransmissionPart.END_CASINGS.get(facing.getOpposite())
-            : state.getValue(LOWER_CONNECTION)
-                ? TransmissionPart.END_CASINGS.get(facing)
-                : TransmissionPart.MIDDLE_CASINGS.get(facing.getAxis())
-        );
+        parts.add(TransmissionPart.SHAFTS.get(facing.getAxis()));
         if (state.getValue(UPPER_COG)) parts.add(TransmissionPart.FACIAL_COGS.get(facing));
         if (state.getValue(MIDDLE_COG)) parts.add(TransmissionPart.AXIAL_COGS.get(facing.getAxis()));
         if (state.getValue(LOWER_COG)) parts.add(TransmissionPart.FACIAL_COGS.get(facing.getOpposite()));
@@ -191,8 +183,20 @@ public class TransmissionBlock extends MultiPartKineticBlock<TransmissionPart> i
 
     @Override
     protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
+        final Direction facing = state.getValue(FACING);
+        if (direction.getAxis() == facing.getAxis()) {
+            final BooleanProperty connectionProperty = direction.getAxisDirection() == facing.getAxisDirection() ? UPPER_CONNECTION : LOWER_CONNECTION;
+            if (state.getValue(connectionProperty) && !(
+                neighborState.getBlock() == this &&
+                neighborState.getValue(FACING) == facing &&
+                neighborState.getValue(direction.getAxisDirection() == facing.getAxisDirection() ? LOWER_CONNECTION : UPPER_CONNECTION)
+            )) {
+                state = state.setValue(connectionProperty, false);
+                update(level, neighborPos, neighborState);
+            };
+        };
         updateWater(level, state, pos);
-        return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
+        return state;
     };
 
     @Override

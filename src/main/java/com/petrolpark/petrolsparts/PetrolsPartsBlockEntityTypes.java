@@ -25,7 +25,12 @@ import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTube
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeRenderer;
 import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotBlockEntity;
 import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotRenderer;
+import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntityRenderer;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
+
+import dev.engine_room.flywheel.lib.model.Models;
 
 public class PetrolsPartsBlockEntityTypes {
 
@@ -60,6 +65,13 @@ public class PetrolsPartsBlockEntityTypes {
         //.visual(() -> CornerShaftvisual::new) //TODO fix
         .validBlock(PetrolsPartsBlocks.CORNER_SHAFT)
         .renderer(() -> CornerShaftRenderer::new)
+        .register();
+
+    public static final BlockEntityEntry<BracketedKineticBlockEntity> STRAIGHT_CORNER_SHAFT = REGISTRATE
+        .createBlockEntity("straight_corner_shaft", BracketedKineticBlockEntity::new)
+        .visual(() -> (ctx, be, pt) -> new SingleAxisRotatingVisual<>(ctx, be, pt, Models.partial(PetrolsPartsPartialModels.STRAIGHT_CORNER_SHAFT)))
+        .validBlock(PetrolsPartsBlocks.STRAIGHT_CORNER_SHAFT)
+        .renderer(() -> BracketedKineticBlockEntityRenderer::new)
         .register();
 
     public static final BlockEntityEntry<CornerShaftBlockEntity> ENCASED_CORNER_SHAFT = REGISTRATE

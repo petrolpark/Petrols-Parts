@@ -17,23 +17,9 @@ public class PetrolsPartsShapes {
     FACIAL_COGWHEEL = shape(2, 11, 2, 14, 15, 14).forDirectional(),
     MIDDLE_COGWHEEL = shape(2, 6, 2, 14, 10, 14).forAxis(),
     FACIAL_LARGE_COGWHEEL = shape(0, 11, 0, 16, 15, 16).forDirectional(),
-    MIDDLE_LARGE_COGWHEEL = shape(0, 6, 0, 16, 10, 16).forAxis();
-
-    private static final AllShapes.Builder TRANSMISSION_CASING_BUILDER = shape(0d, 0d, 0d, 2d, 16d, 2d)
-        .add(14d, 0d, 0d, 16d, 16d, 2d)
-        .add(0d, 0d, 14d, 2d, 16d, 16d)
-        .add(14d, 0d, 14d, 16d, 16d, 16d)
-        .add(5d, 0d, 5d, 11d, 16d, 11d);
-    public static final VoxelShaper
+    MIDDLE_LARGE_COGWHEEL = shape(0, 6, 0, 16, 10, 16).forAxis(),
     
-    TRANSMISSION_MIDDLE_CASING = TRANSMISSION_CASING_BUILDER.forAxis(),
-    TRANSMISSION_END_CASING = TRANSMISSION_CASING_BUILDER
-        .add(0d, 14d, 0d, 16d, 16d, 16d)
-        .forDirectional(),
-    TRANSMISSION_WHOLE_CASING = TRANSMISSION_CASING_BUILDER
-        .add(0d, 0d, 0d, 16d, 2d, 16d)
-        .add(0d, 14d, 0d, 16d, 16d, 16d)
-        .forAxis();
+    TRANSMISSION_SHAFT = shape(5d, 0d, 5d, 11d, 16d, 11d).forAxis();
 
     public static AllShapes.Builder shape(double x1, double y1, double z1, double x2, double y2, double z2) {
         return new AllShapes.Builder(Block.box(x1, y1, z1, x2, y2, z2));
