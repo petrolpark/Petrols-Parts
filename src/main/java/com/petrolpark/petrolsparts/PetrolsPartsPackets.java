@@ -9,6 +9,8 @@ import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 
+import java.util.Locale;
+
 public enum PetrolsPartsPackets implements BasePacketPayload.PacketTypeProvider {
 
     PNEUMATIC_TUBE_ITEM_TRANSPORT(PneumaticTubeItemTransportPacket.class, PneumaticTubeItemTransportPacket.STREAM_CODEC)
@@ -18,7 +20,7 @@ public enum PetrolsPartsPackets implements BasePacketPayload.PacketTypeProvider 
 
 	<T extends BasePacketPayload> PetrolsPartsPackets(Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
 		type = new CatnipPacketRegistry.PacketType<>(
-			new CustomPacketPayload.Type<>(PetrolsParts.asResource(name().toLowerCase())),
+			new CustomPacketPayload.Type<>(PetrolsParts.asResource(name().toLowerCase(Locale.ROOT))),
 			clazz, codec
 		);
 	};
