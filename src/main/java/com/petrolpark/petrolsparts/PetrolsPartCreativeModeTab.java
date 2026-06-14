@@ -28,6 +28,7 @@ public class PetrolsPartCreativeModeTab {
 				i(PetrolsPartsBlocks.DIFFERENTIAL::asStack),
 				i(PetrolsPartsBlocks.PLANETARY_GEARSET::asStack),
 				i(PetrolsPartsBlocks.COLOSSAL_COGWHEEL::asStack),
+				i(PetrolsPartsBlocks.MOVEMENT::asStack),
 				i(PetrolsPartsBlocks.PNEUMATIC_TUBE::asStack), i(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION::asStack),
 				i(PetrolparkCreateBlocks.HORSE_MILL_BEARING::asStack), i(PetrolparkCreateBlocks.HARNESS::asStack),
 				i(PetrolparkCreateBlocks.REDSTONE_PROGRAMMER::asStack)

@@ -42,6 +42,20 @@ public class PetrolsPartsPartialModels {
     HYDRAULIC_TRANSMISSION_PISTON = block("hydraulic_transmission/piston"),
     HYDRAULIC_TRANSMISSION_SEGMENT = block("hydraulic_transmission/segment"),
 
+    // Movement
+    MOVEMENT_PENDULUM = block("movement/pendulum"),
+    MOVEMENT_PENDULUM_WEIGHT = block("movement/pendulum_weight"),
+    MOVEMENT_ESCAPEMENT_COG = block("movement/escapement_cog"),
+    MOVEMENT_COIL = block("movement/coil"),
+    MOVEMENT_CHAIN = block("movement/chain"),
+    MOVEMENT_SHAFT = block("movement/shaft"),
+
+    MOVEMENT_WEIGHT_IRON = movementWeight("iron"),
+    MOVEMENT_WEIGHT_BRASS = movementWeight("brass"),
+    MOVEMENT_WEIGHT_ANVIL = movementWeight("anvil"),
+    MOVEMENT_WEIGHT_NETHERITE = movementWeight("netherite"),
+    MOVEMENT_WEIGHT_HEAVY_CORE = movementWeight("heavy_core"),
+
     // Pneumatic Tube
     PNEUMATIC_TUBE_SEGMENT = block("pneumatic_tube/segment"),
     PNEUMATIC_TUBE_SEGMENT_STICHED = block("pneumatic_tube/segment_stitched"),
@@ -49,6 +63,10 @@ public class PetrolsPartsPartialModels {
 
     private static PartialModel block(String path) {
         return PartialModel.of(PetrolsParts.asResource("block/"+path));
+    };
+
+    private static PartialModel movementWeight(String path) {
+        return block("movement/weight/" + path);
     };
 
     public static final void init() {};

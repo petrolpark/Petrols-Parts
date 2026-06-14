@@ -7,6 +7,8 @@ import com.petrolpark.core.world.block.DummyBlock;
 import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.petrolpark.petrolsparts.PetrolsPartsDataMapTypes;
 import com.simibubi.create.content.kinetics.base.IRotate;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.content.kinetics.clock.CuckooClockBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.createmod.catnip.animation.LerpedFloat;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.AABB;
 
 public class MovementBlockEntity extends CompositeKineticBlockEntity {
 
@@ -57,16 +60,12 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
         return 16f;  
     };
 
-    // @SuppressWarnings("deprecation")
-    // public boolean setWeightStack(HolderLookup.Provider registries, ItemStack newWeightStack) {
-    //     if (weightStack.isEmpty()) {
-    //         weightStack = newWeightStack;
-    //         weightData = newWeightStack.getItem().builtInRegistryHolder().getData(PetrolsPartsDataMapTypes.MOVEMENT_WEIGHT);
-    //         return true;
-    //     } else {
-
-    //     };
-    // };
+    @SuppressWarnings("deprecation")
+    public void setWeightStack(ItemStack newWeightStack) {
+        weightStack = newWeightStack;
+        weightData = newWeightStack.getItem().builtInRegistryHolder().getData(PetrolsPartsDataMapTypes.MOVEMENT_WEIGHT);
+        if (weightData == null) rotationsCharge = 0f;
+    };
 
     @Override
     public void tick() {
@@ -103,6 +102,11 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
         tag.putFloat("StoredRotations", rotationsCharge);
         if (!weightStack.isEmpty()) tag.put("Weight", ItemStack.SINGLE_ITEM_CODEC.encodeStart(NbtOps.INSTANCE, weightStack).getOrThrow());
     };
+    
+    @Override
+    protected AABB createRenderBoundingBox() {
+        return super.createRenderBoundingBox().expandTowards(0, -1, 0);
+    };
 
     public class WindingPart extends CompositeKineticBlockEntityPart {
 
@@ -123,7 +127,7 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
             final float speed = Mth.abs(getSpeed());
             if (speed != 0f && weightData != null) {
                 final boolean updateOutput = rotationsCharge <= 0f;
-                rotationsCharge += speed * 20 * 60; // Convert RPM to rotations per tick
+                rotationsCharge += speed / (20 * 60); // Convert RPM to rotations per tick
                 if (isFullyCharged()) {
                     rotationsCharge = getMaxRotationsCharge();
                     //TODO recalculate applied stress
@@ -134,62 +138,7 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
 
         @Override
         public void setBlockState(BlockState blockState) {
-            dummyBlock.face = blockState.getValue(MovementBlock.FACING);
-        };
-
-        @Override
-        public BlockState getBlockState() {
-            return dummyBlock.defaultBlockState(); // To trick RotationPropagator
-        }; 
-
-        @Override
-        public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
-            return false;
-        };
-
-        @Override
-        public boolean isValidBlockState(BlockState p_353131_) {
-            return true;
-        };
-
-        @Override
-        public int getIndex() {
-            return 0;
-        };
-
-    };
-
-    public class GeneratingPart extends GeneratingCompositeKineticBlockEntityPart {
-
-        protected final DummyShaftEndBlock dummyBlock = new DummyShaftEndBlock();
-
-        public GeneratingPart() {
-            super(PetrolsPartsBlockEntityTypes.MOVEMENT_GENERATING_PART.get());
-        };
-
-        @Override
-        public float getGeneratedSpeed() {
-            return getBaseRotationSpeed();
-        };
-
-        @Override
-        public float calculateAddedStressCapacity() {
-            return lastCapacityProvided = rotationsCharge > 0f && weightData == null ? 0f : weightData.stressCapacity();
-        };
-
-        @Override
-        public void tick() {
-            rotationsCharge -= Math.abs(getSpeed()) * 20 * 60; // Convert RPM to rotations per tick
-            if (rotationsCharge < 0f) { // Depleted
-                updateGeneratedRotation();
-                rotationsCharge = 0f;
-            };
-            super.tick();
-        };
-
-        @Override
-        public void setBlockState(BlockState blockState) {
-            dummyBlock.face = blockState.getValue(MovementBlock.FACING);
+            dummyBlock.face = blockState.getValue(MovementBlock.FACING).getOpposite();
         };
 
         @Override
@@ -210,6 +159,76 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
         @Override
         public int getIndex() {
             return 1;
+        };
+
+    };
+
+    public class GeneratingPart extends GeneratingCompositeKineticBlockEntityPart {
+
+        protected final DummyShaftEndBlock dummyBlock = new DummyShaftEndBlock();
+
+        public GeneratingPart() {
+            super(PetrolsPartsBlockEntityTypes.MOVEMENT_GENERATING_PART.get());
+        };
+
+        @Override
+        public void initialize() {
+            super.initialize();
+            if (!hasSource() || getGeneratedSpeed() > getTheoreticalSpeed()) updateGeneratedRotation();
+        };
+
+        @Override
+        public float getGeneratedSpeed() {
+            return getBaseRotationSpeed();
+        };
+
+        @Override
+        public float calculateAddedStressCapacity() {
+            return 16f;
+            //return lastCapacityProvided = rotationsCharge > 0f || weightData == null ? 0f : weightData.stressCapacity();
+        };
+
+        @Override
+        public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
+            if (diff.equals(Direction.UP.getNormal()) && target instanceof CuckooClockBlockEntity) return 1f;
+            return 0f; 
+        };
+
+        @Override
+        public void tick() {
+            // if (rotationsCharge > 0f) {
+            //     rotationsCharge -= Math.abs(getSpeed()) * 20 * 60; // Convert RPM to rotations per tick
+            //     if (rotationsCharge < 0f) { // Depleted
+            //         updateGeneratedRotation();
+            //         rotationsCharge = 0f;
+            //     };
+            // };
+            super.tick();
+        };
+
+        @Override
+        public void setBlockState(BlockState blockState) {
+            dummyBlock.face = blockState.getValue(MovementBlock.FACING);
+        };
+
+        @Override
+        public BlockState getBlockState() {
+            return dummyBlock.defaultBlockState(); // To trick RotationPropagator
+        };
+
+        @Override
+        public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
+            return false;
+        };
+
+        @Override
+        public boolean isValidBlockState(BlockState p_353131_) {
+            return true;
+        };
+
+        @Override
+        public int getIndex() {
+            return 0;
         };
 
     };

@@ -1,0 +1,38 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"5": "petrolsparts:block/movement",
+		"particle": "create:block/brass_casing"
+	},
+	"elements": [
+		{
+			"from": [7, 5, 11.5],
+			"to": [9, 11, 11.5],
+			"rotation": {"angle": -45, "axis": "y", "origin": [8, 5, 11.5]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 6], "texture": "#5"},
+				"south": {"uv": [0, 0, 2, 6], "texture": "#5"}
+			}
+		},
+		{
+			"from": [7, 5, 11.5],
+			"to": [9, 11, 11.5],
+			"rotation": {"angle": 45, "axis": "y", "origin": [8, 5, 11.5]},
+			"faces": {
+				"north": {"uv": [0, 0, 2, 6], "texture": "#5"},
+				"south": {"uv": [0, 0, 2, 6], "texture": "#5"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "Chain",
+			"origin": [8, 8, 8],
+			"scope": 0,
+			"color": 0,
+			"children": [0, 1]
+		}
+	]
+}

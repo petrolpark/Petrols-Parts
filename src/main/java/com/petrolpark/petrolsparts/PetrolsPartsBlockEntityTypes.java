@@ -17,6 +17,7 @@ import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.Hydrau
 import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionRenderer;
 import com.petrolpark.petrolsparts.content.kinetics.legacy.LegacyCoaxialGearBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.movement.MovementBlockEntity;
+import com.petrolpark.petrolsparts.content.kinetics.movement.MovementRenderer;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlockEntity;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetRenderer;
 import com.petrolpark.petrolsparts.content.kinetics.transmission.TransmissionBlockEntity;
@@ -101,6 +102,8 @@ public class PetrolsPartsBlockEntityTypes {
 
     public static final BlockEntityEntry<MovementBlockEntity> MOVEMENT = REGISTRATE
         .createBlockEntity("movement", MovementBlockEntity::new)
+        .validBlock(PetrolsPartsBlocks.MOVEMENT)
+        .renderer(() -> MovementRenderer::new)
         .register();
 
     public static final BlockEntityEntry<MovementBlockEntity.GeneratingPart> MOVEMENT_GENERATING_PART = REGISTRATE

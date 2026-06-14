@@ -5,6 +5,9 @@ import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.simibubi.create.foundation.block.connected.CTSpriteShifter;
 import com.simibubi.create.foundation.block.connected.CTType;
 
+import net.createmod.catnip.render.SpriteShiftEntry;
+import net.createmod.catnip.render.SpriteShifter;
+
 public class PetrolsPartsSpriteShifts {
 
     public static final CTSpriteShiftEntry
@@ -13,6 +16,10 @@ public class PetrolsPartsSpriteShifts {
 	CLOSED_ANDESITE_ENCASED_COGWHEEL_SIDE_HORIZONTAL = horizontal("closed_andesite_encased_assemblage_side"),
     OPEN_ANDESITE_ENCASED_COGWHEEL_SIDE_VERTICAL = vertical("open_andesite_encased_assemblage_side"),
 	OPEN_ANDESITE_ENCASED_COGWHEEL_SIDE_HORIZONTAL = horizontal("open_andesite_encased_assemblage_side");
+
+	public static final SpriteShiftEntry
+
+	MOVEMENT_CHAIN = SpriteShifter.get(PetrolsParts.asResource("movement_chain"), PetrolsParts.asResource("movement_chain"));
     
     // private static final CTSpriteShiftEntry omni(String name) {
 	// 	return getCT(AllCTTypes.OMNIDIRECTIONAL, name);
