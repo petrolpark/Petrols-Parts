@@ -4,15 +4,15 @@ import java.util.List;
 
 import com.petrolpark.compat.create.core.block.composite.CompositeKineticBlockEntity;
 import com.petrolpark.core.world.block.DummyBlock;
+import com.petrolpark.petrolsparts.PetrolsParts;
 import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.petrolpark.petrolsparts.PetrolsPartsDataMapTypes;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.clock.CuckooClockBlockEntity;
+import com.simibubi.create.content.redstone.thresholdSwitch.ThresholdSwitchObservable;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
-import net.createmod.catnip.animation.LerpedFloat;
-import net.createmod.catnip.animation.LerpedFloat.Chaser;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -20,6 +20,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
@@ -28,7 +29,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class MovementBlockEntity extends CompositeKineticBlockEntity {
+public class MovementBlockEntity extends CompositeKineticBlockEntity implements ThresholdSwitchObservable {
 
     public final WindingPart windingPart = new WindingPart();
     public final GeneratingPart generatingPart = new GeneratingPart();
@@ -38,8 +39,6 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
     protected float rotationsCharge = 0;
     protected ItemStack weightStack = ItemStack.EMPTY;
     protected MovementWeightData weightData = null;
-
-    protected LerpedFloat weightChainLength = LerpedFloat.linear().chase(0f, 0.01f, Chaser.LINEAR);
 
     public MovementBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -65,14 +64,6 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
         weightStack = newWeightStack;
         weightData = newWeightStack.getItem().builtInRegistryHolder().getData(PetrolsPartsDataMapTypes.MOVEMENT_WEIGHT);
         if (weightData == null) rotationsCharge = 0f;
-    };
-
-    @Override
-    public void tick() {
-        final float chargeBefore = rotationsCharge;
-        super.tick();
-        weightChainLength.updateChaseTarget(Mth.clamp(rotationsCharge / getMaxRotationsCharge(), 0f, 1f));
-        if (chargeBefore != rotationsCharge) sendData(); // In order to sync animation TODO check if this is necessary as its ticked on client anyway
     };
 
     public boolean isFullyCharged() {
@@ -134,11 +125,12 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
                 };
                 //if (updateOutput) generatingPart.updateGeneratedRotation(); //TODO this might cause flickering
             };
+            MovementBlockEntity.this.setChanged(); // Update comparator
         };
 
         @Override
         public void setBlockState(BlockState blockState) {
-            dummyBlock.face = blockState.getValue(MovementBlock.FACING).getOpposite();
+            dummyBlock.face = blockState.getValue(MovementBlock.HORIZONTAL_FACING).getOpposite();
         };
 
         @Override
@@ -184,10 +176,9 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
 
         @Override
         public float calculateAddedStressCapacity() {
-            return 16f;
-            //return lastCapacityProvided = rotationsCharge > 0f || weightData == null ? 0f : weightData.stressCapacity();
+            return lastCapacityProvided = rotationsCharge > 0f || weightData == null ? 0f : weightData.stressCapacity();
         };
-
+// pee pee poop ooop easter egg easter egg poo poo - hra
         @Override
         public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
             if (diff.equals(Direction.UP.getNormal()) && target instanceof CuckooClockBlockEntity) return 1f;
@@ -196,19 +187,19 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
 
         @Override
         public void tick() {
-            // if (rotationsCharge > 0f) {
-            //     rotationsCharge -= Math.abs(getSpeed()) * 20 * 60; // Convert RPM to rotations per tick
-            //     if (rotationsCharge < 0f) { // Depleted
-            //         updateGeneratedRotation();
-            //         rotationsCharge = 0f;
-            //     };
-            // };
+            if (rotationsCharge > 0f) {
+                rotationsCharge -= Math.abs(getSpeed()) * 20 * 60; // Convert RPM to rotations per tick
+                if (rotationsCharge < 0f) { // Depleted
+                    updateGeneratedRotation();
+                    rotationsCharge = 0f;
+                };
+            };
             super.tick();
         };
 
         @Override
         public void setBlockState(BlockState blockState) {
-            dummyBlock.face = blockState.getValue(MovementBlock.FACING);
+            dummyBlock.face = blockState.getValue(MovementBlock.HORIZONTAL_FACING);
         };
 
         @Override
@@ -249,9 +240,31 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity {
 
         @Override
         public Axis getRotationAxis(BlockState state) {
-            return getBlockState().getValue(MovementBlock.FACING).getAxis();
+            return getBlockState().getValue(MovementBlock.HORIZONTAL_FACING).getAxis();
         };
 
+    };
+
+    // Threshold Switch
+
+    @Override
+    public int getMaxValue() {
+        return (int)getMaxRotationsCharge();
+    };
+
+    @Override
+    public int getMinValue() {
+        return 0;
+    };
+
+    @Override
+    public int getCurrentValue() {
+        return (int)rotationsCharge;
+    };
+
+    @Override
+    public MutableComponent format(int value) {
+        return PetrolsParts.translate("gui.threshold_switch.movement_rotations", value);
     };
     
 };

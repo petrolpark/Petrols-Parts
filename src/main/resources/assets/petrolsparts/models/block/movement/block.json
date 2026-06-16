@@ -85,20 +85,20 @@
 			}
 		},
 		{
-			"from": [4, 5, 1],
-			"to": [12, 9.9, 3],
+			"from": [4, 5, 1.1],
+			"to": [12, 9, 3],
 			"rotation": {"angle": 0, "axis": "y", "origin": [4, 9, 0]},
 			"faces": {
-				"north": {"uv": [4, 6, 12, 11], "texture": "#gearbox"},
-				"east": {"uv": [3, 6, 5, 11], "texture": "#gearbox"},
-				"south": {"uv": [4, 5, 12, 10], "texture": "#gearbox"},
-				"west": {"uv": [11, 6, 13, 11], "texture": "#gearbox"},
+				"north": {"uv": [4, 7, 12, 11], "texture": "#gearbox"},
+				"east": {"uv": [3, 7, 5, 11], "texture": "#gearbox"},
+				"south": {"uv": [4, 6, 12, 10], "texture": "#gearbox"},
+				"west": {"uv": [11, 7, 13, 11], "texture": "#gearbox"},
 				"up": {"uv": [4, 5, 12, 7], "texture": "#gearbox"},
 				"down": {"uv": [4, 4, 12, 6], "texture": "#gearbox"}
 			}
 		},
 		{
-			"from": [5, 2, 1],
+			"from": [5, 2, 1.1],
 			"to": [11, 5, 3],
 			"rotation": {"angle": 0, "axis": "y", "origin": [4, 9, 0]},
 			"faces": {
@@ -110,25 +110,25 @@
 			}
 		},
 		{
-			"from": [4, 9.9, 1],
+			"from": [4, 9, 1.1],
 			"to": [6, 11, 3],
 			"rotation": {"angle": 0, "axis": "y", "origin": [4, 9, 1]},
 			"faces": {
-				"north": {"uv": [10, 5, 12, 6], "texture": "#gearbox"},
-				"east": {"uv": [4, 4, 6, 5], "texture": "#gearbox"},
-				"south": {"uv": [2, 2, 4, 3], "texture": "#gearbox"},
+				"north": {"uv": [10, 5, 12, 7], "texture": "#gearbox"},
+				"east": {"uv": [4, 4, 6, 6], "texture": "#gearbox"},
+				"south": {"uv": [2, 2, 4, 4], "texture": "#gearbox"},
 				"up": {"uv": [5, 11, 7, 13], "texture": "#gearbox"},
 				"down": {"uv": [2, 12, 4, 14], "texture": "#gearbox"}
 			}
 		},
 		{
-			"from": [10, 9.9, 1],
+			"from": [10, 9, 1.1],
 			"to": [12, 11, 3],
 			"rotation": {"angle": 0, "axis": "y", "origin": [10, 9, 1]},
 			"faces": {
-				"north": {"uv": [4, 5, 6, 6], "texture": "#gearbox"},
-				"south": {"uv": [12, 2, 14, 3], "texture": "#gearbox"},
-				"west": {"uv": [10, 4, 12, 5], "texture": "#gearbox"},
+				"north": {"uv": [4, 5, 6, 7], "texture": "#gearbox"},
+				"south": {"uv": [12, 2, 14, 4], "texture": "#gearbox"},
+				"west": {"uv": [10, 4, 12, 6], "texture": "#gearbox"},
 				"up": {"uv": [9, 11, 11, 13], "texture": "#gearbox"},
 				"down": {"uv": [12, 12, 14, 14], "texture": "#gearbox"}
 			}

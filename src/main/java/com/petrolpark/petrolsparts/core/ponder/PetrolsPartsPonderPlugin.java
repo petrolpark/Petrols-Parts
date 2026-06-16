@@ -60,6 +60,9 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
         HELPER.addToTag(AllCreatePonderTags.ARM_TARGETS)
             .add(PetrolsPartsBlocks.BRASS_DEPOT);
 
+        HELPER.addToTag(AllCreatePonderTags.THRESHOLD_SWITCH_TARGETS)
+            .add(PetrolsPartsBlocks.MOVEMENT);
+
         HELPER.addToTag(AllCreatePonderTags.KINETIC_RELAYS)
             .add(PetrolsPartsItems.SHAFT_HALF)
             .add(PetrolsPartsItems.SHAFTLESS_COGWHEEL)

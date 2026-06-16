@@ -29,6 +29,10 @@
     "block.petrolsparts.pneumatic_tube.jammed": "Jammed!",
     "block.petrolsparts.pneumatic_tube.jammed.hint": "There are Items stuck in this Pneumatic Tube that _can't get out_.",
 
+    "petrolsparts.gui.jei.category.movement_weight": "Movement Weights",
+    "petrolsparts.gui.jei.category.movement_weight.capacity": "%1$ssu/RPM",
+    "petrolsparts.gui.threshold_switch.movement_rotations": "%1$s Rotations",
+
     "petrolsparts.ponder.brass_depot.header": "Filtering Recipes with the Brass Depot",
     "petrolsparts.ponder.brass_depot.text_1": "Brass Depots have a filter slot that can be used in case of conflicting recipes",
     "petrolsparts.ponder.brass_depot.text_2": "This works for a variety of Recipe types",

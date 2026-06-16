@@ -2,6 +2,7 @@ package com.petrolpark.petrolsparts;
 
 import com.petrolpark.Petrolpark;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeItemTransportPacket;
+import com.petrolpark.util.Lang;
 
 import net.createmod.catnip.net.base.BasePacketPayload;
 import net.createmod.catnip.net.base.CatnipPacketRegistry;
@@ -18,7 +19,7 @@ public enum PetrolsPartsPackets implements BasePacketPayload.PacketTypeProvider 
 
 	<T extends BasePacketPayload> PetrolsPartsPackets(Class<T> clazz, StreamCodec<? super RegistryFriendlyByteBuf, T> codec) {
 		type = new CatnipPacketRegistry.PacketType<>(
-			new CustomPacketPayload.Type<>(PetrolsParts.asResource(name().toLowerCase())),
+			new CustomPacketPayload.Type<>(PetrolsParts.asResource(Lang.asId(name()))),
 			clazz, codec
 		);
 	};

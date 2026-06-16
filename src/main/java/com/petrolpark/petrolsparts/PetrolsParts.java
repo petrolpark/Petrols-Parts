@@ -9,6 +9,8 @@ import com.petrolpark.petrolsparts.core.PetrolsPartsRegistrate;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementTriggers;
 
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
@@ -27,8 +29,12 @@ public class PetrolsParts {
 
     public static final PetrolsPartsRegistrate REGISTRATE = new PetrolsPartsRegistrate();
 
-    public static ResourceLocation asResource(String path) {
+    public static final ResourceLocation asResource(String path) {
         return ResourceLocation.fromNamespaceAndPath(MOD_ID, path);
+    };
+
+    public static final MutableComponent translate(String key, Object... args) {
+        return Component.translatable(MOD_ID + "." + key, args);
     };
 
     public PetrolsParts(IEventBus modEventBus, ModContainer modContainer) {
