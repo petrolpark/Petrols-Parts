@@ -55,6 +55,11 @@ import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 public class PetrolsPartsBlocks {
 
@@ -229,7 +234,16 @@ public class PetrolsPartsBlocks {
 
     public static final BlockEntry<MovementBlock> MOVEMENT = REGISTRATE.block("movement", MovementBlock::new)
         .initialProperties(SharedProperties::softMetal)
-        .defaultLoot()
+        .loot((lt, b) -> lt.add(b, LootTable.lootTable()
+            .withPool(
+                lt.applyExplosionCondition(b, LootPool.lootPool()
+                    .setRolls(ConstantValue.exactly(1f))
+                    .add(LootItem.lootTableItem(b).apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                        .include(PetrolsPartsDataComponentTypes.MOVEMENT_DATA)
+                    ))
+                )
+            ))
+        ).transform(TagGen.axeOrPickaxe())
         .item()
         .build()
         .register();

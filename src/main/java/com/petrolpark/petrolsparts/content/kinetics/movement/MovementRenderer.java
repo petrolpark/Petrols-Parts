@@ -73,11 +73,20 @@ public class MovementRenderer extends SafeBlockEntityRenderer<MovementBlockEntit
 
         // Escapement
 
-        final float targetAngle = ((AnimationTickHolder.getRenderTime(be.getLevel()) * be.generatingPart.getSpeed() * 6f / 150f) % 360) / 180 * (float) Math.PI;
+        final float targetAngle = be.shouldGenerate()
+            ? ((AnimationTickHolder.getRenderTime(be.getLevel()) * be.generatingPart.getSpeed() * 6f / 150f) % 360) / 180 * (float) Math.PI
+            : Mth.PI / 32;
         final Vec3 escapementCogOffset = new Vec3(facing.getAxis() == Axis.Z ? 8 / 16f : 0f, 5 / 16f, facing.getAxis() == Axis.X ? 8 / 16f : 0f);
         final Vec3 pendulumOffset = escapementCogOffset.add(0f, 8.5f / 16f, 0f);
 
         CachedBuffers.partialFacing(PetrolsPartsPartialModels.MOVEMENT_PENDULUM, state, facing)
+            .translate(pendulumOffset)
+            .rotate(Mth.PI * Mth.cos(16 * targetAngle) / 12f, facing)
+            .translateBack(pendulumOffset)
+            .light(light)
+            .renderInto(ms, vc);
+
+        CachedBuffers.partialFacing(PetrolsPartsPartialModels.MOVEMENT_PENDULUM_WEIGHT, state, facing)
             .translate(pendulumOffset)
             .rotate(Mth.PI * Mth.cos(16 * targetAngle) / 12f, facing)
             .translateBack(pendulumOffset)

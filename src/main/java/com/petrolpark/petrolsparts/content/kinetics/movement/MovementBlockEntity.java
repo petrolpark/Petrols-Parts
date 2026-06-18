@@ -6,20 +6,29 @@ import com.petrolpark.compat.create.core.block.composite.CompositeKineticBlockEn
 import com.petrolpark.core.world.block.DummyBlock;
 import com.petrolpark.petrolsparts.PetrolsParts;
 import com.petrolpark.petrolsparts.PetrolsPartsBlockEntityTypes;
+import com.petrolpark.petrolsparts.PetrolsPartsDataComponentTypes;
 import com.petrolpark.petrolsparts.PetrolsPartsDataMapTypes;
+import com.petrolpark.util.Lang;
+import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
+import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.clock.CuckooClockBlockEntity;
 import com.simibubi.create.content.redstone.thresholdSwitch.ThresholdSwitchObservable;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
+import com.simibubi.create.foundation.item.TooltipHelper;
 
+import net.createmod.catnip.lang.FontHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
@@ -29,7 +38,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 
-public class MovementBlockEntity extends CompositeKineticBlockEntity implements ThresholdSwitchObservable {
+public class MovementBlockEntity extends CompositeKineticBlockEntity implements IHaveHoveringInformation, IHaveGoggleInformation, ThresholdSwitchObservable {
 
     public final WindingPart windingPart = new WindingPart();
     public final GeneratingPart generatingPart = new GeneratingPart();
@@ -64,15 +73,30 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
         weightStack = newWeightStack;
         weightData = newWeightStack.getItem().builtInRegistryHolder().getData(PetrolsPartsDataMapTypes.MOVEMENT_WEIGHT);
         if (weightData == null) rotationsCharge = 0f;
+        notifyUpdate();
+        generatingPart.updateGeneratedRotation();
     };
 
     public boolean isFullyCharged() {
         return rotationsCharge >= getMaxRotationsCharge();
     };
 
+    public boolean shouldGenerate() {
+        return (windingPart.getTheoreticalSpeed() != 0f || rotationsCharge > 0f) && weightData != null && getLevel().hasNeighborSignal(getBlockPos());
+    };
+
     @Override
     public List<CompositeKineticBlockEntityPart> getParts() {
         return parts;
+    };
+
+    @Override
+    public void tick() {
+        final boolean generatingBefore = shouldGenerate();
+        super.tick();
+        if (generatingBefore != shouldGenerate())
+            generatingPart.updateGeneratedRotation();
+        MovementBlockEntity.this.setChanged(); // Update comparator
     };
 
     @Override
@@ -99,6 +123,20 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
         return super.createRenderBoundingBox().expandTowards(0, -1, 0);
     };
 
+    @Override
+    protected void applyImplicitComponents(DataComponentInput componentInput) {
+        final MovementItemComponent component = componentInput.get(PetrolsPartsDataComponentTypes.MOVEMENT_DATA);
+        if (component == null) return;
+        setWeightStack(component.weightStack());
+        rotationsCharge = component.storedRotations();
+    };
+
+    @Override
+    protected void collectImplicitComponents(DataComponentMap.Builder components) {
+        if (weightData == null) return;
+        components.set(PetrolsPartsDataComponentTypes.MOVEMENT_DATA, new MovementItemComponent(weightStack, rotationsCharge));
+    };
+
     public class WindingPart extends CompositeKineticBlockEntityPart {
 
         protected final DummyShaftEndBlock dummyBlock = new DummyShaftEndBlock();
@@ -117,15 +155,11 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
             super.tick();
             final float speed = Mth.abs(getSpeed());
             if (speed != 0f && weightData != null) {
-                final boolean updateOutput = rotationsCharge <= 0f;
+                final boolean wasEmpty = rotationsCharge <= 0f;
                 rotationsCharge += speed / (20 * 60); // Convert RPM to rotations per tick
-                if (isFullyCharged()) {
-                    rotationsCharge = getMaxRotationsCharge();
-                    //TODO recalculate applied stress
-                };
-                //if (updateOutput) generatingPart.updateGeneratedRotation(); //TODO this might cause flickering
+                if (wasEmpty) generatingPart.updateGeneratedRotation();
+                if (isFullyCharged()) rotationsCharge = getMaxRotationsCharge();
             };
-            MovementBlockEntity.this.setChanged(); // Update comparator
         };
 
         @Override
@@ -153,6 +187,11 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
             return 1;
         };
 
+        @Override
+        public void addStressImpactStats(List<Component> tooltip, float stressAtBase) {
+            super.addStressImpactStats(tooltip, stressAtBase);
+        };
+
     };
 
     public class GeneratingPart extends GeneratingCompositeKineticBlockEntityPart {
@@ -171,14 +210,14 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
 
         @Override
         public float getGeneratedSpeed() {
-            return getBaseRotationSpeed();
+            return shouldGenerate() ? getBaseRotationSpeed() : 0f;
         };
 
         @Override
         public float calculateAddedStressCapacity() {
-            return lastCapacityProvided = rotationsCharge > 0f || weightData == null ? 0f : weightData.stressCapacity();
+            return lastCapacityProvided = shouldGenerate() ? weightData.stressCapacity() : 0f;
         };
-// pee pee poop ooop easter egg easter egg poo poo - hra
+
         @Override
         public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
             if (diff.equals(Direction.UP.getNormal()) && target instanceof CuckooClockBlockEntity) return 1f;
@@ -187,12 +226,9 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
 
         @Override
         public void tick() {
-            if (rotationsCharge > 0f) {
-                rotationsCharge -= Math.abs(getSpeed()) * 20 * 60; // Convert RPM to rotations per tick
-                if (rotationsCharge < 0f) { // Depleted
-                    updateGeneratedRotation();
-                    rotationsCharge = 0f;
-                };
+            if (shouldGenerate()) {
+                rotationsCharge -= Math.abs(getSpeed()) / (20 * 60); // Convert RPM to rotations per tick
+                if (rotationsCharge < 0f) rotationsCharge = 0f;
             };
             super.tick();
         };
@@ -224,7 +260,6 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
 
     };
 
-
     class DummyShaftEndBlock extends DummyBlock implements IRotate {
 
         protected Direction face = Direction.UP;
@@ -243,6 +278,52 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
             return getBlockState().getValue(MovementBlock.HORIZONTAL_FACING).getAxis();
         };
 
+    };
+
+    // Goggles
+
+    @Override
+    public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if (weightData == null) {
+            PetrolsParts.langBuilder().translate("gui.goggles.movement.no_weight")
+                .style(ChatFormatting.GOLD)
+                .forGoggles(tooltip);
+            for (Component line : TooltipHelper.cutTextComponent(PetrolsParts.translate("gui.goggles.movement.no_weight.info"), FontHelper.Palette.GRAY_AND_WHITE)) {
+                PetrolsParts.langBuilder()
+                    .add(line.copy())
+                    .forGoggles(tooltip);
+            };
+            return true;
+        };
+        return false;
+    };
+
+    @Override
+    public boolean addToGoggleTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
+        if (weightData == null) return false;
+
+        PetrolsParts.langBuilder().translate("gui.goggles.kinetic_battery_stats")
+			.forGoggles(tooltip);
+
+        PetrolsParts.langBuilder().translate("tooltip.movement.weight", "")
+            .style(ChatFormatting.GRAY)
+            .forGoggles(tooltip);
+        PetrolsParts.langBuilder().add(weightStack.getHoverName())
+            .style(ChatFormatting.AQUA)
+            .forGoggles(tooltip, 1);
+
+        PetrolsParts.langBuilder().translate("tooltip.stored_rotations", "")
+            .style(ChatFormatting.GRAY)
+            .forGoggles(tooltip);
+        PetrolsParts.langBuilder().text(Lang.INT_DF.format(rotationsCharge)).style(ChatFormatting.AQUA)
+            .add(PetrolsParts.langBuilder().text(" / ").style(ChatFormatting.GRAY))
+            .add(PetrolsParts.langBuilder().text(Lang.INT_DF.format(getMaxRotationsCharge())).style(ChatFormatting.DARK_GRAY))
+            .forGoggles(tooltip, 1);
+            
+        windingPart.addStressImpactStats(tooltip, windingPart.calculateStressApplied());
+        generatingPart.addToGoggleTooltip(tooltip, isPlayerSneaking);
+
+        return true;
     };
 
     // Threshold Switch

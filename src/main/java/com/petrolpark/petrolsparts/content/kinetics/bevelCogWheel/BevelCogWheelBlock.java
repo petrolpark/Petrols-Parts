@@ -1,4 +1,4 @@
-package com.petrolpark.petrolsparts.content.kinetics.bevelGear;
+package com.petrolpark.petrolsparts.content.kinetics.bevelCogWheel;
 
 import java.util.Collection;
 
@@ -14,23 +14,23 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 
-public abstract class BevelGearBlock extends MultiPartBlock<BevelGearPart> {
+public abstract class BevelCogWheelBlock extends MultiPartBlock<BevelCogWheelPart> {
 
     public static final VoxelShaper GEAR_SHAPE = new AllShapes.Builder(Block.box(1, 11, 1, 15, 16, 15)).forDirectional();
     public static final ResourceKey<LootTable> LOOT = ResourceKey.create(Registries.LOOT_TABLE, PetrolsParts.asResource("bevel_gear"));
 
-    public BevelGearBlock(BlockBehaviour.Properties properties) {
+    public BevelCogWheelBlock(BlockBehaviour.Properties properties) {
         super(properties);
     };
 
     @Override
-    public Collection<BevelGearPart> getParts(BlockState state) {
+    public Collection<BevelCogWheelPart> getParts(BlockState state) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'getParts'");
     };
 
     @Override
-    public BlockState withoutPart(BlockState state, BevelGearPart part) {
+    public BlockState withoutPart(BlockState state, BevelCogWheelPart part) {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'withoutPart'");
     };

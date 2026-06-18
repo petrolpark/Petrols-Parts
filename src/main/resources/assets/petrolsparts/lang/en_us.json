@@ -29,6 +29,9 @@
     "block.petrolsparts.pneumatic_tube.jammed": "Jammed!",
     "block.petrolsparts.pneumatic_tube.jammed.hint": "There are Items stuck in this Pneumatic Tube that _can't get out_.",
 
+    "petrolsparts.gui.goggles.kinetic_battery_stats": "Kinetic Battery Stats:",
+    "petrolsparts.gui.goggles.movement.no_weight": "No Weight Attached",
+    "petrolsparts.gui.goggles.movement.no_weight.info": "Suitable _weight_ items can be found in JEI. _Right-Click_ to attach one.",
     "petrolsparts.gui.jei.category.movement_weight": "Movement Weights",
     "petrolsparts.gui.jei.category.movement_weight.capacity": "%1$ssu/RPM",
     "petrolsparts.gui.threshold_switch.movement_rotations": "%1$s Rotations",
@@ -71,6 +74,8 @@
     "petrolsparts.ponder.hydraulic_transmission.header": "Cheating with the Hydraulic Transmission",
     "petrolsparts.ponder.hydraulic_transmission.text_1": "Do you hate the core gameplay mechanic of Create?",
     "petrolsparts.ponder.hydraulic_transmission.text_2": "The Hydraulic Transmission can make almost any connection.",
+    "petrolsparts.ponder.movement.header": "Storing Rotations with the Movement",
+    "petrolsparts.ponder.movement.text_1": "Right-Click the Movement with a suitable item to load a weight",
     "petrolsparts.ponder.planetary_gearset.header": "Out-of-this-world gearing with the Planetary Gearset",
     "petrolsparts.ponder.planetary_gearset.text_1": "Planetary Gearsets connect almost identically to Large Cogwheels (press Q to learn more about these).",
     "petrolsparts.ponder.planetary_gearset.text_2": "However, the Shaft of a Planetary Gearset rotates twice as fast, and in the opposite direction to the teeth.",
@@ -82,6 +87,8 @@
     "petrolsparts.ponder.pneumatic_tube.text_5": "The direction of transport can be inverted as long as the Tube is empty.",
 
     "petrolsparts.tooltip.coaxial_gear.shaft_too_short": "Shafts must be at least two blocks in length to go through a Coaxial Cogwheel",
+    "petrolsparts.tooltip.movement.weight": "Weight Attached: %1$s",
+    "petrolsparts.tooltip.stored_rotations": "Stored Rotations: %1$s",
 
     "item.petrolsparts.coaxial_cogwheel": "Coaxial Cogwheel",
     "item.petrolsparts.large_coaxial_cogwheel": "Large Coaxial Cogwheel",

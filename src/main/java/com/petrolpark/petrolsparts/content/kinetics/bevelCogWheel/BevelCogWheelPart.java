@@ -1,7 +1,7 @@
-package com.petrolpark.petrolsparts.content.kinetics.bevelGear;
+package com.petrolpark.petrolsparts.content.kinetics.bevelCogWheel;
 
-import static com.petrolpark.petrolsparts.content.kinetics.bevelGear.BevelGearBlock.GEAR_SHAPE;
-import static com.petrolpark.petrolsparts.content.kinetics.bevelGear.BevelGearBlock.LOOT;
+import static com.petrolpark.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelBlock.GEAR_SHAPE;
+import static com.petrolpark.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelBlock.LOOT;
 
 import com.petrolpark.compat.create.core.block.CreateMultiPartBlock;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblagePart;
@@ -19,7 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-public enum BevelGearPart implements CreateMultiPartBlock.ICreatePart {
+public enum BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart {
     
     NORTH_GEAR(GEAR_SHAPE.get(Direction.NORTH), LOOT),
     SOUTH_GEAR(GEAR_SHAPE.get(Direction.SOUTH), LOOT),
@@ -36,7 +36,7 @@ public enum BevelGearPart implements CreateMultiPartBlock.ICreatePart {
     protected final VoxelShape shape;
     protected final ResourceKey<LootTable> loot;
 
-    BevelGearPart(VoxelShape shape, ResourceKey<LootTable> loot) {
+    BevelCogWheelPart(VoxelShape shape, ResourceKey<LootTable> loot) {
         this.shape = shape;
         this.loot = loot;
     };

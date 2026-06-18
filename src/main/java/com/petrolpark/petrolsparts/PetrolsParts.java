@@ -8,10 +8,13 @@ import com.petrolpark.compat.SharedFeatureFlag;
 import com.petrolpark.petrolsparts.core.PetrolsPartsRegistrate;
 import com.petrolpark.petrolsparts.core.advancement.PetrolsPartsAdvancementTriggers;
 
+import net.createmod.catnip.lang.LangBuilder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -37,12 +40,18 @@ public class PetrolsParts {
         return Component.translatable(MOD_ID + "." + key, args);
     };
 
+    @OnlyIn(Dist.CLIENT)
+    public static final LangBuilder langBuilder() {
+        return new LangBuilder(MOD_ID);
+    };
+
     public PetrolsParts(IEventBus modEventBus, ModContainer modContainer) {
         ModLoadingContext modLoadingContext = ModLoadingContext.get();
 
         REGISTRATE.registerEventListeners(modEventBus);
 
         PetrolsPartsArmInteractionPointTypes.register();
+        PetrolsPartsDataComponentTypes.register(modEventBus);
         PetrolsPartsPackets.register();
         PetrolsPartCreativeModeTab.register(modEventBus);
         PetrolsPartsBlocks.register();

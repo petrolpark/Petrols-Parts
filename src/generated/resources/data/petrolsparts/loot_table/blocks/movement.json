@@ -11,6 +11,15 @@
       "entries": [
         {
           "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "petrolsparts:movement"
+              ],
+              "source": "block_entity"
+            }
+          ],
           "name": "petrolsparts:movement"
         }
       ],
