@@ -22,7 +22,7 @@
     "block.petrolsparts.corner_shaft": "コーナーシャフト",
     "block.petrolsparts.dummy_differential": "差動装置",
     "block.petrolsparts.hydraulic_transmission": "油圧トランスミッション",
-    "block.petrolsparts.movement": "Movement",
+    "block.petrolsparts.movement": "駆動機構",
     "block.petrolsparts.planetary_gearset": "惑星歯車機構",
     "block.petrolsparts.pneumatic_tube": "空気圧チューブ",
     "block.petrolsparts.pneumatic_tube.cant_flip": "空気圧チューブを方向変更するには、空にする必要があります",
