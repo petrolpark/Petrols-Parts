@@ -71,14 +71,16 @@ public class ColossalCogwheelBlockEntity extends KineticBlockEntity {
         final CogType lowerCogType = IFaceAlignedCogWheelBlockEntity.getCogType(target, Direction.get(AxisDirection.NEGATIVE, otherAxis));
         
         final boolean toLargeCog = ICogWheel.isLargeCog(otherCogState) || upperCogType.isLarge() || lowerCogType.isLarge();
+        final boolean toMiddleCog = ICogWheel.isLargeCog(otherCogState) || ICogWheel.isSmallCog(otherCogState);
 
         if (toLargeCog || ICogWheel.isSmallCog(otherCogState) || upperCogType.isSmall() || lowerCogType.isSmall()) {
-            Axis axis = colossalState.getValue(RotatedPillarKineticBlock.AXIS);
+            final Axis axis = colossalState.getValue(RotatedPillarKineticBlock.AXIS);
             if (((IRotate)otherCogState.getBlock()).getRotationAxis(otherCogState) != axis) return 0f;
-            Position.Clock posClock = colossalState.getValue(ColossalCogwheelBlock.POSITION_CLOCK);
-            for (Connection.Type connectionType : Connection.Type.values()) {
+            final Position.Clock posClock = colossalState.getValue(ColossalCogwheelBlock.POSITION_CLOCK);
+            for (final Connection.Type connectionType : Connection.Type.values()) {
+                if (connectionType != Connection.Type.INSIDE_SMALL && !toMiddleCog) continue; // Only the inside teeth will mesh face-aligned cogwheels
                 if (relCenter.subtract(connectionType.relativeCenterPos.apply(axis, posClock.getDirection(axis))).equals(diff)) {
-                    Connection connection = connectionType.connection;
+                    final Connection connection = connectionType.connection;
                     if (connection.toLargeCog() == toLargeCog) return connection.ratio();
                 };
             };

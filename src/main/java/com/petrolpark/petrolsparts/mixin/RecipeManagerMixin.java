@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.petrolpark.petrolsparts.PetrolsPartsRemaps;
-import com.petrolpark.petrolsparts.PetrolsPartsRemaps.CompatRecipeRemoval;
+import com.petrolpark.petrolsparts.PetrolsPartsRemaps.CompatRemoval;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
@@ -23,6 +23,6 @@ public class RecipeManagerMixin {
         )
     )
     public boolean petrolsparts$disableConfiguredCompatRecipes(boolean original, @Local(ordinal = 0) ResourceLocation resourcelocation) {
-        return original || (PetrolsPartsRemaps.COMPAT_RECIPE_REMOVALS.get(resourcelocation) instanceof CompatRecipeRemoval removal && removal != null && removal.condition().get());
+        return original || (PetrolsPartsRemaps.COMPAT_RECIPE_REMOVALS.get(resourcelocation) instanceof CompatRemoval removal && removal != null && removal.condition().get());
     };
 };

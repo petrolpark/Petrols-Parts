@@ -2,21 +2,32 @@ package com.petrolpark.petrolsparts;
 
 import static com.petrolpark.petrolsparts.PetrolsParts.REGISTRATE;
 
+import java.util.function.Supplier;
+
 import com.petrolpark.compat.create.core.tube.TubeBlockItem;
 import com.petrolpark.petrolsparts.config.PPCStress;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.EncasedAssemblageBlock;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.EncasedAssemblageBlockDataGen;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.EncasedAssemblageCTBehaviour;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.EncasedSeparateShaftHalvesAssemblageBlock;
+import com.petrolpark.petrolsparts.content.kinetics.assemblage.EncasedSingleShaftAssemblageBlock;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.SeparateShaftHalvesAssemblageBlock;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.SingleShaftAssemblageBlock;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock;
 import com.petrolpark.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockItem;
 import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.AbstractCornerShaftBlock;
 import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlock;
+import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlockItem;
 import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.EncasedCornerShaftBlock;
+import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.EncasedStraightCornerShaftBlock;
+import com.petrolpark.petrolsparts.content.kinetics.cornerShaft.StraightCornerShaftBlock;
 import com.petrolpark.petrolsparts.content.kinetics.differential.DifferentialBlock;
 import com.petrolpark.petrolsparts.content.kinetics.differential.DummyDifferentialBlock;
 import com.petrolpark.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlock;
 import com.petrolpark.petrolsparts.content.kinetics.legacy.LegacyCoaxialGearBlock;
 import com.petrolpark.petrolsparts.content.kinetics.movement.MovementBlock;
 import com.petrolpark.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlock;
+import com.petrolpark.petrolsparts.content.kinetics.transmission.TransmissionBlock;
 import com.petrolpark.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlock;
 import com.petrolpark.petrolsparts.content.processing.brassDepot.BrassDepotBlock;
 import com.simibubi.create.AllBlocks;
@@ -27,27 +38,86 @@ import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
+import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
+import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
+import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedShaftBlock;
 import com.simibubi.create.content.logistics.depot.MountedDepotInteractionBehaviour;
+import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
+import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
+import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
+import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.MapColor;
+import net.minecraft.world.level.storage.loot.LootPool;
+import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.LootItem;
+import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 
 public class PetrolsPartsBlocks {
 
     public static final BlockEntry<SeparateShaftHalvesAssemblageBlock> SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("separate_shaft_halves_assemblage", SeparateShaftHalvesAssemblageBlock::new)
         .initialProperties(AllBlocks.COGWHEEL)
-        .properties(p -> p.noOcclusion())
-        .transform(PPCStress.setNoImpact())
+        .properties(p -> p
+            .noOcclusion()
+            .noLootTable()
+        ).transform(PPCStress.setNoImpact())
         .transform(TagGen.axeOrPickaxe())
         .register();
 
     public static final BlockEntry<SingleShaftAssemblageBlock> SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("single_shaft_assemblage", SingleShaftAssemblageBlock::new)
         .initialProperties(SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
+        .properties(p -> p
+            .noLootTable()
+        ).transform(PPCStress.setNoImpact())
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
+    public static final BlockEntry<EncasedSeparateShaftHalvesAssemblageBlock> ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("andesite_encased_separate_shaft_halves_assemblage", EncasedAssemblageBlock.andesite(EncasedSeparateShaftHalvesAssemblageBlock::new))
+        .initialProperties(AllBlocks.ANDESITE_ENCASED_COGWHEEL)
+        .properties(BlockBehaviour.Properties::noOcclusion)
+        .blockstate(EncasedAssemblageBlockDataGen.separateShaftHalvesBlockState("andesite"))
+        .loot(EncasedAssemblageBlockDataGen::separateShaftHalvesLoot)
+        .transform(EncasingRegistry.addVariantTo(SEPARATE_SHAFT_HALVES_ASSEMBLAGE))
+        .onRegister(EncasedAssemblageBlock.registerCTs(() -> EncasedAssemblageCTBehaviour.ANDESITE))
+        .transform(PPCStress.setNoImpact())
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
+    public static final BlockEntry<EncasedSingleShaftAssemblageBlock> ANDESITE_ENCASED_SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("andesite_encased_single_shaft_assemblage", EncasedAssemblageBlock.andesite(EncasedSingleShaftAssemblageBlock::new))
+        .initialProperties(ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
+        .properties(BlockBehaviour.Properties::noOcclusion)
+        .blockstate(EncasedAssemblageBlockDataGen.singleShaftBlockState("andesite"))
+        .loot(EncasedAssemblageBlockDataGen::singleShaftLoot)
+        .transform(EncasingRegistry.addVariantTo(SINGLE_SHAFT_ASSEMBLAGE))
+        .onRegister(EncasedAssemblageBlock.registerCTs(() -> EncasedAssemblageCTBehaviour.ANDESITE))
+        .transform(PPCStress.setNoImpact())
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
+    public static final BlockEntry<EncasedSeparateShaftHalvesAssemblageBlock> BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("brass_encased_separate_shaft_halves_assemblage", EncasedAssemblageBlock.brass(EncasedSeparateShaftHalvesAssemblageBlock::new))
+        .initialProperties(AllBlocks.BRASS_ENCASED_COGWHEEL)
+        .properties(BlockBehaviour.Properties::noOcclusion)
+        .blockstate(EncasedAssemblageBlockDataGen.separateShaftHalvesBlockState("brass"))
+        .loot(EncasedAssemblageBlockDataGen::separateShaftHalvesLoot)
+        .transform(EncasingRegistry.addVariantTo(SEPARATE_SHAFT_HALVES_ASSEMBLAGE))
+        .transform(PPCStress.setNoImpact())
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
+    public static final BlockEntry<EncasedSingleShaftAssemblageBlock> BRASS_ENCASED_SINGLE_SHAF_ASSEMBLAGE = REGISTRATE.block("brass_encased_single_shaft_assemblage", EncasedAssemblageBlock.brass(EncasedSingleShaftAssemblageBlock::new))
+        .initialProperties(BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
+        .properties(BlockBehaviour.Properties::noOcclusion)
+        .blockstate(EncasedAssemblageBlockDataGen.singleShaftBlockState("brass"))
+        .loot(EncasedAssemblageBlockDataGen::singleShaftLoot)
+        .transform(EncasingRegistry.addVariantTo(SINGLE_SHAFT_ASSEMBLAGE))
         .transform(PPCStress.setNoImpact())
         .transform(TagGen.axeOrPickaxe())
         .register();
@@ -102,7 +172,7 @@ public class PetrolsPartsBlocks {
         ).defaultLoot()
         .transform(PPCStress.setNoImpact())
         .transform(TagGen.pickaxeOnly())
-        .item()
+        .item(CornerShaftBlockItem::new)
         .build()
         .register();
 
@@ -130,6 +200,27 @@ public class PetrolsPartsBlocks {
 		.transform(TagGen.axeOrPickaxe())
 		.register();
 
+    public static final BlockEntry<StraightCornerShaftBlock> STRAIGHT_CORNER_SHAFT = REGISTRATE.block("straight_corner_shaft", StraightCornerShaftBlock::new)
+        .initialProperties(AllBlocks.SHAFT)
+        .loot((lt, b) -> lt.dropOther(b, CORNER_SHAFT))
+		.transform(PPCStress.setNoImpact())
+		.transform(TagGen.pickaxeOnly())
+		.blockstate((ctx, prov) -> BlockStateGen.axisBlock(ctx, prov, $ -> prov.models().getExistingFile(prov.modLoc("block/corner_shaft/straight"))))
+        .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
+        .register();
+
+    public static final BlockEntry<EncasedStraightCornerShaftBlock> ANDESITE_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("andesite_encased_straight_corner_shaft", p -> new EncasedStraightCornerShaftBlock(p, AllBlocks.ANDESITE_CASING::get))
+        .transform(encasedStraightCornerShaft("andesite", () -> AllSpriteShifts.ANDESITE_CASING))
+        .transform(EncasingRegistry.addVariantTo(STRAIGHT_CORNER_SHAFT))
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
+	public static final BlockEntry<EncasedStraightCornerShaftBlock> BRASS_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("brass_encased_straight_corner_shaft", p -> new EncasedStraightCornerShaftBlock(p, AllBlocks.BRASS_CASING::get))
+        .transform(encasedStraightCornerShaft("brass", () -> AllSpriteShifts.BRASS_CASING))
+        .transform(EncasingRegistry.addVariantTo(STRAIGHT_CORNER_SHAFT))
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
     public static final BlockEntry<HydraulicTransmissionBlock> HYDRAULIC_TRANSMISSION = REGISTRATE.block("hydraulic_transmission", HydraulicTransmissionBlock::new)
         .initialProperties(AllBlocks.MECHANICAL_CRAFTER)
         .properties(p -> p
@@ -143,6 +234,16 @@ public class PetrolsPartsBlocks {
 
     public static final BlockEntry<MovementBlock> MOVEMENT = REGISTRATE.block("movement", MovementBlock::new)
         .initialProperties(SharedProperties::softMetal)
+        .loot((lt, b) -> lt.add(b, LootTable.lootTable()
+            .withPool(
+                lt.applyExplosionCondition(b, LootPool.lootPool()
+                    .setRolls(ConstantValue.exactly(1f))
+                    .add(LootItem.lootTableItem(b).apply(CopyComponentsFunction.copyComponents(CopyComponentsFunction.Source.BLOCK_ENTITY)
+                        .include(PetrolsPartsDataComponentTypes.MOVEMENT_DATA)
+                    ))
+                )
+            ))
+        ).transform(TagGen.axeOrPickaxe())
         .item()
         .build()
         .register();
@@ -171,11 +272,30 @@ public class PetrolsPartsBlocks {
         .build()
         .register();
 
+    public static final BlockEntry<TransmissionBlock> TRANSMISSION = REGISTRATE.block("transmission", TransmissionBlock::new)
+        .defaultLoot()
+        .item()
+        .build()
+        .register();
+
     // OLD
 
-    @Deprecated public static final BlockEntry<LegacyCoaxialGearBlock> LEGACY_COAXIAL_GEAR = REGISTRATE.block("coaxial_gear", LegacyCoaxialGearBlock::small).register();
-    @Deprecated public static final BlockEntry<LegacyCoaxialGearBlock> LEGACY_LARGE_COAXIAL_GEAR = REGISTRATE.block("large_coaxial_gear", LegacyCoaxialGearBlock::large).register();
+    @Deprecated public static final BlockEntry<LegacyCoaxialGearBlock> LEGACY_COAXIAL_GEAR = REGISTRATE.block("coaxial_gear", LegacyCoaxialGearBlock::small).properties(BlockBehaviour.Properties::noLootTable).register();
+    @Deprecated public static final BlockEntry<LegacyCoaxialGearBlock> LEGACY_LARGE_COAXIAL_GEAR = REGISTRATE.block("large_coaxial_gear", LegacyCoaxialGearBlock::large).properties(BlockBehaviour.Properties::noLootTable).register();
 
     public static final void register() {};
+
+    private static final <B extends EncasedStraightCornerShaftBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> encasedStraightCornerShaft(String casing, Supplier<CTSpriteShiftEntry> casingShift) {
+		return builder -> builder.initialProperties(AllBlocks.ANDESITE_ENCASED_SHAFT)
+			.properties(BlockBehaviour.Properties::noOcclusion)
+			.transform(PPCStress.setNoImpact())
+			.loot((p, lb) -> p.dropOther(lb, CORNER_SHAFT))
+			.onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(casingShift.get())))
+			.onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, casingShift.get(), (s, f) -> f.getAxis() != s.getValue(EncasedShaftBlock.AXIS))))
+			// .item()
+			// .model(AssetLookup.customBlockItemModel("encased_shaft", "item_" + casing))
+			// .build()
+            ;
+	};
 
 };

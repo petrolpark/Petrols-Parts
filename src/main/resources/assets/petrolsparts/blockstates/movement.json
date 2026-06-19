@@ -1,0 +1,19 @@
+{
+    "variants": {
+        "facing=north": {
+            "model": "petrolsparts:block/movement/block"
+        },
+        "facing=south": {
+            "model": "petrolsparts:block/movement/block",
+            "y": 180
+        },
+        "facing=east": {
+            "model": "petrolsparts:block/movement/block",
+            "y": 90
+        },
+        "facing=west": {
+            "model": "petrolsparts:block/movement/block",
+            "y": 270
+        }
+    }
+}

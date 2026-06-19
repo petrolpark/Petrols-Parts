@@ -1,0 +1,218 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/core",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/middle_open",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "middle_cog": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/top_open",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "top_cog": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/bottom_open",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "bottom_cog": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/middle_closed",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "middle_cog": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/top_closed",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "top_cog": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/bottom_closed",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "axis": "x",
+        "bottom_cog": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/core"
+      },
+      "when": {
+        "axis": "y"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/middle_open"
+      },
+      "when": {
+        "axis": "y",
+        "middle_cog": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/top_open"
+      },
+      "when": {
+        "axis": "y",
+        "top_cog": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/bottom_open"
+      },
+      "when": {
+        "axis": "y",
+        "bottom_cog": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/middle_closed"
+      },
+      "when": {
+        "axis": "y",
+        "middle_cog": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/top_closed"
+      },
+      "when": {
+        "axis": "y",
+        "top_cog": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/bottom_closed"
+      },
+      "when": {
+        "axis": "y",
+        "bottom_cog": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/core",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/middle_open",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "middle_cog": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/top_open",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "top_cog": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/bottom_open",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "bottom_cog": "small|large|small_coaxial|large_coaxial"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/middle_closed",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "middle_cog": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/top_closed",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "top_cog": "none"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/assemblage/encased/brass/bottom_closed",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "axis": "z",
+        "bottom_cog": "none"
+      }
+    }
+  ]
+}

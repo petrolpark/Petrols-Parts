@@ -5,9 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
+import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
@@ -95,13 +97,14 @@ public abstract class AbstractCornerShaftBlock extends DirectionalAxisKineticBlo
     };
 
     public BlockState getBlockstateConnectingDirections(Direction direction1, Direction direction2) {
-        boolean axisAlongFirst = (direction1.getAxisDirection() == direction2.getAxisDirection());
-        Map<Axis, Direction> directionsForEachAxis = Map.of(direction1.getAxis(), direction1, direction2.getAxis(), direction2);
-        List<Axis> axes = new ArrayList<>();
+        if (direction1.getAxis() == direction2.getAxis()) return AllBlocks.SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, direction1.getAxis());
+        final boolean axisAlongFirst = (direction1.getAxisDirection() == direction2.getAxisDirection());
+        final Map<Axis, Direction> directionsForEachAxis = Map.of(direction1.getAxis(), direction1, direction2.getAxis(), direction2);
+        final List<Axis> axes = new ArrayList<>();
         axes.addAll(List.of(Axis.values()));
         axes.remove(direction1.getAxis());
         axes.remove(direction2.getAxis());
-        Axis primaryAxis;
+        final Axis primaryAxis;
         switch (axes.get(0)) {
             case X:
                 primaryAxis = axisAlongFirst ? Axis.Y : Axis.Z;
@@ -118,7 +121,7 @@ public abstract class AbstractCornerShaftBlock extends DirectionalAxisKineticBlo
         return defaultBlockState().setValue(DirectionalKineticBlock.FACING, directionsForEachAxis.get(primaryAxis)).setValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE, axisAlongFirst);
     };
 
-    public static boolean isPositiveDirection(Direction direction) {
+    public static final boolean isPositiveDirection(Direction direction) {
         return Direction.get(AxisDirection.POSITIVE, direction.getAxis()) == direction;
     };
 

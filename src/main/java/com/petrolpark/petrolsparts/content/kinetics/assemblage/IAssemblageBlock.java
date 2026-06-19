@@ -8,8 +8,8 @@ import javax.annotation.Nullable;
 import com.petrolpark.compat.create.core.block.composite.ICompositeKineticBlock;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import com.petrolpark.petrolsparts.core.block.CogType;
+import com.petrolpark.petrolsparts.core.block.IFaceAlignedCogWheelBlock;
 import com.petrolpark.petrolsparts.core.block.IStateDependentCogWheelBlock;
-import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlock;
 import com.petrolpark.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
@@ -35,10 +35,11 @@ public interface IAssemblageBlock extends IStateDependentCogWheelBlock, IFaceAli
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
     public static final BooleanProperty TOP_SHAFT_HALF = BooleanProperty.create("top_shaft_half");
     public static final BooleanProperty BOTTOM_SHAFT_HALF = BooleanProperty.create("bottom_half_shaft");
-    public static final EnumProperty<AssemblageCog> TOP_COG = EnumProperty.create("top_gear", AssemblageCog.class);
-    public static final EnumProperty<AssemblageCog> MIDDLE_COG = EnumProperty.create("middle_gear", AssemblageCog.class);
-    public static final EnumProperty<AssemblageCog> BOTTOM_COG = EnumProperty.create("bottom_gear", AssemblageCog.class);
+    public static final EnumProperty<AssemblageCog> TOP_COG = EnumProperty.create("top_cog", AssemblageCog.class);
+    public static final EnumProperty<AssemblageCog> MIDDLE_COG = EnumProperty.create("middle_cog", AssemblageCog.class);
+    public static final EnumProperty<AssemblageCog> BOTTOM_COG = EnumProperty.create("bottom_cog", AssemblageCog.class);
 
+    public static final Collection<BooleanProperty> SHAFT_HALF_PROPERTIES = List.of(TOP_SHAFT_HALF, BOTTOM_SHAFT_HALF);
     public static final Collection<EnumProperty<AssemblageCog>> COG_PROPERTIES = List.of(TOP_COG, MIDDLE_COG, BOTTOM_COG);
     
     public boolean hasTopShaft(BlockState state);

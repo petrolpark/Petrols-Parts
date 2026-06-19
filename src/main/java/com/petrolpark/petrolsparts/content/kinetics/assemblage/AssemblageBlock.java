@@ -3,8 +3,6 @@ package com.petrolpark.petrolsparts.content.kinetics.assemblage;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.annotation.Nullable;
-
 import com.petrolpark.compat.create.core.block.IReplaceableBlock;
 import com.petrolpark.compat.create.core.block.composite.MultiPartCompositeKineticBlock;
 import com.petrolpark.petrolsparts.PetrolsParts;
@@ -12,9 +10,11 @@ import com.petrolpark.petrolsparts.PetrolsPartsBlocks;
 import com.petrolpark.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import com.petrolpark.util.BlockHelper;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.content.decoration.bracket.BracketedBlockEntityBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasableBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
+import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
@@ -44,7 +44,6 @@ import net.neoforged.api.distmarker.OnlyIn;
 
 public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBlock<AssemblagePart> implements IBE<AssemblageBlockEntity>, ProperWaterloggedBlock, IAssemblageBlock, EncasableBlock, IReplaceableBlock permits SeparateShaftHalvesAssemblageBlock, SingleShaftAssemblageBlock{
 
-    @Nullable
     protected static final String DESCRIPTION_ID = Util.makeDescriptionId("block", PetrolsParts.asResource("assemblage"));
 
     public AssemblageBlock(BlockBehaviour.Properties properties) {
@@ -101,6 +100,7 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
 
     @Override
     public BlockState getReplacedState(Level level, BlockPos pos, BlockState existingState, BlockState newState, Player player) {
+        if (BlockEntityBehaviour.get(level, pos,  BracketedBlockEntityBehaviour.TYPE) instanceof BracketedBlockEntityBehaviour behaviour && behaviour != null && behaviour.isBracketPresent()) return null;
         if (existingState.canBeReplaced()) return newState;
         if (newState.canBeReplaced()) return existingState;
         existingState = getEquivalent(existingState);
@@ -137,6 +137,21 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
         };
 
         return newState;
+    };
+
+    @Override
+    public boolean canBeReplaced(Level level, BlockPos pos, BlockState existingState, BlockState newState, Player player) {
+        if (BlockEntityBehaviour.get(level, pos,  BracketedBlockEntityBehaviour.TYPE) instanceof BracketedBlockEntityBehaviour behaviour && behaviour != null && behaviour.isBracketPresent()) return false;
+        existingState = getEquivalent(existingState);
+        newState = getEquivalent(newState);
+        if (existingState.canBeReplaced() || newState.canBeReplaced()) return true;
+        return newState.getBlock() instanceof AssemblageBlock newAssemblage && existingState.getBlock() instanceof AssemblageBlock existingAssemblage
+            && newState.getValue(AXIS) == existingState.getValue(AXIS)
+            && !(newAssemblage.hasTopShaft(newState) && existingAssemblage.hasTopShaft(existingState))
+            && !(newAssemblage.hasBottomShaft(newState) && existingAssemblage.hasBottomShaft(existingState))
+            && (newState.getValue(TOP_COG).isNone() || existingState.getValue(TOP_COG).isNone())
+            && (newState.getValue(MIDDLE_COG).isNone() || existingState.getValue(MIDDLE_COG).isNone())
+            && (newState.getValue(BOTTOM_COG).isNone() || existingState.getValue(BOTTOM_COG).isNone());
     };
 
     public static final BlockState getEquivalent(BlockState state) {

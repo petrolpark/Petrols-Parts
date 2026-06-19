@@ -1,0 +1,17 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "petrolsparts:block/corner_shaft/straight",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y": {
+      "model": "petrolsparts:block/corner_shaft/straight"
+    },
+    "axis=z": {
+      "model": "petrolsparts:block/corner_shaft/straight",
+      "x": 90,
+      "y": 180
+    }
+  }
+}

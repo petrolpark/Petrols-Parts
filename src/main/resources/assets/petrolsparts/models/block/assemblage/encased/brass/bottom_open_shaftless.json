@@ -1,0 +1,9 @@
+{
+	"parent": "petrolsparts:block/assemblage/encased/andesite/bottom_open_shaftless",
+	"textures": {
+		"open_side": "petrolsparts:block/open_brass_encased_assemblage_side",
+		"end": "create:block/brass_casing",
+		"inside": "minecraft:block/stripped_dark_oak_log_top",
+		"particle": "create:block/brass_casing"
+	}
+}

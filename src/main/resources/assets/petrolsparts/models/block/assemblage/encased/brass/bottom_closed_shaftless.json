@@ -1,0 +1,8 @@
+{
+	"parent": "petrolsparts:block/assemblage/encased/andesite/bottom_closed_shaftless",
+	"textures": {
+		"closed_side": "petrolsparts:block/closed_brass_encased_assemblage_side",
+		"end": "create:block/brass_casing",
+		"particle": "create:block/brass_casing"
+	}
+}

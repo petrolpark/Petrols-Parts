@@ -60,6 +60,12 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
         HELPER.addToTag(AllCreatePonderTags.ARM_TARGETS)
             .add(PetrolsPartsBlocks.BRASS_DEPOT);
 
+        HELPER.addToTag(AllCreatePonderTags.THRESHOLD_SWITCH_TARGETS)
+            .add(PetrolsPartsBlocks.MOVEMENT);
+
+        HELPER.addToTag(AllCreatePonderTags.KINETIC_SOURCES)
+            .add(PetrolsPartsBlocks.MOVEMENT);
+
         HELPER.addToTag(AllCreatePonderTags.KINETIC_RELAYS)
             .add(PetrolsPartsItems.SHAFT_HALF)
             .add(PetrolsPartsItems.SHAFTLESS_COGWHEEL)
@@ -71,10 +77,18 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .add(PetrolsPartsBlocks.CORNER_SHAFT)
             .add(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION)
             .add(PetrolsPartsBlocks.PLANETARY_GEARSET)
+            .add(PetrolsPartsBlocks.TRANSMISSION)
         ;
+
+        HELPER.addToTag(AllCreatePonderTags.KINETIC_APPLIANCES)
+            .add(PetrolsPartsBlocks.MOVEMENT)
+            .add(PetrolsPartsBlocks.PNEUMATIC_TUBE);
 
         HELPER.addToTag(AllCreatePonderTags.LOGISTICS)
             .add(PetrolsPartsBlocks.PNEUMATIC_TUBE);
+
+        HELPER.addToTag(AllCreatePonderTags.REDSTONE)
+            .add(PetrolsPartsBlocks.TRANSMISSION);
     };
 
     /**

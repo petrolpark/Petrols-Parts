@@ -1,7 +1,9 @@
 {
-    "variants": {
-        "": {
-            "model": "petrolsparts:block/assemblage/block"
+    "multipart": [
+        {
+            "apply": {
+                "model": "petrolsparts:block/assemblage/block"
+            }
         }
-    }
-  }
+    ]
+}

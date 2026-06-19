@@ -1,0 +1,24 @@
+{
+    "values": {
+        "minecraft:iron_block": {
+            "stress_capacity": 2,
+            "model": "petrolsparts:block/movement/weight/iron"
+        },
+        "create:brass_block": {
+            "stress_capacity": 4,
+            "model": "petrolsparts:block/movement/weight/brass"
+        },
+        "#minecraft:anvil": {
+            "stress_capacity": 8,
+            "model": "petrolsparts:block/movement/weight/anvil"
+        },
+        "minecraft:netherite_block": {
+            "stress_capacity": 16,
+            "model": "petrolsparts:block/movement/weight/netherite"
+        },
+        "minecraft:heavy_core": {
+            "stress_capacity": 24,
+            "model": "petrolsparts:block/movement/weight/heavy_core"
+        }
+    }
+}

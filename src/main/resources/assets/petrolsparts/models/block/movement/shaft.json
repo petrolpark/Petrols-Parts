@@ -1,0 +1,34 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "block/block",
+	"textures": {
+		"particle": "create:block/brass_casing",
+		"shaft": "create:block/axis",
+		"shaft_end": "create:block/axis_top"
+	},
+	"elements": [
+		{
+			"from": [6, 6, 0],
+			"to": [10, 10, 1.9],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 0]},
+			"faces": {
+				"north": {"uv": [6, 6, 10, 10], "texture": "#shaft_end"},
+				"east": {"uv": [6, 5, 10, 7], "rotation": 90, "texture": "#shaft"},
+				"south": {"uv": [6, 6, 10, 10], "texture": "#shaft_end"},
+				"west": {"uv": [6, 10, 10, 12], "rotation": 90, "texture": "#shaft"},
+				"up": {"uv": [6, 5, 10, 7], "texture": "#shaft"},
+				"down": {"uv": [6, 10, 10, 12], "texture": "#shaft"}
+			}
+		}
+	],
+	"groups": [
+		{
+			"name": "FrontShaft",
+			"origin": [8, 8, 0],
+			"scope": 0,
+			"color": 0,
+			"children": [0]
+		}
+	]
+}

@@ -36,7 +36,7 @@ public enum PetrolsPartsAdvancementTriggers {
         if (player instanceof ServerPlayer serverPlayer) {
             trigger.trigger(serverPlayer);
         } else {
-            PetrolsParts.LOGGER.warn("Could not award Destroy Advancement "+triggerId+" to client-side Player.");
+            PetrolsParts.LOGGER.warn("Could not award Petrol's Parts Advancement "+triggerId+" to client-side Player.");
         };
     };
 

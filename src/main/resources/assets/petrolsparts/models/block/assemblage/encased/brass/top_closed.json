@@ -1,0 +1,10 @@
+{
+	"parent": "petrolsparts:block/assemblage/encased/andesite/top_closed",
+	"textures": {
+		"closed_side": "petrolsparts:block/closed_brass_encased_assemblage_side",
+		"end": "create:block/brass_casing",
+		"inside": "minecraft:block/stripped_dark_oak_log_top",
+		"gearbox": "create:block/brass_gearbox",
+		"particle": "create:block/brass_casing"
+	}
+}
