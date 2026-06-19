@@ -10,10 +10,12 @@
     "advancement.petrolsparts.root": "Petrol's Parts",
     "advancement.petrolsparts.root.description": "新しくてファンキーな動力コンポーネント",
 
+    "block.petrolsparts.andesite_encased_assemblage": "安山岩ケース入りAssemblage",
     "block.petrolsparts.andesite_encased_corner_shaft": "安山岩ケース入りコーナーシャフト",
     "block.petrolsparts.assemblage": "Assemblage",
     "block.petrolsparts.bevel_gear": "かさ歯車",
     "block.petrolsparts.brass_depot": "真鍮デポ",
+    "block.petrolsparts.brass_encased_assemblage": "真鍮ケース入りAssemblage",
     "block.petrolsparts.brass_encased_corner_shaft": "真鍮ケース入りコーナーシャフト",
     "block.petrolsparts.colossal_cogwheel": "巨大歯車",
     "block.petrolsparts.differential": "差動装置",
@@ -27,6 +29,13 @@
     "block.petrolsparts.pneumatic_tube.jammed": "詰まった！",
     "block.petrolsparts.pneumatic_tube.jammed.hint": "この空気圧チューブには、_出られない_アイテムが詰まっています",
 
+    "petrolsparts.gui.goggles.kinetic_battery_stats": "動力バッテリーの状態:",
+    "petrolsparts.gui.goggles.movement.no_weight": "重りが取り付けられていません",
+    "petrolsparts.gui.goggles.movement.no_weight.info": "適した_重り_アイテムはJEIで確認できます。_右クリック_で取り付けます",
+    "petrolsparts.gui.jei.category.movement_weight": "駆動重り",
+    "petrolsparts.gui.jei.category.movement_weight.capacity": "%1$ssu/RPM",
+    "petrolsparts.gui.threshold_switch.movement_rotations": "%1$s回転",
+    
     "petrolsparts.ponder.brass_depot.header": "真鍮デポによるレシピの選別",
     "petrolsparts.ponder.brass_depot.text_1": "真鍮デポには、レシピが競合する場合に使用できるフィルタースロットがあります",
     "petrolsparts.ponder.brass_depot.text_2": "これは様々な種類のレシピに対応しています",
@@ -65,6 +74,8 @@
     "petrolsparts.ponder.hydraulic_transmission.header": "油圧トランスミッションによるズル",
     "petrolsparts.ponder.hydraulic_transmission.text_1": "Createのコアゲームプレイメカニズムが嫌いですか？",
     "petrolsparts.ponder.hydraulic_transmission.text_2": "油圧トランスミッションは、ほとんどすべての接続を可能にします",
+    "petrolsparts.ponder.movement.header": "駆動機構による回転の蓄積",
+    "petrolsparts.ponder.movement.text_1": "適したアイテムを持って駆動機構を右クリックし、重りを取り付けます",
     "petrolsparts.ponder.planetary_gearset.header": "惑星歯車機構による異次元のギアリング",
     "petrolsparts.ponder.planetary_gearset.text_1": "惑星歯車機構は、大型歯車とほぼ同じように接続します（これらについての詳細はQキーを押してください）",
     "petrolsparts.ponder.planetary_gearset.text_2": "ただし、惑星歯車機構のシャフトは、歯の2倍の速さで、歯とは反対方向に回転します",
@@ -76,6 +87,8 @@
     "petrolsparts.ponder.pneumatic_tube.text_5": "チューブが空である限り、輸送方向を反転させることができます",
 
     "petrolsparts.tooltip.coaxial_gear.shaft_too_short": "同軸歯車に通すには、シャフトは少なくとも2ブロックの長さが必要です",
+    "petrolsparts.tooltip.movement.weight": "取り付けられた重り: %1$s",
+    "petrolsparts.tooltip.stored_rotations": "蓄積された回転数: %1$s",
 
     "item.petrolsparts.coaxial_cogwheel": "同軸歯車",
     "item.petrolsparts.large_coaxial_cogwheel": "大きな同軸歯車",
