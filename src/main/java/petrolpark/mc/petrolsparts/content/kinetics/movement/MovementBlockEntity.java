@@ -31,6 +31,8 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
+import petrolpark.mc.library.compat.create.core.world.block.entity.behaviour.FlagPoleBehaviour;
+import petrolpark.mc.library.compat.pquality.OptionalQuality;
 import petrolpark.mc.library.core.world.block.DummyBlock;
 import petrolpark.mc.library.util.Lang;
 import petrolpark.mc.petrolsparts.PetrolsParts;
@@ -49,6 +51,8 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
     protected ItemStack weightStack = ItemStack.EMPTY;
     protected MovementWeightData weightData = null;
 
+    protected FlagPoleBehaviour flagPole;
+
     public MovementBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
         generatingPart.setBlockState(state);
@@ -57,11 +61,11 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-
+        behaviours.add(flagPole = new FlagPoleBehaviour(this));
     };
 
     public float getMaxRotationsCharge() {
-        return 900f;
+        return OptionalQuality.multiply(flagPole.getFlagPole(), 900f);
     };
 
     public float getBaseRotationSpeed() {

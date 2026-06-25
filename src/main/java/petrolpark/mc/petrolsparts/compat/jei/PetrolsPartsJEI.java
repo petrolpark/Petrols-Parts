@@ -1,12 +1,7 @@
 package petrolpark.mc.petrolsparts.compat.jei;
 
+import java.util.List;
 import java.util.Optional;
-
-import petrolpark.mc.petrolsparts.PetrolsParts;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.PetrolsPartsRemaps;
-import petrolpark.mc.petrolsparts.PetrolsPartsRemaps.CompatRemoval;
-import petrolpark.mc.petrolsparts.compat.jei.category.MovementWeightRecipeCategory;
 
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -18,6 +13,11 @@ import mezz.jei.api.runtime.IJeiRuntime;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+import petrolpark.mc.petrolsparts.PetrolsParts;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import petrolpark.mc.petrolsparts.PetrolsPartsRemaps;
+import petrolpark.mc.petrolsparts.PetrolsPartsRemaps.CompatRemoval;
+import petrolpark.mc.petrolsparts.compat.jei.category.MovementWeightRecipeCategory;
 
 @JeiPlugin
 public class PetrolsPartsJEI implements IModPlugin {
@@ -26,14 +26,14 @@ public class PetrolsPartsJEI implements IModPlugin {
 
     @Override
     public void onRuntimeAvailable(IJeiRuntime jeiRuntime) {
-        jeiRuntime.getJeiHelpers().getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, PetrolsPartsRemaps.COMPAT_ITEM_REMOVALS.stream()
+        final List<ItemStack> ingredientsToRemove = PetrolsPartsRemaps.COMPAT_ITEM_REMOVALS.stream()
             .filter(removal -> removal.condition().get())
             .map(CompatRemoval::id)
             .map(BuiltInRegistries.ITEM::getOptional)
             .flatMap(Optional::stream)
             .map(ItemStack::new)
-            .toList()
-        );
+            .toList();
+        if (!ingredientsToRemove.isEmpty()) jeiRuntime.getJeiHelpers().getIngredientManager().removeIngredientsAtRuntime(VanillaTypes.ITEM_STACK, ingredientsToRemove);
     };
 
     @Override

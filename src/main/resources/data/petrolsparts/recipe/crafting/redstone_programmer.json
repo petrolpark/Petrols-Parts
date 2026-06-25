@@ -30,6 +30,6 @@
     }
   },
   "result": {
-    "id": "petrolpark:redstone_programmer"
+    "id": "petrolpark:shared/redstone_programmer"
   }
 }

@@ -103,6 +103,7 @@ repositories {
     maven { url = "https://raw.githubusercontent.com/Fuzss/modresources/main/maven/" } // ForgeConfigAPIPort
     maven { url = "https://maven.blamejared.com" } // JEI
     maven { url = "https://maven.theillusivec4.top/" } // Curios
+    maven { url = "https://maven.ryanhcode.dev/releases" } // Aeronautics n shi
     exclusiveContent {
         forRepository {
             maven {
@@ -116,6 +117,7 @@ repositories {
     }
     flatDir {
         dirs "../petrolpark_local_maven/petrolpark/petrolpark-${minecraft_version}/${petrolpark_library_version}"
+        dirs "../petrolpark_local_maven/petrolpark/mc/pquality/pquality/${pquality_version}"
     }
 }
 
@@ -135,10 +137,16 @@ dependencies {
 
     // JEI
     implementation("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
+    // pquality
+    implementation("petrolpark.mc.pquality:pquality:${pquality_version}")
+    // // Testing
+    // implementation("maven.modrinth:gears-n-kinetics:1.0m")
 
-    // Testing
-    implementation("maven.modrinth:gears-n-kinetics:1.0m")
-
+    // Testing - Aeronautics
+    implementation("dev.eriksonn.aeronautics:aeronautics-neoforge-1.21.1:${aeronautics_version}")
+    implementation("dev.simulated_team.simulated:simulated-neoforge-1.21.1:${simulated_version}")
+    implementation("dev.ryanhcode.sable:sable-neoforge-1.21.1:${sable_version}")
+    implementation("dev.ryanhcode.offroad:offroad-neoforge-1.21.1:${offroad_version}")
 }
 
 jar {

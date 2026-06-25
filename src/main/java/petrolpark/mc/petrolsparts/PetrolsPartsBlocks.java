@@ -34,6 +34,7 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.CopyComponentsFunction;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
+import petrolpark.mc.library.PetrolparkTags;
 import petrolpark.mc.library.compat.create.core.world.block.tube.TubeBlockItem;
 import petrolpark.mc.petrolsparts.config.PPCStress;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.EncasedAssemblageBlock;
@@ -173,6 +174,7 @@ public class PetrolsPartsBlocks {
         .transform(PPCStress.setNoImpact())
         .transform(TagGen.pickaxeOnly())
         .item(CornerShaftBlockItem::new)
+        .tag(PetrolparkTags.Items.FLAGGABLE.tag)
         .build()
         .register();
 
@@ -245,6 +247,7 @@ public class PetrolsPartsBlocks {
             ))
         ).transform(TagGen.axeOrPickaxe())
         .item()
+        .tag(PetrolparkTags.Items.FLAGGABLE.tag)
         .build()
         .register();
 
@@ -258,6 +261,7 @@ public class PetrolsPartsBlocks {
         .transform(PPCStress.setNoImpact())
         .transform(TagGen.axeOrPickaxe())
         .item(CogwheelBlockItem::new)
+        .tag(PetrolparkTags.Items.FLAGGABLE.tag)
         .build()
         .register();
 

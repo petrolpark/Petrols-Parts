@@ -37,6 +37,11 @@ public class HydraulicTransmissionBlockEntity extends KineticBlockEntity impleme
     };
 
     @Override
+    public TubeBehaviour getTube() {
+        return tube;
+    };
+
+    @Override
     public void invalidateTubeRenderBoundingBox() {
         invalidateRenderBoundingBox();
     };
