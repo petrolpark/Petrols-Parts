@@ -1,9 +1,9 @@
 {
     "required": "true",
-    "package": "com.petrolpark.petrolsparts.mixin",
+    "package": "petrolpark.mc.petrolsparts.mixin",
     "compatibilityLevel": "JAVA_21",
     "refmap": "petrolsparts.refmap.json",
-    "plugin": "com.petrolpark.petrolsparts.mixin.plugin.PetrolsPartsMixinPlugin",
+    "plugin": "petrolpark.mc.petrolsparts.mixin.plugin.PetrolsPartsMixinPlugin",
     "mixins": [
         "accessor.DeployerRecipeSearchEventAccessor",
         "accessor.RotationPropagatorAccessor",

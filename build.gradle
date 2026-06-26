@@ -122,7 +122,7 @@ repositories {
 dependencies {
 
     // Library
-    implementation "com.petrolpark:petrolpark-${minecraft_version}:${petrolpark_library_version}"
+    implementation "petrolpark.mc:petrolpark-${minecraft_version}:${petrolpark_library_version}"
 
     // Registrate (bundled with Petrolpark's Library)
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
