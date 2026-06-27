@@ -10,12 +10,20 @@
     "advancement.petrolsparts.root": "Petrol 的机件",
     "advancement.petrolsparts.root.description": "新奇的动力方块",
 
+    "block.petrolsparts.andesite_encased_assemblage": "Andesite Encased Assemblage",
+    "block.petrolsparts.andesite_encased_corner_shaft": "安山双万向轴箱",
+    "block.petrolsparts.assemblage": "Assemblage",
+    "block.petrolsparts.bevel_gear": "锥齿轮",
+    "block.petrolsparts.brass_depot": "黄铜置物台",
+    "block.petrolsparts.brass_encased_assemblage": "Brass Encased Assemblage",
+    "block.petrolsparts.brass_encased_corner_shaft": "黄铜双万向轴箱",
     "block.petrolsparts.coaxial_gear": "同轴齿轮",
     "block.petrolsparts.colossal_cogwheel": "巨型齿轮",
     "block.petrolsparts.differential": "差速器",
     "block.petrolsparts.corner_shaft": "双万向轴",
     "block.petrolsparts.dummy_differential": "差速器",
     "block.petrolsparts.hydraulic_transmission": "液压传动器",
+    "block.petrolsparts.movement": "Movement",
     "block.petrolsparts.large_coaxial_gear": "大同轴齿轮",
     "block.petrolsparts.long_shaft": "长传动杆",
     "block.petrolsparts.planetary_gearset": "行星齿轮组",
@@ -24,6 +32,13 @@
     "block.petrolsparts.pneumatic_tube.jammed": "管道堵塞！",
     "block.petrolsparts.pneumatic_tube.jammed.hint": "有物品卡在这个气动管道里且_无法排出_",
 
+    "petrolsparts.gui.jei.category.movement_weight": "Movement Weights",
+    "petrolsparts.gui.jei.category.movement_weight.capacity": "%1$ssu/RPM",
+    "petrolsparts.gui.threshold_switch.movement_rotations": "%1$s Rotations",
+
+    "petrolsparts.ponder.brass_depot.header": "使用黄铜置物台过滤配方",
+    "petrolsparts.ponder.brass_depot.text_1": "黄铜置物台拥有一个可用于应对配方冲突的过滤槽",
+    "petrolsparts.ponder.brass_depot.text_2": "这适用于一系列种类的配方",
     "petrolsparts.ponder.coaxial_gear_shaftless.header": "将同轴齿轮当做无轴齿轮使用",
     "petrolsparts.ponder.coaxial_gear_shaftless.text_1": "同轴齿轮以相似的方式与普通齿轮相连",
     "petrolsparts.ponder.coaxial_gear_shaftless.text_2": "不同的是，传动杆的缺失使它们能构成普通齿轮无法构成的构造",
@@ -70,6 +85,12 @@
     "petrolsparts.ponder.pneumatic_tube.text_5": "管道清空后可反转运输方向",
 
     "petrolsparts.tooltip.coaxial_gear.shaft_too_short": "至少要有两个方块长度的传动杆才能穿过同轴齿轮",
+
+    "item.petrolsparts.coaxial_cogwheel": "同轴齿轮",
+    "item.petrolsparts.large_coaxial_cogwheel": "大同轴齿轮",
+    "item.petrolsparts.large_shaftless_cogwheel": "大无轴齿轮",
+    "item.petrolsparts.shaftless_cogwheel": "无轴齿轮",
+    "item.petrolsparts.shaft_half": "半传动杆",
 
     "itemGroup.petrolsparts.base": "Petrol 的机件"
 }
