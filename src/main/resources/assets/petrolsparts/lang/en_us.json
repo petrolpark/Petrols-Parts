@@ -82,6 +82,7 @@
     "petrolsparts.ponder.movement.text_5": "Power the Movement to start releasing stored Stress from the front",
     "petrolsparts.ponder.movement.text_6": "Again, the Stress Capacity depends on the weight loaded",
     "petrolsparts.ponder.movement.text_7": "The output of Movements will also carry to Cuckoo Clocks placed above",
+    "petrolsparts.ponder.movement.text_8": "Right-Click with an empty hand to remove the weight",
     "petrolsparts.ponder.planetary_gearset.header": "Out-of-this-world gearing with the Planetary Gearset",
     "petrolsparts.ponder.planetary_gearset.text_1": "Planetary Gearsets connect almost identically to Large Cogwheels",
     "petrolsparts.ponder.planetary_gearset.text_2": "However, the Shaft of a Planetary Gearset rotates twice as fast, and in the opposite direction to the teeth",

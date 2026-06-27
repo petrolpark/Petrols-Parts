@@ -4,12 +4,12 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import com.simibubi.create.content.processing.AssemblyOperatorBlockItem;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 @Mixin(AssemblyOperatorBlockItem.class)
 public class AssemblyOperatorBlockItemMixin {

@@ -25,6 +25,7 @@ import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.core.client.ponder.instruction.CameraShakeInstruction;
 import petrolpark.mc.library.core.client.ponder.particle.PetrolparkEmitters;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeTransportInstruction;
 
@@ -506,8 +507,97 @@ public class PetrolsPartsScenes {
         scene.markAsFinished();
     };
 
-    public static final void movement(SceneBuilder scene, SceneBuildingUtil util) {
-        
+    public static final void movement(SceneBuilder sceneIn, SceneBuildingUtil util) {
+        final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
+        scene.title("movement", "This text is defined in a language file");
+        scene.configureBasePlate(0, 0, 5);
+        scene.showBasePlate();
+
+        final BlockPos movement = util.grid().at(2, 2, 2);
+
+        scene.idle(5);
+        scene.world().showSection(util.select().position(movement), Direction.DOWN);
+        scene.idle(10);
+        scene.overlay().showText(100)
+            .attachKeyFrame()
+            .pointAt(util.vector().blockSurface(movement, Direction.WEST))
+            .text("This text is defined in a language file");
+        scene.idle(30);
+        scene.overlay().showControls(util.vector().topOf(movement), Pointing.DOWN, 70)
+            .rightClick()
+            .withItem(new ItemStack(Items.IRON_BLOCK));
+        scene.idle(10);
+        scene.world().modifyBlockEntity(movement, MovementBlockEntity.class, be -> be.setWeightStack(new ItemStack(Items.IRON_BLOCK)));
+        scene.idle(20);
+        scene.overlay().showText(40)
+            .independent(120)
+            .text("This text is defined in a language file");
+        scene.idle(50);
+
+        scene.idle(10);
+        scene.world().showSection(util.select().position(3, 0, 5), Direction.NORTH);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(2, 1, 5), Direction.NORTH);
+        for (int z = 5; z >= 3; z--) {
+            scene.idle(5);
+            scene.world().showSection(util.select().position(2, 2, z), Direction.DOWN);
+        };
+        scene.overlay().showText(100)
+            .attachKeyFrame()
+            .pointAt(util.vector().blockSurface(movement, Direction.WEST))
+            .text("This text is defined in a language file");
+        scene.idle(40);
+        scene.overlay().showText(60)
+            .independent(115)
+            .text("This text is defined in a language file");
+        scene.idle(80);
+
+        scene.world().showSection(util.select().fromTo(2, 1, 0, 2, 2, 1), Direction.SOUTH);
+        scene.idle(10);
+        scene.world().showSection(util.select().fromTo(0, 1, 2, 1, 2, 2), Direction.EAST);
+        scene.idle(10);
+        scene.overlay().showText(120)
+            .attachKeyFrame()
+            .pointAt(util.vector().blockSurface(movement, Direction.WEST))
+            .text("This text is defined in a language file");
+        scene.idle(20);
+        scene.world().toggleRedstonePower(util.select().fromTo(0, 2, 2, 1, 2, 2));
+        scene.effects().indicateRedstone(util.grid().at(0, 2, 2));
+        scene.world().setKineticSpeed(util.select().fromTo(2, 2, 0, 2, 2, 1), 16f);
+        scene.world().modifyBlockEntity(movement, MovementBlockEntity.class, be -> be.generatingPart.setSpeed(16f));
+        scene.idle(40);
+        scene.overlay().showText(60)
+            .independent(120)
+            .text("This text is defined in a language file");
+        scene.idle(80);
+
+        final BlockPos clock = util.grid().at(2, 3, 2);
+
+        scene.world().showSection(util.select().position(clock), Direction.DOWN);
+        scene.idle(20);
+        scene.overlay().showText(80)
+            .pointAt(util.vector().blockSurface(clock, Direction.WEST))
+            .attachKeyFrame()
+            .text("This text is defined in a language file");
+        scene.idle(30);
+        scene.rotateCameraY(-160);
+        scene.idle(50);
+        scene.rotateCameraY(160);
+        scene.idle(60);
+
+        scene.overlay().showText(90)
+            .attachKeyFrame()
+            .pointAt(util.vector().blockSurface(movement, Direction.WEST))
+            .text("This text is defined in a language file");
+        scene.idle(10);
+        scene.overlay().showControls(util.vector().topOf(movement), Pointing.DOWN, 50)
+            .rightClick();
+        scene.idle(10);
+        scene.world().modifyBlockEntity(movement, MovementBlockEntity.class, be -> {
+            be.setWeightStack(ItemStack.EMPTY);
+            be.generatingPart.setSpeed(0f);
+        });
+        scene.world().setKineticSpeed(util.select().fromTo(2, 2, 0, 2, 2, 1), 0f);
     };
     
     public static void planetaryGearset(SceneBuilder baseScene, SceneBuildingUtil util) {

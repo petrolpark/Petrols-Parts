@@ -123,30 +123,34 @@ repositories {
 
 dependencies {
 
-    // Library
-    implementation "petrolpark.mc:petrolpark-${minecraft_version}:${petrolpark_library_version}"
+    // HARD DEPENDENCIESs
 
+    // Library
+    implementation("petrolpark.mc:petrolpark-${minecraft_version}:${petrolpark_library_version}")
     // Registrate (bundled with Petrolpark's Library)
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
-
     // Create & Ponder
     implementation("com.simibubi.create:create-${minecraft_version}:${create_version}") { transitive = false }
     implementation("net.createmod.ponder:ponder-neoforge:${ponder_version}+mc${minecraft_version}")
     compileOnly("dev.engine-room.flywheel:flywheel-neoforge-api-${minecraft_version}:${flywheel_version}")
     runtimeOnly("dev.engine-room.flywheel:flywheel-neoforge-${minecraft_version}:${flywheel_version}")
 
+    // SOFT DEPENDENCIES
+
     // JEI
     implementation("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
     // pquality
     implementation("petrolpark.mc.pquality:pquality:${pquality_version}")
-    // // Testing
+    
+    // TESTING
+
     // implementation("maven.modrinth:gears-n-kinetics:1.0m")
 
     // Testing - Aeronautics
-    implementation("dev.eriksonn.aeronautics:aeronautics-neoforge-1.21.1:${aeronautics_version}")
-    implementation("dev.simulated_team.simulated:simulated-neoforge-1.21.1:${simulated_version}")
-    implementation("dev.ryanhcode.sable:sable-neoforge-1.21.1:${sable_version}")
-    implementation("dev.ryanhcode.offroad:offroad-neoforge-1.21.1:${offroad_version}")
+    // implementation("dev.eriksonn.aeronautics:aeronautics-neoforge-1.21.1:${aeronautics_version}")
+    // implementation("dev.simulated_team.simulated:simulated-neoforge-1.21.1:${simulated_version}")
+    // implementation("dev.ryanhcode.sable:sable-neoforge-1.21.1:${sable_version}")
+    // implementation("dev.ryanhcode.offroad:offroad-neoforge-1.21.1:${offroad_version}")
 }
 
 jar {

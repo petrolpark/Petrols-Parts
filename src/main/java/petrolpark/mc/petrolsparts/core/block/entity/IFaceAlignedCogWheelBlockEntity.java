@@ -15,7 +15,6 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity.CompositeKineticBlockEntityPart;
 import petrolpark.mc.petrolsparts.PetrolsPartsTags;
@@ -52,27 +51,47 @@ public interface IFaceAlignedCogWheelBlockEntity {
     };
 
     public static boolean isValidFaceAlignedCogwheelPosition(boolean large, LevelReader worldIn, BlockPos pos, Direction cogFace) {
-		for (Direction facing : Iterate.directions) {
-			if (facing.getAxis() == cogFace.getAxis()) continue;
+		for (Direction perpFace : Iterate.directions) {
 
-			final BlockPos offsetPos = pos.relative(facing);
-			final BlockState blockState = worldIn.getBlockState(offsetPos);
-			if (!blockState.hasProperty(BlockStateProperties.AXIS)) continue;
-            final Axis axis = blockState.getValue(BlockStateProperties.AXIS);
-            if (axis == facing.getAxis()) continue;
+            final BlockPos offsetPos = pos.relative(perpFace);
+			final BlockState offsetState = worldIn.getBlockState(offsetPos);
 
-            // Same axis, large Cogwheel directly next to another
-			if (!(worldIn.getBlockEntity(pos) instanceof KineticBlockEntity kbe)) continue;
-            final CogType cogType = getCogType(kbe, cogFace);
-            if (cogType.isLarge() || (large && cogType.isSmall())) return false;
+            if (large && CompositeKineticBlockEntity.streamAny(worldIn, offsetPos.relative(cogFace)).anyMatch(kbe -> getCogType(kbe, perpFace.getOpposite()) == CogType.LARGE)) return false;
 
-            // Perpendicular axes
-            if (axis != cogFace.getAxis()) {
-                final CogType rightAngleUpperCogType = getCogType(kbe, Direction.get(AxisDirection.POSITIVE, axis));
-                final CogType rightAngleLowerCogType = getCogType(kbe, Direction.get(AxisDirection.NEGATIVE, axis));
-                if (rightAngleUpperCogType.isLarge() || rightAngleLowerCogType.isLarge() || ICogWheel.isLargeCog(blockState)) return false;
-                if (large && rightAngleUpperCogType.isSmall() || rightAngleLowerCogType.isSmall() || ICogWheel.isSmallCog(blockState)) return false;
+			if (!(offsetState.getBlock() instanceof IRotate rotate)) continue;
+            final Axis axis = rotate.getRotationAxis(offsetState);
+            
+			if (perpFace.getAxis() == cogFace.getAxis()) {
+
+                if (perpFace == cogFace &&
+                    axis != cogFace.getAxis() && (
+                        ICogWheel.isLargeCog(offsetState) ||
+                        CompositeKineticBlockEntity.streamAny(worldIn, offsetPos).anyMatch(kbe -> 
+                            getCogType(kbe, Direction.get(AxisDirection.POSITIVE, axis)) != CogType.NONE ||
+                            getCogType(kbe, Direction.get(AxisDirection.NEGATIVE, axis)) != CogType.NONE
+                        )
+                    )
+                ) return false;
+
+                continue;
             };
+
+            if (CompositeKineticBlockEntity.streamAny(worldIn, offsetPos).anyMatch(kbe -> {
+                
+                if (axis == cogFace.getAxis()) { // Same axis, large Cogwheel directly next to another
+                    final CogType cogType = getCogType(kbe, cogFace);
+                    if (cogType.isLarge() || (large && cogType.isSmall())) return true;
+                } else if (axis == perpFace.getAxis()) {
+                    if (large && getCogType(kbe, perpFace.getOpposite()) != CogType.NONE) return true;
+                } else {
+                    final CogType rightAngleUpperCogType = getCogType(kbe, Direction.get(AxisDirection.POSITIVE, axis));
+                    final CogType rightAngleLowerCogType = getCogType(kbe, Direction.get(AxisDirection.NEGATIVE, axis));
+                    if (rightAngleUpperCogType.isLarge() || rightAngleLowerCogType.isLarge() || ICogWheel.isLargeCog(offsetState)) return true;
+                    if (large && rightAngleUpperCogType.isSmall() || rightAngleLowerCogType.isSmall() || ICogWheel.isSmallCog(offsetState)) return true;
+                };
+
+                return false;
+            })) return false;
 		};
 		return true;
 	};

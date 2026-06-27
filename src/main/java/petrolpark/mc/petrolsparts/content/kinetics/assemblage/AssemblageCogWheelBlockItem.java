@@ -6,13 +6,12 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 import com.google.common.base.Predicates;
-import petrolpark.mc.petrolsparts.core.block.CogType;
-import petrolpark.mc.petrolsparts.core.block.IFaceAlignedCogWheelBlock;
-import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 import com.simibubi.create.content.kinetics.base.IRotate;
+import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 
+import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementHelpers;
 import net.createmod.catnip.placement.PlacementOffset;
@@ -32,6 +31,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import petrolpark.mc.petrolsparts.core.block.CogType;
+import petrolpark.mc.petrolsparts.core.block.IFaceAlignedCogWheelBlock;
+import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 
 public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 
@@ -42,8 +44,7 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
     public AssemblageCogWheelBlockItem(Supplier<AssemblageCog> cog, Item.Properties properties) {
         super(properties);
         this.cog = cog;
-        //TODO large placement helper
-        placementHelperIds = new int[]{PlacementHelpers.register(new SmallPlacementHelper()), PlacementHelpers.register(new DiagonalPlacementHelper())};
+        placementHelperIds = new int[]{PlacementHelpers.register(getCog().isLarge() ? new LargePlacementHelper() : new SmallPlacementHelper()), PlacementHelpers.register(new DiagonalPlacementHelper())};
     };
 
     public AssemblageCog getCog() {
@@ -148,7 +149,7 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 
             if (state.getBlock() instanceof AssemblageBlock assemblageBlock) {
                 final AssemblagePart part = assemblageBlock.getTargetedPart(state, pos, player);
-                if (part != null && !part.isShaft()) attemptStates = Collections.singletonList(defaultState.setValue(part.isMiddleCog(axis)
+                if (part != null && !part.isShaft() && !isTargetingCenter(pos, ray.getLocation(), axis)) attemptStates = Collections.singletonList(defaultState.setValue(part.isMiddleCog(axis)
                     ? IAssemblageBlock.MIDDLE_COG
                     : part.isEndCog(Direction.get(AxisDirection.POSITIVE, axis))
                         ? IAssemblageBlock.TOP_COG
@@ -205,6 +206,37 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
         };
     };
 
+    public class LargePlacementHelper implements IAssemblagePlacementHelper {
+
+        @Override
+        public Predicate<ItemStack> getItemPredicate() {
+            return stack -> stack.getItem() == AssemblageCogWheelBlockItem.this;
+        };
+
+        @Override
+        public Predicate<BlockState> getStatePredicate() {
+            return ICogWheel::isLargeCog;
+        };
+
+        @Override
+        public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
+            final Axis axis = ((IRotate) state.getBlock()).getRotationAxis(state);
+            final Direction side = IPlacementHelper.orderedByDistanceOnlyAxis(pos, ray.getLocation(), axis).get(0);
+            for (Direction dir : IPlacementHelper.orderedByDistanceExceptAxis(pos, ray.getLocation(), axis)) {
+                final BlockPos newPos = pos.relative(dir).relative(side);
+                final BlockState stateToPlace = getBlock().defaultBlockState().setValue(IAssemblageBlock.AXIS, dir.getAxis()).setValue(IAssemblageBlock.MIDDLE_COG, getCog());
+
+                if (!CogWheelBlock.isValidCogwheelPosition(true, world, newPos, dir.getAxis())) continue;
+                if (!getBlock().canBeReplaced(world, newPos, world.getBlockState(newPos), stateToPlace, player)) continue;
+                return PlacementOffset.success(newPos, $ -> stateToPlace);
+            };
+
+            return PlacementOffset.fail();
+        };
+
+        
+    };
+
     public class DiagonalPlacementHelper extends PlacementHelper {
 
         @Override
@@ -226,6 +258,15 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 			return PlacementOffset.fail();
         };
 
+    };
+
+    public static final boolean isTargetingCenter(BlockPos pos, Vec3 location, Axis axis) {
+        for (Axis otherAxis : Iterate.axes) {
+            if (otherAxis == axis) continue;
+            final double coord = location.get(otherAxis) - (float)pos.get(otherAxis);
+            if (coord < 5 / 16d || coord > 11 / 16d) return false;
+        };
+        return true;
     };
     
 };

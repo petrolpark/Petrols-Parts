@@ -5,11 +5,11 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.llamalad7.mixinextras.sugar.Local;
-import petrolpark.mc.petrolsparts.PetrolsPartsRemaps;
-import petrolpark.mc.petrolsparts.PetrolsPartsRemaps.CompatRemoval;
 
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.crafting.RecipeManager;
+import petrolpark.mc.petrolsparts.PetrolsPartsRemaps;
+import petrolpark.mc.petrolsparts.PetrolsPartsRemaps.CompatRemoval;
 
 @Mixin(RecipeManager.class)
 public class RecipeManagerMixin {

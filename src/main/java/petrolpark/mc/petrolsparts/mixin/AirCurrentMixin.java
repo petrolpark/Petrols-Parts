@@ -5,11 +5,11 @@ import org.spongepowered.asm.mixin.injection.At;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotBlockEntity;
 import com.simibubi.create.content.kinetics.belt.behaviour.TransportedItemStackHandlerBehaviour;
 import com.simibubi.create.content.kinetics.fan.AirCurrent;
 
 import net.minecraft.world.level.Level;
+import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotBlockEntity;
 
 @Mixin(AirCurrent.class)
 public class AirCurrentMixin {

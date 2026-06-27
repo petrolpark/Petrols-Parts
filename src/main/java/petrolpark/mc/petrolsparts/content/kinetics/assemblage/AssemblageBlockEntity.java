@@ -33,6 +33,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.core.world.block.DummyBlock;
+import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 import petrolpark.mc.petrolsparts.core.block.CogType;
 import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
@@ -193,6 +194,13 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         @Override
         public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
             return IFaceAlignedCogWheelBlockEntity.propagateFaceAlignedCogwheels(this, target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
+        };
+
+        @Override
+        public List<BlockPos> addPropagationLocations(IRotate block, BlockState state, List<BlockPos> neighbours) {
+            super.addPropagationLocations(block, state, neighbours);
+            KineticsHelper.addLargeCogwheelPropagationLocations(getBlockPos(), neighbours);
+            return neighbours;
         };
 
         // Unregistered - might be weird
