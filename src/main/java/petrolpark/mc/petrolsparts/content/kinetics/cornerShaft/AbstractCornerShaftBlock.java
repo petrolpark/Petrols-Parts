@@ -9,6 +9,7 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
+import com.simibubi.create.content.kinetics.simpleRelays.AbstractShaftBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.simibubi.create.foundation.block.IBE;
 
@@ -77,9 +78,11 @@ public abstract class AbstractCornerShaftBlock extends DirectionalAxisKineticBlo
      * -Y DOWN   false          +Z EAST
      */
     public static Direction[] getDirectionsConnectedByState(BlockState state) {
-        Direction facing = state.getValue(DirectionalKineticBlock.FACING);
-        boolean axisAlongFirst = state.getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
-        Axis secondDirectionAxis;
+        if (state.getBlock() instanceof AbstractShaftBlock) return new Direction[]{Direction.get(AxisDirection.POSITIVE, state.getValue(ShaftBlock.AXIS)), Direction.get(AxisDirection.NEGATIVE, state.getValue(ShaftBlock.AXIS))};
+        if (!(state.getBlock() instanceof AbstractCornerShaftBlock)) return new Direction[]{};
+        final Direction facing = state.getValue(DirectionalKineticBlock.FACING);
+        final boolean axisAlongFirst = state.getValue(DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE);
+        final Axis secondDirectionAxis;
         switch (facing.getAxis()) {
             case X:
                 secondDirectionAxis = axisAlongFirst ? Axis.Y : Axis.Z;

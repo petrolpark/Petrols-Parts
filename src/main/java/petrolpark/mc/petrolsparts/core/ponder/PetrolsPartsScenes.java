@@ -14,6 +14,7 @@ import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
+import net.createmod.ponder.foundation.instruction.FadeOutOfSceneInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
@@ -516,7 +517,7 @@ public class PetrolsPartsScenes {
         final BlockPos movement = util.grid().at(2, 2, 2);
 
         scene.idle(5);
-        scene.world().showSection(util.select().position(movement), Direction.DOWN);
+        final ElementLink<WorldSectionElement> movementLink = scene.world().showIndependentSection(util.select().position(movement), Direction.DOWN);
         scene.idle(10);
         scene.overlay().showText(100)
             .attachKeyFrame()
@@ -576,14 +577,31 @@ public class PetrolsPartsScenes {
         scene.world().showSection(util.select().position(clock), Direction.DOWN);
         scene.idle(20);
         scene.overlay().showText(80)
-            .pointAt(util.vector().blockSurface(clock, Direction.WEST))
+            .pointAt(util.vector().blockSurface(clock, Direction.SOUTH))
             .attachKeyFrame()
             .text("This text is defined in a language file");
         scene.idle(30);
-        scene.rotateCameraY(-160);
+        scene.rotateCameraY(-90);
         scene.idle(50);
-        scene.rotateCameraY(160);
+        scene.rotateCameraY(90);
         scene.idle(60);
+
+
+        scene.overlay().showText(80)
+            .attachKeyFrame()
+            .pointAt(util.vector().blockSurface(movement, Direction.WEST))
+            .text("This text is defined in a language file");
+        scene.idle(10);
+        scene.overlay().showControls(util.vector().topOf(movement), Pointing.DOWN, 20)
+            .rightClick()
+            .withItem(AllItems.WRENCH.asStack());
+        scene.idle(10);
+        scene.addInstruction(new FadeOutOfSceneInstruction<>(0, Direction.EAST, movementLink));
+        scene.world().setKineticSpeed(util.select().fromTo(2, 2, 0, 2, 2, 1), 0f);
+        scene.idle(60);
+        scene.world().showIndependentSectionImmediately(util.select().position(movement));
+        scene.world().setKineticSpeed(util.select().fromTo(2, 2, 0, 2, 2, 1), 16f);
+        scene.idle(40);
 
         scene.overlay().showText(90)
             .attachKeyFrame()
@@ -599,8 +617,33 @@ public class PetrolsPartsScenes {
         });
         scene.world().setKineticSpeed(util.select().fromTo(2, 2, 0, 2, 2, 1), 0f);
     };
+
+    public static final void movementBattery(SceneBuilder scene, SceneBuildingUtil util) {
+        scene.title("movement_battery", "This text is defined in a language file");
+        scene.configureBasePlate(0, 0, 5);
+        scene.world().showSection(util.select().layer(0), Direction.DOWN);
+        scene.idle(10);
+
+        for (int y = 1; y <= 3; y++) {
+            scene.world().showSection(util.select().layer(y), Direction.DOWN);
+            scene.idle(15);
+            scene.addKeyframe();
+            scene.idle(15);
+        };
+
+        scene.rotateCameraY(-90);
+        scene.idle(20);
+        scene.addKeyframe();
+        scene.idle(20);
+        scene.rotateCameraY(90);
+        scene.idle(20);
+
+        scene.overlay().showText(80)
+            .independent(40)
+            .text("This text is defined in a language file");
+    };
     
-    public static void planetaryGearset(SceneBuilder baseScene, SceneBuildingUtil util) {
+    public static final void planetaryGearset(SceneBuilder baseScene, SceneBuildingUtil util) {
         CreateSceneBuilder scene = new CreateSceneBuilder(baseScene);
         scene.title("planetary_gearset", "This text is defined in a language file.");
         scene.configureBasePlate(0, 0, 3);

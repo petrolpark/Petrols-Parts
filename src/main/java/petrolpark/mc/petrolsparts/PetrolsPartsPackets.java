@@ -7,10 +7,12 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import petrolpark.mc.library.Petrolpark;
 import petrolpark.mc.library.util.Lang;
+import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.PlaceCornerShaftsPacket;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeItemTransportPacket;
 
 public enum PetrolsPartsPackets implements BasePacketPayload.PacketTypeProvider {
 
+	PLACE_CORNER_SHAFTS(PlaceCornerShaftsPacket.class, PlaceCornerShaftsPacket.STREAM_CODEC),
     PNEUMATIC_TUBE_ITEM_TRANSPORT(PneumaticTubeItemTransportPacket.class, PneumaticTubeItemTransportPacket.STREAM_CODEC)
     ;
 

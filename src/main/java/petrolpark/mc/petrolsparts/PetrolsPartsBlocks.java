@@ -276,7 +276,7 @@ public class PetrolsPartsBlocks {
         .build()
         .register();
 
-    public static final BlockEntry<TransmissionBlock> TRANSMISSION = REGISTRATE.block("transmission", TransmissionBlock::new)
+    public static final BlockEntry<TransmissionBlock> REDSTONE_TRANSMISSION = REGISTRATE.block("redstone_transmission", TransmissionBlock::new)
         .defaultLoot()
         .item()
         .build()

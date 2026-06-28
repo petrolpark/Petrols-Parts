@@ -129,7 +129,7 @@ public class PetrolsPartsBlockEntityTypes {
 
     public static final BlockEntityEntry<TransmissionBlockEntity> TRANSMISSION = REGISTRATE
         .createBlockEntity("transmission", TransmissionBlockEntity::new)
-        .validBlocks(PetrolsPartsBlocks.TRANSMISSION)
+        .validBlocks(PetrolsPartsBlocks.REDSTONE_TRANSMISSION)
         .renderer(() -> TransmissionRenderer::new)
         .register();
 

@@ -127,6 +127,7 @@ dependencies {
 
     // Library
     implementation("petrolpark.mc:petrolpark-${minecraft_version}:${petrolpark_library_version}")
+    api("dev.ryanhcode.sable-companion:sable-companion-common-${minecraft_version}:${sable_companion_version}")
     // Registrate (bundled with Petrolpark's Library)
     implementation("com.tterrag.registrate:Registrate:${registrate_version}")
     // Create & Ponder

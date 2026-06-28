@@ -70,7 +70,7 @@ public enum TransmissionPart implements CreateMultiPartBlock.ICreatePart {
 
     @Override
     public ItemStack cloneItemStack(BlockState state, LevelReader level, BlockPos pos, Player player) {
-        return (cog ? PetrolsPartsItems.COAXIAL_COGWHEEL : PetrolsPartsBlocks.TRANSMISSION).asStack();
+        return (cog ? PetrolsPartsItems.COAXIAL_COGWHEEL : PetrolsPartsBlocks.REDSTONE_TRANSMISSION).asStack();
     };
 
     @Override
@@ -85,7 +85,7 @@ public enum TransmissionPart implements CreateMultiPartBlock.ICreatePart {
 
     @Override
     public ItemRequirement itemRequirement() {
-        return new ItemRequirement(ItemUseType.CONSUME, (cog ? PetrolsPartsItems.COAXIAL_COGWHEEL : PetrolsPartsBlocks.TRANSMISSION).asItem());
+        return new ItemRequirement(ItemUseType.CONSUME, (cog ? PetrolsPartsItems.COAXIAL_COGWHEEL : PetrolsPartsBlocks.REDSTONE_TRANSMISSION).asItem());
     };
     
 
