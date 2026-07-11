@@ -7,7 +7,7 @@ import java.util.function.DoubleSupplier;
 import org.jetbrains.annotations.Nullable;
 
 import com.simibubi.create.Create;
-import com.tterrag.registrate.builders.BlockBuilder;
+import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import it.unimi.dsi.fastutil.objects.Object2DoubleMap;
@@ -59,11 +59,11 @@ public class PPCStress extends ConfigBase {
 		return value == null ? null : value::get;
 	};
 
-	public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setNoImpact() {
+	public static <B extends AbstractBuilder<?,?, ?, ?>> NonNullUnaryOperator<B> setNoImpact() {
 		return setImpact(0);
 	};
 
-	public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setImpact(double value) {
+	public static <B extends AbstractBuilder<?,?, ?, ?>> NonNullUnaryOperator<B> setImpact(double value) {
 		return builder -> {
 			ResourceLocation id = Create.asResource(builder.getName());
 			DEFAULT_IMPACTS.put(id, value);
@@ -71,7 +71,7 @@ public class PPCStress extends ConfigBase {
 		};
 	};
 
-	public static <B extends Block, P> NonNullUnaryOperator<BlockBuilder<B, P>> setCapacity(double value) {
+	public static <B extends AbstractBuilder<?,?, ?, ?>> NonNullUnaryOperator<B> setCapacity(double value) {
 		return builder -> {
 			ResourceLocation id = Create.asResource(builder.getName());
 			DEFAULT_CAPACITIES.put(id, value);

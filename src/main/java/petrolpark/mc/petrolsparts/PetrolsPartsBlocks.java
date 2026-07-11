@@ -44,6 +44,8 @@ import petrolpark.mc.petrolsparts.content.kinetics.assemblage.EncasedSeparateSha
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.EncasedSingleShaftAssemblageBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.SeparateShaftHalvesAssemblageBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.SingleShaftAssemblageBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.SingleAxisBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.SingleDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.AbstractCornerShaftBlock;
@@ -63,6 +65,8 @@ import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeB
 import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotBlock;
 
 public class PetrolsPartsBlocks {
+
+    // ASSEMBLAGES
 
     public static final BlockEntry<SeparateShaftHalvesAssemblageBlock> SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("separate_shaft_halves_assemblage", SeparateShaftHalvesAssemblageBlock::new)
         .initialProperties(AllBlocks.COGWHEEL)
@@ -123,6 +127,23 @@ public class PetrolsPartsBlocks {
         .transform(TagGen.axeOrPickaxe())
         .register();
 
+    // BEVEL COGWHEELS
+
+    public static final BlockEntry<SingleAxisBevelCogWheelBlock> SINGLE_AXIS_BEVEL_COGWHEEL = REGISTRATE.block("single_axis_bevel_cogwheel", SingleAxisBevelCogWheelBlock::new)
+        .initialProperties(AllBlocks.COGWHEEL)
+        .properties(p -> p
+            .noOcclusion()
+            .noLootTable()
+        ).transform(TagGen.axeOrPickaxe())
+        .register();
+
+    public static final BlockEntry<SingleDiagonalBevelCogWheelBlock> SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("single_diagonal_bevel_cogwheel", SingleDiagonalBevelCogWheelBlock::new)
+        .initialProperties(SINGLE_AXIS_BEVEL_COGWHEEL)
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
+    //
+
     public static final BlockEntry<BrassDepotBlock> BRASS_DEPOT = REGISTRATE.block("brass_depot", BrassDepotBlock::new)
         .initialProperties(SharedProperties::softMetal)
 		.properties(p -> p.mapColor(MapColor.TERRACOTTA_YELLOW))
@@ -164,6 +185,8 @@ public class PetrolsPartsBlocks {
         .defaultLoot()
         .transform(PPCStress.setNoImpact())
         .register();
+    
+    // CORNER SHAFTS
 
     public static final BlockEntry<CornerShaftBlock> CORNER_SHAFT = REGISTRATE.block("corner_shaft", CornerShaftBlock::new)
         .initialProperties(AllBlocks.SHAFT)
@@ -222,6 +245,8 @@ public class PetrolsPartsBlocks {
         .transform(EncasingRegistry.addVariantTo(STRAIGHT_CORNER_SHAFT))
         .transform(TagGen.axeOrPickaxe())
         .register();
+
+    //
 
     public static final BlockEntry<HydraulicTransmissionBlock> HYDRAULIC_TRANSMISSION = REGISTRATE.block("hydraulic_transmission", HydraulicTransmissionBlock::new)
         .initialProperties(AllBlocks.MECHANICAL_CRAFTER)

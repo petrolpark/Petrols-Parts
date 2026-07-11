@@ -1,0 +1,6 @@
+{
+    "parent": "block/block",
+    "textures": {
+        "particle": "block/stripped_spruce_log_top"
+    }
+}

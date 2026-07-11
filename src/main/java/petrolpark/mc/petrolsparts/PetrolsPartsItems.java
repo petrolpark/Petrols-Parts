@@ -4,6 +4,8 @@ import static petrolpark.mc.petrolsparts.PetrolsParts.REGISTRATE;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
 
+import net.minecraft.world.item.Item;
+import petrolpark.mc.petrolsparts.config.PPCStress;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCog;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCogWheelBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.ShaftHalfBlockItem;
@@ -13,6 +15,7 @@ public class PetrolsPartsItems {
     public static final ItemEntry<AssemblageCogWheelBlockItem>
     
     SHAFTLESS_COGWHEEL = REGISTRATE.item("shaftless_cogwheel", p -> new AssemblageCogWheelBlockItem(() -> AssemblageCog.SMALL, p))
+        .transform(PPCStress.setNoImpact())
         .register(),
     LARGE_SHAFTLESS_COGWHEEL = REGISTRATE.item("large_shaftless_cogwheel", p -> new AssemblageCogWheelBlockItem(() -> AssemblageCog.LARGE, p))
         .register(),
@@ -22,6 +25,9 @@ public class PetrolsPartsItems {
         .register();
 
     public static final ItemEntry<ShaftHalfBlockItem> SHAFT_HALF = REGISTRATE.item("shaft_half", ShaftHalfBlockItem::new)
+        .register();
+
+    public static final ItemEntry<Item> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", Item::new)
         .register();
 
     public static final void register() {};

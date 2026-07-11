@@ -11,6 +11,8 @@ import dev.engine_room.flywheel.lib.model.Models;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageRenderer;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelRenderer;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.SingleDiagonalBevelCogWheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlockEntity;
@@ -34,6 +36,8 @@ import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotBlockE
 import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotRenderer;
 
 public class PetrolsPartsBlockEntityTypes {
+    
+    // Assemblage
 
     public static final BlockEntityEntry<AssemblageBlockEntity> ASSEMBLAGE = REGISTRATE
         .createBlockEntity("assemblage", AssemblageBlockEntity::new)
@@ -47,6 +51,14 @@ public class PetrolsPartsBlockEntityTypes {
 
     public static final BlockEntityEntry<AssemblageBlockEntityPart> ASSEMBLAGE_PART = REGISTRATE
         .<AssemblageBlockEntityPart>blockEntity("assemblage_part", (t, p, s) -> new AssemblageBlockEntity(ASSEMBLAGE.get(), p, s).new AssemblageBlockEntityPart())
+        .register();
+
+    // Bevel Cogwheel
+
+    public static final BlockEntityEntry<SingleDiagonalBevelCogWheelBlockEntity> SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE
+        .blockEntity("single_diagonal_bevel_cogwheel", SingleDiagonalBevelCogWheelBlockEntity::new)
+        .validBlocks(PetrolsPartsBlocks.SINGLE_DIAGONAL_BEVEL_COGWHEEL)
+        .renderer(() -> DiagonalBevelCogWheelRenderer::new)
         .register();
     
     public static final BlockEntityEntry<BrassDepotBlockEntity> BRASS_DEPOT = REGISTRATE

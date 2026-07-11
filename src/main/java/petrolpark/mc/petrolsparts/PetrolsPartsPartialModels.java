@@ -20,6 +20,10 @@ public class PetrolsPartsPartialModels {
     LARGE_COAXIAL_COGWHEEL = block("assemblage/large_coaxial_cogwheel"),
     COGWHEEL_SHAFT = block("assemblage/cogwheel_shaft"),
 
+    // Bevel Cogwheel
+    BEVEL_COGWHEEL = block("bevel_cogwheel/four_teeth"),
+    BEVEL_COGWHEEL_FIVE_TEETH = block("bevel_cogwheel/five_teeth"),
+
     // Corner Shaft
     CORNER_SHAFT_CENTER = block("corner_shaft/center_shaft"),
     CORNER_SHAFT_SIDE = block("corner_shaft/side_shaft"),

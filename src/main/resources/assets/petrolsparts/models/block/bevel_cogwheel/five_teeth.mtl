@@ -1,8 +1,6 @@
-# Made in Blockbench 5.1.3
+# Made in Blockbench 5.1.4
+newmtl m_65f503e3-e1b7-483c-e85a-66759ac8720f
+map_Kd #teeth
 newmtl m_30147879-6a40-74b2-e49c-0a8bd7f03aad
-map_Kd #cogwheel
-newmtl m_dfbaff9a-1026-80e4-cb90-a8693cb43f7e
-map_Kd #shaft
-newmtl m_1e516fc3-85c6-aaa5-7776-1fa12e01f01a
-map_Kd #shaft_end
+map_Kd #body
 newmtl none
