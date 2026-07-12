@@ -45,7 +45,8 @@ import petrolpark.mc.petrolsparts.content.kinetics.assemblage.EncasedSingleShaft
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.SeparateShaftHalvesAssemblageBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.SingleShaftAssemblageBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.SingleAxisBevelCogWheelBlock;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.SingleDiagonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.AbstractCornerShaftBlock;
@@ -139,6 +140,11 @@ public class PetrolsPartsBlocks {
 
     public static final BlockEntry<SingleDiagonalBevelCogWheelBlock> SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("single_diagonal_bevel_cogwheel", SingleDiagonalBevelCogWheelBlock::new)
         .initialProperties(SINGLE_AXIS_BEVEL_COGWHEEL)
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
+    public static final BlockEntry<DualDiagonalBevelCogWheelBlock> DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("dual_diagonal_bevel_cogwheel", DualDiagonalBevelCogWheelBlock::new)
+        .initialProperties(SINGLE_DIAGONAL_BEVEL_COGWHEEL)
         .transform(TagGen.axeOrPickaxe())
         .register();
 

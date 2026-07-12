@@ -30,7 +30,7 @@ public enum BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart {
     SOUTH_COG(true, COG_SHAPE.get(Direction.SOUTH), LOOT),
     EAST_COG(true, COG_SHAPE.get(Direction.EAST), LOOT),
     WEST_COG(true, COG_SHAPE.get(Direction.WEST), LOOT),
-    WHATS_UPCOG(true, COG_SHAPE.get(Direction.UP), LOOT),
+    SMELLS_LIKE_UPCOG_IN_HERE(true, COG_SHAPE.get(Direction.UP), LOOT),
     DOWN_COG(true, COG_SHAPE.get(Direction.DOWN), LOOT),
 
     X_SHAFT(false, AllShapes.SIX_VOXEL_POLE.get(Axis.X), AssemblagePart.SHAFT_LOOT),
@@ -38,7 +38,7 @@ public enum BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart {
     Z_SHAFT(false, AllShapes.SIX_VOXEL_POLE.get(Axis.Z), AssemblagePart.SHAFT_LOOT),
     ;
 
-    public static final Map<Direction, BevelCogWheelPart> COGS = Map.of(Direction.NORTH, NORTH_COG, Direction.SOUTH, SOUTH_COG, Direction.EAST, EAST_COG, Direction.WEST, WEST_COG, Direction.UP, WHATS_UPCOG, Direction.DOWN, DOWN_COG);
+    public static final Map<Direction, BevelCogWheelPart> COGS = Map.of(Direction.NORTH, NORTH_COG, Direction.SOUTH, SOUTH_COG, Direction.EAST, EAST_COG, Direction.WEST, WEST_COG, Direction.UP, SMELLS_LIKE_UPCOG_IN_HERE, Direction.DOWN, DOWN_COG);
     public static final Map<Axis, BevelCogWheelPart> SHAFTS = Map.of(Axis.X, X_SHAFT, Axis.Y, Y_SHAFT, Axis.Z, Z_SHAFT);
 
     protected final boolean cog;
@@ -72,7 +72,7 @@ public enum BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart {
     };
 
     public boolean isTopCog() {
-        return this == SOUTH_COG || this == WHATS_UPCOG || this == EAST_COG;
+        return this == SOUTH_COG || this == SMELLS_LIKE_UPCOG_IN_HERE || this == EAST_COG;
     };
     
 };

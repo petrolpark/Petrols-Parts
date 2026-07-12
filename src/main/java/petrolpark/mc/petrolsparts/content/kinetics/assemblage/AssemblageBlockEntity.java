@@ -44,20 +44,20 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
     protected AssemblageBlockEntityPart middleCogPart = null;
     protected AssemblageBlockEntityPart bottomCogPart = null;
     protected AssemblageBlockEntityPart shaftPart = null;
-    protected List<CompositeKineticBlockEntityPart> parts = null;
+    protected List<AssemblageBlockEntityPart> parts = null;
 
     public AssemblageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     };
 
     @Override
-    public List<CompositeKineticBlockEntityPart> getParts() {
+    public List<AssemblageBlockEntityPart> getParts() {
         if (parts == null) calculateParts();
         return parts == null ? Collections.emptyList() : parts;
     };
 
     public void invalidateParts() {
-        if (hasLevel() && !getLevel().isClientSide()) getParts().forEach(CompositeKineticBlockEntityPart::remove);
+        if (hasLevel() && !getLevel().isClientSide()) getParts().forEach(AssemblageBlockEntityPart::remove);
         parts = null;
     };
 
@@ -171,11 +171,6 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         @Override
         public int getIndex() {
             return getParts().indexOf(this);
-        };
-
-        @Override
-        public boolean isValidBlockState(BlockState state) {
-            return true;
         };
 
         /**

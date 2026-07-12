@@ -182,11 +182,6 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
         };
 
         @Override
-        public boolean isValidBlockState(BlockState p_353131_) {
-            return true;
-        };
-
-        @Override
         public int getIndex() {
             return 1;
         };
@@ -250,11 +245,6 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
         @Override
         public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
             return false;
-        };
-
-        @Override
-        public boolean isValidBlockState(BlockState p_353131_) {
-            return true;
         };
 
         @Override

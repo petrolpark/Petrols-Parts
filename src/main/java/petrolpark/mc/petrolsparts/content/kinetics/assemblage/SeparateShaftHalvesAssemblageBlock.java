@@ -2,8 +2,6 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.List;
 
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
-
 import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.BlockPos;
@@ -23,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
 public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlock {
 

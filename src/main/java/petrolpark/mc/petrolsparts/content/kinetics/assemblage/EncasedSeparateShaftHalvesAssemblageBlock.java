@@ -2,14 +2,11 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.function.Supplier;
 
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
-
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 public class EncasedSeparateShaftHalvesAssemblageBlock extends EncasedAssemblageBlock {
 
@@ -35,11 +32,6 @@ public class EncasedSeparateShaftHalvesAssemblageBlock extends EncasedAssemblage
     @Override
     public boolean hasBottomShaft(BlockState state) {
         return state.getValue(BOTTOM_SHAFT_HALF);
-    };
-
-    @Override
-    public AssemblageBlockEntityPart getTargetedKineticPart(AssemblageBlockEntity be, Player player) {
-        return null;
     };
 
     @Override

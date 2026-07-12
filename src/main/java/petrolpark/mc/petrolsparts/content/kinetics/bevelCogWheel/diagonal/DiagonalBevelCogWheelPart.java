@@ -14,9 +14,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import petrolpark.mc.library.compat.create.core.world.block.CreateMultiPartBlock.ICreatePart;
 import petrolpark.mc.library.util.Orientation;
@@ -33,7 +33,7 @@ public sealed interface DiagonalBevelCogWheelPart extends ICreatePart permits Di
 
     public final class Cog implements DiagonalBevelCogWheelPart {
 
-        public static final Orientation.OrientedVoxelShaper SHAPER = new OrientedVoxelShaper(Shapes.empty());
+        public static final Orientation.OrientedVoxelShaper SHAPER = new OrientedVoxelShaper(Block.box(3d, 7d, 7d, 13d, 15d, 15d));
 
         public final Orientation orientation;
         private final VoxelShape shape;

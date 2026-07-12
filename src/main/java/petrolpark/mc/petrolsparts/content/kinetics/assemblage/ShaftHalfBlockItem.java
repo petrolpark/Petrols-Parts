@@ -3,7 +3,6 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 import java.util.function.Predicate;
 
 import com.google.common.base.Predicates;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.equipment.extendoGrip.ExtendoGripItem;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
@@ -28,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 public class ShaftHalfBlockItem extends AssemblageBlockItem {
 
@@ -55,6 +55,7 @@ public class ShaftHalfBlockItem extends AssemblageBlockItem {
     @Override
     public AssemblageBlockPlaceContext updatePlacementContext(BlockPlaceContext context) {
         final AssemblageBlockPlaceContext assemblageContext = super.updatePlacementContext(context);
+        if (assemblageContext == null) return null;
         final BlockState replacingState = assemblageContext.getLevel().getBlockState(assemblageContext.getClickedPos());
         if (assemblageContext.replacingClickedOnBlock() && replacingState.getBlock() instanceof AssemblageBlock && replacingState.getValue(IAssemblageBlock.AXIS) != assemblageContext.getClickedFace().getAxis())
             assemblageContext.dontReplaceClicked(); // Shafts will never be placed on the side of another part within the same block (only front or back)

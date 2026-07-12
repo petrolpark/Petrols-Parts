@@ -100,7 +100,7 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
 
     @Override
     public BlockState getReplacedState(Level level, BlockPos pos, BlockState existingState, BlockState newState, Player player) {
-        if (BlockEntityBehaviour.get(level, pos,  BracketedBlockEntityBehaviour.TYPE) instanceof BracketedBlockEntityBehaviour behaviour && behaviour != null && behaviour.isBracketPresent()) return null;
+        if (BlockEntityBehaviour.get(level, pos, BracketedBlockEntityBehaviour.TYPE) instanceof BracketedBlockEntityBehaviour behaviour && behaviour != null && behaviour.isBracketPresent()) return null;
         if (existingState.canBeReplaced()) return newState;
         if (newState.canBeReplaced()) return existingState;
         existingState = getEquivalent(existingState);

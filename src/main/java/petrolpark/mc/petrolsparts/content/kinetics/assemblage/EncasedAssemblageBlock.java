@@ -13,6 +13,7 @@ import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -33,11 +34,15 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.util.BlockHelper;
 import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
+import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 
 public abstract class EncasedAssemblageBlock extends Block implements IBE<AssemblageBlockEntity>, IAssemblageBlock, EncasedBlock {
 
@@ -140,6 +145,30 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
 		return pAdjacentBlockState.getBlock() instanceof EncasedAssemblageBlock encasedAssemblage && encasedAssemblage.getCasing() == getCasing()
 			&& pState.getValue(AXIS) == pAdjacentBlockState.getValue(AXIS);
 	};
+
+    @Override
+    @Nullable
+    @OnlyIn(Dist.CLIENT)
+    public AssemblageBlockEntityPart getTargetedKineticPart(AssemblageBlockEntity be, Player player) {
+        final Minecraft mc = Minecraft.getInstance();
+        if (!(mc.hitResult instanceof BlockHitResult bhr)) return null;
+        if (bhr.getDirection().getAxis() == be.getBlockState().getValue(AXIS)) {
+            if (bhr.getDirection().getAxisDirection() == AxisDirection.POSITIVE) {
+                if (hasTopShaft(be.getBlockState())) return be.shaftPart;
+                else if (be.getBlockState().getValue(TOP_COG).hasShaftConnection()) return be.topCogPart;
+                else return null;
+            } else {
+                if (hasBottomShaft(be.getBlockState())) return be.shaftPart;
+                else if (be.getBlockState().getValue(BOTTOM_COG).hasShaftConnection()) return be.bottomCogPart;
+                else return null;
+            }
+        } else {
+            final EnumProperty<AssemblageCog> property = AssemblageCogWheelBlockItem.getClosestTargetedCog(be.getBlockPos(), be.getBlockState(), bhr.getLocation());
+            if (property == TOP_COG) return be.topCogPart;
+            else if (property == MIDDLE_COG) return be.middleCogPart;
+            else return be.bottomCogPart;
+        }
+    };
 
     @Override
     protected BlockState rotate(BlockState state, Rotation rotation) {

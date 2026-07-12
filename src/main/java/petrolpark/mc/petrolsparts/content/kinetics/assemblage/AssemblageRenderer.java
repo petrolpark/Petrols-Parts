@@ -95,9 +95,9 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         if (!hasBottomShaft && !hasTopShaft) return;
         final PartialModel shaftModel;
         if (!hasBottomShaft) {
-            shaftModel = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_TOP;
+            shaftModel = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_HALF_TOP;
         } else if (!hasTopShaft) {
-            shaftModel = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_BOTTOM;
+            shaftModel = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_HALF_BOTTOM;
         } else if (middleCog.hasShaftConnection()) {
             if (topCog.hasShaftConnection()) {
                 shaftModel = bottomCog.hasShaftConnection() ? PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_ALL : PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_NO_BOTTOM;

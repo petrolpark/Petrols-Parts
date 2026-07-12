@@ -46,6 +46,7 @@ public interface IAssemblageBlock extends IStateDependentCogWheelBlock, IFaceAli
 
     public boolean hasBottomShaft(BlockState state);
 
+    @Nullable
     @OnlyIn(Dist.CLIENT)
     public AssemblageBlockEntityPart getTargetedKineticPart(AssemblageBlockEntity be, Player player);
 

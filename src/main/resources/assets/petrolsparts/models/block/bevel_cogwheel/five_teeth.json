@@ -2,7 +2,7 @@
 	"parent": "block/block",
 	"loader": "neoforge:obj",
 	"flip_v": true,
-	"model": "petrolsparts:models/block/bevel_gear/five_teeth.obj",
+	"model": "petrolsparts:models/block/bevel_cogwheel/five_teeth.obj",
 	"textures": {
 		"body": "create:block/large_cogwheel",
 		"teeth": "petrolsparts:block/bevel_cogwheel",

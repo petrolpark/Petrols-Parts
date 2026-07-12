@@ -49,9 +49,9 @@ public class AssemblageGhostBlockRenderer extends GhostBlockRenderer {
             model = AssemblageRenderer.getModel(state.getValue(IAssemblageBlock.BOTTOM_COG)).get();
             mts.translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(-5 / 16d));
         } else if (assemblageBlock.hasTopShaft(state)) {
-            model = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_TOP.get();
+            model = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_HALF_TOP.get();
         } else if (assemblageBlock.hasBottomShaft(state)) {
-            model = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_BOTTOM.get();
+            model = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_HALF_BOTTOM.get();
         } else {
             return;
         };

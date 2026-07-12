@@ -4,11 +4,11 @@ import static petrolpark.mc.petrolsparts.PetrolsParts.REGISTRATE;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
 
-import net.minecraft.world.item.Item;
 import petrolpark.mc.petrolsparts.config.PPCStress;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCog;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCogWheelBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.ShaftHalfBlockItem;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelItem;
 
 public class PetrolsPartsItems {
 
@@ -27,7 +27,7 @@ public class PetrolsPartsItems {
     public static final ItemEntry<ShaftHalfBlockItem> SHAFT_HALF = REGISTRATE.item("shaft_half", ShaftHalfBlockItem::new)
         .register();
 
-    public static final ItemEntry<Item> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", Item::new)
+    public static final ItemEntry<BevelCogWheelItem> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", BevelCogWheelItem::new)
         .register();
 
     public static final void register() {};

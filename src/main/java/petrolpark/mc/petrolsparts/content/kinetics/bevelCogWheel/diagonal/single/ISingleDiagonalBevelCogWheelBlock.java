@@ -1,6 +1,5 @@
-package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal;
+package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single;
 
-import com.simibubi.create.api.contraption.transformable.TransformableBlock;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.block.IBE;
@@ -17,8 +16,9 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlock;
 
-public interface ISingleDiagonalBevelCogWheelBlock extends IBE<SingleDiagonalBevelCogWheelBlockEntity>, IRotate, TransformableBlock {
+public interface ISingleDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWheelBlock, IBE<SingleDiagonalBevelCogWheelBlockEntity>, IRotate {
     
     public static final EnumProperty<Orientation> ORIENTATION = Orientation.EDGE_ORIENTATION_PROPERTY;
     public static final BooleanProperty FIRST_AXIS_SHAFT = BooleanProperty.create("first_axis_shaft");
@@ -30,6 +30,14 @@ public interface ISingleDiagonalBevelCogWheelBlock extends IBE<SingleDiagonalBev
         if (face == orientation.top.getOpposite()) return state.getValue(FIRST_AXIS_SHAFT);
         if (face == orientation.front.getOpposite()) return state.getValue(SECOND_AXIS_SHAFT);
         return false;
+    };
+
+    @Override
+    public default Axis getCogRotationAxisConnectedToFace(BlockState state, Direction face) {
+        final Orientation orientation = state.getValue(ORIENTATION);
+        if (face == orientation.top) return orientation.front.getAxis();
+        if (face == orientation.front) return orientation.top.getAxis();
+        return null;
     };
 
     @Override
@@ -56,12 +64,12 @@ public interface ISingleDiagonalBevelCogWheelBlock extends IBE<SingleDiagonalBev
     };
 
     @Override
-    default Class<SingleDiagonalBevelCogWheelBlockEntity> getBlockEntityClass() {
+    public default Class<SingleDiagonalBevelCogWheelBlockEntity> getBlockEntityClass() {
         return SingleDiagonalBevelCogWheelBlockEntity.class;
     };
 
     @Override
-    default BlockEntityType<? extends SingleDiagonalBevelCogWheelBlockEntity> getBlockEntityType() {
+    public default BlockEntityType<? extends SingleDiagonalBevelCogWheelBlockEntity> getBlockEntityType() {
         return PetrolsPartsBlockEntityTypes.SINGLE_DIAGONAL_BEVEL_COGWHEEL.get();
     };
 };

@@ -11,8 +11,10 @@ import dev.engine_room.flywheel.lib.model.Models;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageRenderer;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelRenderer;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.SingleDiagonalBevelCogWheelBlockEntity;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelBlockEntity;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelRenderer;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelBlockEntity;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlockEntity;
@@ -58,7 +60,17 @@ public class PetrolsPartsBlockEntityTypes {
     public static final BlockEntityEntry<SingleDiagonalBevelCogWheelBlockEntity> SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE
         .blockEntity("single_diagonal_bevel_cogwheel", SingleDiagonalBevelCogWheelBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.SINGLE_DIAGONAL_BEVEL_COGWHEEL)
-        .renderer(() -> DiagonalBevelCogWheelRenderer::new)
+        .renderer(() -> SingleDiagonalBevelCogWheelRenderer::new)
+        .register();
+
+    public static final BlockEntityEntry<DualDiagonalBevelCogWheelBlockEntity> DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE
+        .blockEntity("double_diagonal_bevel_cogwheel", DualDiagonalBevelCogWheelBlockEntity::new)
+        .validBlocks(PetrolsPartsBlocks.DUAL_DIAGONAL_BEVEL_COGWHEEL)
+        .renderer(() -> DualDiagonalBevelCogWheelRenderer::new)
+        .register();
+
+    public static final BlockEntityEntry<DualDiagonalBevelCogWheelBlockEntity.Part> DUAL_DIAGONAL_BEVEL_COGWHEEL_PART = REGISTRATE
+        .<DualDiagonalBevelCogWheelBlockEntity.Part>blockEntity("double_diagonal_bevel_cogwheel_part", (t, p, s) -> new DualDiagonalBevelCogWheelBlockEntity(DUAL_DIAGONAL_BEVEL_COGWHEEL.get(), p, s).new Part())
         .register();
     
     public static final BlockEntityEntry<BrassDepotBlockEntity> BRASS_DEPOT = REGISTRATE
