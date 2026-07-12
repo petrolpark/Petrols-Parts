@@ -20,6 +20,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
@@ -123,6 +124,11 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         return placeCogOrEncase(stack, state, level, pos, player, hand, hitResult);
+    };
+
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return ISingleDiagonalBevelCogWheelBlock.super.canDiagonalBevelCogWheelSurvive(state, level, pos);
     };
 
     @Override

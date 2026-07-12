@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "petrolsparts:transmission"
+          "name": "petrolsparts:bevel_cogwheel"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "petrolsparts:blocks/transmission"
+  "random_sequence": "petrolsparts:blocks/bevel_cogwheel"
 }

@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:survives_explosion"
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "petrolsparts:redstone_transmission"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "petrolsparts:blocks/redstone_transmission"
+}

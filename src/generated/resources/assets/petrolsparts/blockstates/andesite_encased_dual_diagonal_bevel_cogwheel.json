@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "axis=x": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/dual_diagonal/andesite",
+      "x": 90,
+      "y": 90,
+      "uvlock": true
+    },
+    "axis=y": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/dual_diagonal/andesite",
+      "uvlock": true
+    },
+    "axis=z": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/dual_diagonal/andesite",
+      "x": 90,
+      "uvlock": true
+    }
+  }
+}

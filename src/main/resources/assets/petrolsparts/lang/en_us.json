@@ -1,4 +1,8 @@
 {
+    "advancement.petrolsparts.bevel_cogwheel": "Bevelations",
+    "advancement.petrolsparts.bevel_cogwheel.description": "Use a Bevel Cogwheel to transfer rotation around a corner",
+    "advancement.petrolsparts.bevel_cogwheel_ball": "Cog in Balls",
+    "advancement.petrolsparts.bevel_cogwheel_ball.description": "Assemble a ball of Cogwheels and Bevel Cogwheels",
     "advancement.petrolsparts.coaxial_gear": "Threading the Needle",
     "advancement.petrolsparts.coaxial_gear.description": "Turn a Coaxial Cogwheel at a different speed to the Shaft through it",
     "advancement.petrolsparts.colossal_cogwheel_power_many": "The Cogfather",
@@ -11,11 +15,13 @@
     "advancement.petrolsparts.root.description": "New and funky kinetic components",
 
     "block.petrolsparts.andesite_encased_assemblage": "Andesite Encased Assemblage",
+    "block.petrolsparts.andesite_encased_bevel_cogwheel": "Andesite Encased Bevel Cogwheel",
     "block.petrolsparts.andesite_encased_corner_shaft": "Andesite Encased Corner Shaft",
     "block.petrolsparts.assemblage": "Assemblage",
-    "block.petrolsparts.bevel_gear": "Bevel Gear",
+    "block.petrolsparts.bevel_cogwheel": "Bevel Cogwheel",
     "block.petrolsparts.brass_depot": "Brass Depot",
     "block.petrolsparts.brass_encased_assemblage": "Brass Encased Assemblage",
+    "block.petrolsparts.brass_encased_bevel_cogwheel": "Brass Encased Bevel Cogwheel",
     "block.petrolsparts.brass_encased_corner_shaft": "Brass Encased Corner Shaft",
     "block.petrolsparts.colossal_cogwheel": "Colossal Cogwheel",
     "block.petrolsparts.differential": "Differential",

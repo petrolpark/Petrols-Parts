@@ -21,7 +21,7 @@ import petrolpark.mc.petrolsparts.PetrolsParts;
 public interface IBevelCogWheelBlock extends TransformableBlock, IWrenchable {
 
     public static final VoxelShaper COG_SHAPE = new AllShapes.Builder(Block.box(1, 11, 1, 15, 16, 15)).forDirectional();
-    public static final ResourceKey<LootTable> LOOT = ResourceKey.create(Registries.LOOT_TABLE, PetrolsParts.asResource("bevel_gear"));
+    public static final ResourceKey<LootTable> LOOT = ResourceKey.create(Registries.LOOT_TABLE, PetrolsParts.asResource("blocks/bevel_cogwheel"));
     
     public static final String TRANSLATION_KEY = Util.makeDescriptionId("block", PetrolsParts.asResource("bevel_cogwheel"));
 

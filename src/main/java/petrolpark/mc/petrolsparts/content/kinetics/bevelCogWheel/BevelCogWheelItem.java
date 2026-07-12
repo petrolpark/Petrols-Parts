@@ -24,7 +24,7 @@ public class BevelCogWheelItem extends BlockItem {
         super(Blocks.AIR, properties);
     };
 
-     @Override
+    @Override
     public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
         final Level level = context.getLevel();
         final BlockPos pos = context.getClickedPos();

@@ -2,15 +2,12 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.singl
 
 import java.util.function.Supplier;
 
-import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.decoration.encasing.EncasedBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
-import com.tterrag.registrate.util.nullness.NonNullFunction;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -26,27 +23,19 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import petrolpark.mc.library.util.BlockHelper;
-import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IEncasedBevelCogWheelBlock;
 
-public class EncasedSingleDiagonalBevelCogWheelBlock extends KineticBlock implements ISingleDiagonalBevelCogWheelBlock, EncasedBlock {
-
-    public static final NonNullFunction<BlockBehaviour.Properties, EncasedSingleDiagonalBevelCogWheelBlock> andesite() {
-        return p -> new EncasedSingleDiagonalBevelCogWheelBlock(p, AllBlocks.ANDESITE_CASING::get, "andesite");
-    };
-
-    public static final NonNullFunction<BlockBehaviour.Properties, EncasedSingleDiagonalBevelCogWheelBlock> brass() {
-        return p -> new EncasedSingleDiagonalBevelCogWheelBlock(p, AllBlocks.BRASS_CASING::get, "brass");
-    };
+public class EncasedSingleDiagonalBevelCogWheelBlock extends KineticBlock implements ISingleDiagonalBevelCogWheelBlock, IEncasedBevelCogWheelBlock {
 
     protected final Supplier<Block> casing;
     protected final String descriptionId;
 
-    public EncasedSingleDiagonalBevelCogWheelBlock(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
+    public EncasedSingleDiagonalBevelCogWheelBlock(BlockBehaviour.Properties properties, Supplier<Block> casing, String descriptionId) {
         super(properties);
         this.casing = casing;
-        this.descriptionId = Util.makeDescriptionId("block", PetrolsParts.asResource(casingName + "_encased_assemblage"));
+        this.descriptionId = descriptionId;
     };
 
     @Override
@@ -60,6 +49,16 @@ public class EncasedSingleDiagonalBevelCogWheelBlock extends KineticBlock implem
 		context.getLevel().setBlockAndUpdate(context.getClickedPos(), BlockHelper.copyAll(PetrolsPartsBlocks.SINGLE_DIAGONAL_BEVEL_COGWHEEL.getDefaultState(), state));
 		return InteractionResult.SUCCESS;
 	};
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        return placeCogOrEncase(stack, state, level, pos, player, hand, hitResult);
+    };
+
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return canDiagonalBevelCogWheelSurvive(state, level, pos);
+    };
 
     @Override
     public Block getCasing() {

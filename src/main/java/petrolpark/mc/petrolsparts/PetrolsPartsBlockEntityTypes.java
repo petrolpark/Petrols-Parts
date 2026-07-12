@@ -46,7 +46,7 @@ public class PetrolsPartsBlockEntityTypes {
         .validBlocks(
             PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE,
             PetrolsPartsBlocks.ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.ANDESITE_ENCASED_SINGLE_SHAFT_ASSEMBLAGE,
-            PetrolsPartsBlocks.BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.BRASS_ENCASED_SINGLE_SHAF_ASSEMBLAGE
+            PetrolsPartsBlocks.BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.BRASS_ENCASED_SINGLE_SHAFT_ASSEMBLAGE
         )
         .renderer(() -> AssemblageRenderer::new)
         .register();
@@ -65,7 +65,7 @@ public class PetrolsPartsBlockEntityTypes {
 
     public static final BlockEntityEntry<DualDiagonalBevelCogWheelBlockEntity> DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE
         .blockEntity("double_diagonal_bevel_cogwheel", DualDiagonalBevelCogWheelBlockEntity::new)
-        .validBlocks(PetrolsPartsBlocks.DUAL_DIAGONAL_BEVEL_COGWHEEL)
+        .validBlocks(PetrolsPartsBlocks.DUAL_DIAGONAL_BEVEL_COGWHEEL, PetrolsPartsBlocks.ANDESITE_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL, PetrolsPartsBlocks.BRASS_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL)
         .renderer(() -> DualDiagonalBevelCogWheelRenderer::new)
         .register();
 

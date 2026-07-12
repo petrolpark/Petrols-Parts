@@ -55,7 +55,7 @@ public interface IAssemblageBlock extends IStateDependentCogWheelBlock, IFaceAli
         return state.getValue(MIDDLE_COG).getCogType();
     };
 
-    public default boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public default boolean canDiagonalBevelCogWheelSurvive(BlockState state, LevelReader level, BlockPos pos) {
         final Axis axis = state.getValue(AXIS);
         if (!state.getValue(TOP_COG).isNone() && !IFaceAlignedCogWheelBlockEntity.isValidFaceAlignedCogwheelPosition(state.getValue(TOP_COG).getCogType().isLarge(), level, pos, Direction.get(AxisDirection.POSITIVE, axis))) return false;
         if (!state.getValue(BOTTOM_COG).isNone() && !IFaceAlignedCogWheelBlockEntity.isValidFaceAlignedCogwheelPosition(state.getValue(BOTTOM_COG).getCogType().isLarge(), level, pos, Direction.get(AxisDirection.NEGATIVE, axis))) return false;

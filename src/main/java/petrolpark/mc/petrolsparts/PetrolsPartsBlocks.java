@@ -44,8 +44,10 @@ import petrolpark.mc.petrolsparts.content.kinetics.assemblage.EncasedSeparateSha
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.EncasedSingleShaftAssemblageBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.SeparateShaftHalvesAssemblageBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.SingleShaftAssemblageBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IEncasedBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.SingleAxisBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.EncasedDualDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockItem;
@@ -118,7 +120,7 @@ public class PetrolsPartsBlocks {
         .transform(TagGen.axeOrPickaxe())
         .register();
 
-    public static final BlockEntry<EncasedSingleShaftAssemblageBlock> BRASS_ENCASED_SINGLE_SHAF_ASSEMBLAGE = REGISTRATE.block("brass_encased_single_shaft_assemblage", EncasedAssemblageBlock.brass(EncasedSingleShaftAssemblageBlock::new))
+    public static final BlockEntry<EncasedSingleShaftAssemblageBlock> BRASS_ENCASED_SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("brass_encased_single_shaft_assemblage", EncasedAssemblageBlock.brass(EncasedSingleShaftAssemblageBlock::new))
         .initialProperties(BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
         .properties(BlockBehaviour.Properties::noOcclusion)
         .blockstate(EncasedAssemblageBlockDataGen.singleShaftBlockState("brass"))
@@ -140,12 +142,26 @@ public class PetrolsPartsBlocks {
 
     public static final BlockEntry<SingleDiagonalBevelCogWheelBlock> SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("single_diagonal_bevel_cogwheel", SingleDiagonalBevelCogWheelBlock::new)
         .initialProperties(SINGLE_AXIS_BEVEL_COGWHEEL)
-        .transform(TagGen.axeOrPickaxe())
+        .properties(p -> p
+            .noLootTable()
+        ).transform(TagGen.axeOrPickaxe())
         .register();
 
     public static final BlockEntry<DualDiagonalBevelCogWheelBlock> DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("dual_diagonal_bevel_cogwheel", DualDiagonalBevelCogWheelBlock::new)
         .initialProperties(SINGLE_DIAGONAL_BEVEL_COGWHEEL)
-        .transform(TagGen.axeOrPickaxe())
+        .properties(p -> p
+            .noLootTable()
+        ).transform(TagGen.axeOrPickaxe())
+        .register();
+
+    public static final BlockEntry<EncasedDualDiagonalBevelCogWheelBlock> ANDESITE_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("andesite_encased_dual_diagonal_bevel_cogwheel", IEncasedBevelCogWheelBlock.andesite(EncasedDualDiagonalBevelCogWheelBlock::new))
+        .initialProperties(AllBlocks.ANDESITE_ENCASED_COGWHEEL)
+        .transform(EncasedDualDiagonalBevelCogWheelBlock.builderTransformer(AllSpriteShifts.ANDESITE_CASING, "andesite"))
+        .register();
+
+    public static final BlockEntry<EncasedDualDiagonalBevelCogWheelBlock> BRASS_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("brass_encased_dual_diagonal_bevel_cogwheel", IEncasedBevelCogWheelBlock.brass(EncasedDualDiagonalBevelCogWheelBlock::new))
+        .initialProperties(AllBlocks.BRASS_ENCASED_COGWHEEL)
+        .transform(EncasedDualDiagonalBevelCogWheelBlock.builderTransformer(AllSpriteShifts.BRASS_CASING, "brass"))
         .register();
 
     //

@@ -169,8 +169,8 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
     };
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return IAssemblageBlock.super.canSurvive(state, level, pos);
+    public boolean canDiagonalBevelCogWheelSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return IAssemblageBlock.super.canDiagonalBevelCogWheelSurvive(state, level, pos);
     };
 
     @Override
