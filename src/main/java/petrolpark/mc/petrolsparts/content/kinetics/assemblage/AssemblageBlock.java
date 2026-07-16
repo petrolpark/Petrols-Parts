@@ -3,14 +3,12 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.decoration.bracket.BracketedBlockEntityBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasableBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
-import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -29,7 +27,6 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -38,16 +35,16 @@ import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.compat.create.core.world.block.IReplaceableBlock;
 import petrolpark.mc.library.compat.create.core.world.block.composite.MultiPartCompositeKineticBlock;
 import petrolpark.mc.library.util.BlockHelper;
-import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 
-public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBlock<AssemblagePart> implements IBE<AssemblageBlockEntity>, ProperWaterloggedBlock, IAssemblageBlock, EncasableBlock, IReplaceableBlock permits SeparateShaftHalvesAssemblageBlock, SingleShaftAssemblageBlock{
+public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBlock<AssemblagePart> implements IBE<AssemblageBlockEntity>, ProperWaterloggedBlock, IAssemblageBlock, EncasableBlock, IReplaceableBlock permits SeparateShaftHalvesAssemblageBlock, SingleShaftAssemblageBlock {
 
-    protected static final String DESCRIPTION_ID = Util.makeDescriptionId("block", PetrolsParts.asResource("assemblage"));
+    protected final AssemblageSet set;
 
-    public AssemblageBlock(BlockBehaviour.Properties properties) {
+    public AssemblageBlock(AssemblageSet set, BlockBehaviour.Properties properties) {
         super(properties);
+        this.set = set;
         registerDefaultState(defaultBlockState()
             .setValue(WATERLOGGED, false)
             .setValue(AXIS, Axis.Y)
@@ -77,9 +74,9 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
     public List<AssemblagePart> getParts(BlockState state) {
         final List<AssemblagePart> parts = new ArrayList<>(5);
         final Axis axis = state.getValue(AXIS);
-        state.getValue(TOP_COG).addTopPart(axis, parts::add);
-        state.getValue(MIDDLE_COG).addMiddlePart(axis, parts::add);
-        state.getValue(BOTTOM_COG).addBottomPart(axis, parts::add);
+        state.getValue(TOP_COG).addTopPart(set, axis, parts::add);
+        state.getValue(MIDDLE_COG).addMiddlePart(set, axis, parts::add);
+        state.getValue(BOTTOM_COG).addBottomPart(set, axis, parts::add);
         return parts;
     };
 
@@ -103,8 +100,8 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
         if (BlockEntityBehaviour.get(level, pos, BracketedBlockEntityBehaviour.TYPE) instanceof BracketedBlockEntityBehaviour behaviour && behaviour != null && behaviour.isBracketPresent()) return null;
         if (existingState.canBeReplaced()) return newState;
         if (newState.canBeReplaced()) return existingState;
-        existingState = getEquivalent(existingState);
-        newState = getEquivalent(newState);
+        existingState = set.getEquivalent(existingState);
+        newState = set.getEquivalent(newState);
         if (
             !(existingState.getBlock() instanceof AssemblageBlock existingAssemblage) ||
             !(newState.getBlock() instanceof AssemblageBlock newAssemblage) ||
@@ -142,8 +139,8 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
     @Override
     public boolean canBeReplaced(Level level, BlockPos pos, BlockState existingState, BlockState newState, Player player) {
         if (BlockEntityBehaviour.get(level, pos,  BracketedBlockEntityBehaviour.TYPE) instanceof BracketedBlockEntityBehaviour behaviour && behaviour != null && behaviour.isBracketPresent()) return false;
-        existingState = getEquivalent(existingState);
-        newState = getEquivalent(newState);
+        existingState = set.getEquivalent(existingState);
+        newState = set.getEquivalent(newState);
         if (existingState.canBeReplaced() || newState.canBeReplaced()) return true;
         return newState.getBlock() instanceof AssemblageBlock newAssemblage && existingState.getBlock() instanceof AssemblageBlock existingAssemblage
             && newState.getValue(AXIS) == existingState.getValue(AXIS)
@@ -152,20 +149,6 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
             && (newState.getValue(TOP_COG).isNone() || existingState.getValue(TOP_COG).isNone())
             && (newState.getValue(MIDDLE_COG).isNone() || existingState.getValue(MIDDLE_COG).isNone())
             && (newState.getValue(BOTTOM_COG).isNone() || existingState.getValue(BOTTOM_COG).isNone());
-    };
-
-    public static final BlockState getEquivalent(BlockState state) {
-        BlockState oldState = state;
-        if (AllBlocks.SHAFT.has(oldState)) {
-            state = PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE.getDefaultState();
-        } else if (AllBlocks.COGWHEEL.has(oldState)) {
-            state = PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE.getDefaultState().setValue(MIDDLE_COG, AssemblageCog.SMALL);
-        } else if (AllBlocks.LARGE_COGWHEEL.has(oldState)) {
-            state = PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE.getDefaultState().setValue(MIDDLE_COG, AssemblageCog.LARGE);
-        } else {
-            return state;
-        }
-        return state.setValue(AXIS, oldState.getValue(BlockStateProperties.AXIS));
     };
 
     @Override
@@ -193,7 +176,7 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
 
     @Override
     public String getDescriptionId() {
-        return DESCRIPTION_ID;
+        return set.descriptionId();
     };
 
     @Override

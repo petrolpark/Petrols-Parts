@@ -48,9 +48,9 @@ public interface ISingleDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWhee
     @Override
     public default BlockState transform(BlockState state, StructureTransform transform) {
         final Orientation initialOrientation = state.getValue(ORIENTATION);
-        final Orientation newOrientation = initialOrientation.rotate(transform.rotationAxis, transform.rotation).mirror(transform.mirror).asEdge();
-        final boolean axisOrderInverted = (initialOrientation == initialOrientation.asEdge()) != (newOrientation == newOrientation.asEdge());
-        return state.setValue(ORIENTATION, newOrientation)
+        final Orientation newOrientation = initialOrientation.mirror(transform.mirror).rotate(transform.rotationAxis, transform.rotation);
+        final boolean axisOrderInverted = (newOrientation != newOrientation.asEdge());
+        return state.setValue(ORIENTATION, newOrientation.asEdge())
             .setValue(axisOrderInverted ? FIRST_AXIS_SHAFT : SECOND_AXIS_SHAFT, state.getValue(FIRST_AXIS_SHAFT))
             .setValue(axisOrderInverted ? SECOND_AXIS_SHAFT : FIRST_AXIS_SHAFT, state.getValue(SECOND_AXIS_SHAFT));
     };

@@ -26,7 +26,7 @@ public interface IBevelCogWheelBlock extends TransformableBlock, IWrenchable {
     public static final String TRANSLATION_KEY = Util.makeDescriptionId("block", PetrolsParts.asResource("bevel_cogwheel"));
 
     @Override
-    default BlockState getRotatedBlockState(BlockState originalState, Direction targetedFace) {
+    public default BlockState getRotatedBlockState(BlockState originalState, Direction targetedFace) {
         return transform(originalState, new StructureTransform(BlockPos.ZERO, targetedFace.getAxis(), Rotation.CLOCKWISE_90, Mirror.NONE));
     };
 };

@@ -25,8 +25,10 @@ import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 
 public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockEntity> {
 
-    public AssemblageRenderer(BlockEntityRendererProvider.Context context) {
-        
+    protected final AssemblageSet.Client set;
+
+    public AssemblageRenderer(AssemblageSet.Client set, BlockEntityRendererProvider.Context context) {
+        this.set = set;
     };
 
     @Override
@@ -56,7 +58,7 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         if (!topCog.isNone()) {
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.topCogPart,
-                CachedBuffers.partialFacingVertical(getModel(topCog), be.topCogPart.getBlockState(), facing)
+                CachedBuffers.partialFacingVertical(set.getModel(topCog), be.topCogPart.getBlockState(), facing)
                     .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(5 / 16d))
                     .rotateCenteredDegrees(!KineticBlockEntityVisual.shouldOffset(axis, be.getBlockPos()) && be.topCogPart.topCogType.isLarge() && !be.topCogPart.middleCogType.isLarge() ? 11.25f : 0f, facing),
                 ms, buffer, light
@@ -71,7 +73,7 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         if (!middleCog.isNone()) {
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.middleCogPart,
-                CachedBuffers.partialFacingVertical(getModel(middleCog), be.middleCogPart.getBlockState(), facing),
+                CachedBuffers.partialFacingVertical(set.getModel(middleCog), be.middleCogPart.getBlockState(), facing),
                 // Large Cog offset already applied
                 ms, buffer, light
             );
@@ -80,7 +82,7 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         if (!bottomCog.isNone()) {
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.bottomCogPart,
-                CachedBuffers.partialFacingVertical(getModel(bottomCog), be.bottomCogPart.getBlockState(), facing)
+                CachedBuffers.partialFacingVertical(set.getModel(bottomCog), be.bottomCogPart.getBlockState(), facing)
                     .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(-5 / 16d))
                     .rotateCenteredDegrees(!KineticBlockEntityVisual.shouldOffset(axis, be.getBlockPos()) && be.bottomCogPart.bottomCogType.isLarge() && !be.bottomCogPart.middleCogType.isLarge() ? 11.25f : 0f, facing),
                 ms, buffer, light
@@ -95,9 +97,9 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         if (!hasBottomShaft && !hasTopShaft) return;
         final PartialModel shaftModel;
         if (!hasBottomShaft) {
-            shaftModel = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_HALF_TOP;
+            shaftModel = set.shaftHalfTop();
         } else if (!hasTopShaft) {
-            shaftModel = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_HALF_BOTTOM;
+            shaftModel = set.shaftHalfBottom();
         } else if (middleCog.hasShaftConnection()) {
             if (topCog.hasShaftConnection()) {
                 shaftModel = bottomCog.hasShaftConnection() ? PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_ALL : PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_NO_BOTTOM;
@@ -116,15 +118,6 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
 
         KineticBlockEntityRenderer.kineticRotationTransform(CachedBuffers.partialFacingVertical(shaftModel, be.shaftPart.getBlockState(), facing), be.shaftPart, axis, getAngle(be.shaftPart, be.getBlockPos(), axis), light)
             .renderInto(ms, buffer);
-    };
-
-    public static final PartialModel getModel(AssemblageCog cog) {
-        return switch (cog) {
-            case LARGE -> AllPartialModels.SHAFTLESS_LARGE_COGWHEEL;
-            case SMALL_COAXIAL -> PetrolsPartsPartialModels.COAXIAL_COGWHEEL;
-            case LARGE_COAXIAL -> PetrolsPartsPartialModels.LARGE_COAXIAL_COGWHEEL;
-            default -> AllPartialModels.SHAFTLESS_COGWHEEL;
-        };
     };
 
     public static float getAngle(KineticBlockEntity be, final BlockPos pos, Axis axis) {

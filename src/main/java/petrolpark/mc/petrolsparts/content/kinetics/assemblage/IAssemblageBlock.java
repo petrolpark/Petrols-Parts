@@ -41,7 +41,7 @@ public interface IAssemblageBlock extends IStateDependentCogWheelBlock, IFaceAli
 
     public static final Collection<BooleanProperty> SHAFT_HALF_PROPERTIES = List.of(TOP_SHAFT_HALF, BOTTOM_SHAFT_HALF);
     public static final Collection<EnumProperty<AssemblageCog>> COG_PROPERTIES = List.of(TOP_COG, MIDDLE_COG, BOTTOM_COG);
-    
+
     public boolean hasTopShaft(BlockState state);
 
     public boolean hasBottomShaft(BlockState state);

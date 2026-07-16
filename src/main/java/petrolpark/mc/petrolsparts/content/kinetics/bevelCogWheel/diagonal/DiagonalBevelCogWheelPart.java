@@ -24,7 +24,7 @@ import petrolpark.mc.library.util.Orientation.OrientedVoxelShaper;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.PetrolsPartsShapes;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblagePart;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.SimpleBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SimpleBevelCogWheelBlock;
 
 public sealed interface DiagonalBevelCogWheelPart extends ICreatePart permits DiagonalBevelCogWheelPart.Cog, DiagonalBevelCogWheelPart.ShaftHalf {
 

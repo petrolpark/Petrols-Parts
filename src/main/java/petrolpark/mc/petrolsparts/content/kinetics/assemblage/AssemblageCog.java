@@ -2,44 +2,28 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.function.Consumer;
 
-import com.simibubi.create.content.schematics.requirement.ItemRequirement;
-import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUseType;
-import com.tterrag.registrate.util.entry.ItemEntry;
-
+import net.createmod.catnip.lang.Lang;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.StringRepresentable;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
-import petrolpark.mc.library.util.Lang;
-import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.core.block.CogType;
 
 public enum AssemblageCog implements StringRepresentable {
     
-    NONE(),
-    SMALL(PetrolsPartsItems.SHAFTLESS_COGWHEEL),
-    LARGE(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL),
-    SMALL_COAXIAL(PetrolsPartsItems.COAXIAL_COGWHEEL),
-    LARGE_COAXIAL(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL);
+    NONE,
+    SMALL,
+    LARGE,
+    SMALL_COAXIAL,
+    LARGE_COAXIAL;
 
     protected final String name;
-    protected final ItemEntry<? extends AssemblageBlockItem> item;
-    protected final ResourceKey<LootTable> lootTable;
 
     AssemblageCog() {
-        name = Lang.asId(name());
-        this.item = null;
-        this.lootTable = BuiltInLootTables.EMPTY;
-    };
-
-    AssemblageCog(ItemEntry<? extends AssemblageBlockItem> item) {
-        name = Lang.asId(name());
-        this.item = item;
-        this.lootTable = ResourceKey.create(Registries.LOOT_TABLE, item.getId().withPrefix("blocks/"));
+        this.name = Lang.asId(name());
     };
 
     public boolean isNone() {
@@ -59,51 +43,47 @@ public enum AssemblageCog implements StringRepresentable {
         return name;
     };
 
-    public ResourceKey<LootTable> getLootTable() {
-        return lootTable;  
+    public void addTopPart(AssemblageSet set, Axis axis, Consumer<AssemblagePart> partAdder) {
+        addFaceAlignedPart(set, axis, AxisDirection.POSITIVE, partAdder);
     };
 
-    public void addTopPart(Axis axis, Consumer<AssemblagePart> partAdder) {
-        addFaceAlignedPart(axis, AxisDirection.POSITIVE, partAdder);
-    };
-
-    public void addMiddlePart(Axis axis, Consumer<AssemblagePart> partAdder) {
+    public void addMiddlePart(AssemblageSet set, Axis axis, Consumer<AssemblagePart> partAdder) {
         switch (this) {
             case NONE: return;
             case SMALL: {
-                partAdder.accept(AssemblagePart.MIDDLE_COGWHEELS.get(axis));
+                partAdder.accept(set.middleCogWheelParts().get(axis));
                 return;
             } case LARGE: {
-                partAdder.accept(AssemblagePart.LARGE_MIDDLE_COGWHEELS.get(axis));
+                partAdder.accept(set.middleLargeCogWheelParts().get(axis));
                 return;
             } case SMALL_COAXIAL: {
-                partAdder.accept(AssemblagePart.MIDDLE_COAXIAL_COGWHEELS.get(axis));
+                partAdder.accept(set.middleCoaxialCogWheelParts().get(axis));
                 return;
             } case LARGE_COAXIAL: {
-                partAdder.accept(AssemblagePart.LARGE_MIDDLE_COAXIAL_COGWHEELS.get(axis));
+                partAdder.accept(set.middleLargeCoaxialCogWheelParts().get(axis));
                 return;
             }
         };
     };
 
-    public void addBottomPart(Axis axis, Consumer<AssemblagePart> partAdder) {
-        addFaceAlignedPart(axis, AxisDirection.NEGATIVE, partAdder);
+    public void addBottomPart(AssemblageSet set, Axis axis, Consumer<AssemblagePart> partAdder) {
+        addFaceAlignedPart(set, axis, AxisDirection.NEGATIVE, partAdder);
     };
 
-    public void addFaceAlignedPart(Axis axis, AxisDirection direction, Consumer<AssemblagePart> partAdder) {
+    public void addFaceAlignedPart(AssemblageSet set, Axis axis, AxisDirection direction, Consumer<AssemblagePart> partAdder) {
         switch (this) {
             case NONE: return;
             case SMALL: {
-                partAdder.accept(AssemblagePart.COGWHEELS.get(Direction.get(direction, axis)));
+                partAdder.accept(set.cogWheelParts().get(Direction.get(direction, axis)));
                 return;
             } case LARGE: {
-                partAdder.accept(AssemblagePart.LARGE_COGWHEELS.get(Direction.get(direction, axis)));
+                partAdder.accept(set.largeCogWheelParts().get(Direction.get(direction, axis)));
                 return;
             } case SMALL_COAXIAL: {
-                partAdder.accept(AssemblagePart.COAXIAL_COGWHEELS.get(Direction.get(direction, axis)));
+                partAdder.accept(set.coaxialCogWheelParts().get(Direction.get(direction, axis)));
                 return;
             } case LARGE_COAXIAL: {
-                partAdder.accept(AssemblagePart.LARGE_COAXIAL_COGWHEELS.get(Direction.get(direction, axis)));
+                partAdder.accept(set.largeCoaxialCogWheelParts().get(Direction.get(direction, axis)));
                 return;
             }
         };
@@ -123,8 +103,13 @@ public enum AssemblageCog implements StringRepresentable {
         return this == SMALL || this == LARGE;
     };
 
-    public ItemRequirement itemRequirement() {
-        if (isNone()) return ItemRequirement.NONE;
-        return new ItemRequirement(ItemUseType.CONSUME, item.get());
+    public ResourceKey<LootTable> getLootTable(AssemblageSet set) {
+        return switch (this) {
+            case NONE -> BuiltInLootTables.EMPTY;
+            case SMALL -> set.smallCogLoot();
+            case LARGE -> set.largeCogLoot();
+            case SMALL_COAXIAL -> set.coaxialCogLoot();
+            case LARGE_COAXIAL -> set.largeCoaxialCogLoot();
+        };
     };
 };

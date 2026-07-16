@@ -36,7 +36,7 @@ public record PlaceCornerShaftsPacket(List<Pair<BlockPos, BlockState>> statesToP
         for (Pair<BlockPos, BlockState> posAndState : statesToPlace()) {
             final BlockPos pos = posAndState.getFirst();
             if (!player.level().getBlockState(pos).canBeReplaced()) return;
-            BlockState state = posAndState.getSecond();
+            final BlockState state = posAndState.getSecond();
             final ItemStack stack = ItemHelper.removeItem(inv, s -> s.is(state.getBlock().asItem()), player.hasInfiniteMaterials());
             if (!stack.isEmpty()) {
                 place(player, pos, state, stack);

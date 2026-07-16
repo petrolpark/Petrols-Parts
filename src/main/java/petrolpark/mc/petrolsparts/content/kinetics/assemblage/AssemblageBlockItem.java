@@ -1,32 +1,30 @@
 package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
-import javax.annotation.Nullable;
-
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class AssemblageBlockItem extends ItemNameBlockItem {
 
-    public AssemblageBlockItem(Item.Properties properties) {
+    protected final AssemblageSet set;
+
+    public AssemblageBlockItem(AssemblageSet set, Item.Properties properties) {
         super(Blocks.AIR, properties);
+        this.set = set;
     };
 
     @Override
     public SeparateShaftHalvesAssemblageBlock getBlock() {
-        return PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE.get();
+        return set.separateShaftsAssemblage().get();
     };
 
     @Override
     public AssemblageBlockPlaceContext updatePlacementContext(BlockPlaceContext context) {
         if (!(context instanceof AssemblageBlockPlaceContext assemblageContext)) return null; // Cast should always succeed
-        final AssemblagePart part = getTargetedPart(context);
+        final AssemblagePart part = set.getTargetedPart(context);
         if (part != null && (context.getClickedFace().getAxis() == context.getLevel().getBlockState(context.getClickedPos()).getValue(IAssemblageBlock.AXIS) ? part.isOnEnd(context.getClickedFace()) : !part.isShaft())) {
             assemblageContext.dontReplaceClicked(); // Don't replace this Block, place in the next one
         };
@@ -38,22 +36,11 @@ public abstract class AssemblageBlockItem extends ItemNameBlockItem {
         return super.place(new AssemblageBlockPlaceContext(context));
     };
 
-    @Nullable
-    public static final AssemblagePart getTargetedPart(BlockPlaceContext context) {
-        if (context.replacingClickedOnBlock()) {
-            final BlockState state = AssemblageBlock.getEquivalent(context.getLevel().getBlockState(context.getClickedPos()));
-            if (state.getBlock() instanceof AssemblageBlock assemblage) {
-                return assemblage.getTargetedPart(state, context.getClickedPos(), context.getPlayer());
-            };
-        };
-        return null;
-    };
-
-    public static class AssemblageBlockPlaceContext extends BlockPlaceContext {
+    public class AssemblageBlockPlaceContext extends BlockPlaceContext {
 
         public AssemblageBlockPlaceContext(UseOnContext context) {
             super(context);
-            if (!replaceClicked) replaceClicked = AssemblageBlock.getEquivalent(getLevel().getBlockState(context.getHitResult().getBlockPos())).canBeReplaced(this);
+            if (!replaceClicked) replaceClicked = set.getEquivalent(getLevel().getBlockState(context.getHitResult().getBlockPos())).canBeReplaced(this);
         };
 
         public void dontReplaceClicked() {
@@ -62,7 +49,7 @@ public abstract class AssemblageBlockItem extends ItemNameBlockItem {
 
         @Override
         public boolean canPlace() {
-            return replacingClickedOnBlock() || AssemblageBlock.getEquivalent(getLevel().getBlockState(getClickedPos())).canBeReplaced(this);
+            return replacingClickedOnBlock() || set.getEquivalent(getLevel().getBlockState(getClickedPos())).canBeReplaced(this);
         };
 
     };

@@ -2,16 +2,21 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.function.Predicate;
 
-import com.simibubi.create.AllBlocks;
-
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class CogWheelInAssemblagePlacementHelper extends ShaftInAssemblagePlacementHelper {
+
+    private final Predicate<ItemStack> itemPredicate = stack -> set.equivalentSmallCogWheel().map(entry -> entry.isIn(stack))
+        .or(() -> set.equivalentLargeCogWheel().map(entry -> entry.isIn(stack))).orElse(false);
+
+    public CogWheelInAssemblagePlacementHelper(AssemblageSet set) {
+        super(set);
+    };
     
     @Override
     public Predicate<ItemStack> getItemPredicate() {
-        return ((Predicate<ItemStack>)(AllBlocks.COGWHEEL::isIn)).or(AllBlocks.LARGE_COGWHEEL::isIn);
+        return itemPredicate;
     };
 
     @Override

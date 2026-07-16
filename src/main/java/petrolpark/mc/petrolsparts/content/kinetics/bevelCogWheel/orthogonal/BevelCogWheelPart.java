@@ -1,4 +1,4 @@
-package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel;
+package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal;
 
 import static petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock.COG_SHAPE;
 import static petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock.LOOT;
@@ -26,34 +26,36 @@ import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblagePart;
 
 public enum BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart {
     
-    NORTH_COG(true, COG_SHAPE.get(Direction.NORTH), LOOT),
-    SOUTH_COG(true, COG_SHAPE.get(Direction.SOUTH), LOOT),
-    EAST_COG(true, COG_SHAPE.get(Direction.EAST), LOOT),
-    WEST_COG(true, COG_SHAPE.get(Direction.WEST), LOOT),
-    SMELLS_LIKE_UPCOG_IN_HERE(true, COG_SHAPE.get(Direction.UP), LOOT),
-    DOWN_COG(true, COG_SHAPE.get(Direction.DOWN), LOOT),
+    NORTH_COG(true, Axis.Z, COG_SHAPE.get(Direction.NORTH), LOOT),
+    SOUTH_COG(true, Axis.Z, COG_SHAPE.get(Direction.SOUTH), LOOT),
+    EAST_COG(true, Axis.X, COG_SHAPE.get(Direction.EAST), LOOT),
+    WEST_COG(true, Axis.X,COG_SHAPE.get(Direction.WEST), LOOT),
+    SMELLS_LIKE_UPCOG_IN_HERE(true, Axis.Y, COG_SHAPE.get(Direction.UP), LOOT),
+    DOWN_COG(true, Axis.Y, COG_SHAPE.get(Direction.DOWN), LOOT),
 
-    X_SHAFT(false, AllShapes.SIX_VOXEL_POLE.get(Axis.X), AssemblagePart.SHAFT_LOOT),
-    Y_SHAFT(false, AllShapes.SIX_VOXEL_POLE.get(Axis.Y), AssemblagePart.SHAFT_LOOT),
-    Z_SHAFT(false, AllShapes.SIX_VOXEL_POLE.get(Axis.Z), AssemblagePart.SHAFT_LOOT),
+    X_SHAFT(false, Axis.X, AllShapes.SIX_VOXEL_POLE.get(Axis.X), AssemblagePart.SHAFT_LOOT),
+    Y_SHAFT(false, Axis.Y, AllShapes.SIX_VOXEL_POLE.get(Axis.Y), AssemblagePart.SHAFT_LOOT),
+    Z_SHAFT(false, Axis.Z, AllShapes.SIX_VOXEL_POLE.get(Axis.Z), AssemblagePart.SHAFT_LOOT),
     ;
 
     public static final Map<Direction, BevelCogWheelPart> COGS = Map.of(Direction.NORTH, NORTH_COG, Direction.SOUTH, SOUTH_COG, Direction.EAST, EAST_COG, Direction.WEST, WEST_COG, Direction.UP, SMELLS_LIKE_UPCOG_IN_HERE, Direction.DOWN, DOWN_COG);
     public static final Map<Axis, BevelCogWheelPart> SHAFTS = Map.of(Axis.X, X_SHAFT, Axis.Y, Y_SHAFT, Axis.Z, Z_SHAFT);
 
-    protected final boolean cog;
-    protected final VoxelShape shape;
-    protected final ResourceKey<LootTable> loot;
+    public final boolean isCog;
+    public final Axis axis;
+    private final VoxelShape shape;
+    private final ResourceKey<LootTable> loot;
 
-    BevelCogWheelPart(boolean cog, VoxelShape shape, ResourceKey<LootTable> loot) {
-        this.cog = cog;
+    BevelCogWheelPart(boolean cog, Axis axis, VoxelShape shape, ResourceKey<LootTable> loot) {
+        this.isCog = cog;
+        this.axis = axis;
         this.shape = shape;
         this.loot = loot;
     };
 
     @Override
     public ItemStack cloneItemStack(BlockState state, LevelReader level, BlockPos pos, Player player) {
-        return (cog ? PetrolsPartsItems.BEVEL_COGWHEEL : AllBlocks.SHAFT).asStack();
+        return (isCog ? PetrolsPartsItems.BEVEL_COGWHEEL : AllBlocks.SHAFT).asStack();
     };
 
     @Override
@@ -68,7 +70,7 @@ public enum BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart {
 
     @Override
     public ItemRequirement itemRequirement() {
-        return new ItemRequirement(ItemUseType.CONSUME, (cog ? PetrolsPartsItems.BEVEL_COGWHEEL : AllBlocks.SHAFT).asStack());
+        return new ItemRequirement(ItemUseType.CONSUME, (isCog ? PetrolsPartsItems.BEVEL_COGWHEEL : AllBlocks.SHAFT).asStack());
     };
 
     public boolean isTopCog() {

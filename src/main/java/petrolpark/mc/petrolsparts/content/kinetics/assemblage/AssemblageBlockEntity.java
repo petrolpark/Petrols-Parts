@@ -143,7 +143,7 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
 
         protected final BlockState effectiveState = new DummyCogWheelBlock().defaultBlockState().setValue(CogWheelBlock.AXIS, AssemblageBlockEntity.this.getBlockState().getValue(IAssemblageBlock.AXIS));
 
-        public AssemblageBlockEntityPart() {
+        protected AssemblageBlockEntityPart() {
             super(PetrolsPartsBlockEntityTypes.ASSEMBLAGE_PART.get());
         };
 

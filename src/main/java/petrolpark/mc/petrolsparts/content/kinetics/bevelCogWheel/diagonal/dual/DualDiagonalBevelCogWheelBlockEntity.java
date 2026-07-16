@@ -47,10 +47,6 @@ public class DualDiagonalBevelCogWheelBlockEntity extends CompositeKineticBlockE
         protected final int index;
         protected final Orientation orientation;
 
-        public Part() {
-            this(0, Orientation.UP_SOUTH);
-        };
-
         protected Part(int index, Orientation orientation) {
             super(PetrolsPartsBlockEntityTypes.DUAL_DIAGONAL_BEVEL_COGWHEEL_PART.get());
             this.index = index;

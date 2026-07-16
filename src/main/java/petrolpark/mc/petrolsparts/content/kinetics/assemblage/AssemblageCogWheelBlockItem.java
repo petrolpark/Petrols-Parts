@@ -41,8 +41,8 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 
     protected final int[] placementHelperIds;
 
-    public AssemblageCogWheelBlockItem(Supplier<AssemblageCog> cog, Item.Properties properties) {
-        super(properties);
+    public AssemblageCogWheelBlockItem(AssemblageSet set, Supplier<AssemblageCog> cog, Item.Properties properties) {
+        super(set, properties);
         this.cog = cog;
         placementHelperIds = new int[]{PlacementHelpers.register(getCog().isLarge() ? new LargePlacementHelper() : new SmallPlacementHelper()), PlacementHelpers.register(new DiagonalPlacementHelper())};
     };
@@ -73,15 +73,15 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
     @Override
     protected BlockState getPlacementState(BlockPlaceContext context) {
         BlockState state = getBlock().defaultBlockState();
-        final BlockState existingState = AssemblageBlock.getEquivalent(context.getLevel().getBlockState(context.getClickedPos()));
+        final BlockState existingState = set.getEquivalent(context.getLevel().getBlockState(context.getClickedPos()));
         if (context.replacingClickedOnBlock()) {
             state = state.setValue(IAssemblageBlock.AXIS, existingState.getValue(IAssemblageBlock.AXIS));
-            final AssemblagePart part = getTargetedPart(context);
+            final AssemblagePart part = set.getTargetedPart(context);
             if (part != null) {
                 if (context.getClickedFace().getAxis() == existingState.getValue(IAssemblageBlock.AXIS)) {
-                    if (part.isEndCog(context.getClickedFace().getOpposite()) || part.isShaft()) {
+                    if (part.isEndCog(set, context.getClickedFace().getOpposite()) || part.isShaft()) {
                         state = state.setValue(IAssemblageBlock.MIDDLE_COG, getCog());
-                    } else if (part.isMiddleCog(context.getClickedFace().getAxis())) {
+                    } else if (part.isMiddleCog(set, context.getClickedFace().getAxis())) {
                         state = state.setValue(context.getClickedFace().getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.TOP_COG : IAssemblageBlock.BOTTOM_COG, getCog());
                     } else {
                         return null;
@@ -149,9 +149,9 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 
             if (state.getBlock() instanceof AssemblageBlock assemblageBlock) {
                 final AssemblagePart part = assemblageBlock.getTargetedPart(state, pos, player);
-                if (part != null && !part.isShaft() && !isTargetingCenter(pos, ray.getLocation(), axis)) attemptStates = Collections.singletonList(defaultState.setValue(part.isMiddleCog(axis)
+                if (part != null && !part.isShaft() && !isTargetingCenter(pos, ray.getLocation(), axis)) attemptStates = Collections.singletonList(defaultState.setValue(part.isMiddleCog(set, axis)
                     ? IAssemblageBlock.MIDDLE_COG
-                    : part.isEndCog(Direction.get(AxisDirection.POSITIVE, axis))
+                    : part.isEndCog(set, Direction.get(AxisDirection.POSITIVE, axis))
                         ? IAssemblageBlock.TOP_COG
                         : IAssemblageBlock.BOTTOM_COG, getCog()
                     )

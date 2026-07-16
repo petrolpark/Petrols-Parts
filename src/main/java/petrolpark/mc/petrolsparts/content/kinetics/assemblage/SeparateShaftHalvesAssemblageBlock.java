@@ -25,10 +25,10 @@ import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
 public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlock {
 
-    public static final int[] shaftAndCogWheelsPlacementHelperIds = new int[]{PlacementHelpers.register(new ShaftInAssemblagePlacementHelper()), PlacementHelpers.register(new CogWheelInAssemblagePlacementHelper())};
+    public final int[] shaftAndCogWheelsPlacementHelperIds = new int[]{PlacementHelpers.register(new ShaftInAssemblagePlacementHelper(set)), PlacementHelpers.register(new CogWheelInAssemblagePlacementHelper(set))};
 
-    public SeparateShaftHalvesAssemblageBlock(BlockBehaviour.Properties properties) {
-        super(properties);
+    public SeparateShaftHalvesAssemblageBlock(AssemblageSet set, BlockBehaviour.Properties properties) {
+        super(set, properties);
         registerDefaultState(defaultBlockState()
             .setValue(TOP_SHAFT_HALF, false)
             .setValue(BOTTOM_SHAFT_HALF, false)
@@ -45,8 +45,8 @@ public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlo
     public List<AssemblagePart> getParts(BlockState state) {
         final List<AssemblagePart> parts = super.getParts(state);
         final Axis axis = state.getValue(AXIS);
-        if (state.getValue(TOP_SHAFT_HALF)) parts.add(AssemblagePart.SHAFT_HALVES.get(Direction.get(AxisDirection.POSITIVE, axis)));
-        if (state.getValue(BOTTOM_SHAFT_HALF)) parts.add(AssemblagePart.SHAFT_HALVES.get(Direction.get(AxisDirection.NEGATIVE, axis)));
+        if (state.getValue(TOP_SHAFT_HALF)) parts.add(set.shaftHalfParts().get(Direction.get(AxisDirection.POSITIVE, axis)));
+        if (state.getValue(BOTTOM_SHAFT_HALF)) parts.add(set.shaftHalfParts().get(Direction.get(AxisDirection.NEGATIVE, axis)));
         return parts;
     };
 

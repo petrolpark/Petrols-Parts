@@ -2,8 +2,6 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.function.Predicate;
 
-import com.simibubi.create.AllBlocks;
-
 import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementOffset;
 import net.minecraft.core.BlockPos;
@@ -13,18 +11,23 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 public class ShaftInAssemblagePlacementHelper implements IPlacementHelper {
 
+    protected final AssemblageSet set;
+
+    public ShaftInAssemblagePlacementHelper(AssemblageSet set) {
+        this.set = set;
+    };
+
     @Override
     public Predicate<ItemStack> getItemPredicate() {
-        return AllBlocks.SHAFT::isIn;
+        return set.shaft()::isIn;
     };
 
     @Override
     public Predicate<BlockState> getStatePredicate() {
-        return state -> PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE.has(state) && !state.getValue(IAssemblageBlock.TOP_SHAFT_HALF) && !state.getValue(IAssemblageBlock.BOTTOM_SHAFT_HALF);
+        return state -> set.separateShaftsAssemblage().has(state) && !state.getValue(IAssemblageBlock.TOP_SHAFT_HALF) && !state.getValue(IAssemblageBlock.BOTTOM_SHAFT_HALF);
     };
 
     @Override

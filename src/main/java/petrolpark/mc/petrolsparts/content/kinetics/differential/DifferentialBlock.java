@@ -76,7 +76,7 @@ public class DifferentialBlock extends CogWheelBlock {
             BlockEntity neighborBE = level.getBlockEntity(neighbor);
             Direction directionBetween = KineticsHelper.directionBetween(pos, neighbor);
             Direction differentialDirection = DirectionalRotatedPillarKineticBlock.getDirection(state);
-            if (be instanceof DifferentialBlockEntity differential && differential.hasLevel() && directionBetween == differentialDirection.getOpposite()) {
+            if (be instanceof LegacyDifferentialBlockEntity differential && differential.hasLevel() && directionBetween == differentialDirection.getOpposite()) {
                 float newControlSpeed = 0f;
                 if (neighborBE instanceof KineticBlockEntity kbe) newControlSpeed = differential.getPropagatedSpeed(kbe, differentialDirection);
                 if (differential.oldControlSpeed != newControlSpeed) {

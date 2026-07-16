@@ -40,27 +40,29 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.util.BlockHelper;
-import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 
 public abstract class EncasedAssemblageBlock extends Block implements IBE<AssemblageBlockEntity>, IAssemblageBlock, EncasedBlock {
 
-    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> andesite(EncasedAssemblageBlock.Factory<B> factory) {
-        return p -> factory.create(p, AllBlocks.ANDESITE_CASING::get, "andesite");
+    protected final AssemblageSet set;
+
+    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> andesite(AssemblageSet set, EncasedAssemblageBlock.Factory<B> factory) {
+        return p -> factory.create(set, p, AllBlocks.ANDESITE_CASING::get, "andesite");
     };
 
-    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> brass(EncasedAssemblageBlock.Factory<B> factory) {
-        return p -> factory.create(p, AllBlocks.BRASS_CASING::get, "brass");
+    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> brass(AssemblageSet set, EncasedAssemblageBlock.Factory<B> factory) {
+        return p -> factory.create(set, p, AllBlocks.BRASS_CASING::get, "brass");
     };
 
     protected final Supplier<Block> casing;
     protected final String descriptionId;
 
-    public EncasedAssemblageBlock(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
+    public EncasedAssemblageBlock(AssemblageSet set, BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
         super(properties);
+        this.set = set;
         this.casing = casing;
-        this.descriptionId = Util.makeDescriptionId("block", PetrolsParts.asResource(casingName + "_encased_assemblage"));
+        this.descriptionId = Util.makeDescriptionId("block", set.id().withPrefix(casingName + "_encased_"));
     };
 
     @Override
@@ -193,7 +195,7 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
     @FunctionalInterface
     public interface Factory<B extends EncasedAssemblageBlock> {
 
-        public B create(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName);
+        public B create(AssemblageSet set, BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName);
     };
 
     public static final <B extends EncasedAssemblageBlock> NonNullConsumer<B> registerCTs(Supplier<EncasedAssemblageCTBehaviour> ctBehaviour) {

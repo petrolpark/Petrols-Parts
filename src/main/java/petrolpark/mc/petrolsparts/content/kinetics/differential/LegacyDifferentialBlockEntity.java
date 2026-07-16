@@ -23,12 +23,12 @@ import petrolpark.mc.petrolsparts.core.advancement.PetrolsPartsAdvancementTrigge
 import petrolpark.mc.petrolsparts.core.block.DirectionalRotatedPillarKineticBlock;
 import petrolpark.mc.petrolsparts.mixin.accessor.RotationPropagatorAccessor;
 
-public class DifferentialBlockEntity extends SplitShaftBlockEntity {
+public class LegacyDifferentialBlockEntity extends SplitShaftBlockEntity {
 
     public PetrolsPartsAdvancementBehaviour advancementBehaviour;
     public float oldControlSpeed;
 
-    public DifferentialBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+    public LegacyDifferentialBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     };
 
@@ -42,7 +42,7 @@ public class DifferentialBlockEntity extends SplitShaftBlockEntity {
     @Override
     public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
         if (connectedViaAxes) {
-            if (target instanceof DifferentialBlockEntity) return 0f;
+            if (target instanceof LegacyDifferentialBlockEntity) return 0f;
             return ratio(stateFrom) * Math.signum(RotationPropagatorAccessor.invokeGetAxisModifier(target, KineticsHelper.directionBetween(target.getBlockPos(), getBlockPos())));
         };
         return super.propagateRotationTo(target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
@@ -123,7 +123,7 @@ public class DifferentialBlockEntity extends SplitShaftBlockEntity {
     };
 
     public float getPropagatedSpeed(KineticBlockEntity from, Direction directionToMe) {
-        if (from instanceof DifferentialBlockEntity) return 0f;
+        if (from instanceof LegacyDifferentialBlockEntity) return 0f;
         return from.getSpeed() * RotationPropagatorAccessor.invokeGetAxisModifier(from, directionToMe);
     };
 
