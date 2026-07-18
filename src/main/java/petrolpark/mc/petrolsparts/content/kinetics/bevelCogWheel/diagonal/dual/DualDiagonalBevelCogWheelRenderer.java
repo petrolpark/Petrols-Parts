@@ -5,17 +5,20 @@ import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRender
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelRenderer;
 
 public class DualDiagonalBevelCogWheelRenderer extends SafeBlockEntityRenderer<DualDiagonalBevelCogWheelBlockEntity> {
 
-    public DualDiagonalBevelCogWheelRenderer(BlockEntityRendererProvider.Context context) {
+    public final BevelCogWheelSet.Client set;
 
+    public DualDiagonalBevelCogWheelRenderer(BevelCogWheelSet.Client set, BlockEntityRendererProvider.Context context) {
+        this.set = set;
     };
 
     @Override
     protected void renderSafe(DualDiagonalBevelCogWheelBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-        be.getParts().forEach(part -> SingleDiagonalBevelCogWheelRenderer.renderCog(part, part.getOrientation(), ms, buffer, light));
+        be.getParts().forEach(part -> SingleDiagonalBevelCogWheelRenderer.renderCog(set, part, part.getOrientation(), ms, buffer, light));
     };
     
 };

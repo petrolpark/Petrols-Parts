@@ -6,7 +6,6 @@ import java.util.Collections;
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 
@@ -16,10 +15,13 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.library.compat.create.core.world.block.IReplaceableBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock;
 
 @ParametersAreNonnullByDefault
 public interface IOrthogonalBevelCogWheelBlock extends IBevelCogWheelBlock, IReplaceableBlock, ProperWaterloggedBlock {
+
+    public BevelCogWheelSet getSet();
 
     public Collection<BevelCogWheelPart> getParts(BlockState state);
   
@@ -44,16 +46,16 @@ public interface IOrthogonalBevelCogWheelBlock extends IBevelCogWheelBlock, IRep
             state = existingState;
             if (newState.getBlock() instanceof IOrthogonalBevelCogWheelBlock otherBcwb) {
                 additionalParts = otherBcwb.getParts(newState);
-            } else if (AllBlocks.SHAFT.has(newState)) {
-                additionalParts = Collections.singletonList(BevelCogWheelPart.SHAFTS.get(newState.getValue(ShaftBlock.AXIS)));
+            } else if (getSet().shaftBlock().has(newState)) {
+                additionalParts = Collections.singletonList(getSet().shaftParts().get(newState.getValue(ShaftBlock.AXIS)));
             } else {
                 return null;
             };
         } else if (newState.getBlock() instanceof IOrthogonalBevelCogWheelBlock bcwb) {
-            if (!AllBlocks.SHAFT.has(existingState)) return null;
+            if (!getSet().shaftBlock().has(existingState)) return null;
             block = bcwb;
             state = newState;
-            additionalParts = Collections.singletonList(BevelCogWheelPart.SHAFTS.get(existingState.getValue(ShaftBlock.AXIS)));
+            additionalParts = Collections.singletonList(getSet().shaftParts().get(existingState.getValue(ShaftBlock.AXIS)));
         } else return null;
 
         // Try add all da new parts

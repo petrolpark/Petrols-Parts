@@ -2,7 +2,6 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
@@ -102,18 +101,18 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
             shaftModel = set.shaftHalfBottom();
         } else if (middleCog.hasShaftConnection()) {
             if (topCog.hasShaftConnection()) {
-                shaftModel = bottomCog.hasShaftConnection() ? PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_ALL : PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_NO_BOTTOM;
+                shaftModel = bottomCog.hasShaftConnection() ? set.shaftAll() : set.shaftNoBottom();
             } else if (bottomCog.hasShaftConnection()) {
-                shaftModel = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_NO_TOP;
+                shaftModel = set.shaftNoTop();
             } else {
-                shaftModel = AllPartialModels.COGWHEEL_SHAFT;
+                shaftModel = set.shaftMiddle();
             };
         } else if (topCog.hasShaftConnection()) {
-            shaftModel = bottomCog.hasShaftConnection() ? PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_ALL : PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_TOP;
+            shaftModel = bottomCog.hasShaftConnection() ? set.shaftAll() : set.shaftTop();
         } else if (bottomCog.hasShaftConnection()) {
-            shaftModel = PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_BOTTOM;  
+            shaftModel = set.shaftBottom();  
         } else {
-            shaftModel = AllPartialModels.SHAFT;
+            shaftModel = set.shaftNone();
         };
 
         KineticBlockEntityRenderer.kineticRotationTransform(CachedBuffers.partialFacingVertical(shaftModel, be.shaftPart.getBlockState(), facing), be.shaftPart, axis, getAngle(be.shaftPart, be.getBlockPos(), axis), light)

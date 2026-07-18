@@ -1,9 +1,9 @@
 package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import com.google.common.base.Predicates;
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.equipment.extendoGrip.ExtendoGripItem;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 import com.simibubi.create.infrastructure.config.AllConfigs;
@@ -27,14 +27,13 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 public class ShaftHalfBlockItem extends AssemblageBlockItem {
 
     protected final int placementHelperId;
 
-    public ShaftHalfBlockItem(Item.Properties properties) {
-        super(properties);
+    public ShaftHalfBlockItem(Supplier<AssemblageSet> set, Item.Properties properties) {
+        super(set, properties);
         placementHelperId = PlacementHelpers.register(new ShaftHalfBlockItem.PlacementHelper());
     };
 
@@ -64,23 +63,23 @@ public class ShaftHalfBlockItem extends AssemblageBlockItem {
 
     @Override
     protected BlockState getPlacementState(BlockPlaceContext context) {
-        final BlockState existingState = AssemblageBlock.getEquivalent(context.getLevel().getBlockState(context.getClickedPos()));
+        final BlockState existingState = getSet().getEquivalent(context.getLevel().getBlockState(context.getClickedPos()));
         BlockState state = getBlock().defaultBlockState();
         boolean topShaft = context.getClickedFace().getAxisDirection() == AxisDirection.NEGATIVE;
         if (existingState.getBlock() instanceof AssemblageBlock) {
             final Axis axis = existingState.getValue(IAssemblageBlock.AXIS);
-            final AssemblagePart part = getTargetedPart(context);
+            final AssemblagePart part = getSet().getTargetedPart(context);
             state = state.setValue(IAssemblageBlock.AXIS, axis);
-            topShaft ^= part != null && (part.isMiddleCog(axis) || part.isShaft()); // If targeting the middle cog or a shaft half, place on the other side
+            topShaft ^= part != null && (part.isMiddleCog(getSet(), axis) || part.isShaft()); // If targeting the middle cog or a shaft half, place on the other side
         } else {
             return ProperWaterloggedBlock.withWater(context.getLevel(), state.setValue(IAssemblageBlock.AXIS, context.getClickedFace().getAxis()).setValue(topShaft ? IAssemblageBlock.TOP_SHAFT_HALF : IAssemblageBlock.BOTTOM_SHAFT_HALF, true), context.getClickedPos());
         };
         return ProperWaterloggedBlock.withWater(context.getLevel(), getBlock().getReplacedState(context.getLevel(), context.getClickedPos(), existingState, state.setValue(topShaft ? IAssemblageBlock.TOP_SHAFT_HALF : IAssemblageBlock.BOTTOM_SHAFT_HALF, true), context.getPlayer()), context.getClickedPos());
     };
 
-    public class PlacementHelper implements IAssemblagePlacementHelper {
+    public class PlacementHelper extends AssemblageBlockItem.PlacementHelper {
 
-        protected final Predicate<BlockState> statePredicate = Predicates.or(AllBlocks.SHAFT::has, AllBlocks.POWERED_SHAFT::has, PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE::has, PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE::has);
+        protected final Predicate<BlockState> statePredicate = Predicates.or(getSet().shaft()::has, getSet().separateShaftsAssemblage()::has, getSet().singleShaftAssemblage()::has);
 
         @Override
         public Predicate<ItemStack> getItemPredicate() {

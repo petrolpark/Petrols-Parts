@@ -2,8 +2,8 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.com
 
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.simibubi.create.foundation.block.IBE;
@@ -22,16 +22,18 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import petrolpark.mc.library.compat.create.core.world.block.composite.MultiPartCompositeKineticBlock;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
-import petrolpark.mc.petrolsparts.PetrolsPartsItems;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SimpleBevelCogWheelBlock;
 
 public abstract class CompositeBevelCogWheelBlock extends MultiPartCompositeKineticBlock<BevelCogWheelPart> implements IOrthogonalBevelCogWheelBlock, IBE<CompositeBevelCogWheelBlockEntity> {
 
-    public CompositeBevelCogWheelBlock(BlockBehaviour.Properties properties) {
+    private final Supplier<BevelCogWheelSet> set;
+
+    public CompositeBevelCogWheelBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
         super(properties);
+        this.set = set;
         registerDefaultState(defaultBlockState()
             .setValue(WATERLOGGED, false)
         );
@@ -45,17 +47,22 @@ public abstract class CompositeBevelCogWheelBlock extends MultiPartCompositeKine
     };
 
     @Override
+    public BevelCogWheelSet getSet() {
+        return set.get();
+    };
+
+    @Override
     public Collection<BevelCogWheelPart> getParts(BlockState state) {
         return getSimpleBevelCogWheelEquivalents(state).stream()
             .<BevelCogWheelPart>mapMulti((s, consumer) -> {
-                if (AllBlocks.SHAFT.has(s)) consumer.accept(BevelCogWheelPart.SHAFTS.get(s.getValue(ShaftBlock.AXIS)));
+                if (getSet().shaftBlock().has(s)) consumer.accept(getSet().shaftParts().get(s.getValue(ShaftBlock.AXIS)));
                 else if (s.getBlock() instanceof SimpleBevelCogWheelBlock sbcwb) sbcwb.getParts(s).forEach(consumer);
             }).toList();
     };
 
     @Override
     protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        updateWater(level, neighborState, neighborPos);
+        updateWater(level, state, pos);
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     };
 
@@ -66,12 +73,12 @@ public abstract class CompositeBevelCogWheelBlock extends MultiPartCompositeKine
 
     @Override
     public Item asItem() {
-        return PetrolsPartsItems.BEVEL_COGWHEEL.get();
+        return getSet().item().get();
     };
 
     @Override
     public String getDescriptionId() {
-        return TRANSLATION_KEY;
+        return getSet().translationKey();
     };
 
     @Override
@@ -91,7 +98,7 @@ public abstract class CompositeBevelCogWheelBlock extends MultiPartCompositeKine
 
     @Override
     public BlockEntityType<? extends CompositeBevelCogWheelBlockEntity> getBlockEntityType() {
-        return PetrolsPartsBlockEntityTypes.COMPOSITE_BEVEL_COGWHEEL.get();
+        return getSet().compositeBE().get();
     };
     
 };

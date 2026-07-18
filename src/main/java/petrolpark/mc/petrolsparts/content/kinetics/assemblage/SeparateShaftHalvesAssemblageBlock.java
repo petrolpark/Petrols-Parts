@@ -1,9 +1,14 @@
 package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
+
+import com.google.common.base.Suppliers;
 
 import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementHelpers;
+import net.createmod.catnip.placement.PlacementOffset;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -16,18 +21,17 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
 public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlock {
 
-    public final int[] shaftAndCogWheelsPlacementHelperIds = new int[]{PlacementHelpers.register(new ShaftInAssemblagePlacementHelper(set)), PlacementHelpers.register(new CogWheelInAssemblagePlacementHelper(set))};
+    public final int[] shaftAndCogWheelsPlacementHelperIds = new int[]{PlacementHelpers.register(new ShaftInAssemblagePlacementHelper()), PlacementHelpers.register(new CogWheelInAssemblagePlacementHelper())};
 
-    public SeparateShaftHalvesAssemblageBlock(AssemblageSet set, BlockBehaviour.Properties properties) {
+    public SeparateShaftHalvesAssemblageBlock(Supplier<AssemblageSet> set, BlockBehaviour.Properties properties) {
         super(set, properties);
         registerDefaultState(defaultBlockState()
             .setValue(TOP_SHAFT_HALF, false)
@@ -45,8 +49,8 @@ public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlo
     public List<AssemblagePart> getParts(BlockState state) {
         final List<AssemblagePart> parts = super.getParts(state);
         final Axis axis = state.getValue(AXIS);
-        if (state.getValue(TOP_SHAFT_HALF)) parts.add(set.shaftHalfParts().get(Direction.get(AxisDirection.POSITIVE, axis)));
-        if (state.getValue(BOTTOM_SHAFT_HALF)) parts.add(set.shaftHalfParts().get(Direction.get(AxisDirection.NEGATIVE, axis)));
+        if (state.getValue(TOP_SHAFT_HALF)) parts.add(getSet().shaftHalfParts().get(Direction.get(AxisDirection.POSITIVE, axis)));
+        if (state.getValue(BOTTOM_SHAFT_HALF)) parts.add(getSet().shaftHalfParts().get(Direction.get(AxisDirection.NEGATIVE, axis)));
         return parts;
     };
 
@@ -84,9 +88,39 @@ public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlo
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     };
 
-    @Override
-    public BlockEntityType<? extends AssemblageBlockEntity> getBlockEntityType() {
-        return PetrolsPartsBlockEntityTypes.ASSEMBLAGE.get();
+    public class ShaftInAssemblagePlacementHelper implements IPlacementHelper {
+
+        @Override
+        public Predicate<ItemStack> getItemPredicate() {
+            return getSet().shaft()::isIn;
+        };
+
+        @Override
+        public Predicate<BlockState> getStatePredicate() {
+            return state -> getSet().separateShaftsAssemblage().has(state) && !state.getValue(IAssemblageBlock.TOP_SHAFT_HALF) && !state.getValue(IAssemblageBlock.BOTTOM_SHAFT_HALF);
+        };
+
+        @Override
+        public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
+            return PlacementOffset.success(pos, s -> s.setValue(BlockStateProperties.AXIS, state.getValue(IAssemblageBlock.AXIS)));
+        };
+        
+    };
+
+    public class CogWheelInAssemblagePlacementHelper extends SeparateShaftHalvesAssemblageBlock.ShaftInAssemblagePlacementHelper {
+
+        private final Supplier<Predicate<ItemStack>> itemPredicate = Suppliers.memoize(() -> stack -> getSet().equivalentSmallCogWheel().map(entry -> entry.isIn(stack))
+            .or(() -> getSet().equivalentLargeCogWheel().map(entry -> entry.isIn(stack))).orElse(false));
+        
+        @Override
+        public Predicate<ItemStack> getItemPredicate() {
+            return itemPredicate.get();
+        };
+
+        @Override
+        public Predicate<BlockState> getStatePredicate() {
+            return super.getStatePredicate().and(state -> state.getValue(IAssemblageBlock.MIDDLE_COG).isNone());
+        };
     };
     
 };

@@ -3,6 +3,7 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.singl
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -32,17 +33,19 @@ import net.minecraft.world.phys.BlockHitResult;
 import petrolpark.mc.library.compat.create.core.world.block.IReplaceableBlock;
 import petrolpark.mc.library.compat.create.core.world.block.MultiPartKineticBlock;
 import petrolpark.mc.library.util.Orientation;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.IAssemblageBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.IDualDiagonalBevelCogWheelBlock;
 
 public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<DiagonalBevelCogWheelPart> implements ISingleDiagonalBevelCogWheelBlock, IReplaceableBlock, ProperWaterloggedBlock, EncasableBlock {
 
-    public SingleDiagonalBevelCogWheelBlock(BlockBehaviour.Properties properties) {
+    private final Supplier<BevelCogWheelSet> set;
+
+    public SingleDiagonalBevelCogWheelBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
         super(properties);
+        this.set = set;
         registerDefaultState(defaultBlockState()
             .setValue(ORIENTATION, Orientation.UP_SOUTH)
             .setValue(FIRST_AXIS_SHAFT, false)
@@ -57,6 +60,11 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
     };
 
     @Override
+    public BevelCogWheelSet getSet() {
+        return set.get();
+    };
+
+    @Override
     public boolean canSurviveWithout(BlockState state, Level level, BlockPos pos, Player player, boolean willHarvest, FluidState fluid, DiagonalBevelCogWheelPart part) {
         return part instanceof DiagonalBevelCogWheelPart.ShaftHalf;
     };
@@ -65,9 +73,9 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
     public Collection<DiagonalBevelCogWheelPart> getParts(BlockState state) {
         final Orientation orientation = state.getValue(ORIENTATION);
         final List<DiagonalBevelCogWheelPart> parts = new ArrayList<>(3);
-        parts.add(DiagonalBevelCogWheelPart.COGS.get(orientation));
-        if (state.getValue(FIRST_AXIS_SHAFT)) parts.add(DiagonalBevelCogWheelPart.SHAFT_HALVES.get(orientation.top.getOpposite()));
-        if (state.getValue(SECOND_AXIS_SHAFT)) parts.add(DiagonalBevelCogWheelPart.SHAFT_HALVES.get(orientation.front.getOpposite()));
+        parts.add(getSet().diagonalCogParts().get(orientation));
+        if (state.getValue(FIRST_AXIS_SHAFT)) parts.add(getSet().shaftHalfParts().get(orientation.top.getOpposite()));
+        if (state.getValue(SECOND_AXIS_SHAFT)) parts.add(getSet().shaftHalfParts().get(orientation.front.getOpposite()));
         return parts;
     };
 
@@ -79,19 +87,19 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
 
     @Override
     public BlockState getReplacedState(Level level, BlockPos pos, BlockState existingState, BlockState newState, Player player) {
-        if (existingState.getBlock() instanceof SingleDiagonalBevelCogWheelBlock) {
+        if (existingState.getBlock() instanceof SingleDiagonalBevelCogWheelBlock singleBlock1 && singleBlock1.set == set) {
             // Place Assemblage Shaft Half on this
             final BlockState stateWithShaftHalf = getReplacedWithAssemblageShaftHalf(existingState, newState);
             if (stateWithShaftHalf != null) return stateWithShaftHalf;
             // Place two diagonal Bevel Cogwheels together
-            if (newState.getBlock() instanceof SingleDiagonalBevelCogWheelBlock) {
+            if (newState.getBlock() instanceof SingleDiagonalBevelCogWheelBlock singleBlock2 && singleBlock2.set == set) {
                 final Orientation existingOrientation = existingState.getValue(ORIENTATION);
                 final Orientation newOrientation = newState.getValue(ORIENTATION);
                 if (existingOrientation.top == newOrientation.top.getOpposite() && existingOrientation.front == existingOrientation.front.getOpposite()) {
                     final List<Axis> axes = Stream.of(Axis.values()).collect(Collectors.toCollection(ArrayList::new));
                     axes.remove(existingOrientation.top.getAxis());
                     axes.remove(existingOrientation.front.getAxis());
-                    return PetrolsPartsBlocks.DUAL_DIAGONAL_BEVEL_COGWHEEL.getDefaultState()
+                    return getSet().dualDiagonalBlock().getDefaultState()
                         .setValue(IDualDiagonalBevelCogWheelBlock.EXCLUDED_AXIS, axes.get(0))
                         .setValue(IDualDiagonalBevelCogWheelBlock.FACE_PARITY, existingOrientation.top.getAxisDirection() == existingOrientation.front.getAxisDirection())
                         .setValue(WATERLOGGED, existingState.getValue(WATERLOGGED));
@@ -149,12 +157,12 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
 
     @Override
     public String getDescriptionId() {
-        return TRANSLATION_KEY;
+        return getSet().translationKey();
     };
 
     @Override
     public Item asItem() {
-        return PetrolsPartsItems.BEVEL_COGWHEEL.get();
+        return getSet().item().get();
     };
 
     @Override

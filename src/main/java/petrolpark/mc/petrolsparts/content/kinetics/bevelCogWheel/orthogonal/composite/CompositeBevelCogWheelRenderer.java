@@ -5,11 +5,14 @@ import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRender
 
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 
 public class CompositeBevelCogWheelRenderer extends SafeBlockEntityRenderer<CompositeBevelCogWheelBlockEntity> {
 
-    public CompositeBevelCogWheelRenderer(BlockEntityRendererProvider.Context context) {
-        
+    public final BevelCogWheelSet.Client set;
+
+    public CompositeBevelCogWheelRenderer(BevelCogWheelSet.Client set, BlockEntityRendererProvider.Context context) {
+        this.set = set;
     };
 
     @Override

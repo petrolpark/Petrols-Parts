@@ -1,5 +1,7 @@
 package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple;
 
+import java.util.function.Supplier;
+
 import com.simibubi.create.content.contraptions.StructureTransform;
 
 import net.minecraft.core.BlockPos;
@@ -16,13 +18,17 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import petrolpark.mc.library.compat.create.core.world.block.MultiPartKineticBlock;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
 
 public abstract class SimpleBevelCogWheelBlock extends MultiPartKineticBlock<BevelCogWheelPart> implements IOrthogonalBevelCogWheelBlock {
 
-    public SimpleBevelCogWheelBlock(BlockBehaviour.Properties properties) {
+    private final Supplier<BevelCogWheelSet> set;
+
+    public SimpleBevelCogWheelBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
         super(properties);
+        this.set = set;
         registerDefaultState(defaultBlockState()
             .setValue(WATERLOGGED, false)
         );
@@ -32,10 +38,15 @@ public abstract class SimpleBevelCogWheelBlock extends MultiPartKineticBlock<Bev
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder.add(WATERLOGGED));
     };
+    
+    @Override
+    public BevelCogWheelSet getSet() {
+        return set.get();
+    };
 
     @Override
     protected BlockState updateShape(BlockState state, Direction direction, BlockState neighborState, LevelAccessor level, BlockPos pos, BlockPos neighborPos) {
-        updateWater(level, neighborState, neighborPos);
+        updateWater(level, state, pos);
         return super.updateShape(state, direction, neighborState, level, pos, neighborPos);
     };
 
@@ -51,7 +62,7 @@ public abstract class SimpleBevelCogWheelBlock extends MultiPartKineticBlock<Bev
 
     @Override
     public String getDescriptionId() {
-        return TRANSLATION_KEY;
+        return getSet().translationKey();
     };
 
     @Override

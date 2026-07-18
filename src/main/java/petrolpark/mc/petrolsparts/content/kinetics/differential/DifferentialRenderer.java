@@ -29,7 +29,6 @@ public class DifferentialRenderer extends KineticBlockEntityRenderer<LegacyDiffe
     };
 
     @Override
-    @SuppressWarnings("null") // It thinks getLevel() might be null
     protected void renderSafe(LegacyDifferentialBlockEntity differential, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         //if (Backend.canUseInstancing(planetaryGearsetBlockEntity.getLevel())) return;
         if (!differential.hasLevel()) return;

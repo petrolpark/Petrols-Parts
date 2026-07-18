@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import petrolpark.mc.library.util.Orientation;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlock;
 
 public interface ISingleDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWheelBlock, IBE<SingleDiagonalBevelCogWheelBlockEntity>, IRotate {
@@ -23,6 +23,8 @@ public interface ISingleDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWhee
     public static final EnumProperty<Orientation> ORIENTATION = Orientation.EDGE_ORIENTATION_PROPERTY;
     public static final BooleanProperty FIRST_AXIS_SHAFT = BooleanProperty.create("first_axis_shaft");
     public static final BooleanProperty SECOND_AXIS_SHAFT = BooleanProperty.create("second_axis_shaft");
+
+    public BevelCogWheelSet getSet();
 
     @Override
     public default boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
@@ -70,6 +72,6 @@ public interface ISingleDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWhee
 
     @Override
     public default BlockEntityType<? extends SingleDiagonalBevelCogWheelBlockEntity> getBlockEntityType() {
-        return PetrolsPartsBlockEntityTypes.SINGLE_DIAGONAL_BEVEL_COGWHEEL.get();
+        return getSet().singleDiagonalBE().get();
     };
 };

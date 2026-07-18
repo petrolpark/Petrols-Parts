@@ -4,12 +4,14 @@
 	"parent": "block/block",
 	"textures": {
 		"2": "create:block/large_cogwheel",
-		"body": "petrolsparts:block/bevel_cogwheel"
+		"body": "petrolsparts:block/bevel_cogwheel",
+		"particle": "create:block/axis_top"
 	},
 	"elements": [
 		{
-			"from": [-1.55, 2, -1.55],
-			"to": [1.55, 4.1, 1.55],
+			"from": [6.45, 1.975, 6.45],
+			"to": [9.55, 4.075, 9.55],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -0.025, 8]},
 			"faces": {
 				"north": {"uv": [5.5, 0, 7.1, 1.1], "texture": "#body"},
 				"east": {"uv": [5.5, 0, 7.1, 1.1], "texture": "#body"},
@@ -19,8 +21,9 @@
 			}
 		},
 		{
-			"from": [-5.5, 2, -1.5],
-			"to": [-1.5, 4, 1.5],
+			"from": [2.5, 1.975, 6.5],
+			"to": [6.5, 3.975, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -0.025, 8]},
 			"faces": {
 				"north": {"uv": [13, 13, 15, 14], "texture": "#2"},
 				"south": {"uv": [0, 13, 2, 14], "texture": "#2"},
@@ -29,8 +32,9 @@
 			}
 		},
 		{
-			"from": [-5.5, 0, -3.5],
-			"to": [5.5, 2, 3.5],
+			"from": [2.5, -0.025, 4.5],
+			"to": [13.5, 1.975, 11.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -0.025, 8]},
 			"faces": {
 				"north": {"uv": [5.5, 4.5, 11, 5.5], "texture": "#body"},
 				"east": {"uv": [6.5, 4.5, 10, 5.5], "texture": "#body"},
@@ -41,8 +45,9 @@
 			}
 		},
 		{
-			"from": [-3.5, -0.01, -5.5],
-			"to": [3.5, 2.01, 5.5],
+			"from": [4.5, -0.035, 2.5],
+			"to": [11.5, 1.985, 13.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -0.025, 8]},
 			"faces": {
 				"north": {"uv": [6.5, 4.5, 10, 5.5], "texture": "#body"},
 				"east": {"uv": [5.5, 4.5, 11, 5.5], "texture": "#body"},
@@ -53,8 +58,9 @@
 			}
 		},
 		{
-			"from": [-1.5, 2, -5.5],
-			"to": [1.5, 4, -1.5],
+			"from": [6.5, 1.975, 2.5],
+			"to": [9.5, 3.975, 6.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -0.025, 8]},
 			"faces": {
 				"north": {"uv": [10, 9.5, 11.5, 10.5], "texture": "#2"},
 				"east": {"uv": [13, 13, 15, 14], "texture": "#2"},
@@ -63,8 +69,9 @@
 			}
 		},
 		{
-			"from": [1.5, 2, -1.5],
-			"to": [5.5, 4, 1.5],
+			"from": [9.5, 1.975, 6.5],
+			"to": [13.5, 3.975, 9.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -0.025, 8]},
 			"faces": {
 				"north": {"uv": [0, 13, 2, 14], "texture": "#2"},
 				"east": {"uv": [10, 9.5, 11.5, 10.5], "texture": "#2"},
@@ -73,8 +80,9 @@
 			}
 		},
 		{
-			"from": [-1.5, 2, 1.5],
-			"to": [1.5, 4, 5.5],
+			"from": [6.5, 1.975, 9.5],
+			"to": [9.5, 3.975, 13.5],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -0.025, 8]},
 			"faces": {
 				"east": {"uv": [0, 13, 2, 14], "texture": "#2"},
 				"south": {"uv": [10, 9.5, 11.5, 10.5], "texture": "#2"},
@@ -83,8 +91,9 @@
 			}
 		},
 		{
-			"from": [0, 0, 0],
-			"to": [2, 2, 2],
+			"from": [8, -0.025, 8],
+			"to": [10, 1.975, 10],
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, -0.025, 8]},
 			"color": 0,
 			"faces": {
 				"north": {"uv": [0, 0, 2, 2], "texture": "#missing"},
@@ -99,39 +108,39 @@
 	"display": {
 		"thirdperson_righthand": {
 			"rotation": [75, 45, 0],
-			"translation": [4, 2.25, 2.5],
+			"translation": [0, 1, 1.5],
 			"scale": [0.375, 0.375, 0.375]
 		},
 		"thirdperson_lefthand": {
 			"rotation": [75, 45, 0],
-			"translation": [0, -1.75, 4],
+			"translation": [0, 1, 1.5],
 			"scale": [0.375, 0.375, 0.375]
 		},
 		"firstperson_righthand": {
 			"rotation": [0, 45, 0],
-			"translation": [4, 4, 0],
+			"translation": [0, 4, 0],
 			"scale": [0.4, 0.4, 0.4]
 		},
 		"firstperson_lefthand": {
 			"rotation": [0, -135, 0],
-			"translation": [-1.75, 4.25, -4.25],
+			"translation": [0, 4, 0],
 			"scale": [0.4, 0.4, 0.4]
 		},
 		"ground": {
-			"translation": [4, 3, 4],
+			"translation": [0, 3, 0],
 			"scale": [0.5, 0.5, 0.5]
 		},
 		"gui": {
 			"rotation": [30, -135, 0],
-			"translation": [-11.25, 5, 0]
+			"translation": [0, 5, 0]
 		},
 		"head": {
 			"rotation": [0, -45, 0],
-			"translation": [0, 14.5, 11.25]
+			"translation": [0, 14.5, 0]
 		},
 		"fixed": {
 			"rotation": [-90, 0, 0],
-			"translation": [8, 8, -7]
+			"translation": [0, 0, -7]
 		}
 	}
 }

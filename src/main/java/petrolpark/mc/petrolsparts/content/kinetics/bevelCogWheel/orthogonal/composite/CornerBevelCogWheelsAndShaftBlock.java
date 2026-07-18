@@ -1,8 +1,8 @@
 package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 
@@ -16,8 +16,9 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import petrolpark.mc.library.util.BlockHelper;
+import petrolpark.mc.library.util.MathsHelper;
 import petrolpark.mc.library.util.Orientation;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.CornerBevelCogWheelsBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.ThreeBevelCogWheelsBlock;
@@ -26,8 +27,8 @@ public class CornerBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBlo
 
     public static final EnumProperty<Orientation> ORIENTATION = Orientation.EDGE_ORIENTATION_PROPERTY;
 
-    public CornerBevelCogWheelsAndShaftBlock(BlockBehaviour.Properties properties) {
-        super(properties);
+    public CornerBevelCogWheelsAndShaftBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
+        super(set, properties);
     };
 
     @Override
@@ -39,22 +40,22 @@ public class CornerBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBlo
     protected List<BlockState> getSimpleBevelCogWheelEquivalents(BlockState state) {
         final Orientation orientation = state.getValue(ORIENTATION);
         return List.of(
-            PetrolsPartsBlocks.CORNER_BEVEL_COGWHEELS.getDefaultState().setValue(CornerBevelCogWheelsBlock.ORIENTATION, orientation),
-            AllBlocks.SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, orientation.right.getAxis())
+            getSet().cornerBlock().getDefaultState().setValue(CornerBevelCogWheelsBlock.ORIENTATION, orientation),
+            getSet().shaftBlock().getDefaultState().setValue(ShaftBlock.AXIS, orientation.right.getAxis())
         );
     };
 
     @Override
     public BlockState withPart(BlockState state, BevelCogWheelPart part) {
-        if (!part.isCog) return null;
+        if (!(part instanceof BevelCogWheelPart.Cog)) return null;
         final Orientation orientation = state.getValue(ORIENTATION);
-        if (part == BevelCogWheelPart.COGS.get(orientation.top.getOpposite())) {
-            return PetrolsPartsBlocks.THREE_BEVEL_COGWHEELS.getDefaultState()
+        if (part == getSet().cogParts().get(orientation.top.getOpposite())) {
+            return getSet().threeBlock().getDefaultState()
                 .setValue(ThreeBevelCogWheelsBlock.EXCLUDED_FACE, orientation.front.getOpposite())
                 .setValue(ThreeBevelCogWheelsBlock.OTHER_COGS_ON_FIRST_AXIS, orientation.top.getAxis() == Axis.X)
                 .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
-        } else if (part == BevelCogWheelPart.COGS.get(orientation.front.getOpposite())) {
-            return PetrolsPartsBlocks.THREE_BEVEL_COGWHEELS.getDefaultState()
+        } else if (part == getSet().cogParts().get(orientation.front.getOpposite())) {
+            return getSet().threeBlock().getDefaultState()
                 .setValue(ThreeBevelCogWheelsBlock.EXCLUDED_FACE, orientation.top.getOpposite())
                 .setValue(ThreeBevelCogWheelsBlock.OTHER_COGS_ON_FIRST_AXIS, orientation.front.getAxis() == Axis.Y)
                 .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
@@ -64,11 +65,14 @@ public class CornerBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBlo
     @Override
     public BlockState withoutPart(BlockState state, BevelCogWheelPart part) {
         final Orientation orientation = state.getValue(ORIENTATION);
-        if (part.isCog) {
-            //TODO
-            return null;
+        if (part instanceof BevelCogWheelPart.Cog cog) {
+            final Direction remainingFace = orientation.top == cog.face ? orientation.front : orientation.top;
+            return getSet().singleAndShaftBlock().getDefaultState()
+                .setValue(BevelCogWheelAndShaftBlock.FACING, remainingFace)
+                .setValue(BevelCogWheelAndShaftBlock.SHAFT_ON_FIRST_AXIS, MathsHelper.isSecondaryAxis(remainingFace.getAxis(), getShaftAxis(state)))
+                .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
         } else {
-            return BlockHelper.copyAll(PetrolsPartsBlocks.CORNER_BEVEL_COGWHEELS.getDefaultState(), state);
+            return BlockHelper.copyAll(getSet().cornerBlock().getDefaultState(), state);
         }
     };
 

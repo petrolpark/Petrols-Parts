@@ -5,12 +5,11 @@ import java.util.function.Supplier;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 public class EncasedSingleShaftAssemblageBlock extends EncasedAssemblageBlock {
 
-    public EncasedSingleShaftAssemblageBlock(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
-        super(properties, casing, casingName);
+    public EncasedSingleShaftAssemblageBlock(Supplier<AssemblageSet> set, BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
+        super(set, properties, casing, casingName);
     };
 
     @Override
@@ -25,7 +24,7 @@ public class EncasedSingleShaftAssemblageBlock extends EncasedAssemblageBlock {
 
     @Override
     public BlockState getUnencasedDefaultState() {
-        return PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE.getDefaultState();
+        return getSet().singleShaftAssemblage().getDefaultState();
     };
     
 };

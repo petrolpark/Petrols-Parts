@@ -1,11 +1,8 @@
 package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal;
 
-import static petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock.COG_SHAPE;
-import static petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock.LOOT;
+import java.util.function.Supplier;
 
-import java.util.Map;
-
-import com.simibubi.create.AllBlocks;
+import com.google.common.base.Suppliers;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUseType;
@@ -13,49 +10,35 @@ import com.simibubi.create.content.schematics.requirement.ItemRequirement.ItemUs
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import petrolpark.mc.library.compat.create.core.world.block.CreateMultiPartBlock;
-import petrolpark.mc.petrolsparts.PetrolsPartsItems;
-import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblagePart;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock;
 
-public enum BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart {
+public sealed abstract class BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart permits BevelCogWheelPart.Cog, BevelCogWheelPart.Shaft {
     
-    NORTH_COG(true, Axis.Z, COG_SHAPE.get(Direction.NORTH), LOOT),
-    SOUTH_COG(true, Axis.Z, COG_SHAPE.get(Direction.SOUTH), LOOT),
-    EAST_COG(true, Axis.X, COG_SHAPE.get(Direction.EAST), LOOT),
-    WEST_COG(true, Axis.X,COG_SHAPE.get(Direction.WEST), LOOT),
-    SMELLS_LIKE_UPCOG_IN_HERE(true, Axis.Y, COG_SHAPE.get(Direction.UP), LOOT),
-    DOWN_COG(true, Axis.Y, COG_SHAPE.get(Direction.DOWN), LOOT),
+    protected final VoxelShape shape;
+    protected final ResourceKey<LootTable> loot;
+    protected final ItemLike item;
+    protected final Supplier<ItemRequirement> itemRequirement;
 
-    X_SHAFT(false, Axis.X, AllShapes.SIX_VOXEL_POLE.get(Axis.X), AssemblagePart.SHAFT_LOOT),
-    Y_SHAFT(false, Axis.Y, AllShapes.SIX_VOXEL_POLE.get(Axis.Y), AssemblagePart.SHAFT_LOOT),
-    Z_SHAFT(false, Axis.Z, AllShapes.SIX_VOXEL_POLE.get(Axis.Z), AssemblagePart.SHAFT_LOOT),
-    ;
-
-    public static final Map<Direction, BevelCogWheelPart> COGS = Map.of(Direction.NORTH, NORTH_COG, Direction.SOUTH, SOUTH_COG, Direction.EAST, EAST_COG, Direction.WEST, WEST_COG, Direction.UP, SMELLS_LIKE_UPCOG_IN_HERE, Direction.DOWN, DOWN_COG);
-    public static final Map<Axis, BevelCogWheelPart> SHAFTS = Map.of(Axis.X, X_SHAFT, Axis.Y, Y_SHAFT, Axis.Z, Z_SHAFT);
-
-    public final boolean isCog;
-    public final Axis axis;
-    private final VoxelShape shape;
-    private final ResourceKey<LootTable> loot;
-
-    BevelCogWheelPart(boolean cog, Axis axis, VoxelShape shape, ResourceKey<LootTable> loot) {
-        this.isCog = cog;
-        this.axis = axis;
+    public BevelCogWheelPart(VoxelShape shape, ResourceKey<LootTable> loot, ItemLike item) {
         this.shape = shape;
         this.loot = loot;
+        this.item = item;
+        this.itemRequirement = Suppliers.memoize(() -> new ItemRequirement(ItemUseType.CONSUME, item.asItem()));
     };
 
     @Override
     public ItemStack cloneItemStack(BlockState state, LevelReader level, BlockPos pos, Player player) {
-        return (isCog ? PetrolsPartsItems.BEVEL_COGWHEEL : AllBlocks.SHAFT).asStack();
+        return new ItemStack(item);
     };
 
     @Override
@@ -70,11 +53,31 @@ public enum BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart {
 
     @Override
     public ItemRequirement itemRequirement() {
-        return new ItemRequirement(ItemUseType.CONSUME, (isCog ? PetrolsPartsItems.BEVEL_COGWHEEL : AllBlocks.SHAFT).asStack());
+        return itemRequirement.get();
     };
 
-    public boolean isTopCog() {
-        return this == SOUTH_COG || this == SMELLS_LIKE_UPCOG_IN_HERE || this == EAST_COG;
+    public static non-sealed class Cog extends BevelCogWheelPart {
+
+        public final Direction face;
+
+        public Cog(Direction face, ResourceKey<LootTable> loot, ItemLike item) {
+            super(IBevelCogWheelBlock.COG_SHAPE.get(face), loot, item);
+            this.face = face;
+        };
+
+        public boolean isTop() {
+            return face.getAxisDirection() == AxisDirection.POSITIVE;
+        };
+    };
+
+    public static non-sealed class Shaft extends BevelCogWheelPart {
+
+        public final Axis axis;
+
+        public Shaft(Axis axis, ResourceKey<LootTable> loot, ItemLike item) {
+            super(AllShapes.SIX_VOXEL_POLE.get(axis), loot, item);
+            this.axis = axis;
+        };
     };
     
 };

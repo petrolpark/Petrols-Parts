@@ -70,7 +70,6 @@ public class DifferentialBlock extends CogWheelBlock {
     };
 
     @Override
-    @SuppressWarnings("null")
     public void onNeighborChange(BlockState state, LevelReader level, BlockPos pos, BlockPos neighbor) {
         withBlockEntityDo(level, pos, be -> {
             BlockEntity neighborBE = level.getBlockEntity(neighbor);

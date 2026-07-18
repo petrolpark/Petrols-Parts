@@ -25,7 +25,7 @@ import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.PetrolsPartsShapes;
-import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCog;
+import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageSet;
 
 public enum TransmissionPart implements CreateMultiPartBlock.ICreatePart {
     
@@ -80,7 +80,7 @@ public enum TransmissionPart implements CreateMultiPartBlock.ICreatePart {
 
     @Override
     public ResourceKey<LootTable> loot() {
-        return cog ? AssemblageCog.SMALL_COAXIAL.getLootTable() : TRANSMISSION_SHAFT_LOOT; //TODO
+        return cog ? AssemblageSet.CREATE.get().coaxialCogLoot() : TRANSMISSION_SHAFT_LOOT; //TODO
     };
 
     @Override

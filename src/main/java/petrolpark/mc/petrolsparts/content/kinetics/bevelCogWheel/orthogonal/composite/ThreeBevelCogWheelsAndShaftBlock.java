@@ -1,8 +1,8 @@
 package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
@@ -10,7 +10,6 @@ import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -22,7 +21,7 @@ import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import petrolpark.mc.library.util.BlockHelper;
 import petrolpark.mc.library.util.MathsHelper;
 import petrolpark.mc.library.util.Orientation;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 
 public class ThreeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBlock {
@@ -33,8 +32,8 @@ public class ThreeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBloc
      */
     public static final BooleanProperty OTHER_COGS_ON_FIRST_AXIS = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
 
-    public ThreeBevelCogWheelsAndShaftBlock(BlockBehaviour.Properties properties) {
-        super(properties);
+    public ThreeBevelCogWheelsAndShaftBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
+        super(set, properties);
     };
 
     @Override
@@ -45,25 +44,25 @@ public class ThreeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBloc
     @Override
     protected List<BlockState> getSimpleBevelCogWheelEquivalents(BlockState state) {
         return List.of(
-            BlockHelper.copyAll(PetrolsPartsBlocks.THREE_BEVEL_COGWHEELS.getDefaultState(), state),
-            AllBlocks.SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, getShaftAxis(state))
+            BlockHelper.copyAll(getSet().threeBlock().getDefaultState(), state),
+            getSet().shaftBlock().getDefaultState().setValue(ShaftBlock.AXIS, getShaftAxis(state))
         );
     };
 
     @Override
     public BlockState withoutPart(BlockState state, BevelCogWheelPart part) {
-        if (part.isCog) {
-            return PetrolsPartsBlocks.CORNER_BEVEL_COGWHEELS_AND_SHAFT.getDefaultState()
-                .setValue(CornerBevelCogWheelsAndShaftBlock.ORIENTATION, Orientation.fromTopAndFront(state.getValue(EXCLUDED_FACE).getOpposite(), Direction.get(part.isTopCog() ? AxisDirection.NEGATIVE : AxisDirection.POSITIVE, getRotationAxis(state))).asEdge())
+        if (part instanceof BevelCogWheelPart.Cog cog) {
+            return getSet().cornerAndShaftBlock().getDefaultState()
+                .setValue(CornerBevelCogWheelsAndShaftBlock.ORIENTATION, Orientation.fromTopAndFront(state.getValue(EXCLUDED_FACE).getOpposite(), cog.face.getOpposite()).asEdge())
                 .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
         } else {
-            return BlockHelper.copyAll(PetrolsPartsBlocks.THREE_BEVEL_COGWHEELS.getDefaultState(), state);
+            return BlockHelper.copyAll(getSet().threeBlock().getDefaultState(), state);
         }
     };
 
     @Override
     public BlockState withPart(BlockState state, BevelCogWheelPart part) {
-        if (part == BevelCogWheelPart.COGS.get(state.getValue(EXCLUDED_FACE))) return PetrolsPartsBlocks.FOUR_BEVEL_COGWHEELS_AND_SHAFT.getDefaultState()
+        if (part == getSet().cogParts().get(state.getValue(EXCLUDED_FACE))) return getSet().fourAndShaftBlock().getDefaultState()
             .setValue(FourBevelCogWheelsAndShaftBlock.SHAFT_AXIS, getShaftAxis(state))
             .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
         else return null; 
@@ -76,7 +75,7 @@ public class ThreeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBloc
 
     @Override
     public Axis getRotationAxis(BlockState state) {
-        return PetrolsPartsBlocks.THREE_BEVEL_COGWHEELS.get().getRotationAxis(state);
+        return getSet().threeBlock().get().getRotationAxis(state);
     };
 
     @Override
@@ -86,7 +85,7 @@ public class ThreeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBloc
 
     @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
-        return PetrolsPartsBlocks.THREE_BEVEL_COGWHEELS.get().transform(state, transform);
+        return getSet().threeBlock().get().transform(state, transform);
     };
     
 };

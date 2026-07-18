@@ -1,8 +1,8 @@
 package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite;
 
 import java.util.List;
+import java.util.function.Supplier;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
@@ -19,8 +19,9 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import petrolpark.mc.library.util.BlockHelper;
 import petrolpark.mc.library.util.MathsHelper;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 
 public class OppositeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBlock {
@@ -28,8 +29,8 @@ public class OppositeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelB
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
     public static final BooleanProperty SHAFT_ALONG_FIRST_AXIS = DirectionalAxisKineticBlock.AXIS_ALONG_FIRST_COORDINATE;
     
-    public OppositeBevelCogWheelsAndShaftBlock(BlockBehaviour.Properties properties) {
-        super(properties);
+    public OppositeBevelCogWheelsAndShaftBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
+        super(set, properties);
     };
 
     @Override
@@ -41,26 +42,32 @@ public class OppositeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelB
     protected List<BlockState> getSimpleBevelCogWheelEquivalents(BlockState state) {
         final Axis axis = state.getValue(AXIS);
         return List.of(
-            PetrolsPartsBlocks.SINGLE_AXIS_BEVEL_COGWHEEL.get().get(Direction.get(AxisDirection.POSITIVE, axis)),
-            PetrolsPartsBlocks.SINGLE_AXIS_BEVEL_COGWHEEL.get().get(Direction.get(AxisDirection.NEGATIVE, axis)),
-            AllBlocks.SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, getShaftAxis(state))
+            getSet().singleAxisBlock().get().get(Direction.get(AxisDirection.POSITIVE, axis)),
+            getSet().singleAxisBlock().get().get(Direction.get(AxisDirection.NEGATIVE, axis)),
+            getSet().shaftBlock().getDefaultState().setValue(ShaftBlock.AXIS, getShaftAxis(state))
         );
     };
 
     @Override
     public BlockState withoutPart(BlockState state, BevelCogWheelPart part) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'withoutPart'");
+        if (part instanceof BevelCogWheelPart.Cog cog) {
+            return getSet().singleAndShaftBlock().getDefaultState()
+                .setValue(BevelCogWheelAndShaftBlock.FACING, cog.face.getOpposite())
+                .setValue(BevelCogWheelAndShaftBlock.SHAFT_ON_FIRST_AXIS, state.getValue(SHAFT_ALONG_FIRST_AXIS))
+                .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
+        } else {
+            return BlockHelper.copyAll(getSet().oppositesBlock().getDefaultState(), state);
+        }
     };
 
     @Override
     public BlockState withPart(BlockState state, BevelCogWheelPart part) {
-        if (!part.isCog) return null;
+        if (!(part instanceof BevelCogWheelPart.Cog cog)) return null;
         final Axis axis = state.getValue(AXIS);
-        if (part.axis == axis || part.axis == getShaftAxis(state)) return null;
-        return PetrolsPartsBlocks.THREE_BEVEL_COGWHEELS_AND_SHAFT.getDefaultState()
-            .setValue(ThreeBevelCogWheelsAndShaftBlock.EXCLUDED_FACE, Direction.get(part.isTopCog() ? AxisDirection.POSITIVE : AxisDirection.NEGATIVE, part.axis))
-            .setValue(ThreeBevelCogWheelsAndShaftBlock.OTHER_COGS_ON_FIRST_AXIS, axis == Axis.X || (axis == Axis.Y && part.axis == Axis.X))
+        if (cog.face.getAxis() == axis || cog.face.getAxis() == getShaftAxis(state)) return null;
+        return getSet().threeAndShaftBlock().getDefaultState()
+            .setValue(ThreeBevelCogWheelsAndShaftBlock.EXCLUDED_FACE, cog.face.getOpposite())
+            .setValue(ThreeBevelCogWheelsAndShaftBlock.OTHER_COGS_ON_FIRST_AXIS, MathsHelper.isSecondaryAxis(cog.face.getAxis(), axis))
             .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
     };
 
@@ -81,7 +88,8 @@ public class OppositeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelB
 
     @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'transform'");
+        final Axis newAxis = transform.rotateAxis(state.getValue(AXIS));
+        return state.setValue(AXIS, newAxis)
+            .setValue(SHAFT_ALONG_FIRST_AXIS, MathsHelper.isSecondaryAxis(newAxis, transform.rotateAxis(getShaftAxis(state))));
     };
 };

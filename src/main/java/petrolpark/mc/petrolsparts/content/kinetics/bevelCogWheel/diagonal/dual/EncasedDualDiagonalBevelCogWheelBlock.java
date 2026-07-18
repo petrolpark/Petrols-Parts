@@ -2,7 +2,6 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual;
 
 import java.util.function.Supplier;
 
-import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.simibubi.create.foundation.data.CreateRegistrate;
@@ -10,8 +9,10 @@ import com.simibubi.create.foundation.data.TagGen;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
+import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -33,21 +34,22 @@ import net.minecraft.world.phys.HitResult;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlock;
 import petrolpark.mc.library.util.BlockHelper;
-import petrolpark.mc.petrolsparts.PetrolsParts;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.PetrolsPartsItems;
+import petrolpark.mc.library.util.Lang;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IEncasedBevelCogWheelBlock;
-import petrolpark.mc.petrolsparts.core.PetrolsPartsRegistrate;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.EncasedDiagonalBevelCogWheelCTBehaviour;
 
 public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock implements IDualDiagonalBevelCogWheelBlock, IEncasedBevelCogWheelBlock {
 
+    private final Supplier<BevelCogWheelSet> set;
     protected final Supplier<Block> casing;
     protected final String descriptionId;
 
-    public EncasedDualDiagonalBevelCogWheelBlock(BlockBehaviour.Properties properties, Supplier<Block> casing, String descriptionId) {
+    public EncasedDualDiagonalBevelCogWheelBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
         super(properties);
+        this.set = set;
         this.casing = casing;
-        this.descriptionId = descriptionId;
+        this.descriptionId = Util.makeDescriptionId("block", Lang.prependLocation(casingName + "_encased_", getSet().id()));
     };
 
     @Override
@@ -56,9 +58,14 @@ public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock
     };
 
     @Override
+    public BevelCogWheelSet getSet() {
+        return set.get();
+    };
+
+    @Override
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
         if (context.getLevel().isClientSide()) return InteractionResult.SUCCESS;
-        context.getLevel().setBlockAndUpdate(context.getClickedPos(), BlockHelper.copyAll(PetrolsPartsBlocks.DUAL_DIAGONAL_BEVEL_COGWHEEL.getDefaultState(), state));
+        context.getLevel().setBlockAndUpdate(context.getClickedPos(), BlockHelper.copyAll(getSet().dualDiagonalBlock().getDefaultState(), state));
         return InteractionResult.SUCCESS;
     };
 
@@ -99,7 +106,7 @@ public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock
 
     @Override
     public Item asItem() {
-        return PetrolsPartsItems.BEVEL_COGWHEEL.get();
+        return getSet().item().get();
     };
 
     @Override
@@ -112,11 +119,11 @@ public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock
         return IDualDiagonalBevelCogWheelBlock.super.mirrorDiagonalBevelCogWheel(state, mirror);
     };
 
-    public static final NonNullUnaryOperator<BlockBuilder<EncasedDualDiagonalBevelCogWheelBlock, PetrolsPartsRegistrate>> builderTransformer(CTSpriteShiftEntry spriteShiftEntry, String casing) {
+    public static final <B extends EncasedDualDiagonalBevelCogWheelBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> builderTransformer(CTSpriteShiftEntry spriteShiftEntry, String casing) {
         return builder -> builder
             .properties(BlockBehaviour.Properties::noOcclusion)
             .blockstate((ctx, prov) -> {
-                final ModelFile model = prov.models().getExistingFile(PetrolsParts.asResource("block/bevel_cogwheel/encased/dual_diagonal/" + casing));
+                final ModelFile model = prov.models().getExistingFile(ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/dual_diagonal/" + casing));
                 prov.getVariantBuilder(ctx.get())
                     .partialState().with(EXCLUDED_AXIS, Axis.Y)
                     .modelForState().modelFile(model).uvLock(true).addModel()
@@ -124,9 +131,9 @@ public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock
                     .modelForState().modelFile(model).rotationX(90).uvLock(true).addModel()
                     .partialState().with(EXCLUDED_AXIS, Axis.X)
                     .modelForState().modelFile(model).rotationX(90).rotationY(90).uvLock(true).addModel();
-            }).loot((lt, b) -> lt.add(b, lt.createSingleItemTable(PetrolsPartsItems.BEVEL_COGWHEEL, ConstantValue.exactly(2))))
-            .transform(EncasingRegistry.addVariantTo(PetrolsPartsBlocks.DUAL_DIAGONAL_BEVEL_COGWHEEL))
-            .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedCTBehaviour(spriteShiftEntry)))
+            }).loot((lt, b) -> lt.add(b, lt.createSingleItemTable(b.getSet().item(), ConstantValue.exactly(2))))
+            .onRegisterAfter(Registries.BLOCK, b -> EncasingRegistry.addVariant(b.getSet().singleDiagonalBlock().get(), b))
+            .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedDiagonalBevelCogWheelCTBehaviour(spriteShiftEntry)))
             .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, spriteShiftEntry, (s, f) -> f.getAxis() == s.getValue(IDualDiagonalBevelCogWheelBlock.EXCLUDED_AXIS))))
             .transform(TagGen.axeOrPickaxe());
     };

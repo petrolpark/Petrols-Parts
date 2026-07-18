@@ -15,7 +15,12 @@ public class PetrolsPartsSpriteShifts {
     CLOSED_ANDESITE_ENCASED_COGWHEEL_SIDE_VERTICAL = vertical("closed_andesite_encased_assemblage_side"),
 	CLOSED_ANDESITE_ENCASED_COGWHEEL_SIDE_HORIZONTAL = horizontal("closed_andesite_encased_assemblage_side"),
     OPEN_ANDESITE_ENCASED_COGWHEEL_SIDE_VERTICAL = vertical("open_andesite_encased_assemblage_side"),
-	OPEN_ANDESITE_ENCASED_COGWHEEL_SIDE_HORIZONTAL = horizontal("open_andesite_encased_assemblage_side");
+	OPEN_ANDESITE_ENCASED_COGWHEEL_SIDE_HORIZONTAL = horizontal("open_andesite_encased_assemblage_side"),
+	
+	CLOSED_BRASS_ENCASED_COGWHEEL_SIDE_VERTICAL = vertical("closed_brass_encased_assemblage_side"),
+	CLOSED_BRASS_ENCASED_COGWHEEL_SIDE_HORIZONTAL = horizontal("closed_brass_encased_assemblage_side"),
+    OPEN_BRASS_ENCASED_COGWHEEL_SIDE_VERTICAL = vertical("open_brass_encased_assemblage_side"),
+	OPEN_BRASS_ENCASED_COGWHEEL_SIDE_HORIZONTAL = horizontal("open_brass_encased_assemblage_side");
 
 	public static final SpriteShiftEntry
 

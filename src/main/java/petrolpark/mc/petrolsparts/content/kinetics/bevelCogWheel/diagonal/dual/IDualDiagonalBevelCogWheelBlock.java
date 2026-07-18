@@ -15,13 +15,15 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import petrolpark.mc.library.util.Orientation;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlock;
 
 public interface IDualDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWheelBlock, IBE<DualDiagonalBevelCogWheelBlockEntity> {
     
     public static final EnumProperty<Axis> EXCLUDED_AXIS = BlockStateProperties.AXIS;
     public static final BooleanProperty FACE_PARITY = BooleanProperty.create("face_parity");
+
+    public BevelCogWheelSet getSet();
 
     public static Orientation[] getCogOrientations(BlockState state) {
         final Axis axis1 = state.getValue(EXCLUDED_AXIS) == Axis.X ? Axis.Y : Axis.X;
@@ -62,6 +64,6 @@ public interface IDualDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWheelB
 
     @Override
     public default BlockEntityType<? extends DualDiagonalBevelCogWheelBlockEntity> getBlockEntityType() {
-        return PetrolsPartsBlockEntityTypes.DUAL_DIAGONAL_BEVEL_COGWHEEL.get();
+        return getSet().dualDiagonalBE().get();
     };
 };

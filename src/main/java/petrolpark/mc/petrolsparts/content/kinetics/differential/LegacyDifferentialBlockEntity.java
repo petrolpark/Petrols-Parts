@@ -49,7 +49,6 @@ public class LegacyDifferentialBlockEntity extends SplitShaftBlockEntity {
 	};
 
     @Override
-    @SuppressWarnings("null") // It thinks getLevel() might be null
     public void setSource(BlockPos source) {
         super.setSource(source);
         Direction directionBetween = KineticsHelper.directionBetween(getBlockPos(), source);
@@ -57,7 +56,6 @@ public class LegacyDifferentialBlockEntity extends SplitShaftBlockEntity {
     };
 
     @Override
-    @SuppressWarnings("null") // It thinks getLevel() might be null
     public void tick() {
         super.tick();
         if (!hasLevel()) return;
@@ -90,13 +88,11 @@ public class LegacyDifferentialBlockEntity extends SplitShaftBlockEntity {
     };
 
     @Override
-    @SuppressWarnings("null")
     public void removeSource() {
         super.removeSource();
         if (hasLevel()) getLevel().setBlockAndUpdate(getBlockPos(), getBlockState().cycle(DirectionalRotatedPillarKineticBlock.POSITIVE_AXIS_DIRECTION));
     };
 
-    @SuppressWarnings("null")
     public float ratio(BlockState stateFrom) {
         Direction towardsInput = DirectionalRotatedPillarKineticBlock.getDirection(stateFrom);
         Direction towardsControl = towardsInput.getOpposite();
@@ -115,7 +111,6 @@ public class LegacyDifferentialBlockEntity extends SplitShaftBlockEntity {
         return 2f * inputSpeed / (inputSpeed + controlSpeed);
     };
 
-    @SuppressWarnings("null")
     public boolean propagatesToMe(BlockPos pos, Direction directionToMe) {
         if (!hasLevel()) return false;
         BlockState state = getLevel().getBlockState(pos);

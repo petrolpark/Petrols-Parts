@@ -3,6 +3,7 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -31,15 +32,17 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import petrolpark.mc.library.compat.create.core.world.block.composite.MultiPartCompositeKineticBlock;
 import petrolpark.mc.library.util.Orientation;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.PetrolsPartsItems;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.ISingleDiagonalBevelCogWheelBlock;
 
 public class DualDiagonalBevelCogWheelBlock extends MultiPartCompositeKineticBlock<DiagonalBevelCogWheelPart> implements IDualDiagonalBevelCogWheelBlock, ProperWaterloggedBlock, EncasableBlock {
 
-    public DualDiagonalBevelCogWheelBlock(BlockBehaviour.Properties properties) {
+    private final Supplier<BevelCogWheelSet> set;
+
+    public DualDiagonalBevelCogWheelBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
         super(properties);
+        this.set = set;
         registerDefaultState(defaultBlockState()
             .setValue(EXCLUDED_AXIS, Axis.X)
             .setValue(FACE_PARITY, true)
@@ -53,17 +56,22 @@ public class DualDiagonalBevelCogWheelBlock extends MultiPartCompositeKineticBlo
     };
 
     @Override
+    public BevelCogWheelSet getSet() {
+        return set.get();
+    };
+
+    @Override
     public Collection<DiagonalBevelCogWheelPart> getParts(BlockState state) {
-        return Stream.of(IDualDiagonalBevelCogWheelBlock.getCogOrientations(state)).<DiagonalBevelCogWheelPart>map(DiagonalBevelCogWheelPart.COGS::get).toList();
+        return Stream.of(IDualDiagonalBevelCogWheelBlock.getCogOrientations(state)).<DiagonalBevelCogWheelPart>map(getSet().diagonalCogParts()::get).toList();
     };
 
     @Override
     public BlockState withoutPart(BlockState state, DiagonalBevelCogWheelPart part) {
         final List<Pair<Orientation, DiagonalBevelCogWheelPart>> parts = Stream.of(IDualDiagonalBevelCogWheelBlock.getCogOrientations(state))
-            .map(orientation -> Pair.<Orientation, DiagonalBevelCogWheelPart>of(orientation, DiagonalBevelCogWheelPart.COGS.get(orientation)))
+            .map(orientation -> Pair.<Orientation, DiagonalBevelCogWheelPart>of(orientation, getSet().diagonalCogParts().get(orientation)))
             .collect(Collectors.toCollection(ArrayList::new));
         parts.removeIf(pair -> pair.getSecond() == part);
-        return PetrolsPartsBlocks.SINGLE_DIAGONAL_BEVEL_COGWHEEL.getDefaultState()
+        return getSet().singleDiagonalBlock().getDefaultState()
             .setValue(ISingleDiagonalBevelCogWheelBlock.ORIENTATION, parts.get(0).getFirst())
             .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
     };
@@ -96,12 +104,12 @@ public class DualDiagonalBevelCogWheelBlock extends MultiPartCompositeKineticBlo
 
     @Override
     public String getDescriptionId() {
-        return TRANSLATION_KEY;
+        return getSet().translationKey();
     };
 
     @Override
     public Item asItem() {
-        return PetrolsPartsItems.BEVEL_COGWHEEL.get();
+        return getSet().item().get();
     };
 
     @Override

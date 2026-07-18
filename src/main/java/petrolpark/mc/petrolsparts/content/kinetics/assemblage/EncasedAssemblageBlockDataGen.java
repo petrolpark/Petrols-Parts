@@ -22,12 +22,12 @@ import net.neoforged.neoforge.client.model.generators.MultiPartBlockStateBuilder
 
 public class EncasedAssemblageBlockDataGen {
     
-    public static final <B extends EncasedSeparateShaftHalvesAssemblageBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> separateShaftHalvesBlockState(AssemblageSet set, String prefix) {
+    public static final <B extends EncasedSeparateShaftHalvesAssemblageBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> separateShaftHalvesBlockState(String prefix) {
         return (ctx, prov) -> {
         
             final MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
 
-            final String templateModelPath = set.id().withPrefix("block/").withSuffix("/encased/" + prefix + "/").getPath();
+            final String templateModelPath = ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/" + prefix + "/").getPath();
 
             for (final Axis axis : Iterate.axes) {
 
@@ -107,12 +107,12 @@ public class EncasedAssemblageBlockDataGen {
         };
     };
 
-    public static final <B extends EncasedSingleShaftAssemblageBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> singleShaftBlockState(AssemblageSet set, String prefix) {
+    public static final <B extends EncasedSingleShaftAssemblageBlock> NonNullBiConsumer<DataGenContext<Block, B>, RegistrateBlockstateProvider> singleShaftBlockState(String prefix) {
         return (ctx, prov) -> {
         
             final MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
 
-            final String templateModelPath = set.id().withPrefix("block/").withSuffix("/encased/" + prefix + "/").getPath();
+            final String templateModelPath = ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/" + prefix + "/").getPath();
 
             for (final Axis axis : Iterate.axes) {
 
@@ -175,7 +175,7 @@ public class EncasedAssemblageBlockDataGen {
     //     models(prov, "brass", PetrolsParts.asResource("block/closed_brass_encased_assemblage_side"), PetrolsParts.asResource("block/open_brass_encased_assemblage_side"), AllBlocks.BRASS_CASING.getId().withPrefix("block/"), ResourceLocation.withDefaultNamespace("block/stripped_dark_oak_log_end"), Create.asResource("block/brass_gearbox"), AllBlocks.BRASS_CASING.getId().withPrefix("block/"));
     // };
 
-    public static final <B extends EncasedAssemblageBlock> LootTable.Builder lootTableBuilder(AssemblageSet set, B block) {
+    public static final <B extends EncasedAssemblageBlock> LootTable.Builder lootTableBuilder(B block) {
         final LootTable.Builder builder = lootTable();
         
         for (final AssemblageCog cog : AssemblageCog.values()) {
@@ -188,7 +188,7 @@ public class EncasedAssemblageBlockDataGen {
                             .hasProperty(cogProperty, cog.getSerializedName())
                         )
                     ).setRolls(ConstantValue.exactly(1f))
-                    .add(NestedLootTable.lootTableReference(cog.getLootTable(set)))
+                    .add(NestedLootTable.lootTableReference(cog.getLootTable(block.getSet())))
                 );
             };
         };
@@ -206,7 +206,7 @@ public class EncasedAssemblageBlockDataGen {
                         .hasProperty(shaftHalfProperty, true)
                     )  
                 ).setRolls(ConstantValue.exactly(1f))
-                .add(NestedLootTable.lootTableReference(AssemblagePart.SHAFT_HALF_LOOT))
+                .add(NestedLootTable.lootTableReference(block.getSet().shaftHalfLoot()))
             );
         };
 
@@ -217,7 +217,7 @@ public class EncasedAssemblageBlockDataGen {
         lt.add(block, lootTableBuilder(block)
             .withPool(lootPool()
                 .setRolls(ConstantValue.exactly(1f))
-                .add(NestedLootTable.lootTableReference(AssemblagePart.SHAFT_LOOT))
+                .add(NestedLootTable.lootTableReference(block.getSet().shaftLoot()))
             )
         );
     };

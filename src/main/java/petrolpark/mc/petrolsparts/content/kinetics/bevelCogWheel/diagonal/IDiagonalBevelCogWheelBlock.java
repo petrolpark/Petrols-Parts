@@ -25,7 +25,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelB
 
 public interface IDiagonalBevelCogWheelBlock extends IBevelCogWheelBlock {
     
-    public static final int COG_ON_BEVEL_PLACEMENT_HELPER_ID = PlacementHelpers.register(new IDiagonalBevelCogWheelPlacementHelper.CogOnBevel());
+    public static final int COG_ON_BEVEL_PLACEMENT_HELPER_ID = PlacementHelpers.register(new CogOnDiagonalPlacementHelper());
     
     /**
      * Used by {@link IDiagonalBevelCogWheelPlacementHelper}

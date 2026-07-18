@@ -158,12 +158,6 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         };
 
         @Override
-        public float calculateStressApplied() {
-            //TODO
-            return super.calculateStressApplied();
-        };
-
-        @Override
         public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
             return false; // Always false as the order in getParts() can change
         };

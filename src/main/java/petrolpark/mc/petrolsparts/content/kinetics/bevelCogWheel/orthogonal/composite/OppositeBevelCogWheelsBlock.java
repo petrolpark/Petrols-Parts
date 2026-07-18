@@ -1,8 +1,7 @@
 package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite;
 
-import static petrolpark.mc.petrolsparts.PetrolsPartsBlocks.SINGLE_AXIS_BEVEL_COGWHEEL;
-
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.simibubi.create.content.contraptions.StructureTransform;
 
@@ -10,55 +9,77 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
+import petrolpark.mc.library.util.MathsHelper;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SingleAxisBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.ThreeBevelCogWheelsBlock;
 
 public class OppositeBevelCogWheelsBlock extends CompositeBevelCogWheelBlock {
 
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
 
-    public OppositeBevelCogWheelsBlock(BlockBehaviour.Properties properties) {
-        super(properties);
+    public OppositeBevelCogWheelsBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
+        super(set, properties);
         registerDefaultState(defaultBlockState()
             .setValue(AXIS, Axis.Y)
         );
     };
 
     @Override
+    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+        super.createBlockStateDefinition(builder.add(AXIS));
+    };
+
+    @Override
     protected List<BlockState> getSimpleBevelCogWheelEquivalents(BlockState state) {
         final Axis axis = state.getValue(AXIS);
         return List.of(
-            SINGLE_AXIS_BEVEL_COGWHEEL.getDefaultState().setValue(SingleAxisBevelCogWheelBlock.AXIS, axis).setValue(SingleAxisBevelCogWheelBlock.TYPE, SingleAxisBevelCogWheelBlock.Type.TOP),
-            SINGLE_AXIS_BEVEL_COGWHEEL.getDefaultState().setValue(SingleAxisBevelCogWheelBlock.AXIS, axis).setValue(SingleAxisBevelCogWheelBlock.TYPE, SingleAxisBevelCogWheelBlock.Type.BOTTOM)
+            getSet().singleAxisBlock().getDefaultState().setValue(SingleAxisBevelCogWheelBlock.AXIS, axis).setValue(SingleAxisBevelCogWheelBlock.TYPE, SingleAxisBevelCogWheelBlock.Type.TOP),
+            getSet().singleAxisBlock().getDefaultState().setValue(SingleAxisBevelCogWheelBlock.AXIS, axis).setValue(SingleAxisBevelCogWheelBlock.TYPE, SingleAxisBevelCogWheelBlock.Type.BOTTOM)
         );
     };
 
     @Override
     public BlockState withoutPart(BlockState state, BevelCogWheelPart part) {
-        return SINGLE_AXIS_BEVEL_COGWHEEL.getDefaultState()
+        if (!(part instanceof BevelCogWheelPart.Cog cog)) throw new IllegalArgumentException("No shaft to remove");
+        return getSet().singleAxisBlock().getDefaultState()
             .setValue(SingleAxisBevelCogWheelBlock.AXIS, state.getValue(AXIS))
-            .setValue(SingleAxisBevelCogWheelBlock.TYPE, part.isTopCog() ? SingleAxisBevelCogWheelBlock.Type.BOTTOM : SingleAxisBevelCogWheelBlock.Type.TOP);
+            .setValue(SingleAxisBevelCogWheelBlock.TYPE, cog.isTop() ? SingleAxisBevelCogWheelBlock.Type.BOTTOM : SingleAxisBevelCogWheelBlock.Type.TOP)
+            .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
     };
 
     @Override
     public BlockState withPart(BlockState state, BevelCogWheelPart part) {
         final Axis axis = state.getValue(AXIS);
-        if (part.isCog) {
-            //TODO u shapes
-        } else { // Shafts
-            if (part.axis == axis) {
-                return SINGLE_AXIS_BEVEL_COGWHEEL.getDefaultState()
-                    .setValue(SingleAxisBevelCogWheelBlock.AXIS, axis)
-                    .setValue(SingleAxisBevelCogWheelBlock.TYPE, SingleAxisBevelCogWheelBlock.Type.BOTH);
-            } else {
-                // TODO perpendicular shafts
-            };
+
+        return switch (part) {
+            case BevelCogWheelPart.Cog cog -> {
+                if (cog.face.getAxis() == axis) yield null;
+                yield getSet().threeBlock().getDefaultState()
+                    .setValue(ThreeBevelCogWheelsBlock.EXCLUDED_FACE, cog.face.getOpposite())
+                    .setValue(ThreeBevelCogWheelsAndShaftBlock.OTHER_COGS_ON_FIRST_AXIS, MathsHelper.isSecondaryAxis(cog.face.getAxis(), axis))
+                    .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
+            } case BevelCogWheelPart.Shaft shaft -> {
+                if (shaft.axis == axis) {
+                    yield getSet().singleAxisBlock().getDefaultState()
+                        .setValue(SingleAxisBevelCogWheelBlock.AXIS, axis)
+                        .setValue(SingleAxisBevelCogWheelBlock.TYPE, SingleAxisBevelCogWheelBlock.Type.BOTH)
+                        .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
+                } else {
+                    yield getSet().oppositesAndShaftBlock().getDefaultState()
+                        .setValue(OppositeBevelCogWheelsAndShaftBlock.AXIS, axis)
+                        .setValue(OppositeBevelCogWheelsAndShaftBlock.SHAFT_ALONG_FIRST_AXIS, MathsHelper.isSecondaryAxis(axis, shaft.axis))
+                        .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
+                }
+            }
         };
-        return null;
     };
 
     @Override

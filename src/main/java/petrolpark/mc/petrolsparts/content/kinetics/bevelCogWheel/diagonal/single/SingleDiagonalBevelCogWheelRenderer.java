@@ -16,37 +16,41 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.library.util.Orientation;
-import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 
 public class SingleDiagonalBevelCogWheelRenderer extends KineticBlockEntityRenderer<SingleDiagonalBevelCogWheelBlockEntity> {
 
-    public SingleDiagonalBevelCogWheelRenderer(BlockEntityRendererProvider.Context context) {
+    public final BevelCogWheelSet.Client set;
+
+    public SingleDiagonalBevelCogWheelRenderer(BevelCogWheelSet.Client set, BlockEntityRendererProvider.Context context) {
         super(context);
+        this.set = set;
     };
 
     @Override
     protected void renderSafe(SingleDiagonalBevelCogWheelBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         final Orientation orientation = be.getBlockState().getValue(ISingleDiagonalBevelCogWheelBlock.ORIENTATION);
-        renderCog(be, orientation, ms, buffer, light);
+        renderCog(set, be, orientation, ms, buffer, light);
     };
 
-    public static final void renderCog(KineticBlockEntity be, Orientation orientation, PoseStack ms, MultiBufferSource buffer, int light) {
-        renderCog(be.getLevel(), be.getSpeed(), be.getBlockPos(), be.getBlockState(), orientation, ms, buffer.getBuffer(RenderType.solid()), light);
+    public static final void renderCog(BevelCogWheelSet.Client set, KineticBlockEntity be, Orientation orientation, PoseStack ms, MultiBufferSource buffer, int light) {
+        renderCog(set, be.getLevel(), be.getSpeed(), be.getBlockPos(), be.getBlockState(), orientation, ms, buffer.getBuffer(RenderType.solid()), light);
     };
 
-    public static final void renderCog(Level level, float speed, BlockPos pos, BlockState state, Orientation orientation, PoseStack ms, VertexConsumer vc, int light) {
+    public static final void renderCog(BevelCogWheelSet.Client set, Level level, float speed, BlockPos pos, BlockState state, Orientation orientation, PoseStack ms, VertexConsumer vc, int light) {
         final boolean topOffset = KineticBlockEntityVisual.shouldOffset(orientation.front.getAxis(), pos);
         final boolean frontOffset = KineticBlockEntityVisual.shouldOffset(orientation.top.getAxis(), pos);
         final boolean fiveTeeth = topOffset != frontOffset;
         final float spinOffset = frontOffset ? Mth.DEG_TO_RAD * (fiveTeeth ? 36f : 45f) : 0f;
         final float spinSpeedMultiplier = fiveTeeth ? 1.6f : 2f;
         
-        CachedBuffers.partial(fiveTeeth ? PetrolsPartsPartialModels.BEVEL_COGWHEEL_FIVE_TEETH : PetrolsPartsPartialModels.BEVEL_COGWHEEL, state)
+        CachedBuffers.partial(fiveTeeth ? set.fiveTeeth() : set.fourTeeth(), state)
             .center()
             .rotate(orientation.rotationFromUpSouth)
-            .translate(0f, 1.5 / 16f, 1.5 / 16f)
+            .translate(0f, 1.25 / 16f, 1.25 / 16f)
             .rotateXDegrees(45)
             .rotateY(getAngle(level, speed * spinSpeedMultiplier) + spinOffset)
+            .translate(fiveTeeth ? 0f : -8 / 16f, 0f, fiveTeeth ? 0f : -8 / 16f)
             .light(light)
             .renderInto(ms, vc);
     };

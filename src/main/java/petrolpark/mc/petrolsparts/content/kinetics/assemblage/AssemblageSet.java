@@ -2,16 +2,17 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 
+import com.google.common.base.Suppliers;
 import com.simibubi.create.AllBlocks;
+import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
+import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
@@ -30,17 +31,21 @@ import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.util.BlockHelper;
+import petrolpark.mc.library.util.CollectionHelper;
 import petrolpark.mc.petrolsparts.PetrolsParts;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
+import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 import petrolpark.mc.petrolsparts.PetrolsPartsShapes;
 
 public record AssemblageSet(
     // Display
     ResourceLocation id,
     String descriptionId,
-    // Blocks
+    // Blocks and BE
     BlockEntry<? extends SingleShaftAssemblageBlock> singleShaftAssemblage, BlockEntry<? extends SeparateShaftHalvesAssemblageBlock> separateShaftsAssemblage,
+    BlockEntityEntry<? extends AssemblageBlockEntity> blockEntity,
     // Items
     ItemEntry<? extends ShaftHalfBlockItem> shaftHalf,
     ItemEntry<? extends AssemblageCogWheelBlockItem> smallCog, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCog,
@@ -62,8 +67,9 @@ public record AssemblageSet(
     public AssemblageSet(
         // Display
         ResourceLocation id,
-        // Blocks
+        // Blocks and BE
         BlockEntry<? extends SingleShaftAssemblageBlock> singleShaftAssemblage, BlockEntry<? extends SeparateShaftHalvesAssemblageBlock> separateShaftsAssemblage,
+        BlockEntityEntry<? extends AssemblageBlockEntity> blockEntity,
         // Items
         ItemEntry<? extends ShaftHalfBlockItem> shaftHalf,
         ItemEntry<? extends AssemblageCogWheelBlockItem> smallCog, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCog,
@@ -80,6 +86,7 @@ public record AssemblageSet(
             id, Util.makeDescriptionId("block", id),
             // Blocks
             singleShaftAssemblage, separateShaftsAssemblage,
+            blockEntity,
             // Items
             shaftHalf,
             smallCog, largeCog,
@@ -90,7 +97,7 @@ public record AssemblageSet(
             coaxialCogLoot, largeCoaxialCogLoot,
             // Parts
                 // Shafts
-                Stream.of(Axis.values()).collect(Collectors.toMap(Function.identity(), axis -> new AssemblagePart(
+                CollectionHelper.map(Axis.values(), axis -> new AssemblagePart(
                     true,
                     dir -> dir.getAxis() == axis,
                     AllShapes.SIX_VOXEL_POLE.get(axis),
@@ -98,9 +105,9 @@ public record AssemblageSet(
                     state -> BlockHelper.copyAll(separateShaftsAssemblage.getDefaultState(), state),
                     be -> be.shaftPart,
                     shaft
-                ))),
+                )),
                 // Shaft halves
-                Stream.of(Direction.values()).collect(Collectors.toMap(Function.identity(), dir -> new AssemblagePart(
+                CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
                     true,
                     dir::equals,
                     PetrolsPartsShapes.SHAFT_HALF.get(dir),
@@ -108,9 +115,9 @@ public record AssemblageSet(
                     state -> state.setValue(dir.getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.TOP_SHAFT_HALF : IAssemblageBlock.BOTTOM_SHAFT_HALF, false),
                     be -> be.shaftPart,
                     shaftHalf
-                ))),
+                )),
                 // Middle cogs
-                Stream.of(Axis.values()).collect(Collectors.toMap(Function.identity(), axis -> new AssemblagePart(
+                CollectionHelper.map(Axis.values(), axis -> new AssemblagePart(
                     false,
                     dir -> false,
                     PetrolsPartsShapes.MIDDLE_COGWHEEL.get(axis),
@@ -118,9 +125,9 @@ public record AssemblageSet(
                     AssemblagePart.REMOVE_MIDDLE_COG,
                     be -> be.middleCogPart,
                     smallCog
-                ))),
+                )),
                 // Cogs
-                Stream.of(Direction.values()).collect(Collectors.toMap(Function.identity(), dir -> new AssemblagePart(
+                CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
                     false,
                     dir::equals,
                     PetrolsPartsShapes.FACIAL_COGWHEEL.get(dir),
@@ -128,9 +135,9 @@ public record AssemblageSet(
                     AssemblagePart.removeCog(dir),
                     AssemblagePart.getCogPart(dir),
                     smallCog
-                ))),
+                )),
                 // Middle large cogs
-                Stream.of(Axis.values()).collect(Collectors.toMap(Function.identity(), axis -> new AssemblagePart(
+                CollectionHelper.map(Axis.values(), axis -> new AssemblagePart(
                     false,
                     dir -> false,
                     PetrolsPartsShapes.MIDDLE_LARGE_COGWHEEL.get(axis),
@@ -138,9 +145,9 @@ public record AssemblageSet(
                     AssemblagePart.REMOVE_MIDDLE_COG,
                     be -> be.middleCogPart,
                     largeCog
-                ))),
+                )),
                 // Large cogs
-                Stream.of(Direction.values()).collect(Collectors.toMap(Function.identity(), dir -> new AssemblagePart(
+                CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
                     false,
                     dir::equals,
                     PetrolsPartsShapes.FACIAL_LARGE_COGWHEEL.get(dir),
@@ -148,9 +155,9 @@ public record AssemblageSet(
                     AssemblagePart.removeCog(dir),
                     AssemblagePart.getCogPart(dir),
                     largeCog
-                ))),
+                )),
                 // Middle coaxial cogs
-                Stream.of(Axis.values()).collect(Collectors.toMap(Function.identity(), axis -> new AssemblagePart(
+                CollectionHelper.map(Axis.values(), axis -> new AssemblagePart(
                     false,
                     dir -> false,
                     PetrolsPartsShapes.MIDDLE_COGWHEEL.get(axis),
@@ -158,9 +165,9 @@ public record AssemblageSet(
                     AssemblagePart.REMOVE_MIDDLE_COG,
                     be -> be.middleCogPart,
                     coaxialCog
-                ))),
+                )),
                 // Coaxial cogs
-                Stream.of(Direction.values()).collect(Collectors.toMap(Function.identity(), dir -> new AssemblagePart(
+                CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
                     false,
                     dir::equals,
                     PetrolsPartsShapes.FACIAL_COGWHEEL.get(dir),
@@ -168,9 +175,9 @@ public record AssemblageSet(
                     AssemblagePart.removeCog(dir),
                     AssemblagePart.getCogPart(dir),
                     coaxialCog
-                ))),
+                )),
                 // Middle large coaxial cogs
-                Stream.of(Axis.values()).collect(Collectors.toMap(Function.identity(), axis -> new AssemblagePart(
+                CollectionHelper.map(Axis.values(), axis -> new AssemblagePart(
                     false,
                     dir -> false,
                     PetrolsPartsShapes.MIDDLE_LARGE_COGWHEEL.get(axis),
@@ -178,9 +185,9 @@ public record AssemblageSet(
                     AssemblagePart.REMOVE_MIDDLE_COG,
                     be -> be.middleCogPart,
                     largeCoaxialCog
-                ))),
+                )),
                 // Large coaxial cogs
-                Stream.of(Direction.values()).collect(Collectors.toMap(Function.identity(), dir -> new AssemblagePart(
+                CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
                     false,
                     dir::equals,
                     PetrolsPartsShapes.FACIAL_LARGE_COGWHEEL.get(dir),
@@ -188,7 +195,7 @@ public record AssemblageSet(
                     AssemblagePart.removeCog(dir),
                     AssemblagePart.getCogPart(dir),
                     largeCoaxialCog
-                ))),
+                )),
             // Equivalent blocks
             shaft, equivalentSmallCogWheel, equivalentLargeCogWheel
         );
@@ -197,8 +204,9 @@ public record AssemblageSet(
     public AssemblageSet(
         // Display
         ResourceLocation id,
-        // Blocks
+        // Blocks and BE
         BlockEntry<? extends SingleShaftAssemblageBlock> singleShaftAssemblage, BlockEntry<? extends SeparateShaftHalvesAssemblageBlock> separateShaftsAssemblage,
+        BlockEntityEntry<? extends AssemblageBlockEntity> blockEntity,
         // Items
         ItemEntry<? extends ShaftHalfBlockItem> shaftHalf,
         ItemEntry<? extends AssemblageCogWheelBlockItem> smallCog, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCog,
@@ -211,6 +219,7 @@ public record AssemblageSet(
             id,
             // Blocks
             singleShaftAssemblage, separateShaftsAssemblage,
+            blockEntity,
             // Items
             shaftHalf,
             smallCog, largeCog,
@@ -242,7 +251,7 @@ public record AssemblageSet(
     public AssemblagePart getTargetedPart(BlockPlaceContext context) {
         if (context.replacingClickedOnBlock()) {
             final BlockState state = getEquivalent(context.getLevel().getBlockState(context.getClickedPos()));
-            if (state.getBlock() instanceof AssemblageBlock assemblage) {
+            if (state.getBlock() instanceof AssemblageBlock assemblage && assemblage.getSet() == this) {
                 return assemblage.getTargetedPart(state, context.getClickedPos(), context.getPlayer());
             };
         };
@@ -255,7 +264,11 @@ public record AssemblageSet(
         PartialModel shaftlessCogWheel, PartialModel largeShaftlessCogWheel,
         PartialModel coaxialCogWheel, PartialModel largeCoaxialCogWheel,
         // Shaft half models
-        PartialModel shaftHalfTop, PartialModel shaftHalfBottom
+        PartialModel shaftHalfTop, PartialModel shaftHalfBottom,
+        // Shaft models
+        PartialModel shaftNone,
+        PartialModel shaftAll, PartialModel shaftNoBottom, PartialModel shaftNoTop,
+        PartialModel shaftMiddle, PartialModel shaftTop, PartialModel shaftBottom
     ) {
 
         public PartialModel getModel(AssemblageCog cog) {
@@ -268,16 +281,30 @@ public record AssemblageSet(
         };
     };
 
-    public static final AssemblageSet CREATE = new AssemblageSet(
+    public static final Supplier<AssemblageSet> CREATE = Suppliers.memoize(() -> new AssemblageSet(
         // Display
         PetrolsParts.asResource("assemblage"),
-        // Blocks
+        // Blocks and BE
         PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE, PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE,
+        PetrolsPartsBlockEntityTypes.ASSEMBLAGE,
         // Items
         PetrolsPartsItems.SHAFT_HALF,
         PetrolsPartsItems.SHAFTLESS_COGWHEEL, PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL,
         PetrolsPartsItems.COAXIAL_COGWHEEL, PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL,
         // Equivalent blocks
         AllBlocks.SHAFT, Optional.of(AllBlocks.COGWHEEL), Optional.of(AllBlocks.LARGE_COGWHEEL)
+    ));
+
+    @OnlyIn(Dist.CLIENT)
+    public static final AssemblageSet.Client CREATE_CLIENT = new AssemblageSet.Client(
+        // Cogwheel models
+        AllPartialModels.SHAFTLESS_COGWHEEL, AllPartialModels.SHAFTLESS_LARGE_COGWHEEL,
+        PetrolsPartsPartialModels.COAXIAL_COGWHEEL, PetrolsPartsPartialModels.LARGE_COAXIAL_COGWHEEL,
+        // Shaft half models
+        PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_HALF_TOP, PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_HALF_BOTTOM,
+        // Shaft models
+        AllPartialModels.SHAFT,
+        PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_ALL, PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_NO_BOTTOM, PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_NO_TOP,
+        AllPartialModels.COGWHEEL_SHAFT, PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_TOP, PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_BOTTOM
     );
 };

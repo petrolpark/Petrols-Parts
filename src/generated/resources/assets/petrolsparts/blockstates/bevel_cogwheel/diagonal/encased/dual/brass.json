@@ -2,14 +2,17 @@
   "variants": {
     "axis=x": {
       "model": "petrolsparts:block/bevel_cogwheel/encased/dual_diagonal/brass",
+      "uvlock": true,
       "x": 90,
       "y": 90
     },
     "axis=y": {
-      "model": "petrolsparts:block/bevel_cogwheel/encased/dual_diagonal/brass"
+      "model": "petrolsparts:block/bevel_cogwheel/encased/dual_diagonal/brass",
+      "uvlock": true
     },
     "axis=z": {
       "model": "petrolsparts:block/bevel_cogwheel/encased/dual_diagonal/brass",
+      "uvlock": true,
       "x": 90
     }
   }
