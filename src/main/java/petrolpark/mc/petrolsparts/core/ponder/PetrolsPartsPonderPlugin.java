@@ -1,8 +1,5 @@
 package petrolpark.mc.petrolsparts.core.ponder;
 
-import petrolpark.mc.petrolsparts.PetrolsParts;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import com.simibubi.create.Create;
 import com.simibubi.create.infrastructure.ponder.AllCreatePonderTags;
 import com.simibubi.create.infrastructure.ponder.scenes.BeltScenes;
@@ -14,6 +11,9 @@ import net.createmod.ponder.api.registration.PonderPlugin;
 import net.createmod.ponder.api.registration.PonderSceneRegistrationHelper;
 import net.createmod.ponder.api.registration.PonderTagRegistrationHelper;
 import net.minecraft.resources.ResourceLocation;
+import petrolpark.mc.petrolsparts.PetrolsParts;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 
 public class PetrolsPartsPonderPlugin implements PonderPlugin {
 
@@ -47,7 +47,8 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
 
         // Movement
         itemProviderHelper.forComponents(PetrolsPartsBlocks.MOVEMENT)
-            .addStoryBoard("movement/movement", PetrolsPartsScenes::movement);
+            .addStoryBoard("movement/movement", PetrolsPartsScenes::movement)
+            .addStoryBoard("movement/battery", PetrolsPartsScenes::movementBattery);
 
         // Planetary Gearset
         itemProviderHelper.forComponents(PetrolsPartsBlocks.PLANETARY_GEARSET)
@@ -81,7 +82,7 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .add(PetrolsPartsBlocks.CORNER_SHAFT)
             .add(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION)
             .add(PetrolsPartsBlocks.PLANETARY_GEARSET)
-            .add(PetrolsPartsBlocks.TRANSMISSION)
+            .add(PetrolsPartsBlocks.REDSTONE_TRANSMISSION)
         ;
 
         HELPER.addToTag(AllCreatePonderTags.KINETIC_APPLIANCES)
@@ -92,7 +93,7 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .add(PetrolsPartsBlocks.PNEUMATIC_TUBE);
 
         HELPER.addToTag(AllCreatePonderTags.REDSTONE)
-            .add(PetrolsPartsBlocks.TRANSMISSION);
+            .add(PetrolsPartsBlocks.REDSTONE_TRANSMISSION);
     };
 
     /**

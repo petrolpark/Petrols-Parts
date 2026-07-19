@@ -2,17 +2,14 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.function.Supplier;
 
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 
 public class EncasedSingleShaftAssemblageBlock extends EncasedAssemblageBlock {
 
-    public EncasedSingleShaftAssemblageBlock(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
-        super(properties, casing, casingName);
+    public EncasedSingleShaftAssemblageBlock(Supplier<AssemblageSet> set, BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
+        super(set, properties, casing, casingName);
     };
 
     @Override
@@ -26,13 +23,8 @@ public class EncasedSingleShaftAssemblageBlock extends EncasedAssemblageBlock {
     };
 
     @Override
-    public AssemblageBlockEntityPart getTargetedKineticPart(AssemblageBlockEntity be, Player player) {
-        return null;
-    };
-
-    @Override
     public BlockState getUnencasedDefaultState() {
-        return PetrolsPartsBlocks.SINGLE_SHAFT_ASSEMBLAGE.getDefaultState();
+        return getSet().singleShaftAssemblage().getDefaultState();
     };
     
 };

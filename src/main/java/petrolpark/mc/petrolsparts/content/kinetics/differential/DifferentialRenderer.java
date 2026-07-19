@@ -22,15 +22,14 @@ import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 import petrolpark.mc.petrolsparts.core.block.DirectionalRotatedPillarKineticBlock;
 
-public class DifferentialRenderer extends KineticBlockEntityRenderer<DifferentialBlockEntity> {
+public class DifferentialRenderer extends KineticBlockEntityRenderer<LegacyDifferentialBlockEntity> {
 
     public DifferentialRenderer(Context context) {
         super(context);
     };
 
     @Override
-    @SuppressWarnings("null") // It thinks getLevel() might be null
-    protected void renderSafe(DifferentialBlockEntity differential, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
+    protected void renderSafe(LegacyDifferentialBlockEntity differential, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         //if (Backend.canUseInstancing(planetaryGearsetBlockEntity.getLevel())) return;
         if (!differential.hasLevel()) return;
 

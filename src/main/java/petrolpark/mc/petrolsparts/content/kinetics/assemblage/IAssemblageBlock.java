@@ -41,11 +41,14 @@ public interface IAssemblageBlock extends IStateDependentCogWheelBlock, IFaceAli
 
     public static final Collection<BooleanProperty> SHAFT_HALF_PROPERTIES = List.of(TOP_SHAFT_HALF, BOTTOM_SHAFT_HALF);
     public static final Collection<EnumProperty<AssemblageCog>> COG_PROPERTIES = List.of(TOP_COG, MIDDLE_COG, BOTTOM_COG);
-    
+
+    public AssemblageSet getSet();
+
     public boolean hasTopShaft(BlockState state);
 
     public boolean hasBottomShaft(BlockState state);
 
+    @Nullable
     @OnlyIn(Dist.CLIENT)
     public AssemblageBlockEntityPart getTargetedKineticPart(AssemblageBlockEntity be, Player player);
 
@@ -54,7 +57,7 @@ public interface IAssemblageBlock extends IStateDependentCogWheelBlock, IFaceAli
         return state.getValue(MIDDLE_COG).getCogType();
     };
 
-    public default boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public default boolean canDiagonalBevelCogWheelSurvive(BlockState state, LevelReader level, BlockPos pos) {
         final Axis axis = state.getValue(AXIS);
         if (!state.getValue(TOP_COG).isNone() && !IFaceAlignedCogWheelBlockEntity.isValidFaceAlignedCogwheelPosition(state.getValue(TOP_COG).getCogType().isLarge(), level, pos, Direction.get(AxisDirection.POSITIVE, axis))) return false;
         if (!state.getValue(BOTTOM_COG).isNone() && !IFaceAlignedCogWheelBlockEntity.isValidFaceAlignedCogwheelPosition(state.getValue(BOTTOM_COG).getCogType().isLarge(), level, pos, Direction.get(AxisDirection.NEGATIVE, axis))) return false;

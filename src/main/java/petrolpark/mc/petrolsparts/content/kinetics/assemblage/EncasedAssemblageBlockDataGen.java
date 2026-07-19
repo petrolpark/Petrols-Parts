@@ -27,7 +27,7 @@ public class EncasedAssemblageBlockDataGen {
         
             final MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
 
-            final String templateModelPath = "block/assemblage/encased/" + prefix + "/";
+            final String templateModelPath = ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/" + prefix + "/").getPath();
 
             for (final Axis axis : Iterate.axes) {
 
@@ -112,7 +112,7 @@ public class EncasedAssemblageBlockDataGen {
         
             final MultiPartBlockStateBuilder builder = prov.getMultipartBuilder(ctx.get());
 
-            final String templateModelPath = "block/assemblage/encased/" + prefix + "/";
+            final String templateModelPath = ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/" + prefix + "/").getPath();
 
             for (final Axis axis : Iterate.axes) {
 
@@ -188,7 +188,7 @@ public class EncasedAssemblageBlockDataGen {
                             .hasProperty(cogProperty, cog.getSerializedName())
                         )
                     ).setRolls(ConstantValue.exactly(1f))
-                    .add(NestedLootTable.lootTableReference(cog.getLootTable()))
+                    .add(NestedLootTable.lootTableReference(cog.getLootTable(block.getSet())))
                 );
             };
         };
@@ -206,7 +206,7 @@ public class EncasedAssemblageBlockDataGen {
                         .hasProperty(shaftHalfProperty, true)
                     )  
                 ).setRolls(ConstantValue.exactly(1f))
-                .add(NestedLootTable.lootTableReference(AssemblagePart.SHAFT_HALF_LOOT))
+                .add(NestedLootTable.lootTableReference(block.getSet().shaftHalfLoot()))
             );
         };
 
@@ -217,7 +217,7 @@ public class EncasedAssemblageBlockDataGen {
         lt.add(block, lootTableBuilder(block)
             .withPool(lootPool()
                 .setRolls(ConstantValue.exactly(1f))
-                .add(NestedLootTable.lootTableReference(AssemblagePart.SHAFT_LOOT))
+                .add(NestedLootTable.lootTableReference(block.getSet().shaftLoot()))
             )
         );
     };

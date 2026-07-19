@@ -9,12 +9,20 @@ public class PetrolsPartsPartialModels {
     //CHAIN_LINK = block("chain_link"),
 
     // Assemblage
-    ASSEMBLAGE_SHAFT = block("assemblage/shaft"),
-    ASSEMBLAGE_SHAFT_BOTTOM = block("assemblage/shaft_bottom"),
-    ASSEMBLAGE_SHAFT_TOP = block("assemblage/shaft_top"),
+    ASSEMBLAGE_SHAFT_ALL = block("assemblage/shaft/all"),
+    ASSEMBLAGE_SHAFT_HALF_BOTTOM = block("assemblage/shaft/bottom_half"),
+    ASSEMBLAGE_SHAFT_HALF_TOP = block("assemblage/shaft/top_half"),
+    ASSEMBLAGE_SHAFT_TOP = block("assemblage/shaft/top"),
+    ASSEMBLAGE_SHAFT_BOTTOM = block("assemblage/shaft/bottom"),
+    ASSEMBLAGE_SHAFT_NO_TOP = block("assemblage/shaft/no_top"),
+    ASSEMBLAGE_SHAFT_NO_BOTTOM = block("assemblage/shaft/no_bottom"),
     COAXIAL_COGWHEEL = block("assemblage/coaxial_cogwheel"),
     LARGE_COAXIAL_COGWHEEL = block("assemblage/large_coaxial_cogwheel"),
     COGWHEEL_SHAFT = block("assemblage/cogwheel_shaft"),
+
+    // Bevel Cogwheel
+    BEVEL_COGWHEEL = block("bevel_cogwheel/four_teeth"),
+    BEVEL_COGWHEEL_FIVE_TEETH = block("bevel_cogwheel/five_teeth"),
 
     // Corner Shaft
     CORNER_SHAFT_CENTER = block("corner_shaft/center_shaft"),

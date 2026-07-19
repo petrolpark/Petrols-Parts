@@ -1,6 +1,5 @@
 package petrolpark.mc.petrolsparts.content.kinetics.cornerShaft;
 
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.decoration.encasing.EncasableBlock;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
@@ -23,6 +22,7 @@ import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
 public class CornerShaftBlock extends AbstractCornerShaftBlock implements ProperWaterloggedBlock, EncasableBlock {
 

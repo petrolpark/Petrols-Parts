@@ -13,6 +13,7 @@ import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 
 import net.minecraft.Util;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -33,35 +34,46 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.util.BlockHelper;
-import petrolpark.mc.petrolsparts.PetrolsParts;
+import petrolpark.mc.library.util.Lang;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
+import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 
 public abstract class EncasedAssemblageBlock extends Block implements IBE<AssemblageBlockEntity>, IAssemblageBlock, EncasedBlock {
 
-    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> andesite(EncasedAssemblageBlock.Factory<B> factory) {
-        return p -> factory.create(p, AllBlocks.ANDESITE_CASING::get, "andesite");
+    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> andesite(Supplier<AssemblageSet> set, EncasedAssemblageBlock.Factory<B> factory) {
+        return p -> factory.create(set, p, AllBlocks.ANDESITE_CASING::get, "andesite");
     };
 
-    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> brass(EncasedAssemblageBlock.Factory<B> factory) {
-        return p -> factory.create(p, AllBlocks.BRASS_CASING::get, "brass");
+    public static final <B extends EncasedAssemblageBlock> NonNullFunction<BlockBehaviour.Properties, B> brass(Supplier<AssemblageSet> set, EncasedAssemblageBlock.Factory<B> factory) {
+        return p -> factory.create(set, p, AllBlocks.BRASS_CASING::get, "brass");
     };
 
+    protected final Supplier<AssemblageSet> set;
     protected final Supplier<Block> casing;
     protected final String descriptionId;
 
-    public EncasedAssemblageBlock(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
+    public EncasedAssemblageBlock(Supplier<AssemblageSet> set, BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
         super(properties);
+        this.set = set;
         this.casing = casing;
-        this.descriptionId = Util.makeDescriptionId("block", PetrolsParts.asResource(casingName + "_encased_assemblage"));
+        this.descriptionId = Util.makeDescriptionId("block", Lang.prependLocation(casingName + "_encased_", getSet().id()));
     };
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder);
         builder.add(AXIS, TOP_COG, MIDDLE_COG, BOTTOM_COG);
+    };
+
+    @Override
+    public AssemblageSet getSet() {
+        return set.get();
     };
 
     public abstract BlockState getUnencasedDefaultState();
@@ -74,8 +86,8 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
 	};
 
     @Override
-    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
-        return IAssemblageBlock.super.canSurvive(state, level, pos);
+    public boolean canDiagonalBevelCogWheelSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return IAssemblageBlock.super.canDiagonalBevelCogWheelSurvive(state, level, pos);
     };
 
     @Override
@@ -142,6 +154,30 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
 	};
 
     @Override
+    @Nullable
+    @OnlyIn(Dist.CLIENT)
+    public AssemblageBlockEntityPart getTargetedKineticPart(AssemblageBlockEntity be, Player player) {
+        final Minecraft mc = Minecraft.getInstance();
+        if (!(mc.hitResult instanceof BlockHitResult bhr)) return null;
+        if (bhr.getDirection().getAxis() == be.getBlockState().getValue(AXIS)) {
+            if (bhr.getDirection().getAxisDirection() == AxisDirection.POSITIVE) {
+                if (hasTopShaft(be.getBlockState())) return be.shaftPart;
+                else if (be.getBlockState().getValue(TOP_COG).hasShaftConnection()) return be.topCogPart;
+                else return null;
+            } else {
+                if (hasBottomShaft(be.getBlockState())) return be.shaftPart;
+                else if (be.getBlockState().getValue(BOTTOM_COG).hasShaftConnection()) return be.bottomCogPart;
+                else return null;
+            }
+        } else {
+            final EnumProperty<AssemblageCog> property = AssemblageCogWheelBlockItem.getClosestTargetedCog(be.getBlockPos(), be.getBlockState(), bhr.getLocation());
+            if (property == TOP_COG) return be.topCogPart;
+            else if (property == MIDDLE_COG) return be.middleCogPart;
+            else return be.bottomCogPart;
+        }
+    };
+
+    @Override
     protected BlockState rotate(BlockState state, Rotation rotation) {
         return IAssemblageBlock.rotate(state, Axis.Y, rotation);
     };
@@ -164,7 +200,7 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
     @FunctionalInterface
     public interface Factory<B extends EncasedAssemblageBlock> {
 
-        public B create(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName);
+        public B create(Supplier<AssemblageSet> set, BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName);
     };
 
     public static final <B extends EncasedAssemblageBlock> NonNullConsumer<B> registerCTs(Supplier<EncasedAssemblageCTBehaviour> ctBehaviour) {

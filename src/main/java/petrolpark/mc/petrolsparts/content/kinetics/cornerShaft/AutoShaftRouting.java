@@ -10,8 +10,6 @@ import java.util.PriorityQueue;
 
 import javax.annotation.Nullable;
 
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.data.Pair;
 import net.createmod.catnip.math.BlockFace;
@@ -19,6 +17,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 public class AutoShaftRouting {
 
@@ -28,6 +27,8 @@ public class AutoShaftRouting {
      * @param goal
      */
     public static final List<Pair<BlockPos, BlockState>> getPath(Level level, BlockFace start, BlockFace goal) {
+        if (start.equals(goal) || start.equals(goal.getOpposite())) return Collections.emptyList();
+
         final PriorityQueue<Node> frontier = new PriorityQueue<>(Comparator.comparing(Node::f));
         final Map<BlockFace, Cost> bestCosts = new HashMap<>();
 
@@ -50,7 +51,7 @@ public class AutoShaftRouting {
 
             if (current.face().equals(goal)) return getBlockStatesForPath(current);
 
-            for (final BlockFace next : getNeighbours(level, current.face())) {
+            for (final BlockFace next : getNeighbours(level, start, current.face())) {
 
                 final Cost newCost = current.g().add(current.face().getFace() != next.getFace());
                 final Cost oldCost = bestCosts.get(next);
@@ -65,19 +66,19 @@ public class AutoShaftRouting {
             };
         };
 
-        return List.of();
+        return Collections.emptyList();
     };
 
-    public static final List<BlockFace> getNeighbours(Level level, BlockFace current) {
+    public static final List<BlockFace> getNeighbours(Level level, BlockFace start, BlockFace current) {
         final BlockPos nextPos = current.getConnectedPos();
-        if (!level.getBlockState(nextPos).canBeReplaced()) return Collections.emptyList();
+        if (!level.getBlockState(nextPos).canBeReplaced() || nextPos.distSqr(start.getPos()) > 256) return Collections.emptyList();
 
         final List<BlockFace> neighbours = new ArrayList<>();
 
         for (final Direction direction : Iterate.directions) {
             if (direction == current.getFace().getOpposite()) continue;
 
-            if (level.getBlockState(nextPos.relative(direction)).canBeReplaced()) neighbours.add(new BlockFace(nextPos, direction));
+            neighbours.add(new BlockFace(nextPos, direction));
         };
 
         return neighbours;
@@ -98,7 +99,7 @@ public class AutoShaftRouting {
 
         for (int i = 1; i < path.size(); i++) {
             final BlockFace face = path.get(i);
-            states.add(Pair.of(face.getPos(), PetrolsPartsBlocks.CORNER_SHAFT.get().getBlockstateConnectingDirections(path.get(i - 1).getFace(), face.getFace())));
+            states.add(Pair.of(face.getPos(), PetrolsPartsBlocks.CORNER_SHAFT.get().getBlockstateConnectingDirections(path.get(i - 1).getFace().getOpposite(), face.getFace())));
         };
 
         return states;

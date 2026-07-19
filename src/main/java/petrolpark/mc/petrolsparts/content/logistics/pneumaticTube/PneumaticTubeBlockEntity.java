@@ -116,6 +116,11 @@ public class PneumaticTubeBlockEntity extends KineticBlockEntity implements ITub
 		behaviours.add(filtering);
     };
 
+    @Override
+    public TubeBehaviour getTube() {
+        return tube;
+    };
+
     public Optional<Either<Input, Output>> getHandler() {
         return handler;
     };

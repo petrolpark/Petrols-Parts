@@ -33,6 +33,7 @@ import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.core.world.block.DummyBlock;
+import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 import petrolpark.mc.petrolsparts.core.block.CogType;
 import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
@@ -43,20 +44,20 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
     protected AssemblageBlockEntityPart middleCogPart = null;
     protected AssemblageBlockEntityPart bottomCogPart = null;
     protected AssemblageBlockEntityPart shaftPart = null;
-    protected List<CompositeKineticBlockEntityPart> parts = null;
+    protected List<AssemblageBlockEntityPart> parts = null;
 
     public AssemblageBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     };
 
     @Override
-    public List<CompositeKineticBlockEntityPart> getParts() {
+    public List<AssemblageBlockEntityPart> getParts() {
         if (parts == null) calculateParts();
         return parts == null ? Collections.emptyList() : parts;
     };
 
     public void invalidateParts() {
-        if (hasLevel() && !getLevel().isClientSide()) getParts().forEach(CompositeKineticBlockEntityPart::remove);
+        if (hasLevel() && !getLevel().isClientSide()) getParts().forEach(AssemblageBlockEntityPart::remove);
         parts = null;
     };
 
@@ -142,7 +143,7 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
 
         protected final BlockState effectiveState = new DummyCogWheelBlock().defaultBlockState().setValue(CogWheelBlock.AXIS, AssemblageBlockEntity.this.getBlockState().getValue(IAssemblageBlock.AXIS));
 
-        public AssemblageBlockEntityPart() {
+        protected AssemblageBlockEntityPart() {
             super(PetrolsPartsBlockEntityTypes.ASSEMBLAGE_PART.get());
         };
 
@@ -164,11 +165,6 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         @Override
         public int getIndex() {
             return getParts().indexOf(this);
-        };
-
-        @Override
-        public boolean isValidBlockState(BlockState state) {
-            return true;
         };
 
         /**
@@ -193,6 +189,13 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         @Override
         public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
             return IFaceAlignedCogWheelBlockEntity.propagateFaceAlignedCogwheels(this, target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
+        };
+
+        @Override
+        public List<BlockPos> addPropagationLocations(IRotate block, BlockState state, List<BlockPos> neighbours) {
+            super.addPropagationLocations(block, state, neighbours);
+            KineticsHelper.addLargeCogwheelPropagationLocations(getBlockPos(), neighbours);
+            return neighbours;
         };
 
         // Unregistered - might be weird

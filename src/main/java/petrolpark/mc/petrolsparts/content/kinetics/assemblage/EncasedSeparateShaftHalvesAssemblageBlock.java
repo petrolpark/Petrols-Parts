@@ -2,10 +2,6 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.function.Supplier;
 
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
-
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -13,8 +9,8 @@ import net.minecraft.world.level.block.state.StateDefinition;
 
 public class EncasedSeparateShaftHalvesAssemblageBlock extends EncasedAssemblageBlock {
 
-    public EncasedSeparateShaftHalvesAssemblageBlock(BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
-        super(properties, casing, casingName);
+    public EncasedSeparateShaftHalvesAssemblageBlock(Supplier<AssemblageSet> set, BlockBehaviour.Properties properties, Supplier<Block> casing, String casingName) {
+        super(set, properties, casing, casingName);
             registerDefaultState(defaultBlockState()
             .setValue(TOP_SHAFT_HALF, false)
             .setValue(BOTTOM_SHAFT_HALF, false)
@@ -38,13 +34,8 @@ public class EncasedSeparateShaftHalvesAssemblageBlock extends EncasedAssemblage
     };
 
     @Override
-    public AssemblageBlockEntityPart getTargetedKineticPart(AssemblageBlockEntity be, Player player) {
-        return null;
-    };
-
-    @Override
     public BlockState getUnencasedDefaultState() {
-        return PetrolsPartsBlocks.SEPARATE_SHAFT_HALVES_ASSEMBLAGE.getDefaultState();
+        return getSet().separateShaftsAssemblage().getDefaultState();
     };
     
 };
