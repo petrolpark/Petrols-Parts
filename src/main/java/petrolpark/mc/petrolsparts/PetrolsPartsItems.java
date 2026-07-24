@@ -10,7 +10,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCog;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCogWheelBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageSet;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.ShaftHalfBlockItem;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelItem;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 
 public class PetrolsPartsItems {
@@ -26,8 +26,8 @@ public class PetrolsPartsItems {
         .onRegister(AssemblageBlockItem.registerClientSet(() -> AssemblageSet.CREATE_CLIENT))
         .register();
 
-    public static final ItemEntry<BevelCogWheelItem> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", p -> new BevelCogWheelItem(BevelCogWheelSet.CREATE, p))
-        .onRegister(BevelCogWheelItem.registerClientSet(() -> BevelCogWheelSet.CREATE_CLIENT))
+    public static final ItemEntry<BevelCogWheelBlockItem> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", p -> new BevelCogWheelBlockItem(BevelCogWheelSet.CREATE, p))
+        .onRegister(BevelCogWheelBlockItem.registerClientSet(() -> BevelCogWheelSet.CREATE_CLIENT))
         .register();
 
     public static final void register() {};

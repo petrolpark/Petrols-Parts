@@ -3,6 +3,8 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel;
 import java.util.Map;
 import java.util.function.Supplier;
 
+import javax.annotation.Nullable;
+
 import com.google.common.base.Suppliers;
 import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -19,6 +21,8 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
@@ -35,6 +39,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.D
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.BevelCogWheelAndShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.CompositeBevelCogWheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.CornerBevelCogWheelsAndShaftBlock;
@@ -64,7 +69,7 @@ public record BevelCogWheelSet(
     BlockEntityEntry<? extends KineticBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
     BlockEntityEntry<? extends SingleDiagonalBevelCogWheelBlockEntity> singleDiagonalBE, BlockEntityEntry<? extends DualDiagonalBevelCogWheelBlockEntity> dualDiagonalBE, 
     // Items
-    ItemEntry<? extends BevelCogWheelItem> item, ItemEntry<? extends Item> shaftHalfItem,
+    ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends Item> shaftHalfItem,
     // Loot
     ResourceKey<LootTable> cogLoot, ResourceKey<LootTable> shaftLoot, ResourceKey<LootTable> shaftHalfLoot,
     // Parts
@@ -88,7 +93,7 @@ public record BevelCogWheelSet(
         BlockEntityEntry<? extends KineticBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
         BlockEntityEntry<? extends SingleDiagonalBevelCogWheelBlockEntity> singleDiagonalBE, BlockEntityEntry<? extends DualDiagonalBevelCogWheelBlockEntity> dualDiagonalBE,
         // Items
-        ItemEntry<? extends BevelCogWheelItem> item, ItemEntry<? extends Item> shaftHalfItem,
+        ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends Item> shaftHalfItem,
         // Loot
         ResourceKey<LootTable> cogLoot, ResourceKey<LootTable> shaftLoot, ResourceKey<LootTable> shaftHalfLoot
     ) {
@@ -128,7 +133,7 @@ public record BevelCogWheelSet(
         BlockEntityEntry<? extends KineticBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
         BlockEntityEntry<? extends SingleDiagonalBevelCogWheelBlockEntity> singleDiagonalBE, BlockEntityEntry<? extends DualDiagonalBevelCogWheelBlockEntity> dualDiagonalBE,
         // Items
-        ItemEntry<? extends BevelCogWheelItem> item, ItemEntry<? extends Item> shaftHalfItem
+        ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends Item> shaftHalfItem
     ) {
         this(
             id,
@@ -143,6 +148,24 @@ public record BevelCogWheelSet(
             item, shaftHalfItem,
             ResourceKey.create(Registries.LOOT_TABLE, item.getId().withPrefix("blocks/")), ResourceKey.create(Registries.LOOT_TABLE, shaftBlock.getId().withPrefix("blocks/")), ResourceKey.create(Registries.LOOT_TABLE, shaftHalfItem.getId().withPrefix("blocks/"))
         );
+    };
+
+    public boolean isReplaceable(BlockState state) {
+        return (state.getBlock() instanceof IOrthogonalBevelCogWheelBlock block && block.getSet() == this)
+            || shaftBlock().has(state);
+    };
+
+    @Nullable
+    public BevelCogWheelPart getTargetedPart(BlockPlaceContext context) {
+        if (context.replacingClickedOnBlock()) {
+            final BlockState state = context.getLevel().getBlockState(context.getClickedPos());
+            if (state.getBlock() instanceof IOrthogonalBevelCogWheelBlock bevelCogWheel && bevelCogWheel.getSet() == this) {
+                return bevelCogWheel.getTargetedPart(state, context.getClickedPos(), context.getPlayer());
+            } else if (shaftBlock().has(state)) {
+                return shaftParts().get(state.getValue(ShaftBlock.AXIS));
+            };
+        };
+        return null;
     };
 
     @OnlyIn(Dist.CLIENT)

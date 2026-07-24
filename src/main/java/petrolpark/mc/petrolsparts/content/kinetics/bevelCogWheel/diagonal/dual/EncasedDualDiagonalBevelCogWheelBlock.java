@@ -132,7 +132,7 @@ public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock
                     .partialState().with(EXCLUDED_AXIS, Axis.X)
                     .modelForState().modelFile(model).rotationX(90).rotationY(90).uvLock(true).addModel();
             }).loot((lt, b) -> lt.add(b, lt.createSingleItemTable(b.getSet().item(), ConstantValue.exactly(2))))
-            .onRegisterAfter(Registries.BLOCK, b -> EncasingRegistry.addVariant(b.getSet().singleDiagonalBlock().get(), b))
+            .onRegisterAfter(Registries.BLOCK, b -> EncasingRegistry.addVariant(b.getSet().dualDiagonalBlock().get(), b))
             .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedDiagonalBevelCogWheelCTBehaviour(spriteShiftEntry)))
             .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, spriteShiftEntry, (s, f) -> f.getAxis() == s.getValue(IDualDiagonalBevelCogWheelBlock.EXCLUDED_AXIS))))
             .transform(TagGen.axeOrPickaxe());

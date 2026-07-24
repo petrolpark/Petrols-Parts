@@ -27,8 +27,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -37,8 +39,9 @@ import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelGhostBlockRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.ISingleDiagonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 
-public class BevelCogWheelItem extends BlockItem {
+public class BevelCogWheelBlockItem extends BlockItem {
 
     public final Supplier<BevelCogWheelSet> set;
 
@@ -50,13 +53,69 @@ public class BevelCogWheelItem extends BlockItem {
         PlacementHelpers.register(new DiagonalPlacementHelper())
     };
 
-    public BevelCogWheelItem(Supplier<BevelCogWheelSet> set, Item.Properties properties) {
+    public BevelCogWheelBlockItem(Supplier<BevelCogWheelSet> set, Item.Properties properties) {
         super(Blocks.AIR, properties);
         this.set = set;
     };
 
     public BevelCogWheelSet getSet() {
         return set.get();
+    };
+
+    @Override
+    public Block getBlock() {
+        return getSet().singleAxisBlock().get();
+    };
+
+    @Override
+    public BevelCogWheelBlockPlaceContext updatePlacementContext(BlockPlaceContext context) {
+        if (!(context instanceof BevelCogWheelBlockPlaceContext bevelCogWheelContext)) return null; // Cast should always succeed
+        final BevelCogWheelPart part = getSet().getTargetedPart(context);
+        if (switch (part) {
+            case BevelCogWheelPart.Cog cog -> {
+                yield bevelCogWheelContext.getClickedFace() == cog.face;
+            } case BevelCogWheelPart.Shaft shaft -> {
+                yield bevelCogWheelContext.getClickedFace().getAxis() == shaft.axis;
+            } case null -> {
+                yield false;
+            }
+        }) bevelCogWheelContext.dontReplaceClicked();
+        return bevelCogWheelContext.canPlace() ? bevelCogWheelContext : null;
+    };
+
+    @Override
+    public InteractionResult place(BlockPlaceContext context) {
+        return super.place(new BevelCogWheelBlockPlaceContext(context));
+    };
+
+    @Override
+    protected BlockState getPlacementState(BlockPlaceContext context) {
+        BlockState state = getBlock().defaultBlockState();
+        final BlockState existingState = context.getLevel().getBlockState(context.getClickedPos());
+
+        return null; //TODO
+    };
+
+    public class BevelCogWheelBlockPlaceContext extends BlockPlaceContext {
+
+        public BevelCogWheelBlockPlaceContext(UseOnContext context) {
+            super(context);
+            if (!replaceClicked) replaceClicked = getSet().isReplaceable(getLevel().getBlockState(context.getHitResult().getBlockPos()));
+        };
+
+        public void dontReplaceClicked() {
+            this.replaceClicked = false;
+        };
+
+        @Override
+        public boolean canPlace() {
+            return replacingClickedOnBlock() || getSet().isReplaceable(getLevel().getBlockState(getClickedPos()));
+        };
+
+        public BevelCogWheelSet getSet() {
+            return BevelCogWheelBlockItem.this.getSet();
+        };
+
     };
 
     @Override
@@ -126,7 +185,7 @@ public class BevelCogWheelItem extends BlockItem {
         };
     };
 
-    public static final <I extends BevelCogWheelItem> NonNullConsumer<I> registerClientSet(NonNullSupplier<BevelCogWheelSet.Client> clientSet) {
+    public static final <I extends BevelCogWheelBlockItem> NonNullConsumer<I> registerClientSet(NonNullSupplier<BevelCogWheelSet.Client> clientSet) {
         return item -> RegistrateDistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> item.diagonalGhostBlockRenderer = new DiagonalBevelCogWheelGhostBlockRenderer(clientSet.get()));  
     };
     

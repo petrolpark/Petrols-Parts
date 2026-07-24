@@ -14,7 +14,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 import petrolpark.mc.library.compat.create.shared.registry.SharedCreateBlocks;
 import petrolpark.mc.library.core.world.item.creativeModeTab.CustomTab;
 
-public class PetrolsPartCreativeModeTab {
+public class PetrolsPartsCreativeModeTab {
     public static final DeferredRegister<CreativeModeTab> TABS = DeferredRegister.create(Registries.CREATIVE_MODE_TAB, PetrolsParts.MOD_ID);
 
 	public static final DeferredHolder<CreativeModeTab, CreativeModeTab> MAIN_TAB = TABS.register(
@@ -28,9 +28,9 @@ public class PetrolsPartCreativeModeTab {
 				i(PetrolsPartsBlocks.DIFFERENTIAL::asStack),
 				i(PetrolsPartsBlocks.PLANETARY_GEARSET::asStack),
 				i(PetrolsPartsBlocks.COLOSSAL_COGWHEEL::asStack),
-				i(PetrolsPartsBlocks.MOVEMENT::asStack),
+				//i(PetrolsPartsBlocks.MOVEMENT::asStack),
 				i(PetrolsPartsBlocks.PNEUMATIC_TUBE::asStack), i(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION::asStack),
-				i(SharedCreateBlocks.HORSE_MILL_BEARING::asStack), i(SharedCreateBlocks.HARNESS::asStack),
+				//i(SharedCreateBlocks.HORSE_MILL_BEARING::asStack), i(SharedCreateBlocks.HARNESS::asStack),
 				i(SharedCreateBlocks.REDSTONE_PROGRAMMER::asStack)
 			
 			).title(Component.translatable("itemGroup.petrolsparts.base"))

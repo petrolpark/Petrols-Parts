@@ -95,7 +95,7 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
             if (newState.getBlock() instanceof SingleDiagonalBevelCogWheelBlock singleBlock2 && singleBlock2.set == set) {
                 final Orientation existingOrientation = existingState.getValue(ORIENTATION);
                 final Orientation newOrientation = newState.getValue(ORIENTATION);
-                if (existingOrientation.top == newOrientation.top.getOpposite() && existingOrientation.front == existingOrientation.front.getOpposite()) {
+                if (existingOrientation.top == newOrientation.top.getOpposite() && existingOrientation.front == newOrientation.front.getOpposite()) {
                     final List<Axis> axes = Stream.of(Axis.values()).collect(Collectors.toCollection(ArrayList::new));
                     axes.remove(existingOrientation.top.getAxis());
                     axes.remove(existingOrientation.front.getAxis());

@@ -53,7 +53,7 @@ public class PetrolsParts {
         PetrolsPartsArmInteractionPointTypes.register();
         PetrolsPartsDataComponentTypes.register(modEventBus);
         PetrolsPartsPackets.register();
-        PetrolsPartCreativeModeTab.register(modEventBus);
+        PetrolsPartsCreativeModeTab.register(modEventBus);
         PetrolsPartsBlocks.register();
         PetrolsPartsBlockEntityTypes.register();
         PetrolsPartsItems.register();
@@ -67,7 +67,8 @@ public class PetrolsParts {
 
     @GetPetrolparkSharedFeatures
     public static final SharedFeatureFlag[] getEnabledSharedFeatureFlags() {
-        return new SharedFeatureFlag[]{SharedFeatureFlag.HORSE_MILL, SharedFeatureFlag.REDSTONE_PROGRAMMER};
+        //return new SharedFeatureFlag[]{SharedFeatureFlag.HORSE_MILL, SharedFeatureFlag.REDSTONE_PROGRAMMER};
+        return new SharedFeatureFlag[]{SharedFeatureFlag.REDSTONE_PROGRAMMER};
     };
 
     private void onRegister(final RegisterEvent event) {

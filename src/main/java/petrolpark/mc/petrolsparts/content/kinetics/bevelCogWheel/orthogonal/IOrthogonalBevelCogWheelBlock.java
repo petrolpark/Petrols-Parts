@@ -11,6 +11,7 @@ import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -24,6 +25,8 @@ public interface IOrthogonalBevelCogWheelBlock extends IBevelCogWheelBlock, IRep
     public BevelCogWheelSet getSet();
 
     public Collection<BevelCogWheelPart> getParts(BlockState state);
+
+    public BevelCogWheelPart getTargetedPart(BlockState state, BlockPos pos, Entity entity);
   
     @Nullable
     public BlockState withPart(BlockState state, BevelCogWheelPart part);
