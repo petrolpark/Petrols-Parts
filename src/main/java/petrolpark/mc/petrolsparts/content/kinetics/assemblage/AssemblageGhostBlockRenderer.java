@@ -19,9 +19,9 @@ import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 
 public class AssemblageGhostBlockRenderer extends PetrolparkGhostBlockRenderer {
 
-    protected final AssemblageSet.Client set;
+    protected final AssemblageClientSet set;
 
-    public AssemblageGhostBlockRenderer(AssemblageSet.Client set) {
+    public AssemblageGhostBlockRenderer(AssemblageClientSet set) {
         this.set = set;
     };
 

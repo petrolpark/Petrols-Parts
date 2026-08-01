@@ -10,15 +10,15 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.compat.create.core.client.ghostBlocks.PetrolparkGhostBlockRenderer;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelClientSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.ISingleDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelRenderer;
 
 public class DiagonalBevelCogWheelGhostBlockRenderer extends PetrolparkGhostBlockRenderer {
     
-    public final BevelCogWheelSet.Client set;
+    public final BevelCogWheelClientSet set;
 
-    public DiagonalBevelCogWheelGhostBlockRenderer(BevelCogWheelSet.Client set) {
+    public DiagonalBevelCogWheelGhostBlockRenderer(BevelCogWheelClientSet set) {
         this.set = set;
     };
 

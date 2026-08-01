@@ -16,13 +16,17 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.library.util.Orientation;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelClientSet;
 
 public class SingleDiagonalBevelCogWheelRenderer extends KineticBlockEntityRenderer<SingleDiagonalBevelCogWheelBlockEntity> {
 
-    public final BevelCogWheelSet.Client set;
+    public static final SingleDiagonalBevelCogWheelRenderer create(BlockEntityRendererProvider.Context context) {
+        return new SingleDiagonalBevelCogWheelRenderer(BevelCogWheelClientSet.CREATE, context);  
+    };
 
-    public SingleDiagonalBevelCogWheelRenderer(BevelCogWheelSet.Client set, BlockEntityRendererProvider.Context context) {
+    public final BevelCogWheelClientSet set;
+
+    public SingleDiagonalBevelCogWheelRenderer(BevelCogWheelClientSet set, BlockEntityRendererProvider.Context context) {
         super(context);
         this.set = set;
     };
@@ -33,11 +37,11 @@ public class SingleDiagonalBevelCogWheelRenderer extends KineticBlockEntityRende
         renderCog(set, be, orientation, ms, buffer, light);
     };
 
-    public static final void renderCog(BevelCogWheelSet.Client set, KineticBlockEntity be, Orientation orientation, PoseStack ms, MultiBufferSource buffer, int light) {
+    public static final void renderCog(BevelCogWheelClientSet set, KineticBlockEntity be, Orientation orientation, PoseStack ms, MultiBufferSource buffer, int light) {
         renderCog(set, be.getLevel(), be.getSpeed(), be.getBlockPos(), be.getBlockState(), orientation, ms, buffer.getBuffer(RenderType.solid()), light);
     };
 
-    public static final void renderCog(BevelCogWheelSet.Client set, Level level, float speed, BlockPos pos, BlockState state, Orientation orientation, PoseStack ms, VertexConsumer vc, int light) {
+    public static final void renderCog(BevelCogWheelClientSet set, Level level, float speed, BlockPos pos, BlockState state, Orientation orientation, PoseStack ms, VertexConsumer vc, int light) {
         final boolean topOffset = KineticBlockEntityVisual.shouldOffset(orientation.front.getAxis(), pos);
         final boolean frontOffset = KineticBlockEntityVisual.shouldOffset(orientation.top.getAxis(), pos);
         final boolean fiveTeeth = topOffset != frontOffset;

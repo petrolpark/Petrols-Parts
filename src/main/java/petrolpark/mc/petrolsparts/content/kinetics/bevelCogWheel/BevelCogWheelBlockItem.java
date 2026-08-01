@@ -47,7 +47,7 @@ public class BevelCogWheelBlockItem extends BlockItem {
 
     @OnlyIn(Dist.CLIENT)
     @Nullable
-    protected DiagonalBevelCogWheelGhostBlockRenderer diagonalGhostBlockRenderer = null;
+    protected DiagonalBevelCogWheelGhostBlockRenderer diagonalGhostBlockRenderer;
 
     protected final int[] placementHelperIds = new int[]{
         PlacementHelpers.register(new DiagonalPlacementHelper())
@@ -185,7 +185,7 @@ public class BevelCogWheelBlockItem extends BlockItem {
         };
     };
 
-    public static final <I extends BevelCogWheelBlockItem> NonNullConsumer<I> registerClientSet(NonNullSupplier<BevelCogWheelSet.Client> clientSet) {
+    public static final <I extends BevelCogWheelBlockItem> NonNullConsumer<I> registerClientSet(NonNullSupplier<BevelCogWheelClientSet> clientSet) {
         return item -> RegistrateDistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> item.diagonalGhostBlockRenderer = new DiagonalBevelCogWheelGhostBlockRenderer(clientSet.get()));  
     };
     

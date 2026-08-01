@@ -24,9 +24,13 @@ import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 
 public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockEntity> {
 
-    protected final AssemblageSet.Client set;
+    public static final AssemblageRenderer create(BlockEntityRendererProvider.Context context) {
+        return new AssemblageRenderer(AssemblageClientSet.CREATE, context);
+    };
 
-    public AssemblageRenderer(AssemblageSet.Client set, BlockEntityRendererProvider.Context context) {
+    protected final AssemblageClientSet set;
+
+    public AssemblageRenderer(AssemblageClientSet set, BlockEntityRendererProvider.Context context) {
         this.set = set;
     };
 
@@ -57,14 +61,14 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         if (!topCog.isNone()) {
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.topCogPart,
-                CachedBuffers.partialFacingVertical(set.getModel(topCog), be.topCogPart.getBlockState(), facing)
+                CachedBuffers.partialFacingVertical(set.getModel(topCog), be.getBlockState(), facing)
                     .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(5 / 16d))
                     .rotateCenteredDegrees(!KineticBlockEntityVisual.shouldOffset(axis, be.getBlockPos()) && be.topCogPart.topCogType.isLarge() && !be.topCogPart.middleCogType.isLarge() ? 11.25f : 0f, facing),
                 ms, buffer, light
             );
             if (topCog.hasShaftConnection() && !hasTopShaft) KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.topCogPart,
-                CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.COGWHEEL_SHAFT, be.topCogPart.getBlockState(), facing),
+                CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.COGWHEEL_SHAFT, be.getBlockState(), facing),
                 ms, buffer, light
             );
         };
@@ -72,7 +76,7 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         if (!middleCog.isNone()) {
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.middleCogPart,
-                CachedBuffers.partialFacingVertical(set.getModel(middleCog), be.middleCogPart.getBlockState(), facing),
+                CachedBuffers.partialFacingVertical(set.getModel(middleCog), be.getBlockState(), facing),
                 // Large Cog offset already applied
                 ms, buffer, light
             );
@@ -81,14 +85,14 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         if (!bottomCog.isNone()) {
             KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.bottomCogPart,
-                CachedBuffers.partialFacingVertical(set.getModel(bottomCog), be.bottomCogPart.getBlockState(), facing)
+                CachedBuffers.partialFacingVertical(set.getModel(bottomCog), be.getBlockState(), facing)
                     .translate(Vec3.atLowerCornerOf(facing.getNormal()).scale(-5 / 16d))
                     .rotateCenteredDegrees(!KineticBlockEntityVisual.shouldOffset(axis, be.getBlockPos()) && be.bottomCogPart.bottomCogType.isLarge() && !be.bottomCogPart.middleCogType.isLarge() ? 11.25f : 0f, facing),
                 ms, buffer, light
             );
             if (bottomCog.hasShaftConnection() && !hasBottomShaft) KineticBlockEntityRenderer.renderRotatingBuffer(
                 be.bottomCogPart,
-                CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.COGWHEEL_SHAFT, be.bottomCogPart.getBlockState(), facing.getOpposite()),
+                CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.COGWHEEL_SHAFT, be.getBlockState(), facing.getOpposite()),
                 ms, buffer, light
             );
         };
@@ -115,7 +119,7 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
             shaftModel = set.shaftNone();
         };
 
-        KineticBlockEntityRenderer.kineticRotationTransform(CachedBuffers.partialFacingVertical(shaftModel, be.shaftPart.getBlockState(), facing), be.shaftPart, axis, getAngle(be.shaftPart, be.getBlockPos(), axis), light)
+        KineticBlockEntityRenderer.kineticRotationTransform(CachedBuffers.partialFacingVertical(shaftModel, be.getBlockState(), facing), be.shaftPart, axis, getAngle(be.shaftPart, be.getBlockPos(), axis), light)
             .renderInto(ms, buffer);
     };
 

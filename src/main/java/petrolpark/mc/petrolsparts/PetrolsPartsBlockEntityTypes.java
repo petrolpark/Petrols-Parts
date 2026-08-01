@@ -13,8 +13,6 @@ import dev.engine_room.flywheel.lib.model.Models;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockEntity.AssemblageBlockEntityPart;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageRenderer;
-import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageSet;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelBlockEntity;
@@ -56,7 +54,7 @@ public class PetrolsPartsBlockEntityTypes {
             PetrolsPartsBlocks.ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.ANDESITE_ENCASED_SINGLE_SHAFT_ASSEMBLAGE,
             PetrolsPartsBlocks.BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE, PetrolsPartsBlocks.BRASS_ENCASED_SINGLE_SHAFT_ASSEMBLAGE
         )
-        .renderer(() -> ctx -> new AssemblageRenderer(AssemblageSet.CREATE_CLIENT, ctx))
+        .renderer(() -> AssemblageRenderer::create)
         .register();
 
     public static final BlockEntityEntry<AssemblageBlockEntityPart> ASSEMBLAGE_PART = REGISTRATE
@@ -83,7 +81,7 @@ public class PetrolsPartsBlockEntityTypes {
             PetrolsPartsBlocks.SINGLE_BEVEL_COGWHEEL_AND_SHAFT,
             PetrolsPartsBlocks.OPPOSITE_BEVEL_COGWHEELS, PetrolsPartsBlocks.OPPOSITE_BEVEL_COGWHEELS_AND_SHAFT,
             PetrolsPartsBlocks.CORNER_BEVEL_COGWHEELS_AND_SHAFT, PetrolsPartsBlocks.THREE_BEVEL_COGWHEELS_AND_SHAFT, PetrolsPartsBlocks.FOUR_BEVEL_COGWHEELS_AND_SHAFT
-        ).renderer(() -> ctx -> new CompositeBevelCogWheelRenderer(BevelCogWheelSet.CREATE_CLIENT, ctx))
+        ).renderer(() -> CompositeBevelCogWheelRenderer::create)
         .register();
 
     public static final BlockEntityEntry<CompositeBevelCogWheelBlockEntity.Part> COMPOSITE_BEVEL_COGWHEEL_PART = REGISTRATE
@@ -93,13 +91,13 @@ public class PetrolsPartsBlockEntityTypes {
     public static final BlockEntityEntry<SingleDiagonalBevelCogWheelBlockEntity> SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE
         .blockEntity("single_diagonal_bevel_cogwheel", SingleDiagonalBevelCogWheelBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.SINGLE_DIAGONAL_BEVEL_COGWHEEL)
-        .renderer(() -> ctx -> new SingleDiagonalBevelCogWheelRenderer(BevelCogWheelSet.CREATE_CLIENT, ctx))
+        .renderer(() -> SingleDiagonalBevelCogWheelRenderer::create)
         .register();
 
     public static final BlockEntityEntry<DualDiagonalBevelCogWheelBlockEntity> DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE
         .blockEntity("double_diagonal_bevel_cogwheel", DualDiagonalBevelCogWheelBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.DUAL_DIAGONAL_BEVEL_COGWHEEL, PetrolsPartsBlocks.ANDESITE_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL, PetrolsPartsBlocks.BRASS_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL)
-        .renderer(() -> ctx -> new DualDiagonalBevelCogWheelRenderer(BevelCogWheelSet.CREATE_CLIENT, ctx))
+        .renderer(() -> DualDiagonalBevelCogWheelRenderer::create)
         .register();
 
     public static final BlockEntityEntry<DualDiagonalBevelCogWheelBlockEntity.Part> DUAL_DIAGONAL_BEVEL_COGWHEEL_PART = REGISTRATE

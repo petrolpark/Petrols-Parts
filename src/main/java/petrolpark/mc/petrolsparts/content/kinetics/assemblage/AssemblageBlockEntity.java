@@ -172,7 +172,7 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
          */
         @Override
         public BlockState getBlockState() {
-            return effectiveState;
+            return effectiveState == null ? AssemblageBlockEntity.super.getBlockState() : effectiveState; // Will be null during initialization
         };
 
         @Override

@@ -173,7 +173,7 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
 
         @Override
         public BlockState getBlockState() {
-            return dummyBlock.defaultBlockState(); // To trick RotationPropagator
+            return dummyBlock == null ? MovementBlockEntity.super.getBlockState() : dummyBlock.defaultBlockState(); // Can be null during initialization
         }; 
 
         @Override
@@ -239,7 +239,7 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
 
         @Override
         public BlockState getBlockState() {
-            return dummyBlock.defaultBlockState(); // To trick RotationPropagator
+            return dummyBlock == null ? MovementBlockEntity.super.getBlockState() : dummyBlock.defaultBlockState(); // Can be null during initialization
         };
 
         @Override

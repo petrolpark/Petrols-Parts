@@ -21,6 +21,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock;
 
 public interface IDiagonalBevelCogWheelBlock extends IBevelCogWheelBlock {
@@ -28,7 +29,7 @@ public interface IDiagonalBevelCogWheelBlock extends IBevelCogWheelBlock {
     public static final int COG_ON_BEVEL_PLACEMENT_HELPER_ID = PlacementHelpers.register(new CogOnDiagonalPlacementHelper());
     
     /**
-     * Used by {@link IDiagonalBevelCogWheelPlacementHelper}
+     * Used by {@link BevelCogWheelBlockItem.DiagonalPlacementHelper}
      */
     public @Nullable Axis getCogRotationAxisConnectedToFace(BlockState state, Direction face);
 

@@ -36,7 +36,7 @@ import petrolpark.mc.library.util.BigItemStack;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 @OnlyIn(Dist.CLIENT)
-@EventBusSubscriber
+@EventBusSubscriber(Dist.CLIENT)
 public class AutoShaftRoutingClientHelper {
 
     private static final Vector3f PARTICLE_COLOR = new Vector3f(0.3f, 0.9f, 0.5f);

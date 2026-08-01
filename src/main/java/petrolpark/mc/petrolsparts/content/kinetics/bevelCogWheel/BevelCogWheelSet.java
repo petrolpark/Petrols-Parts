@@ -13,7 +13,6 @@ import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
-import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.minecraft.Util;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -24,15 +23,12 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.util.CollectionHelper;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
-import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelBlockEntity;
@@ -168,11 +164,6 @@ public record BevelCogWheelSet(
         return null;
     };
 
-    @OnlyIn(Dist.CLIENT)
-    public record Client(
-        PartialModel fourTeeth, PartialModel fiveTeeth
-    ) {};
-
     public static final Supplier<BevelCogWheelSet> CREATE = Suppliers.memoize(() -> new BevelCogWheelSet(
         // Display
         PetrolsParts.asResource("bevel_cogwheel"),
@@ -191,10 +182,4 @@ public record BevelCogWheelSet(
         // Items
         PetrolsPartsItems.BEVEL_COGWHEEL, PetrolsPartsItems.SHAFT_HALF
     ));
-
-    @OnlyIn(Dist.CLIENT)
-    public static final BevelCogWheelSet.Client CREATE_CLIENT = new BevelCogWheelSet.Client(
-        PetrolsPartsPartialModels.BEVEL_COGWHEEL,
-        PetrolsPartsPartialModels.BEVEL_COGWHEEL_FIVE_TEETH
-    );
 };

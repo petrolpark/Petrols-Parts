@@ -30,7 +30,7 @@ public abstract class AssemblageBlockItem extends ItemNameBlockItem {
 
     @OnlyIn(Dist.CLIENT)
     @Nullable
-    protected AssemblageGhostBlockRenderer ghostBlockRenderer = null;
+    protected AssemblageGhostBlockRenderer ghostBlockRenderer;
 
     public AssemblageBlockItem(Supplier<AssemblageSet> set, Item.Properties properties) {
         super(Blocks.AIR, properties);
@@ -95,7 +95,7 @@ public abstract class AssemblageBlockItem extends ItemNameBlockItem {
         };
     };
 
-    public static final <I extends AssemblageBlockItem> NonNullConsumer<I> registerClientSet(NonNullSupplier<AssemblageSet.Client> clientSet) {
+    public static final <I extends AssemblageBlockItem> NonNullConsumer<I> registerClientSet(NonNullSupplier<AssemblageClientSet> clientSet) {
         return item -> RegistrateDistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> item.ghostBlockRenderer = new AssemblageGhostBlockRenderer(clientSet.get()));  
     };
     
