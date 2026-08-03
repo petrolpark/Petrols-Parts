@@ -80,7 +80,7 @@ public enum TransmissionPart implements CreateMultiPartBlock.ICreatePart {
 
     @Override
     public ResourceKey<LootTable> loot() {
-        return cog ? AssemblageSet.CREATE.get().coaxialCogLoot() : TRANSMISSION_SHAFT_LOOT; //TODO
+        return cog ? AssemblageSet.VANILLA.get().coaxialCogLoot() : TRANSMISSION_SHAFT_LOOT; //TODO
     };
 
     @Override

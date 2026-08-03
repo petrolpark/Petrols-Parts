@@ -6,23 +6,23 @@ import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRender
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelClientSet;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SimpleBevelCogWheelRenderer;
 
 public class CompositeBevelCogWheelRenderer extends SafeBlockEntityRenderer<CompositeBevelCogWheelBlockEntity> {
 
-    public static final CompositeBevelCogWheelRenderer create(BlockEntityRendererProvider.Context context) {
-        return new CompositeBevelCogWheelRenderer(BevelCogWheelClientSet.CREATE, context);
+    public static final CompositeBevelCogWheelRenderer vanilla(BlockEntityRendererProvider.Context context) {
+        return new CompositeBevelCogWheelRenderer(BevelCogWheelClientSet.vanilla(), context);
     };
 
-    public final BevelCogWheelClientSet set;
+    protected final SimpleBevelCogWheelRenderer simpleRenderer;
 
     public CompositeBevelCogWheelRenderer(BevelCogWheelClientSet set, BlockEntityRendererProvider.Context context) {
-        this.set = set;
+        this.simpleRenderer = new SimpleBevelCogWheelRenderer(set, context);
     };
 
     @Override
     protected void renderSafe(CompositeBevelCogWheelBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-        // TODO Auto-generated method stub
-        
+        be.getParts().forEach(part -> simpleRenderer.render(part, partialTicks, ms, buffer, light, overlay));
     };
     
 };

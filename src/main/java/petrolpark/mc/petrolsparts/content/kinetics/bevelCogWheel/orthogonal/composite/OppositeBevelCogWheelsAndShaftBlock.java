@@ -23,6 +23,7 @@ import petrolpark.mc.library.util.BlockHelper;
 import petrolpark.mc.library.util.MathsHelper;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.ThreeBevelCogWheelsBlock;
 
 public class OppositeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBlock {
 
@@ -64,11 +65,14 @@ public class OppositeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelB
     public BlockState withPart(BlockState state, BevelCogWheelPart part) {
         if (!(part instanceof BevelCogWheelPart.Cog cog)) return null;
         final Axis axis = state.getValue(AXIS);
-        if (cog.face.getAxis() == axis || cog.face.getAxis() == getShaftAxis(state)) return null;
-        return getSet().threeAndShaftBlock().getDefaultState()
-            .setValue(ThreeBevelCogWheelsAndShaftBlock.EXCLUDED_FACE, cog.face.getOpposite())
-            .setValue(ThreeBevelCogWheelsAndShaftBlock.OTHER_COGS_ON_FIRST_AXIS, MathsHelper.isSecondaryAxis(cog.face.getAxis(), axis))
+        if (cog.face.getAxis() == axis) return null;
+        final boolean coaxialShaft = cog.face.getAxis() == getShaftAxis(state);
+        BlockState newState = (coaxialShaft ? getSet().threeBlock() : getSet().threeAndShaftBlock()).getDefaultState()
+            .setValue(ThreeBevelCogWheelsBlock.EXCLUDED_FACE, cog.face.getOpposite())
+            .setValue(ThreeBevelCogWheelsBlock.OTHER_COGS_ON_FIRST_AXIS, MathsHelper.isSecondaryAxis(cog.face.getAxis(), axis))
             .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
+        if (coaxialShaft) newState = newState.setValue(ThreeBevelCogWheelsBlock.SHAFT, true);
+        return newState;
     };
 
     @Override

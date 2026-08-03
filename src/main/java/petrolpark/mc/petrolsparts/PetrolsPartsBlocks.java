@@ -87,7 +87,7 @@ public class PetrolsPartsBlocks {
 
     // ASSEMBLAGES
 
-    public static final BlockEntry<SeparateShaftHalvesAssemblageBlock> SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("separate_shaft_halves_assemblage", AssemblageBlock.create(AssemblageSet.CREATE, SeparateShaftHalvesAssemblageBlock::new))
+    public static final BlockEntry<SeparateShaftHalvesAssemblageBlock> SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("separate_shaft_halves_assemblage", AssemblageBlock.create(AssemblageSet.VANILLA, SeparateShaftHalvesAssemblageBlock::new))
         .initialProperties(AllBlocks.COGWHEEL)
         .properties(p -> p
             .noOcclusion()
@@ -96,7 +96,7 @@ public class PetrolsPartsBlocks {
         .transform(TagGen.axeOrPickaxe())
         .register();
 
-    public static final BlockEntry<SingleShaftAssemblageBlock> SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("single_shaft_assemblage", AssemblageBlock.create(AssemblageSet.CREATE, SingleShaftAssemblageBlock::new))
+    public static final BlockEntry<SingleShaftAssemblageBlock> SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("single_shaft_assemblage", AssemblageBlock.create(AssemblageSet.VANILLA, SingleShaftAssemblageBlock::new))
         .initialProperties(SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
         .properties(p -> p
             .noLootTable()
@@ -104,7 +104,7 @@ public class PetrolsPartsBlocks {
         .transform(TagGen.axeOrPickaxe())
         .register();
 
-    public static final BlockEntry<EncasedSeparateShaftHalvesAssemblageBlock> ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("andesite_encased_separate_shaft_halves_assemblage", EncasedAssemblageBlock.andesite(AssemblageSet.CREATE, EncasedSeparateShaftHalvesAssemblageBlock::new))
+    public static final BlockEntry<EncasedSeparateShaftHalvesAssemblageBlock> ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("andesite_encased_separate_shaft_halves_assemblage", EncasedAssemblageBlock.andesite(AssemblageSet.VANILLA, EncasedSeparateShaftHalvesAssemblageBlock::new))
         .initialProperties(AllBlocks.ANDESITE_ENCASED_COGWHEEL)
         .properties(BlockBehaviour.Properties::noOcclusion)
         .blockstate(EncasedAssemblageBlockDataGen.separateShaftHalvesBlockState("andesite"))
@@ -115,7 +115,7 @@ public class PetrolsPartsBlocks {
         .transform(TagGen.axeOrPickaxe())
         .register();
 
-    public static final BlockEntry<EncasedSingleShaftAssemblageBlock> ANDESITE_ENCASED_SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("andesite_encased_single_shaft_assemblage", EncasedAssemblageBlock.andesite(AssemblageSet.CREATE, EncasedSingleShaftAssemblageBlock::new))
+    public static final BlockEntry<EncasedSingleShaftAssemblageBlock> ANDESITE_ENCASED_SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("andesite_encased_single_shaft_assemblage", EncasedAssemblageBlock.andesite(AssemblageSet.VANILLA, EncasedSingleShaftAssemblageBlock::new))
         .initialProperties(ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
         .properties(BlockBehaviour.Properties::noOcclusion)
         .blockstate(EncasedAssemblageBlockDataGen.singleShaftBlockState("andesite"))
@@ -126,7 +126,7 @@ public class PetrolsPartsBlocks {
         .transform(TagGen.axeOrPickaxe())
         .register();
 
-    public static final BlockEntry<EncasedSeparateShaftHalvesAssemblageBlock> BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("brass_encased_separate_shaft_halves_assemblage", EncasedAssemblageBlock.brass(AssemblageSet.CREATE, EncasedSeparateShaftHalvesAssemblageBlock::new))
+    public static final BlockEntry<EncasedSeparateShaftHalvesAssemblageBlock> BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE = REGISTRATE.block("brass_encased_separate_shaft_halves_assemblage", EncasedAssemblageBlock.brass(AssemblageSet.VANILLA, EncasedSeparateShaftHalvesAssemblageBlock::new))
         .initialProperties(AllBlocks.BRASS_ENCASED_COGWHEEL)
         .properties(BlockBehaviour.Properties::noOcclusion)
         .blockstate(EncasedAssemblageBlockDataGen.separateShaftHalvesBlockState("brass"))
@@ -137,7 +137,7 @@ public class PetrolsPartsBlocks {
         .transform(TagGen.axeOrPickaxe())
         .register();
 
-    public static final BlockEntry<EncasedSingleShaftAssemblageBlock> BRASS_ENCASED_SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("brass_encased_single_shaft_assemblage", EncasedAssemblageBlock.brass(AssemblageSet.CREATE, EncasedSingleShaftAssemblageBlock::new))
+    public static final BlockEntry<EncasedSingleShaftAssemblageBlock> BRASS_ENCASED_SINGLE_SHAFT_ASSEMBLAGE = REGISTRATE.block("brass_encased_single_shaft_assemblage", EncasedAssemblageBlock.brass(AssemblageSet.VANILLA, EncasedSingleShaftAssemblageBlock::new))
         .initialProperties(BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE)
         .properties(BlockBehaviour.Properties::noOcclusion)
         .blockstate(EncasedAssemblageBlockDataGen.singleShaftBlockState("brass"))
@@ -150,13 +150,14 @@ public class PetrolsPartsBlocks {
 
     // BEVEL COGWHEELS
 
-    public static final BlockEntry<SingleAxisBevelCogWheelBlock> SINGLE_AXIS_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/single_axis", p -> new SingleAxisBevelCogWheelBlock(BevelCogWheelSet.CREATE, p))
+    public static final BlockEntry<SingleAxisBevelCogWheelBlock> SINGLE_AXIS_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/single_axis", p -> new SingleAxisBevelCogWheelBlock(BevelCogWheelSet.VANILLA, p))
         .initialProperties(AllBlocks.COGWHEEL)
         .properties(p -> p
             .noOcclusion()
             .noLootTable()
         ).blockstate(SingleAxisBevelCogWheelBlock::blockState)
         .transform(TagGen.axeOrPickaxe())
+        .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
         .register();
 
     public static final BlockEntry<CornerBevelCogWheelsBlock> CORNER_BEVEL_COGWHEELS = bevelCogwheel("corner", CornerBevelCogWheelsBlock::new)
@@ -192,12 +193,12 @@ public class PetrolsPartsBlocks {
     public static final BlockEntry<DualDiagonalBevelCogWheelBlock> DUAL_DIAGONAL_BEVEL_COGWHEEL = bevelCogwheel("diagonal/dual", DualDiagonalBevelCogWheelBlock::new)
         .register();
 
-    public static final BlockEntry<EncasedDualDiagonalBevelCogWheelBlock> ANDESITE_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/diagonal/encased/dual/andesite", IEncasedBevelCogWheelBlock.andesite(BevelCogWheelSet.CREATE, EncasedDualDiagonalBevelCogWheelBlock::new))
+    public static final BlockEntry<EncasedDualDiagonalBevelCogWheelBlock> ANDESITE_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/diagonal/encased/dual/andesite", IEncasedBevelCogWheelBlock.andesite(BevelCogWheelSet.VANILLA, EncasedDualDiagonalBevelCogWheelBlock::new))
         .initialProperties(AllBlocks.ANDESITE_ENCASED_COGWHEEL)
         .transform(EncasedDualDiagonalBevelCogWheelBlock.builderTransformer(AllSpriteShifts.ANDESITE_CASING, "andesite"))
         .register();
 
-    public static final BlockEntry<EncasedDualDiagonalBevelCogWheelBlock> BRASS_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/diagonal/encased/dual/brass", IEncasedBevelCogWheelBlock.brass(BevelCogWheelSet.CREATE, EncasedDualDiagonalBevelCogWheelBlock::new))
+    public static final BlockEntry<EncasedDualDiagonalBevelCogWheelBlock> BRASS_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/diagonal/encased/dual/brass", IEncasedBevelCogWheelBlock.brass(BevelCogWheelSet.VANILLA, EncasedDualDiagonalBevelCogWheelBlock::new))
         .initialProperties(AllBlocks.BRASS_ENCASED_COGWHEEL)
         .transform(EncasedDualDiagonalBevelCogWheelBlock.builderTransformer(AllSpriteShifts.BRASS_CASING, "brass"))
         .register();
@@ -377,7 +378,7 @@ public class PetrolsPartsBlocks {
     public static final void register() {};
 
     private static final <B extends Block & IBevelCogWheelBlock> BlockBuilder<B, PetrolsPartsRegistrate> bevelCogwheel(String suffix, NonNullBiFunction<Supplier<BevelCogWheelSet>, BlockBehaviour.Properties, B> factory) {
-        return REGISTRATE.block("bevel_cogwheel/" + suffix, p -> factory.apply(BevelCogWheelSet.CREATE, p))
+        return REGISTRATE.block("bevel_cogwheel/" + suffix, p -> factory.apply(BevelCogWheelSet.VANILLA, p))
             .initialProperties(SINGLE_AXIS_BEVEL_COGWHEEL)
             .properties(p -> p
                 .noOcclusion()

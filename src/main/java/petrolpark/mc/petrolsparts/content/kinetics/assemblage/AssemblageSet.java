@@ -253,7 +253,7 @@ public record AssemblageSet(
         return null;
     };
     
-    public static final Supplier<AssemblageSet> CREATE = Suppliers.memoize(() -> new AssemblageSet(
+    public static final Supplier<AssemblageSet> VANILLA = Suppliers.memoize(() -> new AssemblageSet(
         // Display
         PetrolsParts.asResource("assemblage"),
         // Blocks and BE

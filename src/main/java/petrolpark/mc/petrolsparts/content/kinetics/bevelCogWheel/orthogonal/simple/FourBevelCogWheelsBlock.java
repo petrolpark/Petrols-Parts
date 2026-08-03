@@ -10,6 +10,7 @@ import com.simibubi.create.foundation.block.IBE;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -70,6 +71,17 @@ public class FourBevelCogWheelsBlock extends SimpleBevelCogWheelBlock implements
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
         return face.getAxis() != state.getValue(EXCLUDED_AXIS);
+    };
+
+    @Override
+    public AxisDirection shaftCogAxisDirection(BlockState state) {
+        return AxisDirection.POSITIVE;
+    };
+
+    @Override
+    public Axis getPrimaryCogAxis(BlockState state) {
+        // No Shaft is ever present, and both non-excluded axes are structurally symmetric - just pick one consistently
+        return state.getValue(EXCLUDED_AXIS) != Axis.X ? Axis.X : Axis.Y;
     };
 
     @Override

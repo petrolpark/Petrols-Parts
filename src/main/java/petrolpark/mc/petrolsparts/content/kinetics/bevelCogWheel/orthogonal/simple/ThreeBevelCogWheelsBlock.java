@@ -128,6 +128,16 @@ public class ThreeBevelCogWheelsBlock extends SimpleBevelCogWheelBlock implement
     };
 
     @Override
+    public AxisDirection shaftCogAxisDirection(BlockState state) {
+        return state.getValue(SHAFT) ? state.getValue(EXCLUDED_FACE).getOpposite().getAxisDirection() : AxisDirection.POSITIVE;
+    };
+
+    @Override
+    public Axis getPrimaryCogAxis(BlockState state) {
+        return state.getValue(EXCLUDED_FACE).getAxis();
+    };
+
+    @Override
     protected boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState newState) {
         return false;
     };

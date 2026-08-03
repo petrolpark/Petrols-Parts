@@ -57,7 +57,7 @@ public class CompositeBevelCogWheelBlockEntity extends CompositeKineticBlockEnti
 
         @Override
         public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
-            return SimpleBevelCogWheelBlockEntity.propagateRotationTo(stateFrom, diff, connectedViaAxes);
+            return SimpleBevelCogWheelBlockEntity.propagateRotationTo(this, target, stateFrom, stateTo, diff, connectedViaAxes);
         };
 
         @Override

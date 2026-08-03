@@ -24,12 +24,34 @@
     },
     {
       "apply": {
+        "model": "petrolsparts:block/bevel_cogwheel/cog_cap",
+        "x": 90,
+        "y": 90
+      },
+      "when": {
+        "type": "bottom_shaft|both",
+        "axis": "x"
+      }
+    },
+    {
+      "apply": {
         "model": "petrolsparts:block/bevel_cogwheel/four_teeth",
         "x": 270,
         "y": 90
       },
       "when": {
         "type": "top|top_shaft|both",
+        "axis": "x"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/bevel_cogwheel/cog_cap",
+        "x": 270,
+        "y": 90
+      },
+      "when": {
+        "type": "bottom_shaft|both",
         "axis": "x"
       }
     },
@@ -53,11 +75,30 @@
     },
     {
       "apply": {
+        "model": "petrolsparts:block/bevel_cogwheel/cog_cap"
+      },
+      "when": {
+        "type": "bottom_shaft|both",
+        "axis": "y"
+      }
+    },
+    {
+      "apply": {
         "model": "petrolsparts:block/bevel_cogwheel/four_teeth",
         "x": 180
       },
       "when": {
         "type": "top|top_shaft|both",
+        "axis": "y"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/bevel_cogwheel/cog_cap",
+        "x": 180
+      },
+      "when": {
+        "type": "bottom_shaft|both",
         "axis": "y"
       }
     },
@@ -85,12 +126,34 @@
     },
     {
       "apply": {
+        "model": "petrolsparts:block/bevel_cogwheel/cog_cap",
+        "x": 90,
+        "y": 180
+      },
+      "when": {
+        "type": "bottom_shaft|both",
+        "axis": "z"
+      }
+    },
+    {
+      "apply": {
         "model": "petrolsparts:block/bevel_cogwheel/four_teeth",
         "x": 270,
         "y": 180
       },
       "when": {
         "type": "top|top_shaft|both",
+        "axis": "z"
+      }
+    },
+    {
+      "apply": {
+        "model": "petrolsparts:block/bevel_cogwheel/cog_cap",
+        "x": 270,
+        "y": 180
+      },
+      "when": {
+        "type": "bottom_shaft|both",
         "axis": "z"
       }
     }

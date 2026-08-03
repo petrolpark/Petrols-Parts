@@ -10,6 +10,7 @@ import com.google.common.collect.Lists;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem.DiagonalCogHelper;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
+import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.tterrag.registrate.util.RegistrateDistExecutor;
 import com.tterrag.registrate.util.nullness.NonNullConsumer;
 import com.tterrag.registrate.util.nullness.NonNullSupplier;
@@ -22,6 +23,7 @@ import net.createmod.catnip.placement.PlacementOffset;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -30,7 +32,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -39,7 +40,8 @@ import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelGhostBlockRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.ISingleDiagonalBevelCogWheelBlock;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SingleAxisBevelCogWheelBlock;
 
 public class BevelCogWheelBlockItem extends BlockItem {
 
@@ -63,25 +65,25 @@ public class BevelCogWheelBlockItem extends BlockItem {
     };
 
     @Override
-    public Block getBlock() {
+    public SingleAxisBevelCogWheelBlock getBlock() {
         return getSet().singleAxisBlock().get();
     };
 
-    @Override
-    public BevelCogWheelBlockPlaceContext updatePlacementContext(BlockPlaceContext context) {
-        if (!(context instanceof BevelCogWheelBlockPlaceContext bevelCogWheelContext)) return null; // Cast should always succeed
-        final BevelCogWheelPart part = getSet().getTargetedPart(context);
-        if (switch (part) {
-            case BevelCogWheelPart.Cog cog -> {
-                yield bevelCogWheelContext.getClickedFace() == cog.face;
-            } case BevelCogWheelPart.Shaft shaft -> {
-                yield bevelCogWheelContext.getClickedFace().getAxis() == shaft.axis;
-            } case null -> {
-                yield false;
-            }
-        }) bevelCogWheelContext.dontReplaceClicked();
-        return bevelCogWheelContext.canPlace() ? bevelCogWheelContext : null;
-    };
+    // @Override
+    // public BevelCogWheelBlockPlaceContext updatePlacementContext(BlockPlaceContext context) {
+    //     if (!(context instanceof BevelCogWheelBlockPlaceContext bevelCogWheelContext)) return null; // Cast should always succeed
+    //     final BevelCogWheelPart part = getSet().getTargetedPart(context);
+    //     if (switch (part) {
+    //         case BevelCogWheelPart.Cog cog -> {
+    //             yield bevelCogWheelContext.getClickedFace() == cog.face;
+    //         } case BevelCogWheelPart.Shaft shaft -> {
+    //             yield bevelCogWheelContext.getClickedFace().getAxis() == shaft.axis;
+    //         } case null -> {
+    //             yield false;
+    //         }
+    //     }) bevelCogWheelContext.dontReplaceClicked();
+    //     return bevelCogWheelContext.canPlace() ? bevelCogWheelContext : null;
+    // };
 
     @Override
     public InteractionResult place(BlockPlaceContext context) {
@@ -90,22 +92,32 @@ public class BevelCogWheelBlockItem extends BlockItem {
 
     @Override
     protected BlockState getPlacementState(BlockPlaceContext context) {
-        BlockState state = getBlock().defaultBlockState();
+        final BlockState newState = getBlock().defaultBlockState()
+            .setValue(SingleAxisBevelCogWheelBlock.AXIS, context.getClickedFace().getAxis())
+            .setValue(SingleAxisBevelCogWheelBlock.TYPE, context.getClickedFace().getAxisDirection() == AxisDirection.POSITIVE ? SingleAxisBevelCogWheelBlock.Type.BOTTOM : SingleAxisBevelCogWheelBlock.Type.TOP);
         final BlockState existingState = context.getLevel().getBlockState(context.getClickedPos());
 
-        return null; //TODO
+        if (existingState.canBeReplaced(context)) return newState;
+
+        if (existingState.getBlock() instanceof IOrthogonalBevelCogWheelBlock bevelBlock && bevelBlock.getSet() == getSet()) {
+           return bevelBlock.withPart(existingState, getSet().cogParts().get(context.getClickedFace().getOpposite()));
+        } else if (getSet().shaftBlock().has(existingState)) {
+            return getBlock().withPart(newState, getSet().shaftParts().get(existingState.getValue(ShaftBlock.AXIS)));
+        };
+
+        return null;
     };
 
     public class BevelCogWheelBlockPlaceContext extends BlockPlaceContext {
 
         public BevelCogWheelBlockPlaceContext(UseOnContext context) {
             super(context);
-            if (!replaceClicked) replaceClicked = getSet().isReplaceable(getLevel().getBlockState(context.getHitResult().getBlockPos()));
+            // if (!replaceClicked) replaceClicked = getSet().isReplaceable(getLevel().getBlockState(context.getHitResult().getBlockPos()));
         };
 
-        public void dontReplaceClicked() {
-            this.replaceClicked = false;
-        };
+        // public void dontReplaceClicked() {
+        //     this.replaceClicked = false;
+        // };
 
         @Override
         public boolean canPlace() {

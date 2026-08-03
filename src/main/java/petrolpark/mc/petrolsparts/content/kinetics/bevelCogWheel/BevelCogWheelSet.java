@@ -147,7 +147,8 @@ public record BevelCogWheelSet(
     };
 
     public boolean isReplaceable(BlockState state) {
-        return (state.getBlock() instanceof IOrthogonalBevelCogWheelBlock block && block.getSet() == this)
+        return state.canBeReplaced()
+            || (state.getBlock() instanceof IOrthogonalBevelCogWheelBlock block && block.getSet() == this)
             || shaftBlock().has(state);
     };
 
@@ -164,7 +165,7 @@ public record BevelCogWheelSet(
         return null;
     };
 
-    public static final Supplier<BevelCogWheelSet> CREATE = Suppliers.memoize(() -> new BevelCogWheelSet(
+    public static final Supplier<BevelCogWheelSet> VANILLA = Suppliers.memoize(() -> new BevelCogWheelSet(
         // Display
         PetrolsParts.asResource("bevel_cogwheel"),
         // Blocks (orthogonal)

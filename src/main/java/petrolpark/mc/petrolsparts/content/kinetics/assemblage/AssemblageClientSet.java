@@ -29,7 +29,7 @@ public record AssemblageClientSet(
     };
 
     @OnlyIn(Dist.CLIENT)
-    public static final AssemblageClientSet CREATE = new AssemblageClientSet(
+    private static final AssemblageClientSet VANILLA = new AssemblageClientSet(
         // Cogwheel models
         AllPartialModels.SHAFTLESS_COGWHEEL, AllPartialModels.SHAFTLESS_LARGE_COGWHEEL,
         PetrolsPartsPartialModels.COAXIAL_COGWHEEL, PetrolsPartsPartialModels.LARGE_COAXIAL_COGWHEEL,
@@ -41,7 +41,7 @@ public record AssemblageClientSet(
         AllPartialModels.COGWHEEL_SHAFT, PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_TOP, PetrolsPartsPartialModels.ASSEMBLAGE_SHAFT_BOTTOM
     );
 
-    public static final AssemblageClientSet create() {
-        return CREATE;
+    public static final AssemblageClientSet vanilla() {
+        return VANILLA;
     };
 };

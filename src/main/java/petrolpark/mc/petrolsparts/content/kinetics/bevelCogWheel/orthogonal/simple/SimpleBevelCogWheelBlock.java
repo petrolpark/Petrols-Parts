@@ -7,6 +7,7 @@ import com.simibubi.create.content.contraptions.StructureTransform;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
@@ -33,6 +34,15 @@ public abstract class SimpleBevelCogWheelBlock extends MultiPartKineticBlock<Bev
             .setValue(WATERLOGGED, false)
         );
     };
+
+    public abstract AxisDirection shaftCogAxisDirection(BlockState state);
+
+    /**
+     * The axis of this block's designated 'primary' Cog - its Shaft's Cog, if it has one; otherwise a fixed (but
+     * orientation-covariant) choice of one of its Cogs' axes. Used as the phase-zero reference when offsetting
+     * other Cogs' teeth so they mesh correctly - see {@link SimpleBevelCogWheelRenderer}.
+     */
+    public abstract Axis getPrimaryCogAxis(BlockState state);
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {

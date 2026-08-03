@@ -50,12 +50,12 @@ public class CornerBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBlo
         if (!(part instanceof BevelCogWheelPart.Cog)) return null;
         final Orientation orientation = state.getValue(ORIENTATION);
         if (part == getSet().cogParts().get(orientation.top.getOpposite())) {
-            return getSet().threeBlock().getDefaultState()
+            return getSet().threeAndShaftBlock().getDefaultState()
                 .setValue(ThreeBevelCogWheelsBlock.EXCLUDED_FACE, orientation.front.getOpposite())
                 .setValue(ThreeBevelCogWheelsBlock.OTHER_COGS_ON_FIRST_AXIS, orientation.top.getAxis() == Axis.X)
                 .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
         } else if (part == getSet().cogParts().get(orientation.front.getOpposite())) {
-            return getSet().threeBlock().getDefaultState()
+            return getSet().threeAndShaftBlock().getDefaultState()
                 .setValue(ThreeBevelCogWheelsBlock.EXCLUDED_FACE, orientation.top.getOpposite())
                 .setValue(ThreeBevelCogWheelsBlock.OTHER_COGS_ON_FIRST_AXIS, orientation.front.getAxis() == Axis.Y)
                 .setValue(WATERLOGGED, state.getValue(WATERLOGGED));

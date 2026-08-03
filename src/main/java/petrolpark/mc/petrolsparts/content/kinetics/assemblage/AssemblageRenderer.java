@@ -24,8 +24,8 @@ import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 
 public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockEntity> {
 
-    public static final AssemblageRenderer create(BlockEntityRendererProvider.Context context) {
-        return new AssemblageRenderer(AssemblageClientSet.CREATE, context);
+    public static final AssemblageRenderer vanilla(BlockEntityRendererProvider.Context context) {
+        return new AssemblageRenderer(AssemblageClientSet.vanilla(), context);
     };
 
     protected final AssemblageClientSet set;

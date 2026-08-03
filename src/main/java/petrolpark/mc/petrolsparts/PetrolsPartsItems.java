@@ -24,20 +24,20 @@ public class PetrolsPartsItems {
     COAXIAL_COGWHEEL = assemblageCog("coaxial_cogwheel", AssemblageCog.SMALL_COAXIAL),
     LARGE_COAXIAL_COGWHEEL = assemblageCog("large_coaxial_cogwheel", AssemblageCog.LARGE_COAXIAL);
 
-    public static final ItemEntry<ShaftHalfBlockItem> SHAFT_HALF = REGISTRATE.item("shaft_half", p -> new ShaftHalfBlockItem(AssemblageSet.CREATE, p))
-        .onRegister(AssemblageBlockItem.registerClientSet(AssemblageClientSet::create))
+    public static final ItemEntry<ShaftHalfBlockItem> SHAFT_HALF = REGISTRATE.item("shaft_half", p -> new ShaftHalfBlockItem(AssemblageSet.VANILLA, p))
+        .onRegister(AssemblageBlockItem.registerClientSet(AssemblageClientSet::vanilla))
         .register();
 
-    public static final ItemEntry<BevelCogWheelBlockItem> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", p -> new BevelCogWheelBlockItem(BevelCogWheelSet.CREATE, p))
-        .onRegister(BevelCogWheelBlockItem.registerClientSet(BevelCogWheelClientSet::create))
+    public static final ItemEntry<BevelCogWheelBlockItem> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", p -> new BevelCogWheelBlockItem(BevelCogWheelSet.VANILLA, p))
+        .onRegister(BevelCogWheelBlockItem.registerClientSet(BevelCogWheelClientSet::vanilla))
         .register();
 
     public static final void register() {};
 
     private static final ItemEntry<AssemblageCogWheelBlockItem> assemblageCog(String name, AssemblageCog cog) {
-        return REGISTRATE.item(name, p -> new AssemblageCogWheelBlockItem(AssemblageSet.CREATE, cog, p))
+        return REGISTRATE.item(name, p -> new AssemblageCogWheelBlockItem(AssemblageSet.VANILLA, cog, p))
             .transform(PPCStress.setNoImpact())
-            .onRegister(AssemblageBlockItem.registerClientSet(AssemblageClientSet::create))
+            .onRegister(AssemblageBlockItem.registerClientSet(AssemblageClientSet::vanilla))
             .register();
     };
 };

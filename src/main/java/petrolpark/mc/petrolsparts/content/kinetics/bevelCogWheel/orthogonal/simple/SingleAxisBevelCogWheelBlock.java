@@ -119,7 +119,7 @@ public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock imple
                     yield getSet().cornerBlock().getDefaultState()
                         .setValue(CornerBevelCogWheelsBlock.ORIENTATION, Orientation.fromTopAndFront(cog.face, Direction.get(type.hasTopCog() ? AxisDirection.POSITIVE : AxisDirection.NEGATIVE, axis)).asEdge())
                         .setValue(CornerBevelCogWheelsBlock.SHAFT, type.hasShaft()
-                            ? axis.ordinal() < cog.face.ordinal()
+                            ? axis.ordinal() > cog.face.ordinal()
                                 ? CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS
                                 : CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS
                             : CornerBevelCogWheelsBlock.ShaftType.NONE
@@ -155,6 +155,16 @@ public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock imple
         final SingleAxisBevelCogWheelBlock.Type type = state.getValue(TYPE);
         if (type.hasShaft()) return true;
         return face.getAxisDirection() == AxisDirection.POSITIVE == (type == Type.TOP);
+    };
+
+    @Override
+    public AxisDirection shaftCogAxisDirection(BlockState state) {
+        return AxisDirection.POSITIVE;
+    };
+
+    @Override
+    public Axis getPrimaryCogAxis(BlockState state) {
+        return state.getValue(AXIS);
     };
 
     @Override
@@ -228,6 +238,7 @@ public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock imple
 
         final ModelFile cog = prov.models().getExistingFile(ctx.get().getSet().id().withPrefix("block/").withSuffix("/four_teeth"));
         final ModelFile shaft = new UncheckedModelFile(ctx.get().getSet().shaftBlock().getId().withPrefix("block/"));
+        final ModelFile cogCap = prov.models().getExistingFile(ctx.get().getSet().id().withPrefix("block/").withSuffix("/cog_cap"));
 
         for (final Axis axis : Iterate.axes) {
 
@@ -252,12 +263,28 @@ public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock imple
                     .condition(TYPE, Type.BOTTOM, Type.BOTTOM_SHAFT, Type.BOTH)
                 .end()
                 .part()
+                    .modelFile(cogCap)
+                    .rotationX(rotX)
+                    .rotationY(rotY)
+                    .addModel()
+                    .condition(AXIS, axis)
+                    .condition(TYPE, Type.TOP_SHAFT, Type.BOTH)
+                .end()
+                .part()
                     .modelFile(cog)
                     .rotationX(rotX + 180)
                     .rotationY(rotY)
                     .addModel()
                     .condition(AXIS, axis)
                     .condition(TYPE, Type.TOP, Type.TOP_SHAFT, Type.BOTH)
+                .end()
+                .part()
+                    .modelFile(cogCap)
+                    .rotationX(rotX + 180)
+                    .rotationY(rotY)
+                    .addModel()
+                    .condition(AXIS, axis)
+                    .condition(TYPE, Type.BOTTOM_SHAFT, Type.BOTH)
                 .end();
         };
     };
