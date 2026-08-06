@@ -22,7 +22,8 @@ import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogw
 public class RotationPropagatorMixin {
     
     /**
-     * Allow Kinetic Blocks to rotate the Gear end of a Long Shaft, and Cogwheels to connect to Colossal Cogwheel
+     * Allow Cogwheels to connect to Colossal Cogwheel
+     * TODO check if still necessary after other mixin that checks propagation both ways
      * @param from
      * @param to
      * @param cir

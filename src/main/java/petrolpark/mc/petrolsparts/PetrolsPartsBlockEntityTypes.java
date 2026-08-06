@@ -35,15 +35,19 @@ import petrolpark.mc.petrolsparts.content.kinetics.hydraulicTransmission.Hydraul
 import petrolpark.mc.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementRenderer;
+import petrolpark.mc.petrolsparts.content.kinetics.overloadClutch.OverloadClutchBlockEntity;
+import petrolpark.mc.petrolsparts.content.kinetics.overloadClutch.OverloadClutchRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetRenderer;
-import petrolpark.mc.petrolsparts.content.kinetics.transmission.TransmissionBlockEntity;
-import petrolpark.mc.petrolsparts.content.kinetics.transmission.TransmissionRenderer;
+import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.TransmissionBlockEntity;
+import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.TransmissionRenderer;
 import petrolpark.mc.petrolsparts.content.legacy.LegacyCoaxialGearBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeRenderer;
 import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotBlockEntity;
 import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotRenderer;
+import petrolpark.mc.petrolsparts.content.processing.frictionHeater.FrictionHeaterBlockEntity;
+import petrolpark.mc.petrolsparts.content.processing.frictionHeater.FrictionHeaterRenderer;
 
 public class PetrolsPartsBlockEntityTypes {
     
@@ -157,9 +161,15 @@ public class PetrolsPartsBlockEntityTypes {
         .<DifferentialBlockEntity.Part>uninstantiableBlockEntity("differential_part")
         .register();
 
-    public static final BlockEntityEntry<DummyDifferentialBlockEntity> DUMMY_DIFFERENTIAL = REGISTRATE
+    @Deprecated public static final BlockEntityEntry<DummyDifferentialBlockEntity> DUMMY_DIFFERENTIAL = REGISTRATE
         .createBlockEntity("dummy_differential", DummyDifferentialBlockEntity::new)
         .validBlock(PetrolsPartsBlocks.DUMMY_DIFFERENTIAL)
+        .register();
+
+    public static final BlockEntityEntry<FrictionHeaterBlockEntity> FRICTION_HEATER = REGISTRATE
+        .createBlockEntity("friction_heater", FrictionHeaterBlockEntity::new)
+        .validBlock(PetrolsPartsBlocks.FRICTION_HEATER)
+        .renderer(() -> FrictionHeaterRenderer::new)
         .register();
 
     public static final BlockEntityEntry<HydraulicTransmissionBlockEntity> HYDRAULIC_TRANSMISSION = REGISTRATE
@@ -176,11 +186,25 @@ public class PetrolsPartsBlockEntityTypes {
         .register();
 
     public static final BlockEntityEntry<MovementBlockEntity.GeneratingPart> MOVEMENT_GENERATING_PART = REGISTRATE
-        .<MovementBlockEntity.GeneratingPart>blockEntity("movement_part", (t, p, s) -> new MovementBlockEntity(MOVEMENT.get(), p, s).new GeneratingPart())
+        .<MovementBlockEntity.GeneratingPart>uninstantiableBlockEntity("movement/generating_part")
         .register();
 
-    public static final BlockEntityEntry<MovementBlockEntity.GeneratingPart> MOVEMENT_WINDING_PART = REGISTRATE
-        .<MovementBlockEntity.GeneratingPart>blockEntity("winding_part", (t, p, s) -> new MovementBlockEntity(MOVEMENT.get(), p, s).new GeneratingPart())
+    public static final BlockEntityEntry<MovementBlockEntity.WindingPart> MOVEMENT_WINDING_PART = REGISTRATE
+        .<MovementBlockEntity.WindingPart>uninstantiableBlockEntity("movement/winding_part")
+        .register();
+
+    public static final BlockEntityEntry<OverloadClutchBlockEntity> OVERLOAD_CLUTCH = REGISTRATE
+        .createBlockEntity("overload_clutch", OverloadClutchBlockEntity::new)
+        .validBlock(PetrolsPartsBlocks.OVERLOAD_CLUTCH)
+        .renderer(() -> OverloadClutchRenderer::new)
+        .register();
+
+    public static final BlockEntityEntry<OverloadClutchBlockEntity.GeneratingPart> OVERLOAD_CLUTCH_GENERATING_PART = REGISTRATE
+        .<OverloadClutchBlockEntity.GeneratingPart>uninstantiableBlockEntity("overload_clutch/generating_part")
+        .register();
+
+    public static final BlockEntityEntry<OverloadClutchBlockEntity.ImpactPart> OVERLOAD_CLUTCH_IMPACT_PART = REGISTRATE
+        .<OverloadClutchBlockEntity.ImpactPart>uninstantiableBlockEntity("overload_clutch/impact_part")
         .register();
 
     public static final BlockEntityEntry<PlanetaryGearsetBlockEntity> PLANETARY_GEARSET = REGISTRATE

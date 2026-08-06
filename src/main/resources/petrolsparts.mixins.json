@@ -11,6 +11,7 @@
         "AssemblyOperatorBlockItemMixin",
         "ICogWheelMixin",
         "MechanicalPressBlockEntityMixin",
+        "PoleHelperMixin",
         "RecipeManagerMixin",
         "RotationPropagatorMixin",
         "SpoutBlockEntityMixin"

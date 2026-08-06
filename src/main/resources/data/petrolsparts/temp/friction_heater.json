@@ -1,0 +1,24 @@
+{
+  "neoforge:conditions": [
+    {
+      "type": "petrolpark:config_bool",
+      "key": "petrolsparts:common.recipes.frictionHeater"
+    }
+  ],
+  "type": "create:mechanical_crafting",
+  "pattern": [
+    "CHHC"
+  ],
+  "accept_mirrored": true,
+  "key": {
+    "C":{
+      "item": "create:cogwheel"
+    },
+    "H": {
+      "item": "petrolsparts:high_friction_compound"
+    }
+  },
+  "result": {
+    "id": "petrolsparts:friction_heater"
+  }
+}

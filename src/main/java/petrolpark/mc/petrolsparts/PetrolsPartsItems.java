@@ -4,6 +4,7 @@ import static petrolpark.mc.petrolsparts.PetrolsParts.REGISTRATE;
 
 import com.tterrag.registrate.util.entry.ItemEntry;
 
+import net.minecraft.world.item.Item;
 import petrolpark.mc.petrolsparts.config.PPCStress;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageClientSet;
@@ -30,6 +31,9 @@ public class PetrolsPartsItems {
 
     public static final ItemEntry<BevelCogWheelBlockItem> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", p -> new BevelCogWheelBlockItem(BevelCogWheelSet.VANILLA, p))
         .onRegister(BevelCogWheelBlockItem.registerClientSet(BevelCogWheelClientSet::vanilla))
+        .register();
+
+    public static final ItemEntry<Item> HIGH_FRICTION_COMPOUND = REGISTRATE.item("high_friction_compound", Item::new)
         .register();
 
     public static final void register() {};

@@ -15,15 +15,6 @@ public class AssemblageScenes {
         scene.title("assemblage.shaftless_cogwheel", "This text is defined in a language file");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
-        
-        scene.markAsFinished();
-    };
-
-    public static final void shafts(SceneBuilder sceneIn, SceneBuildingUtil util) {
-        final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
-        scene.title("assemblage.shaft", "This text is defined in a language file");
-		scene.configureBasePlate(0, 0, 5);
-		scene.showBasePlate();
 
         scene.world().showSection(util.select().position(1, 0, 5), Direction.NORTH);
         scene.idle(5);
@@ -33,6 +24,15 @@ public class AssemblageScenes {
         scene.world().showSection(util.select().position(2, 1, 3), Direction.DOWN);
         scene.idle(5);
         scene.world().showSection(util.select().position(3, 1, 3), Direction.DOWN);
+        
+        scene.markAsFinished();
+    };
+
+    public static final void shafts(SceneBuilder sceneIn, SceneBuildingUtil util) {
+        final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
+        scene.title("assemblage.shaft", "This text is defined in a language file");
+		scene.configureBasePlate(0, 0, 5);
+		scene.showBasePlate();
         
         scene.markAsFinished();
     };

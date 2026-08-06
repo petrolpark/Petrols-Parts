@@ -16,6 +16,7 @@ import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageScenes;
+import petrolpark.mc.petrolsparts.content.processing.PetrolsPartsProcessingScenes;
 
 public class PetrolsPartsPonderPlugin implements PonderPlugin {
 
@@ -46,17 +47,20 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
         )
             .addStoryBoard("assemblage/encasing", AssemblageScenes::encasing);
 
+        // Bevel Cogwheel
+        //TODO
+
         // Brass Depot
         itemProviderHelper.forComponents(PetrolsPartsBlocks.BRASS_DEPOT)
-            .addStoryBoard("brass_depot", PetrolsPartsScenes::brassDepot);
+            .addStoryBoard("brass_depot", PetrolsPartsProcessingScenes::brassDepot);
 
         // Colossal Cogwheel
         itemProviderHelper.forComponents(PetrolsPartsBlocks.COLOSSAL_COGWHEEL)
             .addStoryBoard("colossal_cogwheel", PetrolsPartsScenes::colossalCogwheel);
 
-        // Differential
-        itemProviderHelper.forComponents(PetrolsPartsBlocks.LEGACY_DIFFERENTIAL)
-            .addStoryBoard("differential", PetrolsPartsScenes::differential);
+        // // Differential
+        // itemProviderHelper.forComponents(PetrolsPartsBlocks.LEGACY_DIFFERENTIAL)
+        //     .addStoryBoard("differential", PetrolsPartsScenes::differential);
 
         // Corner Shaft
         itemProviderHelper.forComponents(PetrolsPartsBlocks.CORNER_SHAFT)
@@ -75,6 +79,7 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
         itemProviderHelper.forComponents(PetrolsPartsBlocks.PLANETARY_GEARSET)
             .addStoryBoard("planetary_gearset", PetrolsPartsScenes::planetaryGearset);
     
+        // Pneumatic Tube
         itemProviderHelper.forComponents(PetrolsPartsBlocks.PNEUMATIC_TUBE)
             .addStoryBoard("pneumatic_tube", PetrolsPartsScenes::pneumaticTube);
     };
@@ -100,14 +105,16 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .add(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL)
             .add(PetrolsPartsItems.BEVEL_COGWHEEL)
             .add(PetrolsPartsBlocks.COLOSSAL_COGWHEEL)
-            .add(PetrolsPartsBlocks.LEGACY_DIFFERENTIAL)
+            .add(PetrolsPartsBlocks.DIFFERENTIAL)
             .add(PetrolsPartsBlocks.CORNER_SHAFT)
             .add(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION)
+            .add(PetrolsPartsBlocks.OVERLOAD_CLUTCH)
             .add(PetrolsPartsBlocks.PLANETARY_GEARSET)
             .add(PetrolsPartsBlocks.REDSTONE_TRANSMISSION)
         ;
 
         HELPER.addToTag(AllCreatePonderTags.KINETIC_APPLIANCES)
+            .add(PetrolsPartsBlocks.FRICTION_HEATER)
             .add(PetrolsPartsBlocks.MOVEMENT)
             .add(PetrolsPartsBlocks.PNEUMATIC_TUBE);
 
@@ -115,6 +122,7 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .add(PetrolsPartsBlocks.PNEUMATIC_TUBE);
 
         HELPER.addToTag(AllCreatePonderTags.REDSTONE)
+            .add(PetrolsPartsBlocks.OVERLOAD_CLUTCH)
             .add(PetrolsPartsBlocks.REDSTONE_TRANSMISSION);
     };
 

@@ -11,6 +11,10 @@ public class PPCServer extends ConfigBase {
         public final ConfigFloat pneumaticTubeCost = f(0.5f, 0f, Float.MAX_VALUE, "pneumaticTubeCost", Comments.pneumaticTubeCost);
         public final ConfigFloat pneumaticTubeSpacing = f(1f, 0f, Float.MAX_VALUE, "pneumaticTubeSpacing", Comments.pneumaticTubeSpacing, Comments.meters);
 
+    public final ConfigGroup frictionHeater = group(1, "frictionHeater", "Friction Heaters");
+        public final ConfigInt heatedMinSpeedDifference = i(128, 1, "heatedMinSpeedDifference", "The minimum speed difference between the two wheels of a Friction Heater to be considered Heated");
+        public final ConfigInt superHeatedMinSpeedDifference = i(288, 2, "superHeatedMinSpeedDifference", "The minimum speed difference between the two wheels of a Friction Heater to be considered Superheated");
+
     @Override
     public String getName() {
         return "server";

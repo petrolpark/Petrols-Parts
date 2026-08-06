@@ -33,22 +33,5 @@ public class EncasedDiagonalBevelCogWheelCTBehaviour extends EncasedCTBehaviour 
 			return face != Direction.SOUTH;
 		return super.reverseUVsVertically(state, face);
 	};
-
-	@Override
-	protected boolean reverseUVsHorizontally(BlockState state, Direction face) {
-		// if (large)
-		// 	return super.reverseUVsHorizontally(state, face);
-
-		// if (state.getValue(AXIS)
-		// 	.isVertical()
-		// 	&& face.getAxis()
-		// 		.isHorizontal())
-		// 	return true;
-
-		// if (state.getValue(AXIS) == Axis.Z && face == Direction.DOWN)
-		// 	return true;
-
-		return super.reverseUVsHorizontally(state, face);
-	};
     
 };

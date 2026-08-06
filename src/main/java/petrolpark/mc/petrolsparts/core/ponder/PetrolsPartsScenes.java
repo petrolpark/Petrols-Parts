@@ -1,10 +1,6 @@
 package petrolpark.mc.petrolsparts.core.ponder;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
-import com.simibubi.create.content.fluids.spout.SpoutBlockEntity;
-import com.simibubi.create.content.kinetics.press.MechanicalPressBlockEntity;
-import com.simibubi.create.content.kinetics.press.PressingBehaviour;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 
 import net.createmod.catnip.math.Pointing;
@@ -20,7 +16,6 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.core.client.ponder.instruction.CameraShakeInstruction;
@@ -31,137 +26,6 @@ import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeB
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeTransportInstruction;
 
 public class PetrolsPartsScenes {
-
-    public static final void brassDepot(SceneBuilder sceneIn, SceneBuildingUtil util) {
-        final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
-        scene.title("brass_depot", "This text is defined in a language file");
-		scene.configureBasePlate(0, 0, 5);
-		scene.showBasePlate();
-        scene.world().setBlock(util.grid().at(3, 2, 2), Blocks.WATER.defaultBlockState(), false);
-        scene.idle(10);
-
-        final BlockPos depotPos = util.grid().at(2, 1, 2);
-        final BlockPos abovePos = depotPos.above(2);
-
-        scene.world().showSection(util.select().position(2, 1, 2), Direction.DOWN);
-        scene.idle(10);
-		final Vec3 filterPos = util.vector().blockSurface(depotPos, Direction.WEST);
-        scene.overlay().showFilterSlotInput(filterPos, Direction.WEST, 60);
-		scene.overlay().showText(60)
-			.attachKeyFrame()
-			.text("This text is defined in a language file")
-			.placeNearTarget()
-			.pointAt(filterPos);
-		scene.idle(70);
-
-        scene.world().showSection(util.select().position(abovePos), Direction.SOUTH);
-		scene.world().createItemOnBeltLike(depotPos, Direction.NORTH, new ItemStack(Items.BUCKET));
-		scene.idle(20);
-		scene.world().modifyBlockEntityNBT(util.select().position(abovePos), SpoutBlockEntity.class, nbt -> nbt.putInt("ProcessingTicks", 20));
-		scene.idle(20);
-		scene.world().removeItemsFromBelt(depotPos);
-		scene.world().createItemOnBeltLike(depotPos, Direction.UP, new ItemStack(Items.WATER_BUCKET));
-		scene.world().modifyBlockEntityNBT(util.select().position(abovePos), SpoutBlockEntity.class, nbt -> nbt.putBoolean("Splash", true));
-		scene.idle(30);
-		scene.world().removeItemsFromBelt(depotPos);
-		scene.world().hideSection(util.select().position(abovePos), Direction.SOUTH);
-		scene.idle(20);
-		final ElementLink<WorldSectionElement> pressLink = scene.world().showIndependentSection(util.select().position(abovePos.south()), Direction.SOUTH);
-		scene.world().moveSection(pressLink, util.vector().of(0d, 0d, -1d), 0);
-
-        scene.overlay().showText(60)
-            .placeNearTarget()
-            .pointAt(util.vector().blockSurface(abovePos, Direction.WEST))
-            .text("This text is defined in a language file");
-
-		final BlockPos pressPos = abovePos.south();
-		final ItemStack copper = new ItemStack(Items.COPPER_INGOT);
-		scene.world().createItemOnBeltLike(depotPos, Direction.NORTH, copper);
-		final Vec3 depotCenter = util.vector().centerOf(depotPos);
-		scene.idle(10);
-		scene.world().modifyBlockEntity(pressPos, MechanicalPressBlockEntity.class, pte -> pte.getPressingBehaviour().start(PressingBehaviour.Mode.BELT));
-		scene.idle(15);
-		scene.world().modifyBlockEntity(pressPos, MechanicalPressBlockEntity.class, pte -> pte.getPressingBehaviour().makePressingParticleEffect(depotCenter.add(0, 8 / 16f, 0), copper));
-		scene.world().removeItemsFromBelt(depotPos);
-		scene.world().createItemOnBeltLike(depotPos, Direction.UP, AllItems.COPPER_SHEET.asStack());
-		scene.idle(20);
-		scene.world().hideIndependentSection(pressLink, Direction.SOUTH);
-        scene.world().removeItemsFromBelt(depotPos);
-		scene.idle(10);
-
-        
-        final BlockPos deployerPos = pressPos.south();
-        final ElementLink<WorldSectionElement> deployerLink = scene.world().showIndependentSection(util.select().position(deployerPos), Direction.SOUTH);
-		scene.world().moveSection(deployerLink, util.vector().of(0d, 0d, -2d), 0);
-		final ItemStack strippedWood = new ItemStack(Items.STRIPPED_SPRUCE_LOG);
-		scene.world().createItemOnBeltLike(depotPos, Direction.NORTH, strippedWood);
-		scene.idle(10);
-		scene.world().moveDeployer(deployerPos, 1f, 10);
-		scene.idle(15);
-		scene.world().removeItemsFromBelt(depotPos);
-		scene.world().createItemOnBeltLike(depotPos, Direction.UP, AllBlocks.ANDESITE_CASING.asStack());
-        scene.world().moveDeployer(deployerPos, -1f, 10);
-		scene.idle(20);
-		scene.world().hideIndependentSection(deployerLink, Direction.SOUTH);
-		scene.idle(10);
-
-		final Selection fanSelect = util.select().fromTo(4, 1, 3, 5, 2, 2)
-			.add(util.select().position(3, 1, 2))
-			.add(util.select().position(5, 0, 2));
-		scene.world().showSection(fanSelect, Direction.SOUTH);
-        final ElementLink<WorldSectionElement> waterLink = scene.world().showIndependentSection(util.select().position(3, 1, 0), Direction.SOUTH);
-		scene.world().moveSection(waterLink, util.vector().of(0, 1, 2), 0);
-		scene.idle(30);
-
-		scene.world().hideSection(fanSelect, Direction.SOUTH);
-        scene.world().hideIndependentSection(waterLink, Direction.SOUTH);
-    };
-
-    public static void coaxialGearShaftless(SceneBuilder baseScene, SceneBuildingUtil util) {
-        CreateSceneBuilder scene = new CreateSceneBuilder(baseScene);
-        scene.title("coaxial_gear_shaftless", "This text is defined in a language file.");
-        scene.configureBasePlate(0, 0, 5);
-        scene.showBasePlate();
-
-        scene.idle(5);
-        scene.world().showSection(util.select().position(2, 0, 5), Direction.NORTH);
-        scene.idle(5);
-        scene.world().showSection(util.select().fromTo(3, 1, 2, 3, 1, 5), Direction.DOWN);
-        scene.idle(5);
-        scene.world().showSection(util.select().position(2, 1, 2), Direction.EAST);
-        scene.idle(5);
-        scene.overlay().showText(60)
-            .text("This text is defined in a language file.")
-            .attachKeyFrame()
-            .pointAt(util.vector().blockSurface(util.grid().at(2, 1, 2), Direction.WEST));
-        scene.idle(80);
-
-        scene.world().hideSection(util.select().position(3, 1, 4), Direction.EAST);
-        scene.idle(15);
-        ElementLink<WorldSectionElement> belt = scene.world().showIndependentSection(util.select().fromTo(3, 3, 4, 4, 3, 4), Direction.DOWN);
-        scene.world().moveSection(belt, new Vec3(0d, -2d, 0d), 10);
-        scene.idle(10);
-        scene.world().showSection(util.select().fromTo(4, 1, 1, 4, 1, 4), Direction.SOUTH);
-        scene.idle(5);
-
-        int[][] cogs = new int[][]{new int[]{3, 1}, new int[]{2, 1}, new int[]{1, 1}, new int[]{1, 2}};
-        for (int[] cog : cogs) {
-            scene.idle(5);
-            scene.world().showSection(util.select().position(cog[0], 1, cog[1]), Direction.EAST);
-        };
-
-        scene.overlay().showText(100)
-            .text("This text is defined in a language file.")
-            .attachKeyFrame()
-            .pointAt(util.vector().blockSurface(util.grid().at(1, 1, 2), Direction.UP));
-        scene.idle(20);
-
-        scene.effects().rotationDirectionIndicator(util.grid().at(1, 1, 1));
-		scene.effects().rotationDirectionIndicator(util.grid().at(1, 1, 2));
-        scene.idle(100);
-
-        scene.markAsFinished();
-    };
 
     public static void colossalCogwheel(SceneBuilder baseScene, SceneBuildingUtil util) {
         CreateSceneBuilder scene = new CreateSceneBuilder(baseScene);

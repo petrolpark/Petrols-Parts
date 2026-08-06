@@ -1,9 +1,7 @@
-package petrolpark.mc.petrolsparts.content.kinetics.transmission;
+package petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission;
 
 import java.util.BitSet;
 
-import petrolpark.mc.petrolsparts.core.block.CogType;
-import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 
 import net.minecraft.core.BlockPos;
@@ -14,6 +12,8 @@ import net.minecraft.nbt.NbtOps;
 import net.minecraft.util.ExtraCodecs;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import petrolpark.mc.petrolsparts.core.block.CogType;
+import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 
 public class TransmissionBlockEntity extends KineticBlockEntity implements IFaceAlignedCogWheelBlockEntity {
 

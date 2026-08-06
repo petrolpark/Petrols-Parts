@@ -1,8 +1,7 @@
-package petrolpark.mc.petrolsparts.content.kinetics.transmission;
+package petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 
 import net.createmod.catnip.render.CachedBuffers;
@@ -13,6 +12,7 @@ import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 
 public class TransmissionRenderer extends KineticBlockEntityRenderer<TransmissionBlockEntity> {
 

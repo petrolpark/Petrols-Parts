@@ -1,4 +1,4 @@
-package petrolpark.mc.petrolsparts.content.kinetics.transmission;
+package petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission;
 
 import java.util.Map;
 import java.util.function.Function;

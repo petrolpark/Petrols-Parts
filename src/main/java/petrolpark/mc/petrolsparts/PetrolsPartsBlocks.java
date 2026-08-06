@@ -77,11 +77,13 @@ import petrolpark.mc.petrolsparts.content.kinetics.differential.DummyDifferentia
 import petrolpark.mc.petrolsparts.content.kinetics.differential.LegacyDifferentialBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.overloadClutch.OverloadClutchBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlock;
-import petrolpark.mc.petrolsparts.content.kinetics.transmission.TransmissionBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.TransmissionBlock;
 import petrolpark.mc.petrolsparts.content.legacy.LegacyCoaxialGearBlock;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlock;
 import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotBlock;
+import petrolpark.mc.petrolsparts.content.processing.frictionHeater.FrictionHeaterBlock;
 import petrolpark.mc.petrolsparts.core.PetrolsPartsRegistrate;
 
 public class PetrolsPartsBlocks {
@@ -228,19 +230,6 @@ public class PetrolsPartsBlocks {
         .item(ColossalCogwheelBlockItem::new)
         .build()
         .register();
-
-    public static final BlockEntry<DifferentialBlock> DIFFERENTIAL = REGISTRATE.block("differential", DifferentialBlock::new)
-        .initialProperties(AllBlocks.LARGE_COGWHEEL)
-        .defaultLoot()
-        .properties(p -> p
-            .noOcclusion()
-            .sound(SoundType.WOOD)
-		    .mapColor(MapColor.DIRT)
-        ).transform(PPCStress.setNoImpact())
-        .transform(TagGen.axeOrPickaxe())
-        //.item(CogwheelBlockItem::new)
-        //.build()
-        .register();
     
     // CORNER SHAFTS
 
@@ -304,12 +293,34 @@ public class PetrolsPartsBlocks {
 
     //
 
+    public static final BlockEntry<DifferentialBlock> DIFFERENTIAL = REGISTRATE.block("differential", DifferentialBlock::new)
+        .initialProperties(AllBlocks.LARGE_COGWHEEL)
+        .defaultLoot()
+        .properties(p -> p
+            .noOcclusion()
+            .sound(SoundType.WOOD)
+		    .mapColor(MapColor.DIRT)
+        ).transform(PPCStress.setNoImpact())
+        .transform(TagGen.axeOrPickaxe())
+        //.item(CogwheelBlockItem::new)
+        //.build()
+        .register();
+
+    public static final BlockEntry<FrictionHeaterBlock> FRICTION_HEATER = REGISTRATE.block("friction_heater", FrictionHeaterBlock::new)
+        .initialProperties(AllBlocks.BLAZE_BURNER)
+        .defaultLoot()
+        .properties(p -> p
+        
+        ).transform(PPCStress.setImpact(8.0d))
+        .transform(TagGen.axeOrPickaxe())
+        .register();
+
     public static final BlockEntry<HydraulicTransmissionBlock> HYDRAULIC_TRANSMISSION = REGISTRATE.block("hydraulic_transmission", HydraulicTransmissionBlock::new)
         .initialProperties(AllBlocks.MECHANICAL_CRAFTER)
         .properties(p -> p
             .noOcclusion()
         ).defaultLoot()
-        .transform(PPCStress.setImpact(2.0))
+        .transform(PPCStress.setImpact(2.0d))
         .transform(TagGen.axeOrPickaxe())
         .item(TubeBlockItem::new)
         .build()
@@ -329,6 +340,15 @@ public class PetrolsPartsBlocks {
         ).transform(TagGen.axeOrPickaxe())
         .item()
         .tag(PetrolparkTags.Items.FLAGGABLE.tag)
+        .build()
+        .register();
+
+    public static final BlockEntry<OverloadClutchBlock> OVERLOAD_CLUTCH = REGISTRATE.block("overload_clutch", OverloadClutchBlock::new)
+        .initialProperties(AllBlocks.COGWHEEL)
+        .properties(p -> p
+        
+        ).defaultLoot()
+        .item()
         .build()
         .register();
 
