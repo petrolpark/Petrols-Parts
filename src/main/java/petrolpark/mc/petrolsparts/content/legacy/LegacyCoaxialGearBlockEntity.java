@@ -1,16 +1,16 @@
-package petrolpark.mc.petrolsparts.content.kinetics.legacy;
+package petrolpark.mc.petrolsparts.content.legacy;
 
 import java.util.List;
 
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCog;
-import petrolpark.mc.petrolsparts.content.kinetics.assemblage.IAssemblageBlock;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCog;
+import petrolpark.mc.petrolsparts.content.kinetics.assemblage.IAssemblageBlock;
 
 @Deprecated
 public class LegacyCoaxialGearBlockEntity extends KineticBlockEntity {

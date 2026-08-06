@@ -86,7 +86,7 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
 	};
 
     @Override
-    public boolean canDiagonalBevelCogWheelSurvive(BlockState state, LevelReader level, BlockPos pos) {
+    public boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return IAssemblageBlock.super.canDiagonalBevelCogWheelSurvive(state, level, pos);
     };
 

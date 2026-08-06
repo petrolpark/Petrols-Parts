@@ -1,5 +1,6 @@
 package petrolpark.mc.petrolsparts.core.ponder;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.Create;
 import com.simibubi.create.infrastructure.ponder.AllCreatePonderTags;
 import com.simibubi.create.infrastructure.ponder.scenes.BeltScenes;
@@ -14,6 +15,7 @@ import net.minecraft.resources.ResourceLocation;
 import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
+import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageScenes;
 
 public class PetrolsPartsPonderPlugin implements PonderPlugin {
 
@@ -26,6 +28,25 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
     public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
         final PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> itemProviderHelper = helper.withKeyFunction(RegistryEntry::getId);
 
+        // Assemblage
+        itemProviderHelper.forComponents(PetrolsPartsItems.SHAFTLESS_COGWHEEL, PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL)
+            .addStoryBoard("assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
+            .addStoryBoard("assemblage/shaft", AssemblageScenes::shafts);
+        itemProviderHelper.forComponents(PetrolsPartsItems.COAXIAL_COGWHEEL, PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL)
+            .addStoryBoard("assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
+            .addStoryBoard("assemblage/coaxial_cogwheel", AssemblageScenes::shafts);
+        itemProviderHelper.forComponents(PetrolsPartsItems.SHAFT_HALF, AllBlocks.SHAFT)
+            .addStoryBoard("assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
+            .addStoryBoard("assemblage/shaft", AssemblageScenes::shafts);
+        itemProviderHelper.forComponents(
+            PetrolsPartsItems.SHAFTLESS_COGWHEEL, PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL,
+            PetrolsPartsItems.COAXIAL_COGWHEEL, PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL,
+            PetrolsPartsItems.SHAFT_HALF,
+            AllBlocks.ANDESITE_CASING, AllBlocks.BRASS_CASING
+        )
+            .addStoryBoard("assemblage/encasing", AssemblageScenes::encasing);
+
+        // Brass Depot
         itemProviderHelper.forComponents(PetrolsPartsBlocks.BRASS_DEPOT)
             .addStoryBoard("brass_depot", PetrolsPartsScenes::brassDepot);
 
@@ -34,7 +55,7 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .addStoryBoard("colossal_cogwheel", PetrolsPartsScenes::colossalCogwheel);
 
         // Differential
-        itemProviderHelper.forComponents(PetrolsPartsBlocks.DIFFERENTIAL)
+        itemProviderHelper.forComponents(PetrolsPartsBlocks.LEGACY_DIFFERENTIAL)
             .addStoryBoard("differential", PetrolsPartsScenes::differential);
 
         // Corner Shaft
@@ -77,8 +98,9 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .add(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL)
             .add(PetrolsPartsItems.COAXIAL_COGWHEEL)
             .add(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL)
+            .add(PetrolsPartsItems.BEVEL_COGWHEEL)
             .add(PetrolsPartsBlocks.COLOSSAL_COGWHEEL)
-            .add(PetrolsPartsBlocks.DIFFERENTIAL)
+            .add(PetrolsPartsBlocks.LEGACY_DIFFERENTIAL)
             .add(PetrolsPartsBlocks.CORNER_SHAFT)
             .add(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION)
             .add(PetrolsPartsBlocks.PLANETARY_GEARSET)
@@ -110,9 +132,18 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
         public void registerScenes(PonderSceneRegistrationHelper<ResourceLocation> helper) {
             final PonderSceneRegistrationHelper<ItemProviderEntry<?, ?>> itemProviderHelper = helper.withKeyFunction(RegistryEntry::getId);
 
+            // Assemblage
+            itemProviderHelper.forComponents(PetrolsPartsItems.SHAFTLESS_COGWHEEL, PetrolsPartsItems.COAXIAL_COGWHEEL)
+                .addStoryBoard("cog/small", KineticsScenes::cogAsRelay, entry -> entry.orderBefore("cog/speedup"))
+                .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "assemblage/shaftless_cogwheel"));
+            itemProviderHelper.forComponents(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL, PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL)
+                .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "assemblage/shaftless_cogwheel"));
+
+            // Brass Depot
             itemProviderHelper.forComponents(PetrolsPartsBlocks.BRASS_DEPOT)
                 .addStoryBoard("depot", BeltScenes::depot, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "brass_depot"));
 
+            // Planetary Gearset
             itemProviderHelper.forComponents(PetrolsPartsBlocks.PLANETARY_GEARSET)
                 .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore("cog/large"))
                 .addStoryBoard("cog/large", KineticsScenes::largeCogAsRelay, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "coaxial_gear/shaftless"));

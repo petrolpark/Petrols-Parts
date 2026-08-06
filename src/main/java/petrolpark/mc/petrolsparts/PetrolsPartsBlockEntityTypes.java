@@ -27,18 +27,19 @@ import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogw
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.CornerShaftRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.EncasedCornerShaftRenderer;
-import petrolpark.mc.petrolsparts.content.kinetics.differential.DifferentialRenderer;
+import petrolpark.mc.petrolsparts.content.kinetics.differential.DifferentialBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.differential.DummyDifferentialBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.differential.LegacyDifferentialBlockEntity;
+import petrolpark.mc.petrolsparts.content.kinetics.differential.LegacyDifferentialRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionRenderer;
-import petrolpark.mc.petrolsparts.content.kinetics.legacy.LegacyCoaxialGearBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.transmission.TransmissionBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.transmission.TransmissionRenderer;
+import petrolpark.mc.petrolsparts.content.legacy.LegacyCoaxialGearBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeRenderer;
 import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotBlockEntity;
@@ -138,11 +139,22 @@ public class PetrolsPartsBlockEntityTypes {
         .renderer(() -> EncasedCornerShaftRenderer::new)
         .register();
 
-    public static final BlockEntityEntry<LegacyDifferentialBlockEntity> DIFFERENTIAL = REGISTRATE
-        .createBlockEntity("differential", LegacyDifferentialBlockEntity::new)
+    public static final BlockEntityEntry<DifferentialBlockEntity> DIFFERENTIAL = REGISTRATE
+        .createBlockEntity("differential", DifferentialBlockEntity::new)
         //TODO visual
         .validBlock(PetrolsPartsBlocks.DIFFERENTIAL)
-        .renderer(() -> DifferentialRenderer::new)
+        //.renderer(() -> DifferentialRenderer::new)
+        .register();
+
+    @Deprecated public static final BlockEntityEntry<LegacyDifferentialBlockEntity> LEGACY_DIFFERENTIAL = REGISTRATE
+        .createBlockEntity("legacy_differential", LegacyDifferentialBlockEntity::new)
+        //TODO visual
+        .validBlock(PetrolsPartsBlocks.LEGACY_DIFFERENTIAL)
+        .renderer(() -> LegacyDifferentialRenderer::new)
+        .register();
+
+    public static final BlockEntityEntry<DifferentialBlockEntity.Part> DIFFERENTIAL_PART = REGISTRATE
+        .<DifferentialBlockEntity.Part>uninstantiableBlockEntity("differential_part")
         .register();
 
     public static final BlockEntityEntry<DummyDifferentialBlockEntity> DUMMY_DIFFERENTIAL = REGISTRATE

@@ -1,6 +1,5 @@
-package petrolpark.mc.petrolsparts.content.kinetics.legacy;
+package petrolpark.mc.petrolsparts.content.legacy;
 
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 
@@ -12,6 +11,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
 @Deprecated
 public class LegacyCoaxialGearBlock extends CogWheelBlock {

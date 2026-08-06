@@ -16,10 +16,10 @@
       "item": "create:andesite_alloy"
     },
     "S": {
-      "item": "create:cogwheel"
+      "item": "petrolsparts:shaftless_cogwheel"
     },
     "L": {
-      "item": "create:large_cogwheel"
+      "item": "petrolsparts:large_coaxial_cogwheel"
     }
   },
   "result": {

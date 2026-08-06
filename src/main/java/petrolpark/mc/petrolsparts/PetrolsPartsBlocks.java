@@ -74,11 +74,12 @@ import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.EncasedStraightCo
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.StraightCornerShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.differential.DifferentialBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.differential.DummyDifferentialBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.differential.LegacyDifferentialBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.hydraulicTransmission.HydraulicTransmissionBlock;
-import petrolpark.mc.petrolsparts.content.kinetics.legacy.LegacyCoaxialGearBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.transmission.TransmissionBlock;
+import petrolpark.mc.petrolsparts.content.legacy.LegacyCoaxialGearBlock;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlock;
 import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotBlock;
 import petrolpark.mc.petrolsparts.core.PetrolsPartsRegistrate;
@@ -237,14 +238,8 @@ public class PetrolsPartsBlocks {
 		    .mapColor(MapColor.DIRT)
         ).transform(PPCStress.setNoImpact())
         .transform(TagGen.axeOrPickaxe())
-        .item(CogwheelBlockItem::new)
-        .build()
-        .register();
-
-    public static final BlockEntry<DummyDifferentialBlock> DUMMY_DIFFERENTIAL = REGISTRATE.block("dummy_differential", DummyDifferentialBlock::new)
-        .initialProperties(DIFFERENTIAL)
-        .defaultLoot()
-        .transform(PPCStress.setNoImpact())
+        //.item(CogwheelBlockItem::new)
+        //.build()
         .register();
     
     // CORNER SHAFTS
@@ -372,7 +367,23 @@ public class PetrolsPartsBlocks {
 
     @Deprecated public static final BlockEntry<LegacyCoaxialGearBlock> LEGACY_COAXIAL_GEAR = REGISTRATE.block("coaxial_gear", LegacyCoaxialGearBlock::small).properties(BlockBehaviour.Properties::noLootTable).register();
     @Deprecated public static final BlockEntry<LegacyCoaxialGearBlock> LEGACY_LARGE_COAXIAL_GEAR = REGISTRATE.block("large_coaxial_gear", LegacyCoaxialGearBlock::large).properties(BlockBehaviour.Properties::noLootTable).register();
-
+    @Deprecated public static final BlockEntry<LegacyDifferentialBlock> LEGACY_DIFFERENTIAL = REGISTRATE.block("legacy_differential", LegacyDifferentialBlock::new)
+        .initialProperties(AllBlocks.LARGE_COGWHEEL)
+        .defaultLoot()
+        .properties(p -> p
+            .noOcclusion()
+            .sound(SoundType.WOOD)
+		    .mapColor(MapColor.DIRT)
+        ).transform(PPCStress.setNoImpact())
+        .transform(TagGen.axeOrPickaxe())
+        .item(CogwheelBlockItem::new)
+        .build()
+        .register();
+    @Deprecated public static final BlockEntry<DummyDifferentialBlock> DUMMY_DIFFERENTIAL = REGISTRATE.block("dummy_differential", DummyDifferentialBlock::new)
+        .initialProperties(DIFFERENTIAL)
+        .defaultLoot()
+        .transform(PPCStress.setNoImpact())
+        .register();
     //
 
     public static final void register() {};

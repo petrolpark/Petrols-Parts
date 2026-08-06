@@ -31,7 +31,7 @@ public class DummyDifferentialBlock extends DirectionalRotatedPillarKineticBlock
 
     public void tick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
         Player placer = getBlockEntity(level, pos).advancementBehaviour.getPlayer();
-        level.setBlockAndUpdate(pos, PetrolsPartsBlocks.DIFFERENTIAL.getDefaultState().setValue(AXIS, state.getValue(AXIS)).setValue(POSITIVE_AXIS_DIRECTION, state.getValue(POSITIVE_AXIS_DIRECTION)));
+        level.setBlockAndUpdate(pos, PetrolsPartsBlocks.LEGACY_DIFFERENTIAL.getDefaultState().setValue(AXIS, state.getValue(AXIS)).setValue(POSITIVE_AXIS_DIRECTION, state.getValue(POSITIVE_AXIS_DIRECTION)));
         AbstractRememberPlacerBehaviour.setPlacedBy(level, pos, placer);
     };
 
@@ -47,7 +47,7 @@ public class DummyDifferentialBlock extends DirectionalRotatedPillarKineticBlock
 
     @Override
     public Item asItem() {
-        return PetrolsPartsBlocks.DIFFERENTIAL.asItem();
+        return PetrolsPartsBlocks.LEGACY_DIFFERENTIAL.asItem();
     };
 
     @Override

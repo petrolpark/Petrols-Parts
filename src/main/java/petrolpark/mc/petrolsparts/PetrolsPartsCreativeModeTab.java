@@ -25,7 +25,7 @@ public class PetrolsPartsCreativeModeTab {
                 i(PetrolsPartsBlocks.BRASS_DEPOT::asStack),
 				i(PetrolsPartsItems.SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.COAXIAL_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL::asStack), i(PetrolsPartsItems.SHAFT_HALF::asStack),
 				i(PetrolsPartsBlocks.CORNER_SHAFT::asStack),
-				i(PetrolsPartsBlocks.DIFFERENTIAL::asStack),
+				i(PetrolsPartsBlocks.LEGACY_DIFFERENTIAL::asStack),
 				i(PetrolsPartsBlocks.PLANETARY_GEARSET::asStack),
 				i(PetrolsPartsBlocks.COLOSSAL_COGWHEEL::asStack),
 				//i(PetrolsPartsBlocks.MOVEMENT::asStack),

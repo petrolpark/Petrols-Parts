@@ -1,7 +1,6 @@
 package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single;
 
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.block.IBE;
 
 import net.minecraft.core.BlockPos;
@@ -18,7 +17,7 @@ import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlock;
 
-public interface ISingleDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWheelBlock, IBE<SingleDiagonalBevelCogWheelBlockEntity>, IRotate {
+public interface ISingleDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWheelBlock, IBE<SingleDiagonalBevelCogWheelBlockEntity> {
     
     public static final EnumProperty<Orientation> ORIENTATION = Orientation.EDGE_ORIENTATION_PROPERTY;
     public static final BooleanProperty FIRST_AXIS_SHAFT = BooleanProperty.create("first_axis_shaft");

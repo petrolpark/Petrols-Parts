@@ -52,7 +52,7 @@ public class LegacyDifferentialBlockEntity extends SplitShaftBlockEntity {
     public void setSource(BlockPos source) {
         super.setSource(source);
         Direction directionBetween = KineticsHelper.directionBetween(getBlockPos(), source);
-        if (hasLevel() && (directionBetween == null || directionBetween.getAxis() != getBlockState().getValue(DifferentialBlock.AXIS))) getLevel().destroyBlock(getBlockPos(), true);
+        if (hasLevel() && (directionBetween == null || directionBetween.getAxis() != getBlockState().getValue(LegacyDifferentialBlock.AXIS))) getLevel().destroyBlock(getBlockPos(), true);
     };
 
     @Override
@@ -66,7 +66,7 @@ public class LegacyDifferentialBlockEntity extends SplitShaftBlockEntity {
         if (getSpeed() == 0f) { // Try switching the direction if we're not powered by the existing side
             BlockPos adjacentPos = getBlockPos().relative(direction);
             if (!propagatesToMe(adjacentPos, direction.getOpposite()) && propagatesToMe(otherAdjacentPos, direction)) {
-                getLevel().setBlockAndUpdate(getBlockPos(), PetrolsPartsBlocks.DUMMY_DIFFERENTIAL.getDefaultState().setValue(DifferentialBlock.AXIS, direction.getAxis()).setValue(DirectionalRotatedPillarKineticBlock.POSITIVE_AXIS_DIRECTION, direction.getAxisDirection() == AxisDirection.NEGATIVE)); 
+                getLevel().setBlockAndUpdate(getBlockPos(), PetrolsPartsBlocks.DUMMY_DIFFERENTIAL.getDefaultState().setValue(LegacyDifferentialBlock.AXIS, direction.getAxis()).setValue(DirectionalRotatedPillarKineticBlock.POSITIVE_AXIS_DIRECTION, direction.getAxisDirection() == AxisDirection.NEGATIVE)); 
                 AbstractRememberPlacerBehaviour.setPlacedBy(level, getBlockPos(), advancementBehaviour.getPlayer());
             };
         };

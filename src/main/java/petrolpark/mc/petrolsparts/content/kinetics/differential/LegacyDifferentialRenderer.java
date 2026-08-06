@@ -22,9 +22,9 @@ import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 import petrolpark.mc.petrolsparts.core.block.DirectionalRotatedPillarKineticBlock;
 
-public class DifferentialRenderer extends KineticBlockEntityRenderer<LegacyDifferentialBlockEntity> {
+public class LegacyDifferentialRenderer extends KineticBlockEntityRenderer<LegacyDifferentialBlockEntity> {
 
-    public DifferentialRenderer(Context context) {
+    public LegacyDifferentialRenderer(Context context) {
         super(context);
     };
 
