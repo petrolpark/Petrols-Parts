@@ -302,8 +302,8 @@ public class PetrolsPartsBlocks {
 		    .mapColor(MapColor.DIRT)
         ).transform(PPCStress.setNoImpact())
         .transform(TagGen.axeOrPickaxe())
-        //.item(CogwheelBlockItem::new)
-        //.build()
+        .item()
+        .build()
         .register();
 
     public static final BlockEntry<FrictionHeaterBlock> FRICTION_HEATER = REGISTRATE.block("friction_heater", FrictionHeaterBlock::new)

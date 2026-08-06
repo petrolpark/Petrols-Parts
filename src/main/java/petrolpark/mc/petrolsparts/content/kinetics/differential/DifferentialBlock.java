@@ -8,14 +8,18 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
+import net.minecraft.world.level.block.state.properties.EnumProperty;
+import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlock;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
-public class DifferentialBlock extends RotatedPillarBlock implements ICogWheel, IBE<DifferentialBlockEntity> {
+public class DifferentialBlock extends CompositeKineticBlock implements ICogWheel, IBE<DifferentialBlockEntity> {
+
+    public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
 
     public DifferentialBlock(BlockBehaviour.Properties properties) {
         super(properties);
@@ -25,6 +29,8 @@ public class DifferentialBlock extends RotatedPillarBlock implements ICogWheel, 
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
         super.createBlockStateDefinition(builder.add(AXIS));
     };
+    
+    //TODO placement state
 
     @Override
     public boolean isLargeCog() {

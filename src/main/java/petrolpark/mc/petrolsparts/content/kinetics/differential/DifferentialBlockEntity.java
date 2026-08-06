@@ -1,7 +1,9 @@
 package petrolpark.mc.petrolsparts.content.kinetics.differential;
 
 import java.util.List;
+import java.util.Objects;
 
+import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
@@ -12,11 +14,15 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
+import petrolpark.mc.library.compat.create.core.world.block.entity.IKineticBlockEntityDuck;
 import petrolpark.mc.library.core.world.block.DummyBlock;
+import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
 public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
@@ -24,7 +30,7 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
     protected final DifferentialBlockEntity.Part topCog, bottomCog, ringCog;
     protected final List<DifferentialBlockEntity.Part> parts;
 
-    protected boolean resetting = false;
+    protected boolean resetting = true;
 
     public DifferentialBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
@@ -45,13 +51,68 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
 
     @Override
     public void tick() {
+        if (resetting) {
+            for (DifferentialBlockEntity.Part part : getParts()) {
+                part.detachKinetics();
+                part.updateSpeed = true; // Re-attach next tick
+                if (part.hasSource() && Objects.equals(part.source, getBlockPos())) part.removeSource(); // Same-pos sources are only there so the speed doesn't get wiped, they are not true sources
+            };
+            if (topCog.hasSource() || bottomCog.hasSource() || ringCog.hasSource()) { // Anything powered
+                if (ringCog.getSpeed() == (topCog.getSpeed() + bottomCog.getSpeed()) / 2f ) { // All matching speeds
+
+                } else { // Not all matching speeds
+                    if (topCog.hasSource() && bottomCog.hasSource() && ringCog.hasSource()) {
+                        getLevel().destroyBlock(getBlockPos(), true); // All three powered with non-matching speeds -> impossible
+                    } else {
+                        if (ringCog.hasSource()) {
+                            if (topCog.hasSource()) { // Ring & top powered
+                                bottomCog.forceSpeed(2 * ringCog.getSpeed() - topCog.getSpeed());
+                                setSource(bottomCog, ringCog);
+                            } else if (bottomCog.hasSource()) { // Ring && bottom powered
+                                topCog.forceSpeed(2 * ringCog.getSpeed() - bottomCog.getSpeed());
+                                setSource(topCog, ringCog);
+                            } else { // Ring only powered - rotate other two gears at same speed
+                                topCog.forceSpeed(ringCog.getSpeed());
+                                setSource(topCog, ringCog);
+                                bottomCog.forceSpeed(ringCog.getSpeed());
+                                setSource(bottomCog, ringCog);
+                            };
+                        } else if (topCog.hasSource()) {
+                            if (bottomCog.hasSource()) { // Top & bottom powered
+                                ringCog.forceSpeed((topCog.getSpeed() + bottomCog.getSpeed()) / 2f);
+                                setSource(ringCog, topCog);
+                            } else { // Top only powered - rotate other two gears at same speed
+                                ringCog.forceSpeed(topCog.getSpeed());
+                                setSource(ringCog, topCog);
+                                bottomCog.forceSpeed(topCog.getSpeed()); // Should already be so
+                                setSource(bottomCog, topCog);
+                            };
+                        } else { // Bottom only powered - rotate other two gears at same speed
+                            ringCog.forceSpeed(bottomCog.getSpeed());
+                            setSource(ringCog, bottomCog);
+                            topCog.forceSpeed(bottomCog.getSpeed()); // Should already be so
+                            setSource(topCog, bottomCog);
+                        };
+                    };
+                };
+            };
+            resetting = false;
+        };
+
         super.tick();
+    };
+
+    // Need to set a source so the imposed speed doesn't get wiped. Not a real source as having a source in the same blockpos is inadvisable
+    protected static void setSource(DifferentialBlockEntity.Part base, DifferentialBlockEntity.Part toCopy) {
+        ((IKineticBlockEntityDuck)base).setSourceIndex(toCopy.getIndex());
+        base.setSource(toCopy.getBlockPos());
     };
     
     public class Part extends CompositeKineticBlockEntityPart {
 
         private final int index;
-        protected final BlockState dummyBlockState = new DummyCogWheelBlock().defaultBlockState();
+        protected final BlockState dummyBlockState = new DummyCogWheelBlock().defaultBlockState()
+            .setValue(CogWheelBlock.AXIS, DifferentialBlockEntity.super.getBlockState().getValue(DifferentialBlock.AXIS));
 
         public Part(int index) {
             super(PetrolsPartsBlockEntityTypes.DIFFERENTIAL_PART.get());
@@ -69,61 +130,42 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
 
         @Override
         public void setSpeed(float speed) {
-            if (resetting && speed != this.speed) getLevel().destroyBlock(getBlockPos(), true); // Feedback loop -> destroy
             resetting = true;
-
             super.setSpeed(speed);
-
-            // Set speeds of other components
-            if ((!topCog.hasSource() && !bottomCog.hasSource() && !ringCog.hasSource()) || // Nothing powered (should be impossible at this point)
-                (ringCog.getSpeed() == (topCog.getSpeed() + bottomCog.getSpeed()) / 2) // All matching speeds
-            ) {
-                resetting = false;
-                return;
-            }; 
-            if (topCog.hasSource() && bottomCog.hasSource() && ringCog.hasSource()) {
-                resetting = false;
-                getLevel().destroyBlock(getBlockPos(), true); // All three powered with non-matching speeds -> impossible
-                return;
-            };
-            if (ringCog.hasSource()) {
-                if (topCog.hasSource()) { // Ring & top powered
-                    bottomCog.forceSpeed(2 * ringCog.getSpeed() - topCog.getSpeed());
-                } else if (bottomCog.hasSource()) { // Ring && bottom powered
-                    topCog.forceSpeed(2 * ringCog.getSpeed() - bottomCog.getSpeed());
-                } else { // Ring only powered - rotate other two gears at same speed
-                    topCog.forceSpeed(ringCog.getSpeed());
-                    bottomCog.forceSpeed(ringCog.getSpeed());
-                };
-            } else if (topCog.hasSource()) {
-                if (bottomCog.hasSource()) { // Top & bottom powered
-                    ringCog.forceSpeed((topCog.getSpeed() + bottomCog.getSpeed()) / 2f);
-                } else { // Top only powered - behaves as if bottomCog is fixed at 0 RPM
-                    ringCog.forceSpeed(topCog.getSpeed() / 2f);
-                    bottomCog.forceSpeed(0f); // Should already be so 
-                };
-            } else { // Bottom only powered - behaves as if topCog is fixed at 0 RPM
-                ringCog.forceSpeed(bottomCog.getSpeed() / 2f);
-                topCog.forceSpeed(0f); // Should already be so
-            };
-
-            attachKinetics(); // Refresh kinetics: each part now propagates to each other part
-            resetting = false;
         };
 
         @Override
         public void setSource(BlockPos source) {
-            if (resetting) {
+            if (resetting && hasSource()) { // Shouldn't change source while resetting
                 getLevel().destroyBlock(getBlockPos(), true);
                 return;
-            }; // Shouldn't change source while resetting
+            }; 
             super.setSource(source);
+        };
+
+        @Override
+        public void removeSource() {
+            resetting = true;
+            super.removeSource();
+        };
+
+        @Override
+        public List<BlockPos> addPropagationLocations(IRotate block, BlockState state, List<BlockPos> neighbours) {
+            KineticsHelper.addLargeCogwheelPropagationLocations(getBlockPos(), neighbours);
+            return super.addPropagationLocations(block, state, neighbours);
         };
 
         @Override
         public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
             if (!resetting) return 0f; // Default behaviour if not mid-reset
             // getSpeed from this point on is the forced speed each part should have
+
+            if (this != (connectedViaAxes
+                ? Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ()).getAxisDirection() == AxisDirection.POSITIVE
+                    ? topCog
+                    : bottomCog
+                : ringCog)
+            ) return 0f;
 
             final float ratio;
             if (connectedViaAxes) {
@@ -138,17 +180,10 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
                 return 0f; // Should be unreachable
             };
 
-            final DifferentialBlockEntity.Part connectingPart = (connectedViaAxes
-                ? Direction.fromDelta(diff.getX(), diff.getY(), diff.getZ()).getAxisDirection() == AxisDirection.POSITIVE
-                    ? topCog
-                    : bottomCog
-                : ringCog);
-
-            if (this == connectingPart) return ratio;
-            if (getSpeed() == 0f) return 0f; // Don't propagate at all
-
-            return ratio * connectingPart.getSpeed() / getSpeed();
+            return ratio;
         };
+
+        
 
         @Override
         public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
@@ -164,6 +199,11 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
 
             public DummyCogWheelBlock() {
                 super(BlockBehaviour.Properties.of());
+            };
+
+            @Override
+            protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
+                super.createBlockStateDefinition(builder.add(CogWheelBlock.AXIS));
             };
 
             @Override

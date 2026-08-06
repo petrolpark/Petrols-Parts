@@ -1,5 +1,6 @@
 package petrolpark.mc.petrolsparts.mixin;
 
+import java.util.Iterator;
 import java.util.List;
 
 import org.spongepowered.asm.mixin.Mixin;
@@ -7,6 +8,7 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import com.simibubi.create.foundation.placement.PoleHelper;
 
@@ -27,7 +29,7 @@ import petrolpark.mc.library.compat.create.core.world.block.IReplaceableBlock;
 public abstract class PoleHelperMixin<T extends Comparable<T>> implements IPlacementHelper {
     
     @Shadow
-    protected final Property<T> property = null;
+    protected Property<T> property;
 
     @Inject(
         method = "getOffset",
@@ -35,12 +37,13 @@ public abstract class PoleHelperMixin<T extends Comparable<T>> implements IPlace
             value = "INVOKE",
             target = "canBeReplaced"
         ),
+        locals = LocalCapture.CAPTURE_FAILEXCEPTION,
         cancellable = true
     )
     public void petrolsParts$placeShaftsThroughBlocks(
         Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray,
         CallbackInfoReturnable<PlacementOffset> cir,
-        List<Direction> directions, Direction dir, int range, int poles, BlockPos newPos, BlockState newState
+        List<Direction> directions, Iterator<Direction> iterator, Direction dir, int range, int poles, BlockPos newPos, BlockState newState
     ) {
         if (newState instanceof IReplaceableBlock replaceableBlock && getItemPredicate().test(player.getItemInHand(InteractionHand.MAIN_HAND)) && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BlockItem blockItem) {
             final BlockState stateToPlace = blockItem.getBlock().defaultBlockState() // Best guess of what the item to place will be
