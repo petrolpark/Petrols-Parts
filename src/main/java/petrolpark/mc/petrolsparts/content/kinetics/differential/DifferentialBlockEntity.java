@@ -98,6 +98,7 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
                 };
             };
             resetting = false;
+            notifyUpdate();
         };
 
         super.tick();

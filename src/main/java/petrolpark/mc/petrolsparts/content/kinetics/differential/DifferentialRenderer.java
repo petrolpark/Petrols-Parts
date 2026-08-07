@@ -1,10 +1,19 @@
 package petrolpark.mc.petrolsparts.content.kinetics.differential;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 
+import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
+import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
+import net.minecraft.core.Direction.AxisDirection;
+import net.minecraft.world.level.block.state.BlockState;
+import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 
 public class DifferentialRenderer extends SafeBlockEntityRenderer<DifferentialBlockEntity> {
 
@@ -15,7 +24,16 @@ public class DifferentialRenderer extends SafeBlockEntityRenderer<DifferentialBl
     @Override
     protected void renderSafe(DifferentialBlockEntity differential, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
         //if (Backend.canUseInstancing(planetaryGearsetBlockEntity.getLevel())) return;
-        // if (!differential.hasLevel()) return;
+
+        final VertexConsumer vc = buffer.getBuffer(RenderType.solid());
+
+        final BlockState state = differential.getBlockState();
+        final Axis axis = differential.getBlockState().getValue(DifferentialBlock.AXIS);
+        final Direction facing = Direction.get(AxisDirection.POSITIVE, axis);
+
+        KineticBlockEntityRenderer.renderRotatingBuffer(differential.ringCog, CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.DIFFERENTIAL_RING_COG, state, facing), ms, vc, light);
+        KineticBlockEntityRenderer.renderRotatingBuffer(differential.topCog, CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.DIFFERENTIAL_INNER_COG, state, facing), ms, vc, light);
+        KineticBlockEntityRenderer.renderRotatingBuffer(differential.bottomCog, CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.DIFFERENTIAL_INNER_COG, state, facing.getOpposite()), ms, vc, light);
 
 		// BlockState state = getRenderedBlockState(differential);
         // Direction face = DirectionalRotatedPillarKineticBlock.getDirection(state);

@@ -47,6 +47,8 @@ public class RotationPropagatorMixin {
         };
     };
 
+    //TODO MOVE BELOW TO LIBRARY
+
     /**
      * Trick definition of incompatible {@link RotationPropagator#propagateNewSource} line 232
      */
