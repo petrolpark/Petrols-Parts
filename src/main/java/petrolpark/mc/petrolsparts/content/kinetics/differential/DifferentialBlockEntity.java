@@ -21,6 +21,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.compat.create.core.world.block.entity.IKineticBlockEntityDuck;
+import petrolpark.mc.library.compat.create.core.world.block.entity.IOverridableKineticBlockEntity;
 import petrolpark.mc.library.core.world.block.DummyBlock;
 import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
@@ -108,7 +109,7 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
         base.setSource(toCopy.getBlockPos());
     };
     
-    public class Part extends CompositeKineticBlockEntityPart {
+    public class Part extends CompositeKineticBlockEntityPart implements IOverridableKineticBlockEntity {
 
         private final int index;
         protected final BlockState dummyBlockState = new DummyCogWheelBlock().defaultBlockState()
@@ -147,6 +148,11 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
         public void removeSource() {
             resetting = true;
             super.removeSource();
+        };
+
+        @Override
+        public boolean isSourceAlwaysOverridable() {
+            return Objects.equals(source, getBlockPos());
         };
 
         @Override
@@ -231,4 +237,31 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
 
         };
     };
+
+    // /**
+    //  * If this {@link KineticBlockEntity} is or is ultimately powered by a part of a Differential,
+    //  * then its speed is always overrideable
+    //  * @param kbe
+    //  */
+    // public static final boolean shouldBeOverridden(KineticBlockEntity kbe) {
+    //     final KineticBlockEntity original = kbe;
+    //     while (kbe.hasSource()) {
+    //         if (kbe instanceof DifferentialBlockEntity.Part && Objects.equals(kbe.source, kbe.getBlockPos())) return true;
+    //         final BlockEntity source = kbe.getLevel().getBlockEntity(kbe.source);
+    //         if (source == null) return false;
+    //         if (source instanceof KineticBlockEntity sourceKbe && sourceKbe != original) {
+    //             kbe = sourceKbe;
+    //             continue;
+    //         } else if (source instanceof CompositeKineticBlockEntity sourceComposite) {
+    //             final int sourceIndex = ((IKineticBlockEntityDuck)kbe).getSourceIndex();
+    //             if (sourceIndex >= 0 && sourceIndex <= sourceComposite.getParts().size()) {
+    //                 kbe = sourceComposite.getParts().get(sourceIndex);
+    //                 if (kbe == original) return false; // loop
+    //                 continue;
+    //             };
+    //         };
+    //         return false;
+    //     };
+    //     return false;
+    // };
 };

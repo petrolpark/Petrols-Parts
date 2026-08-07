@@ -33,6 +33,7 @@ public interface IFaceAlignedCogWheelBlockEntity {
         return CogType.NONE;
     };
 
+    @SuppressWarnings("deprecation")
     public static CogType getCogType(KineticBlockEntity kbe, Direction face) {
         if (kbe instanceof IFaceAlignedCogWheelBlockEntity cogwheel) return cogwheel.getCogType(face);
 

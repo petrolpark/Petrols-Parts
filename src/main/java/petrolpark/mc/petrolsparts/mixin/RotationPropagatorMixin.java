@@ -1,30 +1,26 @@
 package petrolpark.mc.petrolsparts.mixin;
 
-import java.util.Iterator;
-import java.util.Objects;
-
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.At.Shift;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.content.kinetics.RotationPropagator;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import petrolpark.mc.petrolsparts.PetrolsParts;
+import petrolpark.mc.library.compat.create.core.world.block.entity.IOverridableKineticBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockEntity;
-import petrolpark.mc.petrolsparts.content.kinetics.differential.DifferentialBlockEntity;
-import petrolpark.mc.petrolsparts.mixin.accessor.RotationPropagatorAccessor;
 
 @Mixin(RotationPropagator.class)
 public class RotationPropagatorMixin {
@@ -51,37 +47,53 @@ public class RotationPropagatorMixin {
         };
     };
 
-    //TODO not working!
-    @Inject(
+    /**
+     * Trick definition of incompatible {@link RotationPropagator#propagateNewSource} line 232
+     */
+    @ModifyExpressionValue(
         method = "propagateNewSource",
         at = @At(
             value = "INVOKE",
-            target = "destroyBlock",
-            ordinal = 1,
-            shift = Shift.BY,
-            by = -7
-        ),
-        cancellable = true,
-        locals = LocalCapture.CAPTURE_FAILHARD
+            target = "signum",
+            ordinal = 1
+        )
     )
-    private static void petrolsParts$overrideDifferential(KineticBlockEntity currentTE, CallbackInfo ci, BlockPos pos, Level world, Iterator<KineticBlockEntity> iterator, KineticBlockEntity neighbourTE) {
-        PetrolsParts.LOGGER.info("helllloooooooooooooooooooooooooooooo shithead");
-        // Other BEs always overpower otherwise unpowered Differential parts
-        if (neighbourTE instanceof DifferentialBlockEntity.Part && neighbourTE.hasSource() && Objects.equals(neighbourTE.source, neighbourTE.getBlockPos())) {
-            
-            final float prevSpeed = neighbourTE.getSpeed();
-            neighbourTE.setSource(currentTE.getBlockPos());
-            neighbourTE.setSpeed(RotationPropagatorAccessor.invokeGetConveyedSpeed(currentTE, neighbourTE));
-            neighbourTE.onSpeedChanged(prevSpeed);
-            neighbourTE.sendData();
-            ci.cancel();
-        } else if (currentTE instanceof DifferentialBlockEntity.Part && currentTE.hasSource() && Objects.equals(currentTE.source, currentTE.getBlockPos())) {
-            final float prevSpeed = currentTE.getSpeed();
-            currentTE.setSource(neighbourTE.getBlockPos());
-            currentTE.setSpeed(RotationPropagatorAccessor.invokeGetConveyedSpeed(neighbourTE, currentTE));
-            currentTE.onSpeedChanged(prevSpeed);
-            currentTE.sendData();
-            ci.cancel();
-        };
+    private static float petrolsParts$overrideDifferentialSignum(float original, KineticBlockEntity currentTE, @Local(ordinal = 1) KineticBlockEntity neighbourTE, @Local(ordinal = 2) float newSpeed) {
+        if (
+            IOverridableKineticBlockEntity.isSourceOverridable(currentTE)
+            || IOverridableKineticBlockEntity.isSourceOverridable(neighbourTE)
+        ) return Math.signum(newSpeed);
+        return original;
     };
+
+    @ModifyExpressionValue(
+        method = "propagateNewSource",
+        at = @At(
+            value = "INVOKE",
+            target = "abs",
+            ordinal = 3
+        )
+    )
+    private static float petrolsParts$overrideDifferentialCurrentSpeed(float original, KineticBlockEntity currentTE, @Local(ordinal = 0) float speedOfCurrent, @Local(ordinal = 3) float oppositeSpeed) {
+        if (IOverridableKineticBlockEntity.isSourceOverridable(currentTE)
+            && Mth.abs(speedOfCurrent) < Mth.abs(oppositeSpeed) // Prevent recursion if speeds already match
+        )
+            return 0f;
+        else 
+            return original;
+    };
+
+    @ModifyExpressionValue(
+        method = "propagateNewSource",
+        at = @At(
+            value = "INVOKE",
+            target = "abs",
+            ordinal = 5
+        )
+    )
+    private static float petrolsParts$overrideDifferentialNeighbourSpeed(float original, KineticBlockEntity currentTE, @Local(ordinal = 1) KineticBlockEntity neighbourTE) {
+        if (IOverridableKineticBlockEntity.isSourceOverridable(neighbourTE)) return 0f;
+        return original;
+    };
+
 };
