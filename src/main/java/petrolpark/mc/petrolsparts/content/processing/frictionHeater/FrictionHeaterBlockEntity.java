@@ -67,7 +67,7 @@ public class FrictionHeaterBlockEntity extends CompositeKineticBlockEntity {
 
         @Override
         public CogType getCogType(Direction face) {
-            return face.getAxis() == FrictionHeaterBlockEntity.super.getBlockState().getValue(FrictionHeaterBlock.AXIS)
+            return face.getAxis() == FrictionHeaterBlockEntity.super.getBlockState().getValue(FrictionHeaterBlock.HORIZONTAL_AXIS)
                 && (face.getAxisDirection() == AxisDirection.POSITIVE == top)
                 ? CogType.SMALL
                 : CogType.NONE;
@@ -91,7 +91,7 @@ public class FrictionHeaterBlockEntity extends CompositeKineticBlockEntity {
 
         @Override
         public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
-            return oldState.getValue(FrictionHeaterBlock.AXIS) == state.getValue(FrictionHeaterBlock.AXIS);
+            return oldState.getValue(FrictionHeaterBlock.HORIZONTAL_AXIS) == state.getValue(FrictionHeaterBlock.HORIZONTAL_AXIS);
         };
 
         @Override
@@ -107,7 +107,7 @@ public class FrictionHeaterBlockEntity extends CompositeKineticBlockEntity {
 
             @Override
             public Axis getRotationAxis(BlockState state) {
-                return FrictionHeaterBlockEntity.super.getBlockState().getValue(FrictionHeaterBlock.AXIS);
+                return FrictionHeaterBlockEntity.super.getBlockState().getValue(FrictionHeaterBlock.HORIZONTAL_AXIS);
             };
 
             @Override

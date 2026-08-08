@@ -11,23 +11,13 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraft.world.level.block.state.properties.DirectionProperty;
-import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlock;
+import petrolpark.mc.library.compat.create.core.world.block.composite.DirectionalCompositeKineticBlock;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
-public class OverloadClutchBlock extends CompositeKineticBlock implements IBE<OverloadClutchBlockEntity> {
-
-    public static final DirectionProperty FACING = BlockStateProperties.FACING;
+public class OverloadClutchBlock extends DirectionalCompositeKineticBlock implements IBE<OverloadClutchBlockEntity> {
 
     public OverloadClutchBlock(BlockBehaviour.Properties properties) {
         super(properties);
-    };
-
-    @Override
-    protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(FACING));
     };
 
     @Override

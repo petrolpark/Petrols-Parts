@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.simibubi.create.AllPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
+import com.simibubi.create.foundation.blockEntity.behaviour.filtering.FilteringRenderer;
 import com.simibubi.create.foundation.blockEntity.renderer.SafeBlockEntityRenderer;
 
 import net.createmod.catnip.render.CachedBuffers;
@@ -20,6 +21,7 @@ public class OverloadClutchRenderer extends SafeBlockEntityRenderer<OverloadClut
 
     @Override
     protected void renderSafe(OverloadClutchBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
+        FilteringRenderer.renderOnBlockEntity(be, partialTicks, ms, bufferSource, light, overlay);
         final Direction facing = be.getBlockState().getValue(OverloadClutchBlock.FACING);
         final VertexConsumer vc = bufferSource.getBuffer(RenderType.solid());
         KineticBlockEntityRenderer.renderRotatingBuffer(be.generatingPart, CachedBuffers.partialFacing(AllPartialModels.SHAFT_HALF, be.getBlockState(), facing), ms, vc, light);

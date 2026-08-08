@@ -4,7 +4,7 @@ import java.util.List;
 
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
-import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
+import com.simibubi.create.foundation.blockEntity.behaviour.CenteredSideValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 
 import net.minecraft.core.BlockPos;
@@ -18,10 +18,10 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.core.world.block.DummyBlock;
 import petrolpark.mc.library.util.Lang;
+import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
 public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
@@ -44,9 +44,9 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        behaviours.add(stressSetting = new ScrollValueBehaviour(null, this, new OverloadClutchBlockEntity.ValueBox())
+        behaviours.add(stressSetting = new ScrollValueBehaviour(PetrolsParts.translate("gui.overload_clutch.stress_impact"), this, new CenteredSideValueBoxTransform((s, f) -> f.getAxis() != s.getValue(OverloadClutchBlock.FACING).getAxis()))
             .between(0, 64)
-            .withFormatter(i -> Lang.TWO_DP_DF.format((float)i * 0.25f) + "x")
+            .withFormatter(i -> Lang.TWO_DP_DF.format((float)i * 0.25f))
             .withCallback($ -> update())
         );
         stressSetting.value = 4;
@@ -136,7 +136,7 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
         @Override
         public void setSpeed(float speed) {
             super.setSpeed(speed);
-            generatingPart.onSpeedChanged(generatingPart.getSpeed()); // Check for overstressing
+            generatingPart.updateGeneratedRotation();
         };
 
         @Override
@@ -189,22 +189,6 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
     protected void write(CompoundTag tag, Provider registries, boolean clientPacket) {
         super.write(tag, registries, clientPacket);
         if (redstonePower > 0) tag.putByte("RedstonePower", (byte)redstonePower);
-    };
-
-    static class ValueBox extends ValueBoxTransform.Sided {
-
-        static final Vec3 SOUTH_LOCATION = new Vec3(8d, 8d, 16.05d);
-
-        @Override
-        protected Vec3 getSouthLocation() {
-            return SOUTH_LOCATION;
-        };
-
-        @Override
-        protected boolean isSideActive(BlockState state, Direction direction) {
-            return direction.getAxis() != state.getValue(OverloadClutchBlock.FACING).getAxis();
-        };
-        
     };
     
 };
