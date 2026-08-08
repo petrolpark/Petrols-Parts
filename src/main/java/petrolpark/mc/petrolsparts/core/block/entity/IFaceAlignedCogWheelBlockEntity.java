@@ -42,7 +42,7 @@ public interface IFaceAlignedCogWheelBlockEntity {
         // Pumps and some Gears 'n' Kinetics blocks
         if (
             kbe.getBlockState().getBlock() instanceof IRotate rotate &&
-            kbe.getBlockState().getBlock().builtInRegistryHolder() != null &&
+            kbe.getBlockState().getBlock().builtInRegistryHolder() != null && // DummyBlocks have this null
             face.getAxis() == rotate.getRotationAxis(kbe.getBlockState())
         ) {
             if (kbe.getBlockState().is(PetrolsPartsTags.THICK_SMALL_COGWHEELS)) return CogType.SMALL;

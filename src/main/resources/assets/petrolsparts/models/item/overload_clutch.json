@@ -1,0 +1,7 @@
+{
+	"parent": "create:block/gearshift/item",
+    "textures": {
+        "0": "petrolsparts:block/overload_clutch",
+		"particle": "petrolsparts:block/overload_clutch"
+    }
+}

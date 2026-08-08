@@ -1,0 +1,30 @@
+{
+    "variants": {
+        "facing=up": {
+            "model": "petrolsparts:block/overload_clutch",
+            "x": 180
+        },
+        "facing=down": {
+            "model": "petrolsparts:block/overload_clutch"
+        },
+        "facing=north": {
+            "model": "petrolsparts:block/overload_clutch",
+            "x": 90,
+            "y": 180
+        },
+        "facing=east": {
+            "model": "petrolsparts:block/overload_clutch",
+            "x": 90,
+            "y": 270
+        },
+        "facing=south": {
+            "model": "petrolsparts:block/overload_clutch",
+            "x": 90
+        },
+        "facing=west": {
+            "model": "petrolsparts:block/overload_clutch",
+            "x": 90,
+            "y": 90
+        }
+    }
+}

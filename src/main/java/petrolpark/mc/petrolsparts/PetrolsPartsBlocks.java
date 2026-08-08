@@ -344,7 +344,7 @@ public class PetrolsPartsBlocks {
     public static final BlockEntry<OverloadClutchBlock> OVERLOAD_CLUTCH = REGISTRATE.block("overload_clutch", OverloadClutchBlock::new)
         .initialProperties(AllBlocks.COGWHEEL)
         .properties(p -> p
-        
+            .noOcclusion()
         ).defaultLoot()
         .item()
         .build()

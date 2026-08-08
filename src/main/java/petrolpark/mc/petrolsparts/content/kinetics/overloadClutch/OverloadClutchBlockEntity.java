@@ -2,20 +2,25 @@ package petrolpark.mc.petrolsparts.content.kinetics.overloadClutch;
 
 import java.util.List;
 
+import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.ValueBoxTransform;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
+import petrolpark.mc.library.core.world.block.DummyBlock;
 import petrolpark.mc.library.util.Lang;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
@@ -59,10 +64,17 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
     };
 
     public float getStressImpact() {
-        return Math.max(redstonePower, 0.25f * stressSetting.value);
+        if (redstonePower >= 15) return 0f;
+        return 0.25f * stressSetting.value * (15f - redstonePower) / 15f;
+    };
+
+    public Direction getFacing() {
+        return getBlockState().getValue(OverloadClutchBlock.FACING);
     };
 
     public class GeneratingPart extends GeneratingCompositeKineticBlockEntityPart {
+
+        final BlockState effectiveState = new GeneratingPart.DummyShaftBlock().defaultBlockState();
 
         public GeneratingPart() {
             super(PetrolsPartsBlockEntityTypes.OVERLOAD_CLUTCH_GENERATING_PART.get());
@@ -79,6 +91,11 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
         };
 
         @Override
+        public BlockState getBlockState() {
+            return effectiveState == null ? OverloadClutchBlockEntity.super.getBlockState() : effectiveState;
+        };
+
+        @Override
         public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
             return false;
         };
@@ -88,9 +105,29 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
             return 0;
         };
 
+        class DummyShaftBlock extends DummyBlock implements IRotate {
+
+            protected DummyShaftBlock() {
+                super(BlockBehaviour.Properties.of());
+            };
+
+            @Override
+            public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+                return face == getFacing();
+            };
+
+            @Override
+            public Axis getRotationAxis(BlockState state) {
+                return getFacing().getAxis();
+            };
+
+        };
+
     };
 
     public class ImpactPart extends CompositeKineticBlockEntityPart {
+
+        final BlockState effectiveState = new ImpactPart.DummyShaftBlock().defaultBlockState();
 
         public ImpactPart() {
             super(PetrolsPartsBlockEntityTypes.OVERLOAD_CLUTCH_IMPACT_PART.get());
@@ -108,6 +145,11 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
         };
 
         @Override
+        public BlockState getBlockState() {
+            return effectiveState == null ? OverloadClutchBlockEntity.super.getBlockState() : effectiveState;
+        };
+
+        @Override
         public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
             return false;
         };
@@ -115,6 +157,24 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
         @Override
         public int getIndex() {
             return 1;
+        };
+
+        class DummyShaftBlock extends DummyBlock implements IRotate {
+
+            protected DummyShaftBlock() {
+                super(BlockBehaviour.Properties.of());
+            };
+
+            @Override
+            public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+                return face == getFacing().getOpposite();
+            };
+
+            @Override
+            public Axis getRotationAxis(BlockState state) {
+                return getFacing().getAxis();
+            };
+
         };
 
     };

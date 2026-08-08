@@ -5,7 +5,7 @@
 	"textures": {
 		"particle": "create:block/large_cogwheel",
 		"large_cogwheel": "create:block/large_cogwheel",
-		"differential": "destroy:block/differential",
+		"differential": "petrolsparts:block/differential",
 		"shaft": "create:block/axis",
 		"shaft_end": "create:block/axis_top"
 	},

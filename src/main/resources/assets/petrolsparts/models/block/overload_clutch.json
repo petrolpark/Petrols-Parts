@@ -1,0 +1,8 @@
+{
+	"parent": "create:block/gearshift/block",
+    "textures": {
+        "0": "petrolsparts:block/overload_clutch",
+		"particle": "petrolsparts:block/overload_clutch"
+    },
+    "render_type": "cutout_mipped"
+}
