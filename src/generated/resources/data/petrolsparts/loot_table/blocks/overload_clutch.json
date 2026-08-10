@@ -11,11 +11,11 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "petrolsparts:differential"
+          "name": "petrolsparts:overload_clutch"
         }
       ],
       "rolls": 1.0
     }
   ],
-  "random_sequence": "petrolsparts:blocks/dummy_differential"
+  "random_sequence": "petrolsparts:blocks/overload_clutch"
 }

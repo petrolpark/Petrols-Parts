@@ -40,6 +40,7 @@ import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelGhostBlockRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.ISingleDiagonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SingleAxisBevelCogWheelBlock;
 
@@ -52,7 +53,8 @@ public class BevelCogWheelBlockItem extends BlockItem {
     protected DiagonalBevelCogWheelGhostBlockRenderer diagonalGhostBlockRenderer;
 
     protected final int[] placementHelperIds = new int[]{
-        PlacementHelpers.register(new DiagonalPlacementHelper())
+        PlacementHelpers.register(new OrthogonalPlacementHelper()),
+        PlacementHelpers.register(new DiagonalPlacementHelper()),
     };
 
     public BevelCogWheelBlockItem(Supplier<BevelCogWheelSet> set, Item.Properties properties) {
@@ -152,6 +154,34 @@ public class BevelCogWheelBlockItem extends BlockItem {
     @Override
     public String getDescriptionId() {
         return getSet().translationKey();
+    };
+
+    public class OrthogonalPlacementHelper implements IPlacementHelper {
+
+        @Override
+        public Predicate<ItemStack> getItemPredicate() {
+            return getSet().item()::isIn;
+        };
+
+        @Override
+        public Predicate<BlockState> getStatePredicate() {
+            return getSet()::isReplaceable; // Shaft or any Bevel Cogwheel block (or air (impossible here))
+        };
+
+        @Override
+        public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
+            // Don't place on ends of existing blocks
+            if (getSet().shaftBlock().has(state) && ray.getDirection().getAxis() == state.getValue(ShaftBlock.AXIS)) return PlacementOffset.fail();
+            if (state.getBlock() instanceof IOrthogonalBevelCogWheelBlock bevelBlock && bevelBlock.getTargetedPart(state, pos, player) instanceof BevelCogWheelPart.Cog cog && cog.face == ray.getDirection()) return PlacementOffset.fail(); 
+            // Place adjacent
+            for (Direction direction : IPlacementHelper.orderedByDistance(pos, ray.getLocation())) {
+                final BevelCogWheelPart.Cog part = getSet().cogParts().get(direction);
+                if (!(state.getBlock() instanceof IOrthogonalBevelCogWheelBlock bevelBlock) || bevelBlock.withPart(state, part) != null) // Shafts are always replaceable
+                    return PlacementOffset.success(pos, $ -> getBlock().get(direction));
+            };
+            return PlacementOffset.fail();
+        };
+
     };
 
     public class DiagonalPlacementHelper extends DiagonalCogHelper {

@@ -29,7 +29,7 @@
         "y": 90
       },
       "when": {
-        "type": "bottom_shaft|both",
+        "type": "top_shaft|both",
         "axis": "x"
       }
     },
@@ -78,7 +78,7 @@
         "model": "petrolsparts:block/bevel_cogwheel/cog_cap"
       },
       "when": {
-        "type": "bottom_shaft|both",
+        "type": "top_shaft|both",
         "axis": "y"
       }
     },
@@ -131,7 +131,7 @@
         "y": 180
       },
       "when": {
-        "type": "bottom_shaft|both",
+        "type": "top_shaft|both",
         "axis": "z"
       }
     },

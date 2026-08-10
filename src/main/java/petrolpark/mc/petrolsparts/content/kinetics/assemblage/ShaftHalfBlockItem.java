@@ -93,6 +93,13 @@ public class ShaftHalfBlockItem extends AssemblageBlockItem {
 
         @Override
         public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
+            // Don't place on ends
+            if (state.getBlock() instanceof AssemblageBlock assemblage) {
+                final AssemblagePart part =  assemblage.getTargetedPart(state, pos, player);
+                if (part != null && part.isOnEnd(ray.getDirection()))
+                    return PlacementOffset.fail(); // Don't place "through" face-aligned parts
+            };
+            
             int range = AllConfigs.server().equipment.placementAssistRange.get();
             final AttributeInstance reach = player.getAttribute(Attributes.BLOCK_INTERACTION_RANGE);
             if (reach != null && reach.hasModifier(ExtendoGripItem.singleRangeAttributeModifier.id())) range += 4;

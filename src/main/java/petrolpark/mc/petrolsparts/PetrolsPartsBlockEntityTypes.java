@@ -96,7 +96,7 @@ public class PetrolsPartsBlockEntityTypes {
     public static final BlockEntityEntry<SingleDiagonalBevelCogWheelBlockEntity> SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE
         .blockEntity("bevel_cogwheel/single_diagonal", SingleDiagonalBevelCogWheelBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.SINGLE_DIAGONAL_BEVEL_COGWHEEL)
-        .renderer(() -> SingleDiagonalBevelCogWheelRenderer::create)
+        .renderer(() -> SingleDiagonalBevelCogWheelRenderer::vanilla)
         .register();
 
     public static final BlockEntityEntry<DualDiagonalBevelCogWheelBlockEntity> DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE

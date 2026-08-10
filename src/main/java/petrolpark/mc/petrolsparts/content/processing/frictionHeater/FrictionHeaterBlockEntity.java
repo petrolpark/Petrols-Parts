@@ -32,6 +32,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.compat.create.core.world.block.composite.ICompositeKineticBlock;
+import petrolpark.mc.library.compat.create.core.world.block.entity.behaviour.FlagPoleBehaviour;
+import petrolpark.mc.library.compat.pquality.OptionalQuality;
 import petrolpark.mc.library.core.world.block.DummyBlock;
 import petrolpark.mc.library.util.Lang;
 import petrolpark.mc.petrolsparts.PetrolsParts;
@@ -45,6 +47,8 @@ public class FrictionHeaterBlockEntity extends CompositeKineticBlockEntity imple
     public final FrictionHeaterBlockEntity.Part topPart, bottomPart;
     protected final List<FrictionHeaterBlockEntity.Part> parts;
 
+    protected FlagPoleBehaviour flagPole;
+
     protected boolean updateHeatNextTick = true;
 
     public FrictionHeaterBlockEntity(BlockEntityType<?> type, BlockPos pos, BlockState state) {
@@ -56,7 +60,9 @@ public class FrictionHeaterBlockEntity extends CompositeKineticBlockEntity imple
     };
 
     @Override
-    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {};
+    public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
+        behaviours.add(flagPole = new FlagPoleBehaviour(this));
+    };
 
     @Override
     public List<FrictionHeaterBlockEntity.Part> getParts() {
@@ -65,13 +71,21 @@ public class FrictionHeaterBlockEntity extends CompositeKineticBlockEntity imple
 
     public void updateHeat() {
         final float diff = Math.abs(topPart.getSpeed() - bottomPart.getSpeed());
-        if (diff >= PetrolsPartsConfigs.server().superHeatedMinSpeedDifference.get()) {
+        if (diff >= getSuperHeatedThreshold()) {
             ICompositeKineticBlock.switchToBlockState(getLevel(), getBlockPos(), getBlockState().setValue(FrictionHeaterBlock.HEAT_LEVEL, HeatLevel.SEETHING));
-        } else if (diff >= PetrolsPartsConfigs.server().heatedMinSpeedDifference.get()) {
+        } else if (diff >= getHeatedThreshold()) {
             ICompositeKineticBlock.switchToBlockState(getLevel(), getBlockPos(), getBlockState().setValue(FrictionHeaterBlock.HEAT_LEVEL, HeatLevel.KINDLED));
         } else {
             ICompositeKineticBlock.switchToBlockState(getLevel(), getBlockPos(), getBlockState().setValue(FrictionHeaterBlock.HEAT_LEVEL, HeatLevel.NONE));
         };
+    };
+
+    public float getHeatedThreshold() {
+        return OptionalQuality.reduce(flagPole.getFlagPole(), PetrolsPartsConfigs.server().heatedMinSpeedDifference.get());
+    };
+
+    public float getSuperHeatedThreshold() {
+        return OptionalQuality.reduce(flagPole.getFlagPole(), PetrolsPartsConfigs.server().superHeatedMinSpeedDifference.get());
     };
 
     public void spawnParticles() {
@@ -220,14 +234,14 @@ public class FrictionHeaterBlockEntity extends CompositeKineticBlockEntity imple
             .space()
             .add(CreateLang.translate("generic.unit.rpm"))
             .style(ChatFormatting.GREEN);
-        if (speedDiff < PetrolsPartsConfigs.server().superHeatedMinSpeedDifference.get()) {
-            final boolean unheated = speedDiff < PetrolsPartsConfigs.server().heatedMinSpeedDifference.get();
+        if (speedDiff < getSuperHeatedThreshold()) {
+            final boolean unheated = speedDiff < getHeatedThreshold();
             speedDifferenceBuilder.space().add(PetrolsParts.langBuilder()
                 .translate("gui.goggles.friction_heater.next_level",
                     unheated
                         ? heatedComponent()
                         : superHeatedComponent(),
-                    CreateLang.number(unheated ? PetrolsPartsConfigs.server().heatedMinSpeedDifference.get() : PetrolsPartsConfigs.server().superHeatedMinSpeedDifference.get())
+                    CreateLang.number(unheated ? getHeatedThreshold() : getSuperHeatedThreshold())
                         .space()
                         .add(CreateLang.translate("generic.unit.rpm"))
                         .style(ChatFormatting.RED)

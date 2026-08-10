@@ -19,5 +19,6 @@ public class PetrolsPartsPqualityPlugin implements IPqualityPlugin {
     @OnlyIn(Dist.CLIENT)
     public void registerEffectDescriptions(Consumer<IQualityEffectDescription> adder) {
         adder.accept(new SimpleQualityEffectDescription(PetrolsParts.asResource("movement"), () -> true, Collections.singletonList(PetrolsPartsBlocks.MOVEMENT.asStack())));
+        adder.accept(new SimpleQualityEffectDescription(PetrolsParts.asResource("friction_heater"), () -> true, Collections.singletonList(PetrolsPartsBlocks.FRICTION_HEATER.asStack())));
     };
 };

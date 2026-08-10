@@ -309,9 +309,10 @@ public class PetrolsPartsBlocks {
         .defaultLoot()
         .properties(p -> p
             .noOcclusion()
-        ).transform(PPCStress.setImpact(8.0d))
+        ).transform(PPCStress.setImpact(4.0d))
         .transform(TagGen.axeOrPickaxe())
         .item()
+        .tag(PetrolparkTags.Items.FLAGGABLE.tag)
         .build()
         .register();
 
@@ -348,6 +349,7 @@ public class PetrolsPartsBlocks {
         .properties(p -> p
             .noOcclusion()
         ).defaultLoot()
+        .transform(TagGen.axeOrPickaxe())
         .item()
         .build()
         .register();

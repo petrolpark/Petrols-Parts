@@ -15,7 +15,9 @@ import net.minecraft.resources.ResourceLocation;
 import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
+import petrolpark.mc.petrolsparts.content.kinetics.PetrolsPartsKineticsScenes;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageScenes;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelScenes;
 import petrolpark.mc.petrolsparts.content.processing.PetrolsPartsProcessingScenes;
 
 public class PetrolsPartsPonderPlugin implements PonderPlugin {
@@ -48,7 +50,11 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .addStoryBoard("assemblage/encasing", AssemblageScenes::encasing);
 
         // Bevel Cogwheel
-        //TODO
+        itemProviderHelper.forComponents(PetrolsPartsItems.BEVEL_COGWHEEL)
+            .addStoryBoard("bevel_cogwheel/orthogonal", BevelCogWheelScenes::orthogonal)
+            .addStoryBoard("bevel_cogwheel/diagonal", BevelCogWheelScenes::diagonal);
+        itemProviderHelper.forComponents(PetrolsPartsItems.BEVEL_COGWHEEL, AllBlocks.ANDESITE_CASING, AllBlocks.BRASS_CASING)
+            .addStoryBoard("bevel_cogwheel/encasing", BevelCogWheelScenes::encasing);
 
         // Brass Depot
         itemProviderHelper.forComponents(PetrolsPartsBlocks.BRASS_DEPOT)
@@ -56,32 +62,36 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
 
         // Colossal Cogwheel
         itemProviderHelper.forComponents(PetrolsPartsBlocks.COLOSSAL_COGWHEEL)
-            .addStoryBoard("colossal_cogwheel", PetrolsPartsScenes::colossalCogwheel);
+            .addStoryBoard("colossal_cogwheel", PetrolsPartsKineticsScenes::colossalCogwheel);
 
         // // Differential
-        // itemProviderHelper.forComponents(PetrolsPartsBlocks.LEGACY_DIFFERENTIAL)
+        // itemProviderHelper.forComponents(PetrolsPartsBlocks.DIFFERENTIAL)
         //     .addStoryBoard("differential", PetrolsPartsScenes::differential);
 
         // Corner Shaft
         itemProviderHelper.forComponents(PetrolsPartsBlocks.CORNER_SHAFT)
-            .addStoryBoard("corner_shaft", PetrolsPartsScenes::cornerShaft);
+            .addStoryBoard("corner_shaft", PetrolsPartsKineticsScenes::cornerShaft);
 
         // Hydraulic Transmission
         itemProviderHelper.forComponents(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION)
-            .addStoryBoard("hydraulic_transmission", PetrolsPartsScenes::hydraulicTransmission);
+            .addStoryBoard("hydraulic_transmission", PetrolsPartsKineticsScenes::hydraulicTransmission);
 
         // Movement
         itemProviderHelper.forComponents(PetrolsPartsBlocks.MOVEMENT)
-            .addStoryBoard("movement/movement", PetrolsPartsScenes::movement)
-            .addStoryBoard("movement/battery", PetrolsPartsScenes::movementBattery);
+            .addStoryBoard("movement/movement", PetrolsPartsKineticsScenes::movement)
+            .addStoryBoard("movement/battery", PetrolsPartsKineticsScenes::movementBattery);
+
+        // Overload Clutch
+        itemProviderHelper.forComponents(PetrolsPartsBlocks.OVERLOAD_CLUTCH)
+            .addStoryBoard("overload_clutch", PetrolsPartsKineticsScenes::overloadClutch);
 
         // Planetary Gearset
         itemProviderHelper.forComponents(PetrolsPartsBlocks.PLANETARY_GEARSET)
-            .addStoryBoard("planetary_gearset", PetrolsPartsScenes::planetaryGearset);
+            .addStoryBoard("planetary_gearset", PetrolsPartsKineticsScenes::planetaryGearset);
     
         // Pneumatic Tube
         itemProviderHelper.forComponents(PetrolsPartsBlocks.PNEUMATIC_TUBE)
-            .addStoryBoard("pneumatic_tube", PetrolsPartsScenes::pneumaticTube);
+            .addStoryBoard("pneumatic_tube", PetrolsPartsKineticsScenes::pneumaticTube);
     };
 
     @Override

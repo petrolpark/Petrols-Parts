@@ -1,4 +1,4 @@
-package petrolpark.mc.petrolsparts.core.ponder;
+package petrolpark.mc.petrolsparts.content.kinetics;
 
 import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
@@ -25,7 +25,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeTransportInstruction;
 
-public class PetrolsPartsScenes {
+public class PetrolsPartsKineticsScenes {
 
     public static void colossalCogwheel(SceneBuilder baseScene, SceneBuildingUtil util) {
         CreateSceneBuilder scene = new CreateSceneBuilder(baseScene);
@@ -111,7 +111,7 @@ public class PetrolsPartsScenes {
 
     public static void differential(SceneBuilder baseScene, SceneBuildingUtil util) {
         CreateSceneBuilder scene = new CreateSceneBuilder(baseScene);
-        scene.title("differential", "This text is defined in a language file.");
+        scene.title("differential", "This text is defined in a language file");
         scene.configureBasePlate(1, 0, 5);
         scene.showBasePlate();
         
@@ -137,18 +137,18 @@ public class PetrolsPartsScenes {
             .add(util.select().position(westInnerShaft))
             .add(util.select().position(westSpeedometer));
 
-        Selection east = util.select().position(eastBigGear)
-            .add(util.select().position(eastBottomSmallGear))
-            .add(util.select().position(eastTopSmallGear))
-            .add(util.select().position(eastOuterShaft))
-            .add(util.select().position(eastInnerShaft))
-            .add(util.select().position(eastSpeedometer));
+        // Selection east = util.select().position(eastBigGear)
+        //     .add(util.select().position(eastBottomSmallGear))
+        //     .add(util.select().position(eastTopSmallGear))
+        //     .add(util.select().position(eastOuterShaft))
+        //     .add(util.select().position(eastInnerShaft))
+        //     .add(util.select().position(eastSpeedometer));
 
         Selection center = util.select().position(differential)
             .add(util.select().position(middleSmallGear))
             .add(util.select().position(middleSpeedometer));
 
-        Selection back = util.select().fromTo(3, 0, 5, 4, 2, 5);
+        // Selection back = util.select().fromTo(3, 0, 5, 4, 2, 5);
 
         scene.idle(10);
         ElementLink<WorldSectionElement> bigGearElement = scene.world().showIndependentSection(util.select().position(westBigGear), Direction.EAST);
@@ -166,11 +166,12 @@ public class PetrolsPartsScenes {
         scene.world().showSection(util.select().position(westInnerShaft), Direction.DOWN);
         scene.world().showSection(util.select().position(eastInnerShaft), Direction.DOWN);
         scene.idle(5);
-        ElementLink<WorldSectionElement> differentialElement = scene.world().showIndependentSection(util.select().position(differential), Direction.DOWN);
+        //ElementLink<WorldSectionElement> differentialElement =
+            scene.world().showIndependentSection(util.select().position(differential), Direction.DOWN);
         scene.idle(10);
 
         scene.overlay().showText(80)
-            .text("This text is defined in a language file.")
+            .text("This text is defined in a language file")
             .pointAt(util.vector().topOf(differential))
             .attachKeyFrame();
         scene.idle(20);
@@ -190,30 +191,30 @@ public class PetrolsPartsScenes {
         scene.idle(10);
 
         scene.overlay().showText(120)
-            .text("This text is defined in a language file.")
+            .text("This text is defined in a language file")
             .attachKeyFrame();
         scene.idle(20);
         scene.overlay().showOutline(PonderPalette.BLUE, "east", util.select().position(eastSpeedometer), 100);
         scene.overlay().showText(100)
-            .text("This text is defined in a language file.")
+            .text("This text is defined in a language file")
             .colored(PonderPalette.BLUE)
             .independent(40);
         scene.idle(20);
         scene.overlay().showOutline(PonderPalette.RED, "west", util.select().position(westSpeedometer), 80);
         scene.overlay().showText(80)
-            .text("This text is defined in a language file.")
+            .text("This text is defined in a language file")
             .colored(PonderPalette.RED)
             .independent(60);
         scene.idle(20);
         scene.overlay().showOutline(PonderPalette.FAST, "total", util.select().position(middleSpeedometer), 60);
         scene.overlay().showText(60)
-            .text("This text is defined in a language file.")
+            .text("This text is defined in a language file")
             .colored(PonderPalette.FAST)
             .independent(80);
         scene.idle(80);
 
         scene.overlay().showText(170)
-            .text("This text is defined in a language file.")
+            .text("This text is defined in a language file")
             .attachKeyFrame();
         scene.idle(10);
         scene.world().multiplyKineticSpeed(center, 8 / 14f);
@@ -231,65 +232,24 @@ public class PetrolsPartsScenes {
         scene.idle(20);
         scene.overlay().showOutline(PonderPalette.BLUE, "east", util.select().position(eastSpeedometer), 100);
         scene.overlay().showText(100)
-            .text("This text is defined in a language file.")
+            .text("This text is defined in a language file")
             .colored(PonderPalette.BLUE)
             .independent(40);
         scene.idle(20);
         scene.overlay().showOutline(PonderPalette.RED, "west", util.select().position(westSpeedometer), 80);
         scene.overlay().showText(80)
-            .text("This text is defined in a language file.")
+            .text("This text is defined in a language file")
             .colored(PonderPalette.RED)
             .independent(60);
         scene.idle(20);
         scene.overlay().showOutline(PonderPalette.FAST, "total", util.select().position(middleSpeedometer), 60);
         scene.overlay().showText(60)
-            .text("This text is defined in a language file.")
+            .text("This text is defined in a language file")
             .colored(PonderPalette.FAST)
             .independent(80);
         scene.idle(70);
         scene.world().hideSection(util.select().position(middleSmallGear).add(util.select().position(middleSpeedometer)), Direction.SOUTH);
         scene.idle(10);
-
-        scene.overlay().showText(80)
-            .text("This text is defined in a language file.")
-            .colored(PonderPalette.RED)
-            .attachKeyFrame();
-        scene.idle(100);
-
-        scene.overlay().showText(60)
-            .text("This text is defined in a language file.")
-            .colored(PonderPalette.GREEN)
-            .pointAt(util.vector().blockSurface(differential, Direction.WEST));
-        scene.idle(80);
-        scene.world().setKineticSpeed(util.select().position(differential), 0f);
-        scene.world().hideSection(east, Direction.EAST);
-        scene.world().hideSection(west, Direction.WEST);
-        scene.world().hideIndependentSection(bigGearElement, Direction.WEST);
-        scene.idle(10);
-        scene.world().setKineticSpeed(east, 0f);
-        scene.world().setKineticSpeed(west, 0f);
-        scene.idle(10);
-        scene.world().rotateSection(differentialElement, 0d, 90d, 0d, 10);
-        scene.idle(10);
-        scene.overlay().showText(60)
-            .text("This text is defined in a language file.")
-            .colored(PonderPalette.RED)
-            .pointAt(util.vector().blockSurface(differential, Direction.NORTH));
-        scene.idle(80);
-
-        scene.overlay().showText(80)
-            .text("This text is defined in a language file.")
-            .pointAt(util.vector().blockSurface(differential, Direction.UP))
-            .attachKeyFrame();
-        scene.idle(20);
-        scene.world().showSection(back, Direction.NORTH);
-        scene.idle(5);
-        for (int z = 5; z >= 2; z--) {
-            scene.world().showSection(util.select().position(util.grid().at(4, 3, z)), Direction.DOWN);
-            scene.idle(5);
-        };
-        scene.world().destroyBlock(differential);
-        scene.idle(60);
 
         scene.markAsFinished();
     };
@@ -507,9 +467,18 @@ public class PetrolsPartsScenes {
             .text("This text is defined in a language file");
     };
     
+    public static final void overloadClutch(SceneBuilder sceneIn, SceneBuildingUtil util) {
+        final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
+        scene.title("overload_clutch", "This text is defined in a language file");
+        scene.configureBasePlate(0, 0, 5);
+        scene.showBasePlate();
+
+        scene.markAsFinished();
+    };
+
     public static final void planetaryGearset(SceneBuilder baseScene, SceneBuildingUtil util) {
         CreateSceneBuilder scene = new CreateSceneBuilder(baseScene);
-        scene.title("planetary_gearset", "This text is defined in a language file.");
+        scene.title("planetary_gearset", "This text is defined in a language file");
         scene.configureBasePlate(0, 0, 3);
         scene.showBasePlate();
 

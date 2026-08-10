@@ -34,6 +34,7 @@ public class PetrolsPartsItems {
         .register();
 
     public static final ItemEntry<Item> HIGH_FRICTION_COMPOUND = REGISTRATE.item("high_friction_compound", Item::new)
+        .defaultModel()
         .register();
 
     public static final void register() {};

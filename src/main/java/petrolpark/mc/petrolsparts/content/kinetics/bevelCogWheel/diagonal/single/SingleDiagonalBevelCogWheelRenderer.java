@@ -20,7 +20,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelCl
 
 public class SingleDiagonalBevelCogWheelRenderer extends KineticBlockEntityRenderer<SingleDiagonalBevelCogWheelBlockEntity> {
 
-    public static final SingleDiagonalBevelCogWheelRenderer create(BlockEntityRendererProvider.Context context) {
+    public static final SingleDiagonalBevelCogWheelRenderer vanilla(BlockEntityRendererProvider.Context context) {
         return new SingleDiagonalBevelCogWheelRenderer(BevelCogWheelClientSet.vanilla(), context);  
     };
 
