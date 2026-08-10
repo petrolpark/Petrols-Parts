@@ -92,6 +92,11 @@ public class DualDiagonalBevelCogWheelBlock extends MultiPartCompositeKineticBlo
     };
 
     @Override
+    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+        return false;
+    };
+
+    @Override
     protected FluidState getFluidState(BlockState state) {
         return fluidState(state);
     };

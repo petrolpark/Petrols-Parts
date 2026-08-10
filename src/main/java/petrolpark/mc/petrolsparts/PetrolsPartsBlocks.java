@@ -308,9 +308,11 @@ public class PetrolsPartsBlocks {
         .initialProperties(AllBlocks.BLAZE_BURNER)
         .defaultLoot()
         .properties(p -> p
-        
+            .noOcclusion()
         ).transform(PPCStress.setImpact(8.0d))
         .transform(TagGen.axeOrPickaxe())
+        .item()
+        .build()
         .register();
 
     public static final BlockEntry<HydraulicTransmissionBlock> HYDRAULIC_TRANSMISSION = REGISTRATE.block("hydraulic_transmission", HydraulicTransmissionBlock::new)

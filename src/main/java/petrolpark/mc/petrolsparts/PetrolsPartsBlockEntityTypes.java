@@ -158,6 +158,10 @@ public class PetrolsPartsBlockEntityTypes {
         .renderer(() -> FrictionHeaterRenderer::new)
         .register();
 
+    public static final BlockEntityEntry<FrictionHeaterBlockEntity.Part> FRICTION_HEATER_PART = REGISTRATE
+        .<FrictionHeaterBlockEntity.Part>uninstantiableBlockEntity("friction_heater_part")
+        .register();
+
     public static final BlockEntityEntry<HydraulicTransmissionBlockEntity> HYDRAULIC_TRANSMISSION = REGISTRATE
         .createBlockEntity("hydraulic_transmission", HydraulicTransmissionBlockEntity::new)
         //.visual(() -> HydraulicTransmissionVisual::new)

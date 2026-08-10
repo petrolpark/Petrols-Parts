@@ -11,6 +11,7 @@ import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.InteractionHand;
@@ -92,6 +93,11 @@ public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock
     @Override
     public Axis getRotationAxis(BlockState state) {
         return Axis.Y; // Unused
+    };
+
+    @Override
+    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+        return false;
     };
 
     @Override

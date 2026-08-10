@@ -1,0 +1,11 @@
+{
+    "variants": {
+        "axis=z": {
+            "model": "petrolsparts:block/friction_heater/block"
+        },
+        "axis=x": {
+            "model": "petrolsparts:block/friction_heater/block",
+            "y": 90
+        }
+    }
+}

@@ -37,6 +37,11 @@
     "block.petrolsparts.pneumatic_tube.jammed": "Jammed!",
     "block.petrolsparts.pneumatic_tube.jammed.hint": "There are Items stuck in this Pneumatic Tube that _can't get out_.",
 
+    "petrolsparts.gui.goggles.friction_heater.status": "Heater Status: %1$s",
+    "petrolsparts.gui.goggles.friction_heater.part_kinetic_stats": "%1$s Wheel:",
+    "petrolsparts.gui.goggles.friction_heater.speed_difference": "Wheel Speed Difference:",
+    "petrolsparts.gui.goggles.friction_heater.not_heating": "Not Heating",
+    "petrolsparts.gui.goggles.friction_heater.next_level": "(becomes %1$s at %2$s)",
     "petrolsparts.gui.goggles.kinetic_battery_stats": "Kinetic Battery Stats:",
     "petrolsparts.gui.goggles.movement.no_weight": "No Weight Attached",
     "petrolsparts.gui.goggles.movement.no_weight.info": "Suitable _weight_ items can be found in JEI. _Right-Click_ to attach one.",

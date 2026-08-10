@@ -6,7 +6,6 @@ import java.util.function.DoubleSupplier;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.simibubi.create.Create;
 import com.tterrag.registrate.builders.AbstractBuilder;
 import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
@@ -18,6 +17,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.ModConfigSpec;
 import net.neoforged.neoforge.common.ModConfigSpec.ConfigValue;
+import petrolpark.mc.petrolsparts.PetrolsParts;
 
 public class PPCStress extends ConfigBase {
     
@@ -47,15 +47,15 @@ public class PPCStress extends ConfigBase {
 
     @Nullable
 	public DoubleSupplier getImpact(Block block) {
-		ResourceLocation id = RegisteredObjectsHelper.getKeyOrThrow(block);
-		ConfigValue<Double> value = this.impacts.get(id);
+		final ResourceLocation id = RegisteredObjectsHelper.getKeyOrThrow(block);
+		final ConfigValue<Double> value = this.impacts.get(id);
 		return value == null ? null : value::get;
 	};
 
 	@Nullable
 	public DoubleSupplier getCapacity(Block block) {
-		ResourceLocation id = RegisteredObjectsHelper.getKeyOrThrow(block);
-		ConfigValue<Double> value = this.capacities.get(id);
+		final ResourceLocation id = RegisteredObjectsHelper.getKeyOrThrow(block);
+		final ConfigValue<Double> value = this.capacities.get(id);
 		return value == null ? null : value::get;
 	};
 
@@ -65,7 +65,7 @@ public class PPCStress extends ConfigBase {
 
 	public static <B extends AbstractBuilder<?,?, ?, ?>> NonNullUnaryOperator<B> setImpact(double value) {
 		return builder -> {
-			ResourceLocation id = Create.asResource(builder.getName());
+			final ResourceLocation id = PetrolsParts.asResource(builder.getName());
 			DEFAULT_IMPACTS.put(id, value);
 			return builder;
 		};
@@ -73,7 +73,7 @@ public class PPCStress extends ConfigBase {
 
 	public static <B extends AbstractBuilder<?,?, ?, ?>> NonNullUnaryOperator<B> setCapacity(double value) {
 		return builder -> {
-			ResourceLocation id = Create.asResource(builder.getName());
+			final ResourceLocation id = PetrolsParts.asResource(builder.getName());
 			DEFAULT_CAPACITIES.put(id, value);
 			return builder;
 		};

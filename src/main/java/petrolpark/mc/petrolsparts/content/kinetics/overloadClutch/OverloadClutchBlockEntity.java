@@ -5,6 +5,7 @@ import java.util.List;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.simibubi.create.foundation.blockEntity.behaviour.CenteredSideValueBoxTransform;
+import com.simibubi.create.foundation.blockEntity.behaviour.ValueSettingsBoard;
 import com.simibubi.create.foundation.blockEntity.behaviour.scrollValue.ScrollValueBehaviour;
 
 import net.minecraft.core.BlockPos;
@@ -14,13 +15,14 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.BlockHitResult;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.core.world.block.DummyBlock;
-import petrolpark.mc.library.util.Lang;
 import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
@@ -44,9 +46,15 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {
-        behaviours.add(stressSetting = new ScrollValueBehaviour(PetrolsParts.translate("gui.overload_clutch.stress_impact"), this, new CenteredSideValueBoxTransform((s, f) -> f.getAxis() != s.getValue(OverloadClutchBlock.FACING).getAxis()))
-            .between(0, 64)
-            .withFormatter(i -> Lang.TWO_DP_DF.format((float)i * 0.25f))
+        behaviours.add(stressSetting = new ScrollValueBehaviour(PetrolsParts.translate("gui.overload_clutch.stress_impact"), this, new CenteredSideValueBoxTransform((s, f) -> f.getAxis() != s.getValue(OverloadClutchBlock.FACING).getAxis())) {
+            @Override
+            public ValueSettingsBoard createBoard(Player player, BlockHitResult hitResult) {
+                final ValueSettingsBoard board = super.createBoard(player, hitResult);
+                return new ValueSettingsBoard(board.title(), board.maxValue(), 16, board.rows(), board.formatter());
+            };
+        }
+            .between(0, 256)
+            .withFormatter(i -> i + "x")
             .withCallback($ -> update())
         );
         stressSetting.value = 4;
@@ -58,14 +66,14 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
     };
 
     public void update() {
-        impactPart.detachKinetics();
-        impactPart.updateSpeed = true;
+        // impactPart.detachKinetics();
+        // impactPart.updateSpeed = true;
         generatingPart.updateGeneratedRotation();
     };
 
     public float getStressImpact() {
         if (redstonePower >= 15) return 0f;
-        return 0.25f * stressSetting.value * (15f - redstonePower) / 15f;
+        return (float)(stressSetting.value * (15 - redstonePower) / 15);
     };
 
     public Direction getFacing() {
@@ -134,8 +142,8 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity {
         };
 
         @Override
-        public void setSpeed(float speed) {
-            super.setSpeed(speed);
+        public void onSpeedChanged(float previousSpeed) {
+            super.onSpeedChanged(previousSpeed);
             generatingPart.updateGeneratedRotation();
         };
 
