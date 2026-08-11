@@ -8,6 +8,7 @@ import java.util.Set;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
+import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.kinetics.RotationPropagator;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
@@ -23,6 +24,7 @@ import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
@@ -32,6 +34,7 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
+import petrolpark.mc.library.compat.create.core.world.item.ItemStressValues;
 import petrolpark.mc.library.core.world.block.DummyBlock;
 import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
@@ -73,29 +76,36 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         
         final Set<AssemblageBlockEntityPart> parts = new LinkedHashSet<>(); // Deterministic ordering required
 
+        final float shaftHalfStressImpact = (float)BlockStressValues.getImpact(block.getSet().shaftBlock().get()) / 2f;
+        final float shaftHalfStressCapacity = (float)BlockStressValues.getCapacity(block.getSet().shaftBlock().get()) / 2f;
+
         shaftPart = new AssemblageBlockEntityPart();
         if (block.hasTopShaft(state)) {
-            shaftPart.withTopShaftConnection();
-            parts.add(shaftPart);
+            parts.add(shaftPart
+                .withTopShaftConnection()
+                .withStress(shaftHalfStressImpact, shaftHalfStressCapacity)
+            );
         };
         if (block.hasBottomShaft(state)) {
-            shaftPart.withBottomShaftConnection();
-            parts.add(shaftPart);
+            parts.add(shaftPart
+                .withBottomShaftConnection()
+                .withStress(shaftHalfStressImpact, shaftHalfStressCapacity)
+            );
         };
 
         topCogPart = topCog.hasShaftConnection() && block.hasTopShaft(state) ? shaftPart : new AssemblageBlockEntityPart();
         if (topCog.hasShaftConnection()) topCogPart.withTopShaftConnection();
         topCogPart.topCogType = topCog.getCogType();
-        if (!topCogPart.topCogType.isNone()) parts.add(topCogPart);
+        if (!topCogPart.topCogType.isNone()) parts.add(topCogPart.withStressOfCog(block.getSet(), topCog));
 
         bottomCogPart = bottomCog.hasShaftConnection() && block.hasBottomShaft(state) ? shaftPart : new AssemblageBlockEntityPart();
         if (bottomCog.hasShaftConnection()) bottomCogPart.withBottomShaftConnection();
         bottomCogPart.bottomCogType = bottomCog.getCogType();
-        if (!bottomCogPart.bottomCogType.isNone()) parts.add(bottomCogPart);
+        if (!bottomCogPart.bottomCogType.isNone()) parts.add(bottomCogPart.withStressOfCog(block.getSet(), bottomCog));
 
         middleCogPart = middleCog.hasShaftConnection() && (block.hasTopShaft(state) || block.hasBottomShaft(state)) ? shaftPart : new AssemblageBlockEntityPart();
         middleCogPart.middleCogType = middleCog.getCogType();
-        if (!middleCogPart.middleCogType.isNone()) parts.add(middleCogPart);
+        if (!middleCogPart.middleCogType.isNone()) parts.add(middleCogPart.withStressOfCog(block.getSet(), middleCog));
 
         this.parts = new ArrayList<>(parts);
 
@@ -145,7 +155,11 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
 
         protected AssemblageBlockEntityPart() {
             super(PetrolsPartsBlockEntityTypes.ASSEMBLAGE_PART.get());
+            lastStressApplied = 0f;
+            lastCapacityProvided = 0f;
         };
+
+        // BUILDING
 
         protected AssemblageBlockEntityPart withTopShaftConnection() {
             hasTopShaftConnection = true;
@@ -156,6 +170,25 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
             hasBottomShaftConnection = true;
             return this;
         };
+
+        protected AssemblageBlockEntityPart withStressOfCog(AssemblageSet set, AssemblageCog cogType) {
+            if (cogType.isNone()) return this;
+            final Item key = (switch (cogType) {
+                case LARGE -> set.largeCogItem();
+                case SMALL_COAXIAL -> set.coaxialCogItem();
+                case LARGE_COAXIAL -> set.largeCoaxialCogItem();
+                default -> set.smallCogItem();
+            }).get();
+            return withStress((float)ItemStressValues.getImpact(key), (float)ItemStressValues.getCapacity(key));
+        };
+
+        protected AssemblageBlockEntityPart withStress(float impact, float capacity) {
+            lastStressApplied += impact;
+            lastCapacityProvided += capacity;
+            return this;
+        };
+
+        //
 
         @Override
         public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
@@ -182,6 +215,16 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         };
 
         @Override
+        public float calculateStressApplied() {
+            return lastStressApplied;
+        };
+
+        @Override
+        public float calculateAddedStressCapacity() {
+            return lastCapacityProvided;
+        };
+
+        @Override
         protected boolean canPropagateDiagonally(IRotate block, BlockState state) {
             return !topCogType.isNone() || !middleCogType.isNone() || !bottomCogType.isNone();
         };
@@ -198,7 +241,6 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
             return neighbours;
         };
 
-        // Unregistered - might be weird
         public class DummyCogWheelBlock extends DummyBlock implements ICogWheel {
 
             public DummyCogWheelBlock() {

@@ -1,5 +1,7 @@
 package petrolpark.mc.petrolsparts.content.kinetics;
 
+import java.util.function.UnaryOperator;
+
 import com.simibubi.create.AllItems;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 
@@ -14,10 +16,13 @@ import net.createmod.ponder.foundation.instruction.FadeOutOfSceneInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.ParticleTypes;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.core.client.ponder.instruction.CameraShakeInstruction;
 import petrolpark.mc.library.core.client.ponder.particle.PetrolparkEmitters;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
@@ -628,4 +633,14 @@ public class PetrolsPartsKineticsScenes {
         scene.idle(70);
     };
 
+    public static final void modifyCompositeKBESpeed(SceneBuilder scene, Selection selection, int partIndex, UnaryOperator<Float> speedFunc) {
+        scene.world().modifyBlockEntityNBT(selection, CompositeKineticBlockEntity.class, tag -> {
+            final CompoundTag partTag = tag.getList("Parts", Tag.TAG_COMPOUND).getCompound(partIndex);
+            partTag.putFloat("Speed", speedFunc.apply(partTag.getFloat("Speed")));
+        });
+    };
+
+    public static final void multiplyCompositeKBESpeed(SceneBuilder scene, Selection selection, int partIndex, float factor) {
+        modifyCompositeKBESpeed(scene, selection, partIndex, s -> s * factor);
+    };
 };

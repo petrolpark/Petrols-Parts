@@ -8,7 +8,7 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
-import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem.DiagonalCogHelper;
+import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.tterrag.registrate.util.RegistrateDistExecutor;
@@ -177,14 +177,14 @@ public class BevelCogWheelBlockItem extends BlockItem {
             for (Direction direction : IPlacementHelper.orderedByDistance(pos, ray.getLocation())) {
                 final BevelCogWheelPart.Cog part = getSet().cogParts().get(direction);
                 if (!(state.getBlock() instanceof IOrthogonalBevelCogWheelBlock bevelBlock) || bevelBlock.withPart(state, part) != null) // Shafts are always replaceable
-                    return PlacementOffset.success(pos, $ -> getBlock().get(direction));
+                    return PlacementOffset.success(pos, $ -> getBlock().get(direction)); // PlacementOffset mixin handles merging the two blocks
             };
             return PlacementOffset.fail();
         };
 
     };
 
-    public class DiagonalPlacementHelper extends DiagonalCogHelper {
+    public class DiagonalPlacementHelper extends CogwheelBlockItem.DiagonalCogHelper {
 
         @Override
         public Predicate<ItemStack> getItemPredicate() {

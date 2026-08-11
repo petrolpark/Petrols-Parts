@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.simibubi.create.content.contraptions.StructureTransform;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.tterrag.registrate.providers.DataGenContext;
@@ -42,7 +41,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.Beve
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.BevelCogWheelAndShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.OppositeBevelCogWheelsBlock;
 
-public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock implements IBE<KineticBlockEntity> {
+public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock implements IBE<SingleAxisBevelCogWheelBlockEntity> {
 
     public static final EnumProperty<Axis> AXIS = BlockStateProperties.AXIS;
     public static final EnumProperty<SingleAxisBevelCogWheelBlock.Type> TYPE = EnumProperty.create("type", SingleAxisBevelCogWheelBlock.Type.class);
@@ -224,12 +223,12 @@ public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock imple
     };
 
     @Override
-    public Class<KineticBlockEntity> getBlockEntityClass() {
-        return KineticBlockEntity.class;
+    public Class<SingleAxisBevelCogWheelBlockEntity> getBlockEntityClass() {
+        return SingleAxisBevelCogWheelBlockEntity.class;
     };
 
     @Override
-    public BlockEntityType<? extends KineticBlockEntity> getBlockEntityType() {
+    public BlockEntityType<? extends SingleAxisBevelCogWheelBlockEntity> getBlockEntityType() {
         return getSet().singleAxisBE().get();
     };
 

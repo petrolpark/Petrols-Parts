@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.base.Suppliers;
 import com.simibubi.create.AllBlocks;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.tterrag.registrate.util.entry.BlockEntityEntry;
 import com.tterrag.registrate.util.entry.BlockEntry;
@@ -47,6 +46,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simp
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.FourBevelCogWheelsBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SimpleBevelCogWheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SingleAxisBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SingleAxisBevelCogWheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.ThreeBevelCogWheelsBlock;
 
 public record BevelCogWheelSet(
@@ -62,7 +62,7 @@ public record BevelCogWheelSet(
     // Blocks (diagonal)
     BlockEntry<? extends SingleDiagonalBevelCogWheelBlock> singleDiagonalBlock, BlockEntry<? extends DualDiagonalBevelCogWheelBlock> dualDiagonalBlock,
     // BEs
-    BlockEntityEntry<? extends KineticBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
+    BlockEntityEntry<? extends SingleAxisBevelCogWheelBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
     BlockEntityEntry<? extends SingleDiagonalBevelCogWheelBlockEntity> singleDiagonalBE, BlockEntityEntry<? extends DualDiagonalBevelCogWheelBlockEntity> dualDiagonalBE, 
     // Items
     ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends Item> shaftHalfItem,
@@ -86,7 +86,7 @@ public record BevelCogWheelSet(
         // Blocks (diagonal)
         BlockEntry<? extends SingleDiagonalBevelCogWheelBlock> singleDiagonalBlock, BlockEntry<? extends DualDiagonalBevelCogWheelBlock> dualDiagonalBlock,
         // BEs
-        BlockEntityEntry<? extends KineticBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
+        BlockEntityEntry<? extends SingleAxisBevelCogWheelBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
         BlockEntityEntry<? extends SingleDiagonalBevelCogWheelBlockEntity> singleDiagonalBE, BlockEntityEntry<? extends DualDiagonalBevelCogWheelBlockEntity> dualDiagonalBE,
         // Items
         ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends Item> shaftHalfItem,
@@ -126,7 +126,7 @@ public record BevelCogWheelSet(
         // Blocks (diagonal)
         BlockEntry<? extends SingleDiagonalBevelCogWheelBlock> singleDiagonalBlock, BlockEntry<? extends DualDiagonalBevelCogWheelBlock> dualDiagonalBlock,
         // BEs
-        BlockEntityEntry<? extends KineticBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
+        BlockEntityEntry<? extends SingleAxisBevelCogWheelBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
         BlockEntityEntry<? extends SingleDiagonalBevelCogWheelBlockEntity> singleDiagonalBE, BlockEntityEntry<? extends DualDiagonalBevelCogWheelBlockEntity> dualDiagonalBE,
         // Items
         ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends Item> shaftHalfItem

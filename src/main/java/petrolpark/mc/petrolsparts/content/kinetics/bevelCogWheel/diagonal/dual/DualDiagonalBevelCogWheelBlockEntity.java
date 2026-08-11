@@ -7,11 +7,13 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlockEntity;
 
 public class DualDiagonalBevelCogWheelBlockEntity extends CompositeKineticBlockEntity {
@@ -56,6 +58,11 @@ public class DualDiagonalBevelCogWheelBlockEntity extends CompositeKineticBlockE
         @Override
         public Orientation getOrientation() {
             return orientation;
+        };
+
+        @Override
+        protected Block getStressConfigKey() {
+            return ((IDiagonalBevelCogWheelBlock)getBlockState().getBlock()).getSet().singleAxisBlock().get();
         };
 
         @Override

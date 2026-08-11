@@ -92,16 +92,20 @@ public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlo
 
         @Override
         public Predicate<ItemStack> getItemPredicate() {
-            return getSet().shaft()::isIn;
+            return getSet().shaftBlock()::isIn;
         };
 
         @Override
         public Predicate<BlockState> getStatePredicate() {
-            return state -> getSet().separateShaftsAssemblage().has(state) && !state.getValue(IAssemblageBlock.TOP_SHAFT_HALF) && !state.getValue(IAssemblageBlock.BOTTOM_SHAFT_HALF);
+            return state -> getSet().separateShaftsAssemblageBlock().has(state) && !state.getValue(IAssemblageBlock.TOP_SHAFT_HALF) && !state.getValue(IAssemblageBlock.BOTTOM_SHAFT_HALF);
         };
 
         @Override
         public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
+            if (state.getBlock() instanceof AssemblageBlock block) {
+                final AssemblagePart part = block.getTargetedPart(state, pos, player);
+                if (part != null && part.isOnEnd(ray.getDirection())) return PlacementOffset.fail(); // Don't place "through" face-aligned cogwheels
+            };
             return PlacementOffset.success(pos, s -> s.setValue(BlockStateProperties.AXIS, state.getValue(IAssemblageBlock.AXIS)));
         };
         
@@ -109,8 +113,8 @@ public non-sealed class SeparateShaftHalvesAssemblageBlock extends AssemblageBlo
 
     public class CogWheelInAssemblagePlacementHelper extends SeparateShaftHalvesAssemblageBlock.ShaftInAssemblagePlacementHelper {
 
-        private final Supplier<Predicate<ItemStack>> itemPredicate = Suppliers.memoize(() -> stack -> getSet().equivalentSmallCogWheel().map(entry -> entry.isIn(stack))
-            .or(() -> getSet().equivalentLargeCogWheel().map(entry -> entry.isIn(stack))).orElse(false));
+        private final Supplier<Predicate<ItemStack>> itemPredicate = Suppliers.memoize(() -> stack -> getSet().equivalentSmallCogBlock().map(entry -> entry.isIn(stack))
+            .or(() -> getSet().equivalentLargeCogBlock().map(entry -> entry.isIn(stack))).orElse(false));
         
         @Override
         public Predicate<ItemStack> getItemPredicate() {

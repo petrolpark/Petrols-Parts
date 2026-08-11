@@ -12,7 +12,7 @@
   "accept_mirrored": true,
   "key": {
     "C":{
-      "item": "create:cogwheel"
+      "item": "create:millstone"
     },
     "H": {
       "item": "petrolsparts:high_friction_compound"

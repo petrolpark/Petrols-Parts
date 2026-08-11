@@ -2,7 +2,6 @@ package petrolpark.mc.petrolsparts;
 
 import static petrolpark.mc.petrolsparts.PetrolsParts.REGISTRATE;
 
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.base.SingleAxisRotatingVisual;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockEntity;
@@ -21,6 +20,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.comp
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.CompositeBevelCogWheelRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SimpleBevelCogWheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SimpleBevelCogWheelRenderer;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SingleAxisBevelCogWheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SingleAxisBevelCogWheelVisual;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogwheelRenderer;
@@ -67,8 +67,8 @@ public class PetrolsPartsBlockEntityTypes {
 
     // Bevel Cogwheel
 
-    public static final BlockEntityEntry<KineticBlockEntity> SINGLE_AXIS_BEVEL_COGWHEEL = REGISTRATE
-        .createBlockEntity("bevel_cogwheel/single_axis", KineticBlockEntity::new)
+    public static final BlockEntityEntry<SingleAxisBevelCogWheelBlockEntity> SINGLE_AXIS_BEVEL_COGWHEEL = REGISTRATE
+        .createBlockEntity("bevel_cogwheel/single_axis", SingleAxisBevelCogWheelBlockEntity::new)
         .visual(() -> SingleAxisBevelCogWheelVisual::vanilla, false)
         .validBlocks(PetrolsPartsBlocks.SINGLE_AXIS_BEVEL_COGWHEEL)
         .renderer(() -> KineticBlockEntityRenderer::new)

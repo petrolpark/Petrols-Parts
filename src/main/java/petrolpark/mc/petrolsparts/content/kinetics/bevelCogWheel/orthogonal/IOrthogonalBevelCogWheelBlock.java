@@ -16,13 +16,10 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.library.compat.create.core.world.block.IReplaceableBlock;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock;
 
 @ParametersAreNonnullByDefault
 public interface IOrthogonalBevelCogWheelBlock extends IBevelCogWheelBlock, IReplaceableBlock, ProperWaterloggedBlock {
-
-    public BevelCogWheelSet getSet();
 
     public Collection<BevelCogWheelPart> getParts(BlockState state);
 

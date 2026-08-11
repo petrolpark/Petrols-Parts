@@ -87,12 +87,12 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
 
     @Override
     public BlockState getReplacedState(Level level, BlockPos pos, BlockState existingState, BlockState newState, Player player) {
-        if (existingState.getBlock() instanceof SingleDiagonalBevelCogWheelBlock singleBlock1 && singleBlock1.set == set) {
+        if (existingState.getBlock() instanceof SingleDiagonalBevelCogWheelBlock singleBlock1 && singleBlock1.getSet() == getSet()) {
             // Place Assemblage Shaft Half on this
             final BlockState stateWithShaftHalf = getReplacedWithAssemblageShaftHalf(existingState, newState);
             if (stateWithShaftHalf != null) return stateWithShaftHalf;
             // Place two diagonal Bevel Cogwheels together
-            if (newState.getBlock() instanceof SingleDiagonalBevelCogWheelBlock singleBlock2 && singleBlock2.set == set) {
+            if (newState.getBlock() instanceof SingleDiagonalBevelCogWheelBlock singleBlock2 && singleBlock2.getSet() == getSet()) {
                 final Orientation existingOrientation = existingState.getValue(ORIENTATION);
                 final Orientation newOrientation = newState.getValue(ORIENTATION);
                 if (existingOrientation.top == newOrientation.top.getOpposite() && existingOrientation.front == newOrientation.front.getOpposite()) {

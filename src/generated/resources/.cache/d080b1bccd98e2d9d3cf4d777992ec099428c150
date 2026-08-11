@@ -1,4 +1,4 @@
-// 1.21.1	2026-08-10T16:54:54.2292399	Registrate Provider for petrolsparts [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Conditional Loot Tables, Tags (block_entity_types), Tags (mob_effects), Tags (potions), Registries]
+// 1.21.1	2026-08-11T16:34:26.6997632	Registrate Provider for petrolsparts [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Conditional Loot Tables, Tags (block_entity_types), Tags (mob_effects), Tags (potions), Registries]
 9719ef09b58439278cc3274face28267dd03dae4 assets/petrolsparts/blockstates/andesite_encased_separate_shaft_halves_assemblage.json
 d589cb0d4bb24cc766ecf73116462086fbf2f451 assets/petrolsparts/blockstates/andesite_encased_single_shaft_assemblage.json
 7ffa3be6b7e23031dd73d398036922711cdc404f assets/petrolsparts/blockstates/bevel_cogwheel/corner.json
@@ -19,9 +19,10 @@ c51da01c3cfc35f30ce99101bd75978bbd3a4b0e assets/petrolsparts/blockstates/bevel_c
 2e68a689bb77937dff5fb26eb2e2f59b3f7e633a assets/petrolsparts/blockstates/brass_encased_single_shaft_assemblage.json
 0553c581c0a66b81d88220f42a174a67f4aea247 assets/petrolsparts/blockstates/straight_corner_shaft.json
 a34b11a4a68aadf6c096caa220e5914ed8e9291a assets/petrolsparts/models/item/high_friction_compound.json
+8da303fffbfcdc0a0a774343bbba519e206278d7 data/create/tags/block/passive_boiler_heaters.json
 e524f77514469f5f6a11d82d71108b85624a69de data/minecraft/tags/block/mineable/axe.json
 5fabda6822f4ff0fee7e3d3657e0051954f4279e data/minecraft/tags/block/mineable/pickaxe.json
-83a57b26094f62a89d81fec8f10e682cd32033c6 data/petrolpark/tags/item/flaggable.json
+aa1b19c92f1d4613219d29a939c3853c10248cd5 data/petrolpark/tags/item/flaggable.json
 5683eee12195da9245992c9f2b151aca8fc53fe8 data/petrolsparts/loot_table/blocks/andesite_encased_corner_shaft.json
 47f0ddb0ddbd9baed08ca3fb239206723d270de7 data/petrolsparts/loot_table/blocks/andesite_encased_separate_shaft_halves_assemblage.json
 57112f5b8e1811f0ca5828bf42e0981e10b6b114 data/petrolsparts/loot_table/blocks/andesite_encased_single_shaft_assemblage.json

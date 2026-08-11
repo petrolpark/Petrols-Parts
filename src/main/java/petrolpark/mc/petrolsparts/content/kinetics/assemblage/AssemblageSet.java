@@ -39,12 +39,12 @@ public record AssemblageSet(
     ResourceLocation id,
     String descriptionId,
     // Blocks and BE
-    BlockEntry<? extends SingleShaftAssemblageBlock> singleShaftAssemblage, BlockEntry<? extends SeparateShaftHalvesAssemblageBlock> separateShaftsAssemblage,
+    BlockEntry<? extends SingleShaftAssemblageBlock> singleShaftAssemblageBlock, BlockEntry<? extends SeparateShaftHalvesAssemblageBlock> separateShaftsAssemblageBlock,
     BlockEntityEntry<? extends AssemblageBlockEntity> blockEntity,
     // Items
-    ItemEntry<? extends ShaftHalfBlockItem> shaftHalf,
-    ItemEntry<? extends AssemblageCogWheelBlockItem> smallCog, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCog,
-    ItemEntry<? extends AssemblageCogWheelBlockItem> coaxialCog, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCoaxialCog,
+    ItemEntry<? extends ShaftHalfBlockItem> shaftHalfItem,
+    ItemEntry<? extends AssemblageCogWheelBlockItem> smallCogItem, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCogItem,
+    ItemEntry<? extends AssemblageCogWheelBlockItem> coaxialCogItem, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCoaxialCogItem,
     // Loot
     ResourceKey<LootTable> shaftLoot, ResourceKey<LootTable> shaftHalfLoot,
     ResourceKey<LootTable> smallCogLoot, ResourceKey<LootTable> largeCogLoot,
@@ -56,36 +56,36 @@ public record AssemblageSet(
     Map<Axis, AssemblagePart> middleCoaxialCogWheelParts, Map<Direction, AssemblagePart> coaxialCogWheelParts,
     Map<Axis, AssemblagePart> middleLargeCoaxialCogWheelParts, Map<Direction, AssemblagePart> largeCoaxialCogWheelParts,
     // Equivalent blocks
-    BlockEntry<? extends ShaftBlock> shaft, Optional<BlockEntry<? extends CogWheelBlock>> equivalentSmallCogWheel, Optional<BlockEntry<? extends CogWheelBlock>> equivalentLargeCogWheel
+    BlockEntry<? extends ShaftBlock> shaftBlock, Optional<BlockEntry<? extends CogWheelBlock>> equivalentSmallCogBlock, Optional<BlockEntry<? extends CogWheelBlock>> equivalentLargeCogBlock
 ) {
 
     public AssemblageSet(
         // Display
         ResourceLocation id,
         // Blocks and BE
-        BlockEntry<? extends SingleShaftAssemblageBlock> singleShaftAssemblage, BlockEntry<? extends SeparateShaftHalvesAssemblageBlock> separateShaftsAssemblage,
+        BlockEntry<? extends SingleShaftAssemblageBlock> singleShaftAssemblageBlock, BlockEntry<? extends SeparateShaftHalvesAssemblageBlock> separateShaftsAssemblageBlock,
         BlockEntityEntry<? extends AssemblageBlockEntity> blockEntity,
         // Items
-        ItemEntry<? extends ShaftHalfBlockItem> shaftHalf,
-        ItemEntry<? extends AssemblageCogWheelBlockItem> smallCog, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCog,
-        ItemEntry<? extends AssemblageCogWheelBlockItem> coaxialCog, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCoaxialCog,
+        ItemEntry<? extends ShaftHalfBlockItem> shaftHalfItem,
+        ItemEntry<? extends AssemblageCogWheelBlockItem> smallCogItem, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCogItem,
+        ItemEntry<? extends AssemblageCogWheelBlockItem> coaxialCogItem, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCoaxialCogItem,
         // Loot
         ResourceKey<LootTable> shaftLoot, ResourceKey<LootTable> shaftHalfLoot,
         ResourceKey<LootTable> smallCogLoot, ResourceKey<LootTable> largeCogLoot,
         ResourceKey<LootTable> coaxialCogLoot, ResourceKey<LootTable> largeCoaxialCogLoot,
         // Equivalent blocks
-        BlockEntry<? extends ShaftBlock> shaft, Optional<BlockEntry<? extends CogWheelBlock>> equivalentSmallCogWheel, Optional<BlockEntry<? extends CogWheelBlock>> equivalentLargeCogWheel
+        BlockEntry<? extends ShaftBlock> shaftBlock, Optional<BlockEntry<? extends CogWheelBlock>> equivalentSmallCogBlock, Optional<BlockEntry<? extends CogWheelBlock>> equivalentLargeCogBlock
     ) {
         this(
             // Display
             id, Util.makeDescriptionId("block", id),
             // Blocks
-            singleShaftAssemblage, separateShaftsAssemblage,
+            singleShaftAssemblageBlock, separateShaftsAssemblageBlock,
             blockEntity,
             // Items
-            shaftHalf,
-            smallCog, largeCog,
-            coaxialCog, largeCoaxialCog,
+            shaftHalfItem,
+            smallCogItem, largeCogItem,
+            coaxialCogItem, largeCoaxialCogItem,
             // Loot
             shaftLoot, shaftHalfLoot,
             smallCogLoot, largeCogLoot,
@@ -97,9 +97,9 @@ public record AssemblageSet(
                     dir -> dir.getAxis() == axis,
                     AllShapes.SIX_VOXEL_POLE.get(axis),
                     shaftLoot,
-                    state -> BlockHelper.copyAll(separateShaftsAssemblage.getDefaultState(), state),
+                    state -> BlockHelper.copyAll(separateShaftsAssemblageBlock.getDefaultState(), state),
                     be -> be.shaftPart,
-                    shaft
+                    shaftBlock
                 )),
                 // Shaft halves
                 CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
@@ -109,7 +109,7 @@ public record AssemblageSet(
                     shaftHalfLoot,
                     state -> state.setValue(dir.getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.TOP_SHAFT_HALF : IAssemblageBlock.BOTTOM_SHAFT_HALF, false),
                     be -> be.shaftPart,
-                    shaftHalf
+                    shaftHalfItem
                 )),
                 // Middle cogs
                 CollectionHelper.map(Axis.values(), axis -> new AssemblagePart(
@@ -119,7 +119,7 @@ public record AssemblageSet(
                     smallCogLoot,
                     AssemblagePart.REMOVE_MIDDLE_COG,
                     be -> be.middleCogPart,
-                    smallCog
+                    smallCogItem
                 )),
                 // Cogs
                 CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
@@ -129,7 +129,7 @@ public record AssemblageSet(
                     smallCogLoot,
                     AssemblagePart.removeCog(dir),
                     AssemblagePart.getCogPart(dir),
-                    smallCog
+                    smallCogItem
                 )),
                 // Middle large cogs
                 CollectionHelper.map(Axis.values(), axis -> new AssemblagePart(
@@ -139,7 +139,7 @@ public record AssemblageSet(
                     largeCogLoot,
                     AssemblagePart.REMOVE_MIDDLE_COG,
                     be -> be.middleCogPart,
-                    largeCog
+                    largeCogItem
                 )),
                 // Large cogs
                 CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
@@ -149,7 +149,7 @@ public record AssemblageSet(
                     largeCogLoot,
                     AssemblagePart.removeCog(dir),
                     AssemblagePart.getCogPart(dir),
-                    largeCog
+                    largeCogItem
                 )),
                 // Middle coaxial cogs
                 CollectionHelper.map(Axis.values(), axis -> new AssemblagePart(
@@ -159,7 +159,7 @@ public record AssemblageSet(
                     coaxialCogLoot,
                     AssemblagePart.REMOVE_MIDDLE_COG,
                     be -> be.middleCogPart,
-                    coaxialCog
+                    coaxialCogItem
                 )),
                 // Coaxial cogs
                 CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
@@ -169,7 +169,7 @@ public record AssemblageSet(
                     coaxialCogLoot,
                     AssemblagePart.removeCog(dir),
                     AssemblagePart.getCogPart(dir),
-                    coaxialCog
+                    coaxialCogItem
                 )),
                 // Middle large coaxial cogs
                 CollectionHelper.map(Axis.values(), axis -> new AssemblagePart(
@@ -179,7 +179,7 @@ public record AssemblageSet(
                     largeCoaxialCogLoot,
                     AssemblagePart.REMOVE_MIDDLE_COG,
                     be -> be.middleCogPart,
-                    largeCoaxialCog
+                    largeCoaxialCogItem
                 )),
                 // Large coaxial cogs
                 CollectionHelper.map(Direction.values(), dir -> new AssemblagePart(
@@ -189,10 +189,10 @@ public record AssemblageSet(
                     largeCoaxialCogLoot,
                     AssemblagePart.removeCog(dir),
                     AssemblagePart.getCogPart(dir),
-                    largeCoaxialCog
+                    largeCoaxialCogItem
                 )),
             // Equivalent blocks
-            shaft, equivalentSmallCogWheel, equivalentLargeCogWheel
+            shaftBlock, equivalentSmallCogBlock, equivalentLargeCogBlock
         );
     };
 
@@ -200,42 +200,42 @@ public record AssemblageSet(
         // Display
         ResourceLocation id,
         // Blocks and BE
-        BlockEntry<? extends SingleShaftAssemblageBlock> singleShaftAssemblage, BlockEntry<? extends SeparateShaftHalvesAssemblageBlock> separateShaftsAssemblage,
+        BlockEntry<? extends SingleShaftAssemblageBlock> singleShaftAssemblageBlock, BlockEntry<? extends SeparateShaftHalvesAssemblageBlock> separateShaftsAssemblageBlock,
         BlockEntityEntry<? extends AssemblageBlockEntity> blockEntity,
         // Items
-        ItemEntry<? extends ShaftHalfBlockItem> shaftHalf,
-        ItemEntry<? extends AssemblageCogWheelBlockItem> smallCog, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCog,
-        ItemEntry<? extends AssemblageCogWheelBlockItem> coaxialCog, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCoaxialCog,
+        ItemEntry<? extends ShaftHalfBlockItem> shaftHalfItem,
+        ItemEntry<? extends AssemblageCogWheelBlockItem> smallCogItem, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCogItem,
+        ItemEntry<? extends AssemblageCogWheelBlockItem> coaxialCogItem, ItemEntry<? extends AssemblageCogWheelBlockItem> largeCoaxialCogItem,
         // Equivalent blocks
-        BlockEntry<? extends ShaftBlock> shaft, Optional<BlockEntry<? extends CogWheelBlock>> equivalentSmallCogWheel, Optional<BlockEntry<? extends CogWheelBlock>> equivalentLargeCogWheel
+        BlockEntry<? extends ShaftBlock> shaftBlock, Optional<BlockEntry<? extends CogWheelBlock>> equivalentSmallCogBlock, Optional<BlockEntry<? extends CogWheelBlock>> equivalentLargeCogBlock
     ) {
         this(
             // Display
             id,
             // Blocks
-            singleShaftAssemblage, separateShaftsAssemblage,
+            singleShaftAssemblageBlock, separateShaftsAssemblageBlock,
             blockEntity,
             // Items
-            shaftHalf,
-            smallCog, largeCog,
-            coaxialCog, largeCoaxialCog,
+            shaftHalfItem,
+            smallCogItem, largeCogItem,
+            coaxialCogItem, largeCoaxialCogItem,
             // Loot
-            ResourceKey.create(Registries.LOOT_TABLE, shaft.getId().withPrefix("blocks/")), ResourceKey.create(Registries.LOOT_TABLE, shaftHalf.getId().withPrefix("blocks/")),
-            ResourceKey.create(Registries.LOOT_TABLE, smallCog.getId().withPrefix("blocks/")), ResourceKey.create(Registries.LOOT_TABLE, largeCog.getId().withPrefix("blocks/")),
-            ResourceKey.create(Registries.LOOT_TABLE, coaxialCog.getId().withPrefix("blocks/")), ResourceKey.create(Registries.LOOT_TABLE, largeCoaxialCog.getId().withPrefix("blocks/")),
+            ResourceKey.create(Registries.LOOT_TABLE, shaftBlock.getId().withPrefix("blocks/")), ResourceKey.create(Registries.LOOT_TABLE, shaftHalfItem.getId().withPrefix("blocks/")),
+            ResourceKey.create(Registries.LOOT_TABLE, smallCogItem.getId().withPrefix("blocks/")), ResourceKey.create(Registries.LOOT_TABLE, largeCogItem.getId().withPrefix("blocks/")),
+            ResourceKey.create(Registries.LOOT_TABLE, coaxialCogItem.getId().withPrefix("blocks/")), ResourceKey.create(Registries.LOOT_TABLE, largeCoaxialCogItem.getId().withPrefix("blocks/")),
             // Equivalent blocks
-            shaft, equivalentSmallCogWheel, equivalentLargeCogWheel
+            shaftBlock, equivalentSmallCogBlock, equivalentLargeCogBlock
         );
     };
    
     public BlockState getEquivalent(BlockState state) {
         BlockState oldState = state;
-        if (shaft().has(oldState)) {
-            state = singleShaftAssemblage().getDefaultState();
-        } else if (equivalentSmallCogWheel().map(entry -> entry.has(oldState)).orElse(false)) {
-            state = singleShaftAssemblage().getDefaultState().setValue(IAssemblageBlock.MIDDLE_COG, AssemblageCog.SMALL);
-        } else if (equivalentLargeCogWheel().map(entry -> entry.has(oldState)).orElse(false)) {
-            state = singleShaftAssemblage().getDefaultState().setValue(IAssemblageBlock.MIDDLE_COG, AssemblageCog.LARGE);
+        if (shaftBlock().has(oldState)) {
+            state = singleShaftAssemblageBlock().getDefaultState();
+        } else if (equivalentSmallCogBlock().map(entry -> entry.has(oldState)).orElse(false)) {
+            state = singleShaftAssemblageBlock().getDefaultState().setValue(IAssemblageBlock.MIDDLE_COG, AssemblageCog.SMALL);
+        } else if (equivalentLargeCogBlock().map(entry -> entry.has(oldState)).orElse(false)) {
+            state = singleShaftAssemblageBlock().getDefaultState().setValue(IAssemblageBlock.MIDDLE_COG, AssemblageCog.LARGE);
         } else {
             return state;
         }

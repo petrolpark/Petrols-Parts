@@ -2,9 +2,13 @@ package petrolpark.mc.petrolsparts;
 
 import static petrolpark.mc.petrolsparts.PetrolsParts.REGISTRATE;
 
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tterrag.registrate.util.entry.ItemEntry;
 
 import net.minecraft.world.item.Item;
+import petrolpark.mc.library.PetrolparkTags;
+import petrolpark.mc.library.compat.create.core.world.item.tooltip.ItemKineticStats;
 import petrolpark.mc.petrolsparts.config.PPCStress;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageClientSet;
@@ -13,7 +17,6 @@ import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCogWheel
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageSet;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.ShaftHalfBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelBlockItem;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelClientSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 
 public class PetrolsPartsItems {
@@ -30,11 +33,12 @@ public class PetrolsPartsItems {
         .register();
 
     public static final ItemEntry<BevelCogWheelBlockItem> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", p -> new BevelCogWheelBlockItem(BevelCogWheelSet.VANILLA, p))
-        .onRegister(BevelCogWheelBlockItem.registerClientSet(BevelCogWheelClientSet::vanilla))
+        .onRegister(item -> TooltipModifier.REGISTRY.register(item, KineticStats.create(item)))
         .register();
 
     public static final ItemEntry<Item> HIGH_FRICTION_COMPOUND = REGISTRATE.item("high_friction_compound", Item::new)
         .defaultModel()
+        .tag(PetrolparkTags.Items.FLAGGABLE.tag)
         .register();
 
     public static final void register() {};
@@ -43,6 +47,7 @@ public class PetrolsPartsItems {
         return REGISTRATE.item(name, p -> new AssemblageCogWheelBlockItem(AssemblageSet.VANILLA, cog, p))
             .transform(PPCStress.setNoImpact())
             .onRegister(AssemblageBlockItem.registerClientSet(AssemblageClientSet::vanilla))
+            .onRegister(item -> TooltipModifier.REGISTRY.register(item, new ItemKineticStats(item)))
             .register();
     };
 };

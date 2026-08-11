@@ -79,7 +79,7 @@ public class ShaftHalfBlockItem extends AssemblageBlockItem {
 
     public class PlacementHelper extends AssemblageBlockItem.PlacementHelper {
 
-        protected final Predicate<BlockState> statePredicate = Predicates.or(getSet().shaft()::has, getSet().separateShaftsAssemblage()::has, getSet().singleShaftAssemblage()::has);
+        protected final Predicate<BlockState> statePredicate = Predicates.or(getSet().shaftBlock()::has, getSet().separateShaftsAssemblageBlock()::has, getSet().singleShaftAssemblageBlock()::has);
 
         @Override
         public Predicate<ItemStack> getItemPredicate() {
@@ -96,8 +96,8 @@ public class ShaftHalfBlockItem extends AssemblageBlockItem {
             // Don't place on ends
             if (state.getBlock() instanceof AssemblageBlock assemblage) {
                 final AssemblagePart part =  assemblage.getTargetedPart(state, pos, player);
-                if (part != null && part.isOnEnd(ray.getDirection()))
-                    return PlacementOffset.fail(); // Don't place "through" face-aligned parts
+                if (part != null && (!part.isShaft || part.isOnEnd(ray.getDirection())))
+                    return PlacementOffset.fail(); // Don't place "through" face-aligned parts, and fall back to normal placement behaviour if targeting a cog
             };
             
             int range = AllConfigs.server().equipment.placementAssistRange.get();
@@ -110,7 +110,7 @@ public class ShaftHalfBlockItem extends AssemblageBlockItem {
                 BlockState checkState = state;
                 int count = 0;
                 boolean bottom = expandingPositiveDirection;
-                searchAlongPole: while (getStatePredicate().test(checkState) && checkState.getValue(BlockStateProperties.AXIS) == direction.getAxis()) {
+                while (getStatePredicate().test(checkState) && checkState.getValue(BlockStateProperties.AXIS) == direction.getAxis()) {
 
                     if (checkState.getBlock() instanceof IAssemblageBlock assemblageBlock) { // Replace Block directly, don't move to next
                         final boolean hasFirstHalf = expandingPositiveDirection ? assemblageBlock.hasBottomShaft(checkState) : assemblageBlock.hasTopShaft(checkState);
@@ -128,14 +128,16 @@ public class ShaftHalfBlockItem extends AssemblageBlockItem {
                     count++;
                     checkPos = checkPos.relative(direction);
                     checkState = world.getBlockState(checkPos);
-                    if (count >= range) break searchAlongPole;
+                    if (count >= range) break;
                 };
 
                 final BlockState stateToPlace = ShaftHalfBlockItem.this.getBlock().defaultBlockState()
                     .setValue(IAssemblageBlock.AXIS, direction.getAxis())
                     .setValue(bottom ? IAssemblageBlock.BOTTOM_SHAFT_HALF : IAssemblageBlock.TOP_SHAFT_HALF, true);
 
-                if (getBlock().canBeReplaced(world, checkPos, checkState, stateToPlace, player)) return PlacementOffset.success(checkPos, $ -> stateToPlace).withGhostState(stateToPlace);
+                if (getBlock().canBeReplaced(world, checkPos, checkState, stateToPlace, player))
+                    return PlacementOffset.success(checkPos, $ -> stateToPlace)
+                        .withGhostState(stateToPlace);
             };
 
             return PlacementOffset.fail();

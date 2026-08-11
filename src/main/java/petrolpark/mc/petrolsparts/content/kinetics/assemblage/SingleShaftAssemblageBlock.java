@@ -32,7 +32,7 @@ public non-sealed class SingleShaftAssemblageBlock extends AssemblageBlock {
             state = (switch (state.getValue(MIDDLE_COG)) {
                 // case SMALL -> AllBlocks.COGWHEEL.getDefaultState();
                 // case LARGE -> AllBlocks.LARGE_COGWHEEL.getDefaultState();
-                case NONE -> getSet().shaft().getDefaultState();
+                case NONE -> getSet().shaftBlock().getDefaultState();
                 default -> state;
             }).setValue(BlockStateProperties.AXIS, axis);
         };

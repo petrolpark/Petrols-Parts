@@ -8,6 +8,7 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllDisplaySources;
 import com.simibubi.create.AllMountedStorageTypes;
 import com.simibubi.create.AllSpriteShifts;
+import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
@@ -17,11 +18,14 @@ import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockMo
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedShaftBlock;
 import com.simibubi.create.content.logistics.depot.MountedDepotInteractionBehaviour;
+import com.simibubi.create.content.processing.burner.BlazeBurnerBlock;
 import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
 import com.simibubi.create.foundation.data.BlockStateGen;
 import com.simibubi.create.foundation.data.CreateRegistrate;
 import com.simibubi.create.foundation.data.SharedProperties;
 import com.simibubi.create.foundation.data.TagGen;
+import com.simibubi.create.foundation.item.KineticStats;
+import com.simibubi.create.foundation.item.TooltipModifier;
 import com.tterrag.registrate.builders.BlockBuilder;
 import com.tterrag.registrate.util.entry.BlockEntry;
 import com.tterrag.registrate.util.nullness.NonNullBiFunction;
@@ -157,6 +161,7 @@ public class PetrolsPartsBlocks {
             .noOcclusion()
             .noLootTable()
         ).blockstate(SingleAxisBevelCogWheelBlock::blockState)
+        .transform(PPCStress.setNoImpact())
         .transform(TagGen.axeOrPickaxe())
         .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
         .register();
@@ -226,6 +231,7 @@ public class PetrolsPartsBlocks {
         ).transform(PPCStress.setNoImpact())
         .transform(TagGen.axeOrPickaxe())
         .item(ColossalCogwheelBlockItem::new)
+        .onRegister(item -> TooltipModifier.REGISTRY.register(item, KineticStats.create(item)))
         .build()
         .register();
     
@@ -240,6 +246,7 @@ public class PetrolsPartsBlocks {
         .transform(PPCStress.setNoImpact())
         .transform(TagGen.pickaxeOnly())
         .item(CornerShaftBlockItem::new)
+        .onRegister(item -> TooltipModifier.REGISTRY.register(item, KineticStats.create(item)))
         .tag(PetrolparkTags.Items.FLAGGABLE.tag)
         .build()
         .register();
@@ -298,8 +305,8 @@ public class PetrolsPartsBlocks {
             .noOcclusion()
             .sound(SoundType.WOOD)
 		    .mapColor(MapColor.DIRT)
-        ).transform(PPCStress.setNoImpact())
-        .transform(TagGen.axeOrPickaxe())
+        //TODO maybe stress impact somehow?
+        ).transform(TagGen.axeOrPickaxe())
         .item()
         .build()
         .register();
@@ -309,9 +316,12 @@ public class PetrolsPartsBlocks {
         .defaultLoot()
         .properties(p -> p
             .noOcclusion()
+            .lightLevel(BlazeBurnerBlock::getLight)
         ).transform(PPCStress.setImpact(4.0d))
         .transform(TagGen.axeOrPickaxe())
+        .tag(AllBlockTags.PASSIVE_BOILER_HEATERS.tag)
         .item()
+        .onRegister(item -> TooltipModifier.REGISTRY.register(item, KineticStats.create(item)))
         .tag(PetrolparkTags.Items.FLAGGABLE.tag)
         .build()
         .register();
@@ -324,6 +334,7 @@ public class PetrolsPartsBlocks {
         .transform(PPCStress.setImpact(2.0d))
         .transform(TagGen.axeOrPickaxe())
         .item(TubeBlockItem::new)
+        .onRegister(item -> TooltipModifier.REGISTRY.register(item, KineticStats.create(item)))
         .build()
         .register();
 
@@ -364,6 +375,7 @@ public class PetrolsPartsBlocks {
         .transform(PPCStress.setNoImpact())
         .transform(TagGen.axeOrPickaxe())
         .item(CogwheelBlockItem::new)
+        .onRegister(item -> TooltipModifier.REGISTRY.register(item, KineticStats.create(item)))
         .tag(PetrolparkTags.Items.FLAGGABLE.tag)
         .build()
         .register();
@@ -376,6 +388,7 @@ public class PetrolsPartsBlocks {
         .transform(PPCStress.setImpact(2.0))
         .transform(TagGen.axeOrPickaxe())
         .item(TubeBlockItem::new)
+        .onRegister(item -> TooltipModifier.REGISTRY.register(item, KineticStats.create(item)))
         .build()
         .register();
 

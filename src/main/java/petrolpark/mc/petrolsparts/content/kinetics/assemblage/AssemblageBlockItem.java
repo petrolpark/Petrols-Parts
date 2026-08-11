@@ -43,7 +43,7 @@ public abstract class AssemblageBlockItem extends ItemNameBlockItem {
 
     @Override
     public SeparateShaftHalvesAssemblageBlock getBlock() {
-        return getSet().separateShaftsAssemblage().get();
+        return getSet().separateShaftsAssemblageBlock().get();
     };
 
     @Override

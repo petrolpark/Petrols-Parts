@@ -35,7 +35,7 @@ public class EncasedSeparateShaftHalvesAssemblageBlock extends EncasedAssemblage
 
     @Override
     public BlockState getUnencasedDefaultState() {
-        return getSet().separateShaftsAssemblage().getDefaultState();
+        return getSet().separateShaftsAssemblageBlock().getDefaultState();
     };
     
 };

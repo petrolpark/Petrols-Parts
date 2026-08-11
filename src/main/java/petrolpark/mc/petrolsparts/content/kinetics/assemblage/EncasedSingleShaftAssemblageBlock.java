@@ -24,7 +24,7 @@ public class EncasedSingleShaftAssemblageBlock extends EncasedAssemblageBlock {
 
     @Override
     public BlockState getUnencasedDefaultState() {
-        return getSet().singleShaftAssemblage().getDefaultState();
+        return getSet().singleShaftAssemblageBlock().getDefaultState();
     };
     
 };

@@ -1,7 +1,9 @@
 {
   "values": [
     "petrolsparts:corner_shaft",
+    "petrolsparts:friction_heater",
     "petrolsparts:movement",
-    "petrolsparts:planetary_gearset"
+    "petrolsparts:planetary_gearset",
+    "petrolsparts:high_friction_compound"
   ]
 }

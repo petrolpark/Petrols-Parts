@@ -6,6 +6,7 @@ import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.IRotate.StressImpact;
+import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.processing.burner.BlazeBurnerBlock.HeatLevel;
 import com.simibubi.create.content.processing.recipe.HeatCondition;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
@@ -35,6 +36,7 @@ import petrolpark.mc.library.compat.create.core.world.block.composite.IComposite
 import petrolpark.mc.library.compat.create.core.world.block.entity.behaviour.FlagPoleBehaviour;
 import petrolpark.mc.library.compat.pquality.OptionalQuality;
 import petrolpark.mc.library.core.world.block.DummyBlock;
+import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.library.util.Lang;
 import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
@@ -170,6 +172,23 @@ public class FrictionHeaterBlockEntity extends CompositeKineticBlockEntity imple
         @Override
         public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {
             return oldState.getValue(FrictionHeaterBlock.HORIZONTAL_AXIS) == state.getValue(FrictionHeaterBlock.HORIZONTAL_AXIS);
+        };
+
+        @Override
+        protected boolean canPropagateDiagonally(IRotate block, BlockState state) {
+            return true;
+        };
+
+        @Override
+        public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
+            return IFaceAlignedCogWheelBlockEntity.propagateFaceAlignedCogwheels(this, target, stateFrom, stateTo, diff, connectedViaAxes, connectedViaCogs);
+        };
+
+        @Override
+        public List<BlockPos> addPropagationLocations(IRotate block, BlockState state, List<BlockPos> neighbours) {
+            super.addPropagationLocations(block, state, neighbours);
+            KineticsHelper.addLargeCogwheelPropagationLocations(getBlockPos(), neighbours);
+            return neighbours;
         };
 
         @Override

@@ -6,7 +6,6 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual;
 import com.simibubi.create.content.kinetics.base.RotatingInstance;
 import com.simibubi.create.foundation.render.AllInstanceTypes;
@@ -20,16 +19,16 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.AxisDirection;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelClientSet;
 
-public class SingleAxisBevelCogWheelVisual extends KineticBlockEntityVisual<KineticBlockEntity> implements SimpleTickableVisual {
+public class SingleAxisBevelCogWheelVisual extends KineticBlockEntityVisual<SingleAxisBevelCogWheelBlockEntity> implements SimpleTickableVisual {
   
-    public static final SingleAxisBevelCogWheelVisual vanilla(VisualizationContext context, KineticBlockEntity blockEntity, float partialTicks) {
+    public static final SingleAxisBevelCogWheelVisual vanilla(VisualizationContext context, SingleAxisBevelCogWheelBlockEntity blockEntity, float partialTicks) {
         return new SingleAxisBevelCogWheelVisual(BevelCogWheelClientSet.vanilla(), context, blockEntity, partialTicks);
     };
 
     protected final BevelCogWheelClientSet set;
     protected final List<RotatingInstance> instances;
 
-    public SingleAxisBevelCogWheelVisual(BevelCogWheelClientSet set, VisualizationContext context, KineticBlockEntity blockEntity, float partialTick) {
+    public SingleAxisBevelCogWheelVisual(BevelCogWheelClientSet set, VisualizationContext context, SingleAxisBevelCogWheelBlockEntity blockEntity, float partialTick) {
         super(context, blockEntity, partialTick);
         this.set = set;
         this.instances = new ArrayList<>();

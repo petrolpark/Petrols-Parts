@@ -17,6 +17,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.event.config.ModConfigEvent;
 import net.neoforged.neoforge.common.ModConfigSpec;
+import petrolpark.mc.library.compat.create.core.world.item.ItemStressValues;
 import petrolpark.mc.petrolsparts.config.PPCCommon;
 import petrolpark.mc.petrolsparts.config.PPCServer;
 import petrolpark.mc.petrolsparts.config.PPCStress;
@@ -67,8 +68,10 @@ public class PetrolsPartsConfigs {
 		for (Entry<ModConfig.Type, ConfigBase> pair : CONFIGS.entrySet()) container.registerConfig(pair.getKey(), pair.getValue().specification);
 
 		final PPCStress stress = server().stress;
-		BlockStressValues.IMPACTS.registerProvider(stress::getImpact);
-		BlockStressValues.CAPACITIES.registerProvider(stress::getCapacity);
+		BlockStressValues.IMPACTS.registerProvider(stress::getBlockImpact);
+		BlockStressValues.CAPACITIES.registerProvider(stress::getBlockCapacity);
+		ItemStressValues.IMPACTS.registerProvider(stress::getItemImpact);
+		ItemStressValues.CAPACITIES.registerProvider(stress::getItemCapacity);
 	};
 
 	@SubscribeEvent

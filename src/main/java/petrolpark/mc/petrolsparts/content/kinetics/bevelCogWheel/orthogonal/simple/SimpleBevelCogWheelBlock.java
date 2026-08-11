@@ -2,6 +2,7 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.sim
 
 import java.util.function.Supplier;
 
+import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.contraptions.StructureTransform;
 
 import net.minecraft.core.BlockPos;
@@ -18,7 +19,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import petrolpark.mc.library.compat.create.core.world.block.MultiPartKineticBlock;
-import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
@@ -67,12 +67,34 @@ public abstract class SimpleBevelCogWheelBlock extends MultiPartKineticBlock<Bev
 
     @Override
     public Item asItem() {
-        return PetrolsPartsItems.BEVEL_COGWHEEL.get();
+        return getSet().item().get();
     };
 
     @Override
     public String getDescriptionId() {
         return getSet().translationKey();
+    };
+
+    public float getStressImpact(BlockState state) {
+        float impact = 0f;
+        for (BevelCogWheelPart part : getParts(state)) {
+            impact += BlockStressValues.getImpact((switch (part) {
+                case BevelCogWheelPart.Shaft shaft -> getSet().shaftBlock();
+                case BevelCogWheelPart.Cog cog -> getSet().singleAxisBlock();
+            }).get());
+        };
+        return impact;
+    };
+
+    public float getStressCapacity(BlockState state) {
+        float impact = 0f;
+        for (BevelCogWheelPart part : getParts(state)) {
+            impact += BlockStressValues.getCapacity((switch (part) {
+                case BevelCogWheelPart.Shaft shaft -> getSet().shaftBlock();
+                case BevelCogWheelPart.Cog cog -> getSet().singleAxisBlock();
+            }).get());
+        };
+        return impact;
     };
 
     @Override

@@ -33,65 +33,69 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
 
         // Assemblage
         itemProviderHelper.forComponents(PetrolsPartsItems.SHAFTLESS_COGWHEEL, PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL)
-            .addStoryBoard("assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
-            .addStoryBoard("assemblage/shaft", AssemblageScenes::shafts);
+            .addStoryBoard("kinetics/assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
+            .addStoryBoard("kinetics/assemblage/shaft", AssemblageScenes::shafts);
         itemProviderHelper.forComponents(PetrolsPartsItems.COAXIAL_COGWHEEL, PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL)
-            .addStoryBoard("assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
-            .addStoryBoard("assemblage/coaxial_cogwheel", AssemblageScenes::shafts);
+            .addStoryBoard("kinetics/assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
+            .addStoryBoard("kinetics/assemblage/coaxial_cogwheel", AssemblageScenes::shafts);
         itemProviderHelper.forComponents(PetrolsPartsItems.SHAFT_HALF, AllBlocks.SHAFT)
-            .addStoryBoard("assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
-            .addStoryBoard("assemblage/shaft", AssemblageScenes::shafts);
+            .addStoryBoard("kinetics/assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
+            .addStoryBoard("kinetics/assemblage/shaft", AssemblageScenes::shafts);
         itemProviderHelper.forComponents(
             PetrolsPartsItems.SHAFTLESS_COGWHEEL, PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL,
             PetrolsPartsItems.COAXIAL_COGWHEEL, PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL,
             PetrolsPartsItems.SHAFT_HALF,
             AllBlocks.ANDESITE_CASING, AllBlocks.BRASS_CASING
         )
-            .addStoryBoard("assemblage/encasing", AssemblageScenes::encasing);
+            .addStoryBoard("kinetics/assemblage/encasing", AssemblageScenes::encasing);
 
         // Bevel Cogwheel
         itemProviderHelper.forComponents(PetrolsPartsItems.BEVEL_COGWHEEL)
-            .addStoryBoard("bevel_cogwheel/orthogonal", BevelCogWheelScenes::orthogonal)
-            .addStoryBoard("bevel_cogwheel/diagonal", BevelCogWheelScenes::diagonal);
+            .addStoryBoard("kinetics/bevel_cogwheel/orthogonal", BevelCogWheelScenes::orthogonal)
+            .addStoryBoard("kinetics/bevel_cogwheel/diagonal", BevelCogWheelScenes::diagonal);
         itemProviderHelper.forComponents(PetrolsPartsItems.BEVEL_COGWHEEL, AllBlocks.ANDESITE_CASING, AllBlocks.BRASS_CASING)
-            .addStoryBoard("bevel_cogwheel/encasing", BevelCogWheelScenes::encasing);
+            .addStoryBoard("kinetics/bevel_cogwheel/encasing", BevelCogWheelScenes::encasing);
 
         // Brass Depot
         itemProviderHelper.forComponents(PetrolsPartsBlocks.BRASS_DEPOT)
-            .addStoryBoard("brass_depot", PetrolsPartsProcessingScenes::brassDepot);
+            .addStoryBoard("processing/brass_depot", PetrolsPartsProcessingScenes::brassDepot);
 
         // Colossal Cogwheel
         itemProviderHelper.forComponents(PetrolsPartsBlocks.COLOSSAL_COGWHEEL)
-            .addStoryBoard("colossal_cogwheel", PetrolsPartsKineticsScenes::colossalCogwheel);
-
-        // // Differential
-        // itemProviderHelper.forComponents(PetrolsPartsBlocks.DIFFERENTIAL)
-        //     .addStoryBoard("differential", PetrolsPartsScenes::differential);
+            .addStoryBoard("kinetics/colossal_cogwheel", PetrolsPartsKineticsScenes::colossalCogwheel);
 
         // Corner Shaft
         itemProviderHelper.forComponents(PetrolsPartsBlocks.CORNER_SHAFT)
-            .addStoryBoard("corner_shaft", PetrolsPartsKineticsScenes::cornerShaft);
+            .addStoryBoard("kinetics/corner_shaft", PetrolsPartsKineticsScenes::cornerShaft);
+
+        // // Differential
+        // itemProviderHelper.forComponents(PetrolsPartsBlocks.DIFFERENTIAL)
+        //     .addStoryBoard("kinetics/differential", PetrolsPartsScenes::differential);
+    
+        // Friction Heater
+        itemProviderHelper.forComponents(PetrolsPartsBlocks.FRICTION_HEATER)
+            .addStoryBoard("processing/friction_heater", PetrolsPartsProcessingScenes::frictionHeater);
 
         // Hydraulic Transmission
         itemProviderHelper.forComponents(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION)
-            .addStoryBoard("hydraulic_transmission", PetrolsPartsKineticsScenes::hydraulicTransmission);
+            .addStoryBoard("kinetics/hydraulic_transmission", PetrolsPartsKineticsScenes::hydraulicTransmission);
 
         // Movement
         itemProviderHelper.forComponents(PetrolsPartsBlocks.MOVEMENT)
-            .addStoryBoard("movement/movement", PetrolsPartsKineticsScenes::movement)
-            .addStoryBoard("movement/battery", PetrolsPartsKineticsScenes::movementBattery);
+            .addStoryBoard("kinetics/movement/movement", PetrolsPartsKineticsScenes::movement)
+            .addStoryBoard("kinetics/movement/battery", PetrolsPartsKineticsScenes::movementBattery);
 
         // Overload Clutch
         itemProviderHelper.forComponents(PetrolsPartsBlocks.OVERLOAD_CLUTCH)
-            .addStoryBoard("overload_clutch", PetrolsPartsKineticsScenes::overloadClutch);
+            .addStoryBoard("kinetics/overload_clutch", PetrolsPartsKineticsScenes::overloadClutch);
 
         // Planetary Gearset
         itemProviderHelper.forComponents(PetrolsPartsBlocks.PLANETARY_GEARSET)
-            .addStoryBoard("planetary_gearset", PetrolsPartsKineticsScenes::planetaryGearset);
+            .addStoryBoard("kinetics/planetary_gearset", PetrolsPartsKineticsScenes::planetaryGearset);
     
         // Pneumatic Tube
         itemProviderHelper.forComponents(PetrolsPartsBlocks.PNEUMATIC_TUBE)
-            .addStoryBoard("pneumatic_tube", PetrolsPartsKineticsScenes::pneumaticTube);
+            .addStoryBoard("logistics/pneumatic_tube", PetrolsPartsKineticsScenes::pneumaticTube);
     };
 
     @Override
@@ -130,10 +134,6 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
 
         HELPER.addToTag(AllCreatePonderTags.LOGISTICS)
             .add(PetrolsPartsBlocks.PNEUMATIC_TUBE);
-
-        HELPER.addToTag(AllCreatePonderTags.REDSTONE)
-            .add(PetrolsPartsBlocks.OVERLOAD_CLUTCH)
-            .add(PetrolsPartsBlocks.REDSTONE_TRANSMISSION);
     };
 
     /**
@@ -153,9 +153,9 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             // Assemblage
             itemProviderHelper.forComponents(PetrolsPartsItems.SHAFTLESS_COGWHEEL, PetrolsPartsItems.COAXIAL_COGWHEEL)
                 .addStoryBoard("cog/small", KineticsScenes::cogAsRelay, entry -> entry.orderBefore("cog/speedup"))
-                .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "assemblage/shaftless_cogwheel"));
+                .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "kinetics/assemblage/shaftless_cogwheel"));
             itemProviderHelper.forComponents(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL, PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL)
-                .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "assemblage/shaftless_cogwheel"));
+                .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "kinetics/assemblage/shaftless_cogwheel"));
 
             // Brass Depot
             itemProviderHelper.forComponents(PetrolsPartsBlocks.BRASS_DEPOT)
@@ -164,7 +164,7 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             // Planetary Gearset
             itemProviderHelper.forComponents(PetrolsPartsBlocks.PLANETARY_GEARSET)
                 .addStoryBoard("cog/speedup", KineticsScenes::cogsSpeedUp, entry -> entry.orderBefore("cog/large"))
-                .addStoryBoard("cog/large", KineticsScenes::largeCogAsRelay, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "coaxial_gear/shaftless"));
+                .addStoryBoard("cog/large", KineticsScenes::largeCogAsRelay, entry -> entry.orderBefore(PetrolsParts.MOD_ID, "kinetics/planetary_gearset"));
         };
     };
 };
