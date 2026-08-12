@@ -72,7 +72,7 @@ public class BevelCogWheelAndShaftBlock extends CompositeBevelCogWheelBlock {
                 .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
         } else {
             return getSet().cornerAndShaftBlock().getDefaultState()
-                .setValue(CornerBevelCogWheelsAndShaftBlock.ORIENTATION, Orientation.fromTopAndFront(facing, cog.face))
+                .setValue(CornerBevelCogWheelsAndShaftBlock.ORIENTATION, Orientation.fromTopAndFront(facing, cog.face).asEdge())
                 .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
         }
     };

@@ -74,14 +74,9 @@ public class FourBevelCogWheelsBlock extends SimpleBevelCogWheelBlock implements
     };
 
     @Override
-    public AxisDirection shaftCogAxisDirection(BlockState state) {
-        return AxisDirection.POSITIVE;
-    };
-
-    @Override
-    public Axis getPrimaryCogAxis(BlockState state) {
+    public Direction getPrimaryCogFace(BlockState state) {
         // No Shaft is ever present, and both non-excluded axes are structurally symmetric - just pick one consistently
-        return state.getValue(EXCLUDED_AXIS) != Axis.X ? Axis.X : Axis.Y;
+        return Direction.get(AxisDirection.POSITIVE, state.getValue(EXCLUDED_AXIS) != Axis.X ? Axis.X : Axis.Y);
     };
 
     @Override

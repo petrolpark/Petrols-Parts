@@ -208,7 +208,7 @@ public class AssemblageScenes {
 
     public static final void encasing(SceneBuilder sceneIn, SceneBuildingUtil util) {
         final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
-        scene.title("assemblage.coaxial_cogwheel", "This text is defined in a language file");
+        scene.title("assemblage.encasing", "This text is defined in a language file");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
         

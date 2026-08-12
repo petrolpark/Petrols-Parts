@@ -17,6 +17,7 @@ import com.tterrag.registrate.providers.RegistrateBlockstateProvider;
 
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.lang.Lang;
+import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -38,6 +39,7 @@ import petrolpark.mc.library.util.MathsHelper;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelShaftPlacementHelper;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.BevelCogWheelAndShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.OppositeBevelCogWheelsBlock;
 
@@ -48,12 +50,15 @@ public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock imple
 
     private final Map<Direction, BlockState> faces = new EnumMap<>(Direction.class);
 
+    public final int shaftPlacementHelperId;
+
     public SingleAxisBevelCogWheelBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
         super(set, properties);
         registerDefaultState(defaultBlockState()
             .setValue(AXIS, Axis.Y)
             .setValue(TYPE, SingleAxisBevelCogWheelBlock.Type.BOTTOM)
         );
+        shaftPlacementHelperId = PlacementHelpers.register(new BevelCogWheelShaftPlacementHelper(set));
     };
 
     public final BlockState get(Direction face) {
@@ -118,7 +123,7 @@ public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock imple
                     yield getSet().cornerBlock().getDefaultState()
                         .setValue(CornerBevelCogWheelsBlock.ORIENTATION, Orientation.fromTopAndFront(cog.face, Direction.get(type.hasTopCog() ? AxisDirection.POSITIVE : AxisDirection.NEGATIVE, axis)).asEdge())
                         .setValue(CornerBevelCogWheelsBlock.SHAFT, type.hasShaft()
-                            ? axis.ordinal() > cog.face.ordinal()
+                            ? axis.ordinal() < cog.face.getAxis().ordinal()
                                 ? CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS
                                 : CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS
                             : CornerBevelCogWheelsBlock.ShaftType.NONE
@@ -157,13 +162,11 @@ public class SingleAxisBevelCogWheelBlock extends SimpleBevelCogWheelBlock imple
     };
 
     @Override
-    public AxisDirection shaftCogAxisDirection(BlockState state) {
-        return AxisDirection.POSITIVE;
-    };
-
-    @Override
-    public Axis getPrimaryCogAxis(BlockState state) {
-        return state.getValue(AXIS);
+    public Direction getPrimaryCogFace(BlockState state) {
+        final SingleAxisBevelCogWheelBlock.Type type = state.getValue(TYPE);
+        // The real Cog's face: for TOP/BOTTOM only one Cog exists at all; for the _SHAFT variants the other end is a
+        // bare Shaft stub; for BOTH, either end is an equally valid (rigidly-linked) choice
+        return Direction.get(type == Type.BOTTOM || type == Type.BOTTOM_SHAFT ? AxisDirection.NEGATIVE : AxisDirection.POSITIVE, state.getValue(AXIS));
     };
 
     @Override

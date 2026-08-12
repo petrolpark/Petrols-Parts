@@ -3,6 +3,8 @@ package petrolpark.mc.petrolsparts.content.kinetics;
 import java.util.function.UnaryOperator;
 
 import com.simibubi.create.AllItems;
+import com.simibubi.create.content.kinetics.gauge.StressGaugeBlockEntity;
+import com.simibubi.create.content.redstone.analogLever.AnalogLeverBlockEntity;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 
 import net.createmod.catnip.math.Pointing;
@@ -20,6 +22,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.block.RedStoneWireBlock;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
@@ -478,7 +481,117 @@ public class PetrolsPartsKineticsScenes {
         scene.configureBasePlate(0, 0, 5);
         scene.showBasePlate();
 
+        final Selection clutch = util.select().position(2, 2, 3);
+        final Selection gauge = util.select().position(2, 2, 1);
+        final Vec3 clutchSide = util.vector().blockSurface(util.grid().at(2, 2, 3), Direction.WEST);
+
+        scene.idle(5);
+        scene.world().showSection(util.select().position(1, 0, 5), Direction.NORTH);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(2, 1, 5), Direction.NORTH);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(2, 2, 5), Direction.NORTH);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(2, 2, 4), Direction.WEST);
+        scene.idle(10);
+        scene.world().showSection(clutch, Direction.SOUTH);
+        scene.idle(10);
+        scene.world().showSection(util.select().position(2, 2, 2), Direction.SOUTH);
+        scene.idle(10);
+        scene.world().showSection(gauge, Direction.SOUTH);
+        setStress(scene, gauge, 0f);
+        scene.idle(10);
+
+        scene.overlay().showText(60)
+            .pointAt(clutchSide)
+            .attachKeyFrame()
+            .placeNearTarget()
+            .text("This text is defined in a language file");
+        scene.idle(80);
+
+        scene.world().showSection(util.select().position(2, 2, 0), Direction.SOUTH);
+        scene.idle(15);
+        final Selection subnet = util.select().fromTo(2, 2, 0, 2, 2, 2);
+        scene.world().multiplyKineticSpeed(subnet, 1 / 256f / 256f);
+        multiplyCompositeKBESpeed(scene, clutch, 0, 1 / 256f / 256f);
+        setStress(scene, gauge, 1.125f);
+        scene.effects().emitParticles(Vec3.ZERO, PetrolparkEmitters.inAABB(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, new AABB(1.75d, 3.5d, -0.25d, 3.25d, 3.6d, 3.25d), util.vector().of(0d, 0.1d, 0d)), 10f, 1);
+        scene.idle(20);
+
+        scene.overlay().showOutline(PonderPalette.RED, "overdstressed", subnet, 70);
+        scene.overlay().showOutlineWithText(util.select().fromTo(1, 0, 5, 2, 2, 5).add(util.select().position(2, 2, 4)), 70)
+            .attachKeyFrame()
+            .colored(PonderPalette.GREEN)
+            .text("This text is defined in a language file");
+        scene.idle(90);
+        
+        scene.rotateCameraY(-45f);
+        scene.idle(20);
+        scene.overlay().showFilterSlotInput(util.vector().of(1.9d, 2.5d, 3.5d), Direction.WEST, 80);
+        scene.overlay().showText(80)
+            .attachKeyFrame()
+            .pointAt(clutchSide)
+            .text("This text is defined in a language file");
+        scene.idle(40);
+        scene.world().multiplyKineticSpeed(subnet, 256f * 256f);
+        multiplyCompositeKBESpeed(scene, clutch, 0, 256f * 256f);
+        setStress(scene, gauge, 0.3f);
+        scene.effects().emitParticles(Vec3.ZERO, PetrolparkEmitters.inAABB(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, new AABB(1.75d, 3.5d, -0.25d, 3.25d, 3.6d, 3.25d), util.vector().of(0d, 0.1d, 0d)), 10f, 1);
+        scene.idle(60);
+
+        final Selection redstone = util.select().fromTo(0, 1, 3, 1, 2, 3);
+        scene.world().showSection(redstone, Direction.EAST);
+        scene.idle(10);
+
+        scene.overlay().showText(180)
+            .pointAt(util.vector().blockSurface(util.grid().at(2, 2, 3), Direction.UP))
+            .text("This text was defined in a language file");
+        
+        final BlockPos dust = util.grid().at(1, 2, 3);
+        for (int i = 2; i < 14; i += 2) {
+            scene.idle(20);
+            scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
+            scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
+            scene.effects().indicateRedstone(dust);
+            final int power = i;
+            scene.world().modifyBlockEntityNBT(util.select().position(0, 2, 3), AnalogLeverBlockEntity.class, nbt -> nbt.putInt("State", power));
+            setStress(scene, gauge, 0.3f + power / 20f);
+        };
+
+        scene.overlay().showText(60)
+            .independent(100)
+            .text("This text is defined in a lamguage file")
+            .attachKeyFrame();
+        scene.idle(20);
+        scene.world().modifyBlockEntityNBT(util.select().position(0, 2, 3), AnalogLeverBlockEntity.class, nbt -> nbt.putInt("State", 15));
+        scene.world().multiplyKineticSpeed(subnet, 1 / 256f / 256f);
+        multiplyCompositeKBESpeed(scene, clutch, 0, 1 / 256f / 256f);
+        setStress(scene, gauge, 1.125f);
+        scene.effects().emitParticles(Vec3.ZERO, PetrolparkEmitters.inAABB(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, new AABB(1.75d, 3.5d, -0.25d, 3.25d, 3.6d, 3.25d), util.vector().of(0d, 0.1d, 0d)), 10f, 1);
+        scene.idle(60);
+
+        scene.world().showSection(util.select().fromTo(2, 1, 2, 2, 1, 4), Direction.WEST);
+        scene.idle(10);
+        scene.world().multiplyKineticSpeed(subnet, 256f * 256f);
+        multiplyCompositeKBESpeed(scene, clutch, 0, 256f * 256f);
+        setStress(scene, gauge, 0.8f);
+        scene.effects().emitParticles(Vec3.ZERO, PetrolparkEmitters.inAABB(ParticleTypes.CAMPFIRE_SIGNAL_SMOKE, new AABB(1.75d, 3.5d, -0.25d, 3.25d, 3.6d, 3.25d), util.vector().of(0d, 0.1d, 0d)), 10f, 1);
+        scene.idle(15);
+        scene.world().showSection(util.select().fromTo(2, 3, 2, 2, 3, 4), Direction.WEST);
+        scene.idle(15);
+        setStress(scene, gauge, 0.1f);
+
+        scene.overlay().showText(80)
+            .pointAt(util.vector().blockSurface(util.grid().at(2, 3, 3), Direction.WEST))
+            .attachKeyFrame()
+            .text("This text is defined in a language file");
+        scene.idle(100);
+
         scene.markAsFinished();
+    };
+
+    private static final void setStress(SceneBuilder scene, Selection selection, float stress) {
+        scene.world().modifyBlockEntityNBT(selection, StressGaugeBlockEntity.class, nbt -> nbt.putFloat("Value", stress));
     };
 
     public static final void planetaryGearset(SceneBuilder baseScene, SceneBuildingUtil util) {

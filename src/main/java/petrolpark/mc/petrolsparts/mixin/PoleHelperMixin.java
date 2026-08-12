@@ -45,7 +45,7 @@ public abstract class PoleHelperMixin<T extends Comparable<T>> implements IPlace
         CallbackInfoReturnable<PlacementOffset> cir,
         List<Direction> directions, Iterator<Direction> iterator, Direction dir, int range, int poles, BlockPos newPos, BlockState newState
     ) {
-        if (newState instanceof IReplaceableBlock replaceableBlock && getItemPredicate().test(player.getItemInHand(InteractionHand.MAIN_HAND)) && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BlockItem blockItem) {
+        if (newState.getBlock() instanceof IReplaceableBlock replaceableBlock && getItemPredicate().test(player.getItemInHand(InteractionHand.MAIN_HAND)) && player.getItemInHand(InteractionHand.MAIN_HAND).getItem() instanceof BlockItem blockItem) {
             final BlockState stateToPlace = blockItem.getBlock().defaultBlockState() // Best guess of what the item to place will be
                 .setValue(property, state.getValue(property)); 
             if (replaceableBlock.canBeReplaced(world, newPos, newState, stateToPlace, player))

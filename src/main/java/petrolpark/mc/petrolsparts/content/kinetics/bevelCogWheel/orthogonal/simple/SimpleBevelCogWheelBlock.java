@@ -5,11 +5,18 @@ import java.util.function.Supplier;
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.contraptions.StructureTransform;
 
+import net.createmod.catnip.placement.IPlacementHelper;
+import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
-import net.minecraft.core.Direction.AxisDirection;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.ItemInteractionResult;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Mirror;
@@ -18,6 +25,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.phys.BlockHitResult;
 import petrolpark.mc.library.compat.create.core.world.block.MultiPartKineticBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
@@ -35,14 +43,7 @@ public abstract class SimpleBevelCogWheelBlock extends MultiPartKineticBlock<Bev
         );
     };
 
-    public abstract AxisDirection shaftCogAxisDirection(BlockState state);
-
-    /**
-     * The axis of this block's designated 'primary' Cog - its Shaft's Cog, if it has one; otherwise a fixed (but
-     * orientation-covariant) choice of one of its Cogs' axes. Used as the phase-zero reference when offsetting
-     * other Cogs' teeth so they mesh correctly - see {@link SimpleBevelCogWheelRenderer}.
-     */
-    public abstract Axis getPrimaryCogAxis(BlockState state);
+    public abstract Direction getPrimaryCogFace(BlockState state);
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
@@ -52,6 +53,14 @@ public abstract class SimpleBevelCogWheelBlock extends MultiPartKineticBlock<Bev
     @Override
     public BevelCogWheelSet getSet() {
         return set.get();
+    };
+
+    @Override
+    protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        final IPlacementHelper helper = PlacementHelpers.get(getSet().singleAxisBlock().get().shaftPlacementHelperId);
+		if (helper.matchesItem(stack))
+			return helper.getOffset(player, level, state, pos, hitResult).placeInWorld(level, (BlockItem) stack.getItem(), player, hand, hitResult);
+		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     };
 
     @Override

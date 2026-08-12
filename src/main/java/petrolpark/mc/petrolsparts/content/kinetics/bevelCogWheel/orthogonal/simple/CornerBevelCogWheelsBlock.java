@@ -164,19 +164,9 @@ public class CornerBevelCogWheelsBlock extends SimpleBevelCogWheelBlock implemen
     };
 
     @Override
-    public AxisDirection shaftCogAxisDirection(BlockState state) {
+    public Direction getPrimaryCogFace(BlockState state) {
         final Orientation orientation = state.getValue(ORIENTATION);
-        return switch (state.getValue(SHAFT)) {
-            case NONE -> AxisDirection.POSITIVE;
-            case FIRST_AXIS -> orientation.top.getAxisDirection();
-            case SECOND_AXIS -> orientation.front.getAxisDirection();
-        };
-    };
-
-    @Override
-    public Axis getPrimaryCogAxis(BlockState state) {
-        final Orientation orientation = state.getValue(ORIENTATION);
-        return state.getValue(SHAFT) == CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS ? orientation.front.getAxis() : orientation.top.getAxis();
+        return state.getValue(SHAFT) == CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS ? orientation.front : orientation.top;
     };
 
     @Override

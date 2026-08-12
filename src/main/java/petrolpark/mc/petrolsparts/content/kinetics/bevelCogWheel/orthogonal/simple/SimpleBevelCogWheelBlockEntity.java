@@ -65,7 +65,7 @@ public class SimpleBevelCogWheelBlockEntity extends SingleAxisBevelCogWheelBlock
      */
     private static Direction shaftStubEquivalent(SimpleBevelCogWheelBlock block, BlockState state, Direction face) {
         final Axis shaftAxis = block.getShaftAxis(state);
-        if (face.getAxis() == shaftAxis && face.getAxisDirection() != block.shaftCogAxisDirection(state)) return face.getOpposite();
+        if (face.getAxis() == shaftAxis && face != block.getPrimaryCogFace(state)) return face.getOpposite();
         return face;
     };
 

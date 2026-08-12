@@ -70,7 +70,11 @@ public class ThreeBevelCogWheelsBlock extends SimpleBevelCogWheelBlock implement
         final boolean firstAxis = state.getValue(OTHER_COGS_ON_FIRST_AXIS);
         final Axis perpendicularAxis = MathsHelper.getTertiaryAxis(facing.getAxis(), firstAxis);
         if (part == getSet().cogParts().get(facing))
-            return getSet().fourBlock().getDefaultState().setValue(FourBevelCogWheelsBlock.EXCLUDED_AXIS, perpendicularAxis);
+            return getSet().fourBlock().getDefaultState()
+                .setValue(FourBevelCogWheelsBlock.EXCLUDED_AXIS, perpendicularAxis)
+                .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
+        else if (part == getSet().shaftParts().get(facing.getAxis()))
+            return state.setValue(SHAFT, true);
         else if (part == getSet().shaftParts().get(perpendicularAxis))
             return BlockHelper.copyAll(getSet().threeAndShaftBlock().getDefaultState(), state);
         else return null;
@@ -128,13 +132,8 @@ public class ThreeBevelCogWheelsBlock extends SimpleBevelCogWheelBlock implement
     };
 
     @Override
-    public AxisDirection shaftCogAxisDirection(BlockState state) {
-        return state.getValue(SHAFT) ? state.getValue(EXCLUDED_FACE).getOpposite().getAxisDirection() : AxisDirection.POSITIVE;
-    };
-
-    @Override
-    public Axis getPrimaryCogAxis(BlockState state) {
-        return state.getValue(EXCLUDED_FACE).getAxis();
+    public Direction getPrimaryCogFace(BlockState state) {
+        return state.getValue(EXCLUDED_FACE).getOpposite();
     };
 
     @Override

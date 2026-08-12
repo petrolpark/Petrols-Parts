@@ -165,14 +165,18 @@ public class BevelCogWheelBlockItem extends BlockItem {
 
         @Override
         public Predicate<BlockState> getStatePredicate() {
-            return getSet()::isReplaceable; // Shaft or any Bevel Cogwheel block (or air (impossible here))
+            return Predicate.<BlockState>not(BlockState::canBeReplaced).and(getSet()::isReplaceable);
         };
 
         @Override
         public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
             // Don't place on ends of existing blocks
             if (getSet().shaftBlock().has(state) && ray.getDirection().getAxis() == state.getValue(ShaftBlock.AXIS)) return PlacementOffset.fail();
-            if (state.getBlock() instanceof IOrthogonalBevelCogWheelBlock bevelBlock && bevelBlock.getTargetedPart(state, pos, player) instanceof BevelCogWheelPart.Cog cog && cog.face == ray.getDirection()) return PlacementOffset.fail(); 
+            if (state.getBlock() instanceof IOrthogonalBevelCogWheelBlock bevelBlock && switch (bevelBlock.getTargetedPart(state, pos, player)) {
+                case null -> false;
+                case BevelCogWheelPart.Shaft shaft -> shaft.axis == ray.getDirection().getAxis();
+                case BevelCogWheelPart.Cog cog -> cog.face == ray.getDirection();
+            }) return PlacementOffset.fail(); 
             // Place adjacent
             for (Direction direction : IPlacementHelper.orderedByDistance(pos, ray.getLocation())) {
                 final BevelCogWheelPart.Cog part = getSet().cogParts().get(direction);
