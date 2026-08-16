@@ -27,6 +27,7 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
+import petrolpark.mc.library.compat.create.core.world.block.IReplaceableBlock;
 
 public class ShaftHalfBlockItem extends AssemblageBlockItem {
 
@@ -135,7 +136,7 @@ public class ShaftHalfBlockItem extends AssemblageBlockItem {
                     .setValue(IAssemblageBlock.AXIS, direction.getAxis())
                     .setValue(bottom ? IAssemblageBlock.BOTTOM_SHAFT_HALF : IAssemblageBlock.TOP_SHAFT_HALF, true);
 
-                if (getBlock().canBeReplaced(world, checkPos, checkState, stateToPlace, player))
+                if (IReplaceableBlock.canReplace(world, checkPos, checkState, stateToPlace, player))
                     return PlacementOffset.success(checkPos, $ -> stateToPlace)
                         .withGhostState(stateToPlace);
             };

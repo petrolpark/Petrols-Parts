@@ -31,6 +31,8 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.Vec3;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.CogOnDiagonalBevelPlacementHelper;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.core.block.CogType;
 import petrolpark.mc.petrolsparts.core.block.IFaceAlignedCogWheelBlock;
 import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
@@ -43,7 +45,9 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
     public AssemblageCogWheelBlockItem(Supplier<AssemblageSet> set, AssemblageCog cog, Item.Properties properties) {
         super(set, properties);
         this.cog = cog;
-        placementHelperIds = new int[]{PlacementHelpers.register(getCog().isLarge() ? new LargePlacementHelper() : new SmallPlacementHelper()), PlacementHelpers.register(new DiagonalPlacementHelper())};
+        placementHelperIds = getCog().isLarge()
+            ? new int[]{PlacementHelpers.register(new LargePlacementHelper()), PlacementHelpers.register(new DiagonalPlacementHelper())}
+            : new int[]{PlacementHelpers.register(new SmallPlacementHelper()), PlacementHelpers.register(new DiagonalPlacementHelper()), PlacementHelpers.register(new BevelPlacementHelper())};
     };
 
     public AssemblageCog getCog() {
@@ -259,6 +263,30 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
 
     };
 
+    public class BevelPlacementHelper extends AssemblageBlockItem.PlacementHelper {
+
+        @Override
+        public Predicate<ItemStack> getItemPredicate() {
+            return stack -> stack.getItem() == AssemblageCogWheelBlockItem.this;
+        };
+
+        @Override
+        public Predicate<BlockState> getStatePredicate() {
+            return state -> state.getBlock() instanceof IDiagonalBevelCogWheelBlock;
+        };
+
+        @Override
+        public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
+            return CogOnDiagonalBevelPlacementHelper.getOffset(player, world, state, pos, ray, getSet().separateShaftsAssemblageBlock().getDefaultState().setValue(IAssemblageBlock.MIDDLE_COG, getCog()));
+        };
+
+        @Override
+        public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray, ItemStack heldItem) {
+            return getOffset(player, world, state, pos, ray);
+        };
+
+    };
+    
     public static final boolean isTargetingCenter(BlockPos pos, Vec3 location, Axis axis) {
         for (Axis otherAxis : Iterate.axes) {
             if (otherAxis == axis) continue;

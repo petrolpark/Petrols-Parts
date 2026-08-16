@@ -38,7 +38,7 @@ public class PlanetaryGearsetBlockEntity extends SplitShaftBlockEntity {
 
     @Override
     public float getRotationSpeedModifier(Direction face) {
-        return -2;
+        return -2f;
     };
 
     @Override

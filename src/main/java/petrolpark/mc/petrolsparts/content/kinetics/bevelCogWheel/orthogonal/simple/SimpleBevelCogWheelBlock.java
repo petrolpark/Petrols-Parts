@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import com.simibubi.create.api.stress.BlockStressValues;
 import com.simibubi.create.content.contraptions.StructureTransform;
+import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 
 import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementHelpers;
@@ -26,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
-import petrolpark.mc.library.compat.create.core.world.block.MultiPartKineticBlock;
+import petrolpark.mc.library.compat.create.core.world.block.multiPart.MultiPartKineticBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
@@ -43,6 +44,10 @@ public abstract class SimpleBevelCogWheelBlock extends MultiPartKineticBlock<Bev
         );
     };
 
+    /**
+     * Reference axis to 
+     * Axis should match {@link IOrthogonalBevelCogWheelBlock#getShaftAxis(BlockState)} if that is non-null.
+     */
     public abstract Direction getPrimaryCogFace(BlockState state);
 
     @Override
@@ -57,9 +62,11 @@ public abstract class SimpleBevelCogWheelBlock extends MultiPartKineticBlock<Bev
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        final IPlacementHelper helper = PlacementHelpers.get(getSet().singleAxisBlock().get().shaftPlacementHelperId);
-		if (helper.matchesItem(stack))
-			return helper.getOffset(player, level, state, pos, hitResult).placeInWorld(level, (BlockItem) stack.getItem(), player, hand, hitResult);
+        for (int placementHelperId : new int[]{getSet().singleAxisBlock().get().shaftPlacementHelperId, ShaftBlock.placementHelperId}) {
+            final IPlacementHelper helper = PlacementHelpers.get(placementHelperId);
+            if (helper.matchesItem(stack))
+                return helper.getOffset(player, level, state, pos, hitResult).placeInWorld(level, (BlockItem) stack.getItem(), player, hand, hitResult);
+        };
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     };
 

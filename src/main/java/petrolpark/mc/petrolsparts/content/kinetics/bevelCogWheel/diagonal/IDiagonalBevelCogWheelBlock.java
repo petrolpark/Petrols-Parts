@@ -21,12 +21,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
+import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 
 public interface IDiagonalBevelCogWheelBlock extends IBevelCogWheelBlock {
     
-    public static final int COG_ON_BEVEL_PLACEMENT_HELPER_ID = PlacementHelpers.register(new CogOnDiagonalPlacementHelper());
+    public static final int COG_ON_BEVEL_PLACEMENT_HELPER_ID = PlacementHelpers.register(new CogOnDiagonalBevelPlacementHelper());
     
     /**
      * Used by {@link BevelCogWheelBlockItem.DiagonalPlacementHelper}
@@ -55,8 +57,12 @@ public interface IDiagonalBevelCogWheelBlock extends IBevelCogWheelBlock {
             if (axis == null) continue;
             final BlockState adjacentState = level.getBlockState(pos.relative(face));
             if (ICogWheel.isLargeCog(adjacentState) && adjacentState.getValue(CogWheelBlock.AXIS) == axis) return false;
-            //TODO check face-aligned dont clip
+
+            for (Direction otherFace : Iterate.directions) {
+                if (otherFace.getAxis() == face.getAxis()) continue;
+                if (CompositeKineticBlockEntity.streamAny(level, pos.relative(otherFace)).anyMatch(kbe -> IFaceAlignedCogWheelBlockEntity.getCogType(kbe, face).isLarge())) return false;
+            };
         };
-        return false;
+        return true;
     };
 };

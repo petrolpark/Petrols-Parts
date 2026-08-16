@@ -2,6 +2,7 @@ package petrolpark.mc.petrolsparts.mixin;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.Function;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -10,17 +11,21 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.foundation.placement.PoleHelper;
 
 import net.createmod.catnip.placement.IPlacementHelper;
 import net.createmod.catnip.placement.PlacementOffset;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.phys.BlockHitResult;
 import petrolpark.mc.library.compat.create.core.world.block.IReplaceableBlock;
@@ -30,6 +35,9 @@ public abstract class PoleHelperMixin<T extends Comparable<T>> implements IPlace
     
     @Shadow
     protected Property<T> property;
+
+    @Shadow
+    protected Function<BlockState, Axis> axisFunction;
 
     @Inject(
         method = "getOffset",
@@ -51,5 +59,13 @@ public abstract class PoleHelperMixin<T extends Comparable<T>> implements IPlace
             if (replaceableBlock.canBeReplaced(world, newPos, newState, stateToPlace, player))
                 cir.setReturnValue(PlacementOffset.success(newPos, bState -> bState.setValue(property, state.getValue(property)))); // Other mixin into PlacementOffset actually does the replacing
         };
+    };
+
+    @WrapMethod(
+        method = "lambda$getOffset$1"
+    )
+    public BlockState petrolsParts$useAxisFunction(BlockState state, BlockState bState, Operation<BlockState> original) {
+        if (property == BlockStateProperties.AXIS) return bState.setValue(BlockStateProperties.AXIS, axisFunction.apply(state));
+        return original.call(bState, state);
     };
 };

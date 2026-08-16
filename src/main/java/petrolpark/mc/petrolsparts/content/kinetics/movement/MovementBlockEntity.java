@@ -77,8 +77,8 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
         weightStack = newWeightStack;
         weightData = newWeightStack.getItem().builtInRegistryHolder().getData(PetrolsPartsDataMapTypes.MOVEMENT_WEIGHT);
         if (weightData == null) rotationsCharge = 0f;
+        update();
         notifyUpdate();
-        generatingPart.updateGeneratedRotation();
     };
 
     public boolean isFullyCharged() {
@@ -98,9 +98,13 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
     public void tick() {
         final boolean generatingBefore = shouldGenerate();
         super.tick();
-        if (generatingBefore != shouldGenerate())
-            generatingPart.updateGeneratedRotation();
-        MovementBlockEntity.this.setChanged(); // Update comparator
+        if (generatingBefore != shouldGenerate()) update();
+        setChanged(); // Update comparator
+    };
+
+    public void update() {
+        generatingPart.updateGeneratedRotation();
+        if (windingPart.hasNetwork()) windingPart.getOrCreateNetwork().updateStressFor(windingPart, windingPart.calculateStressApplied());
     };
 
     @Override
@@ -151,18 +155,23 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
 
         @Override
         public float calculateStressApplied() {
-            return weightData == null ? 0f : weightData.stressCapacity();
+            if (isFullyCharged() && !shouldGenerate())
+                return lastStressApplied = 0f;
+            return lastStressApplied = weightData == null ? 0f : weightData.stressCapacity();
         };
 
         @Override
         public void tick() {
             super.tick();
             final float speed = Mth.abs(getSpeed());
-            if (speed != 0f && weightData != null) {
+            if (speed != 0f && weightData != null && !isFullyCharged()) {
                 final boolean wasEmpty = rotationsCharge <= 0f;
                 rotationsCharge += speed / (20 * 60); // Convert RPM to rotations per tick
                 if (wasEmpty) generatingPart.updateGeneratedRotation();
-                if (isFullyCharged()) rotationsCharge = getMaxRotationsCharge();
+                if (isFullyCharged()) {
+                    rotationsCharge = getMaxRotationsCharge();
+                    if (hasNetwork()) getOrCreateNetwork().updateStressFor(this, calculateStressApplied()); // Applied stress now 0
+                };
             };
         };
 
@@ -225,9 +234,12 @@ public class MovementBlockEntity extends CompositeKineticBlockEntity implements 
 
         @Override
         public void tick() {
+            final boolean wasFull = isFullyCharged();
             if (shouldGenerate()) {
                 rotationsCharge -= Math.abs(getSpeed()) / (20 * 60); // Convert RPM to rotations per tick
                 if (rotationsCharge < 0f) rotationsCharge = 0f;
+                if (wasFull && windingPart.hasNetwork())
+                    windingPart.getOrCreateNetwork().updateStress(); // Applied stress no longer 0
             };
             super.tick();
         };

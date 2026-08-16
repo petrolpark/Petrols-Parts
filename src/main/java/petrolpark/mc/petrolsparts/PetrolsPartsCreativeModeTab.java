@@ -22,19 +22,18 @@ public class PetrolsPartsCreativeModeTab {
 		() -> new CustomTab.Builder(CreativeModeTab.Row.TOP, 0)
 			.add(
 
-                i(PetrolsPartsBlocks.BRASS_DEPOT::asStack),
-				// i(PetrolsPartsBlocks.FRICTION_HEATER::asStack),
-				i(PetrolsPartsItems.SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.COAXIAL_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL::asStack), i(PetrolsPartsItems.SHAFT_HALF::asStack),
-				// i(PetrolsPartsItems.BEVEL_COGWHEEL::asStack),
+				i(PetrolsPartsItems.SHAFT_HALF::asStack), i(PetrolsPartsItems.SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_SHAFTLESS_COGWHEEL::asStack), i(PetrolsPartsItems.COAXIAL_COGWHEEL::asStack), i(PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL::asStack),
+                i(PetrolsPartsItems.BEVEL_COGWHEEL::asStack),
 				i(PetrolsPartsBlocks.CORNER_SHAFT::asStack),
-				// i(PetrolsPartsBlocks.LEGACY_DIFFERENTIAL::asStack),
-				i(PetrolsPartsBlocks.PLANETARY_GEARSET::asStack),
 				i(PetrolsPartsBlocks.COLOSSAL_COGWHEEL::asStack),
-				// i(PetrolsPartsBlocks.MOVEMENT::asStack),
-				// i(PetrolsPartsBlocks.OVERLOAD_CLUTCH::asStack),
+				i(PetrolsPartsBlocks.PLANETARY_GEARSET::asStack),
+				i(PetrolsPartsBlocks.DIFFERENTIAL::asStack),
+				i(PetrolsPartsBlocks.MOVEMENT::asStack),
+				i(PetrolsPartsBlocks.OVERLOAD_CLUTCH::asStack),
+				i(PetrolsPartsBlocks.REDSTONE_TRANSMISSION::asStack),
 				i(PetrolsPartsBlocks.PNEUMATIC_TUBE::asStack), i(PetrolsPartsBlocks.HYDRAULIC_TRANSMISSION::asStack),
-				// i(PetrolsPartsBlocks.REDSTONE_TRANSMISSION::asStack),
-				//i(SharedCreateBlocks.HORSE_MILL_BEARING::asStack), i(SharedCreateBlocks.HARNESS::asStack),
+				i(SharedCreateBlocks.HORSE_MILL_BEARING::asStack), i(SharedCreateBlocks.HARNESS::asStack),
+				i(PetrolsPartsBlocks.BRASS_DEPOT::asStack), i(PetrolsPartsBlocks.FRICTION_HEATER::asStack),
 				i(SharedCreateBlocks.REDSTONE_PROGRAMMER::asStack)
 			
 			).title(Component.translatable("itemGroup.petrolsparts.base"))

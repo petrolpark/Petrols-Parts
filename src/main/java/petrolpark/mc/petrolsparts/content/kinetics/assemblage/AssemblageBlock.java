@@ -6,11 +6,14 @@ import java.util.function.Supplier;
 
 import com.simibubi.create.content.decoration.bracket.BracketedBlockEntityBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasableBlock;
+import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.simibubi.create.foundation.block.IBE;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 import com.tterrag.registrate.util.nullness.NonNullFunction;
 
+import net.createmod.catnip.placement.IPlacementHelper;
+import net.createmod.catnip.placement.PlacementHelpers;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -18,6 +21,7 @@ import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
@@ -177,7 +181,14 @@ public sealed abstract class AssemblageBlock extends MultiPartCompositeKineticBl
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (player.isShiftKeyDown() || !player.mayBuild()) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        return tryEncase(state, level, pos, stack, player, hand, hitResult);
+
+        final ItemInteractionResult result = tryEncase(state, level, pos, stack, player, hand, hitResult);
+        if (result.consumesAction()) return result;
+
+        final IPlacementHelper helper = PlacementHelpers.get(ShaftBlock.placementHelperId);
+        if (helper.matchesItem(stack)) return helper.getOffset(player, level, state, pos, hitResult).placeInWorld(level, (BlockItem)stack.getItem(), player, hand, hitResult);
+        
+        return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     };
 
     @Override

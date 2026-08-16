@@ -9,7 +9,7 @@
 	"elements": [
 		{
 			"name": "Gear",
-			"from": [-1, 6.5, 0],
+			"from": [-1, 6.5, -0.1],
 			"to": [17, 9.5, 4.85],
 			"rotation": {"angle": -45, "axis": "z", "origin": [8, 8, 8]},
 			"faces": {
@@ -23,7 +23,7 @@
 		},
 		{
 			"name": "Gear",
-			"from": [6.5, -1, 0],
+			"from": [6.5, -1, -0.1],
 			"to": [9.5, 17, 4.85],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
@@ -37,7 +37,7 @@
 		},
 		{
 			"name": "Gear",
-			"from": [6.5, -1, 0],
+			"from": [6.5, -1, -0.1],
 			"to": [9.5, 17, 4.85],
 			"rotation": {"angle": -45, "axis": "z", "origin": [8, 8, 8]},
 			"faces": {
@@ -51,7 +51,7 @@
 		},
 		{
 			"name": "Gear",
-			"from": [-1, 6.5, 0],
+			"from": [-1, 6.5, -0.1],
 			"to": [17, 9.5, 4.85],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 8]},
 			"faces": {
@@ -104,7 +104,7 @@
 			}
 		},
 		{
-			"from": [4, 4, -0.1],
+			"from": [4, 4, -0.2],
 			"to": [12, 12, 0.9],
 			"rotation": {"angle": 0, "axis": "y", "origin": [8, 8, 7.9]},
 			"faces": {

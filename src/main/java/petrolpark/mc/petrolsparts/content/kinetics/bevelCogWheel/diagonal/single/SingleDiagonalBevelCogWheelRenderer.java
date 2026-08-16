@@ -12,11 +12,14 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelClientSet;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.CornerBevelCogWheelsBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.CornerBevelCogWheelsBlock.ShaftType;
 
 public class SingleDiagonalBevelCogWheelRenderer extends KineticBlockEntityRenderer<SingleDiagonalBevelCogWheelBlockEntity> {
 
@@ -33,8 +36,20 @@ public class SingleDiagonalBevelCogWheelRenderer extends KineticBlockEntityRende
 
     @Override
     protected void renderSafe(SingleDiagonalBevelCogWheelBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource buffer, int light, int overlay) {
-        final Orientation orientation = be.getBlockState().getValue(ISingleDiagonalBevelCogWheelBlock.ORIENTATION);
+        final BlockState state = be.getBlockState();
+        final Orientation orientation = state.getValue(ISingleDiagonalBevelCogWheelBlock.ORIENTATION);
         renderCog(set, be, orientation, ms, buffer, light);
+
+        final ShaftType shaft = state.getValue(SingleDiagonalBevelCogWheelBlock.SHAFT);
+        if (shaft == CornerBevelCogWheelsBlock.ShaftType.NONE) return;
+        final Direction face = shaft == CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS ? orientation.top.getOpposite() : orientation.front.getOpposite();
+        final float angle = getAngle(be.getLevel(), be.getSpeed() * be.getRotationSpeedModifier(face)) + getRotationOffsetForPosition(be, be.getBlockPos(), face.getAxis()) * Mth.DEG_TO_RAD;
+        kineticRotationTransform(CachedBuffers.partialFacingVertical(set.diagonalShaft(), state, face), be, face.getAxis(), angle, light)
+            .renderInto(ms, buffer.getBuffer(RenderType.solid()));
+    };
+
+    public static final void renderShaftHalf(BevelCogWheelClientSet set, SingleDiagonalBevelCogWheelBlockEntity be, BlockState state, Direction face, PoseStack ms, VertexConsumer vc, int light) {
+        
     };
 
     public static final void renderCog(BevelCogWheelClientSet set, KineticBlockEntity be, Orientation orientation, PoseStack ms, MultiBufferSource buffer, int light) {

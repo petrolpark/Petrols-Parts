@@ -20,14 +20,14 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import petrolpark.mc.library.compat.create.core.world.block.CreateMultiPartBlock;
+import petrolpark.mc.library.compat.create.core.world.block.multiPart.CreateMultiPartBlock;
 import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.PetrolsPartsShapes;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageSet;
 
-public enum TransmissionPart implements CreateMultiPartBlock.ICreatePart {
+public enum RedstoneTransmissionPart implements CreateMultiPartBlock.ICreatePart {
     
     NORTH_COG(true, Direction.NORTH),
     SOUTH_COG(true, Direction.SOUTH),
@@ -46,23 +46,23 @@ public enum TransmissionPart implements CreateMultiPartBlock.ICreatePart {
 
     public static final ResourceKey<LootTable> TRANSMISSION_SHAFT_LOOT = ResourceKey.create(Registries.LOOT_TABLE, PetrolsParts.asResource("transmission_shaft"));
 
-    public static final Map<Direction, TransmissionPart> FACIAL_COGS = Stream.of(NORTH_COG, SOUTH_COG, EAST_COG, WEST_COG, UP_COG, DOWN_COG).collect(Collectors.toMap(part -> part.place.left().get(), Function.identity()));
-    public static final Map<Axis, TransmissionPart> AXIAL_COGS = Stream.of(X_COG, Y_COG, Z_COG).collect(Collectors.toMap(part -> part.place.right().get(), Function.identity()));
-    public static final Map<Axis, TransmissionPart> SHAFTS = Stream.of(X_SHAFT, Y_SHAFT, Z_SHAFT).collect(Collectors.toMap(part -> part.place.right().get(), Function.identity()));
+    public static final Map<Direction, RedstoneTransmissionPart> FACIAL_COGS = Stream.of(NORTH_COG, SOUTH_COG, EAST_COG, WEST_COG, UP_COG, DOWN_COG).collect(Collectors.toMap(part -> part.place.left().get(), Function.identity()));
+    public static final Map<Axis, RedstoneTransmissionPart> AXIAL_COGS = Stream.of(X_COG, Y_COG, Z_COG).collect(Collectors.toMap(part -> part.place.right().get(), Function.identity()));
+    public static final Map<Axis, RedstoneTransmissionPart> SHAFTS = Stream.of(X_SHAFT, Y_SHAFT, Z_SHAFT).collect(Collectors.toMap(part -> part.place.right().get(), Function.identity()));
 
     protected final boolean cog;
     protected final Either<Direction, Axis> place;
     protected final VoxelShape shape;
 
-    TransmissionPart(boolean cog, Direction face) {
+    RedstoneTransmissionPart(boolean cog, Direction face) {
         this(cog, Either.left(face));
     };
 
-    TransmissionPart(boolean cog, Axis axis) {
+    RedstoneTransmissionPart(boolean cog, Axis axis) {
         this(cog, Either.right(axis));
     };
 
-    TransmissionPart(boolean cog, Either<Direction, Axis> place) {
+    RedstoneTransmissionPart(boolean cog, Either<Direction, Axis> place) {
         this.cog = cog;
         this.place = place;
         shape = cog ? place.map(PetrolsPartsShapes.FACIAL_COGWHEEL::get, PetrolsPartsShapes.MIDDLE_COGWHEEL::get) : place.map(PetrolsPartsShapes.TRANSMISSION_SHAFT::get, PetrolsPartsShapes.TRANSMISSION_SHAFT::get);

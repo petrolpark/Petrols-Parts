@@ -37,8 +37,8 @@ import petrolpark.mc.petrolsparts.content.kinetics.overloadClutch.OverloadClutch
 import petrolpark.mc.petrolsparts.content.kinetics.overloadClutch.OverloadClutchRenderer;
 import petrolpark.mc.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlockEntity;
 import petrolpark.mc.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetRenderer;
-import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.TransmissionBlockEntity;
-import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.TransmissionRenderer;
+import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.RedstoneTransmissionBlockEntity;
+import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.RedstoneTransmissionRenderer;
 import petrolpark.mc.petrolsparts.content.legacy.LegacyCoaxialGearBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeRenderer;
@@ -210,10 +210,10 @@ public class PetrolsPartsBlockEntityTypes {
         .renderer(() -> PneumaticTubeRenderer::new)
         .register();
 
-    public static final BlockEntityEntry<TransmissionBlockEntity> TRANSMISSION = REGISTRATE
-        .createBlockEntity("transmission", TransmissionBlockEntity::new)
+    public static final BlockEntityEntry<RedstoneTransmissionBlockEntity> TRANSMISSION = REGISTRATE
+        .createBlockEntity("transmission", RedstoneTransmissionBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.REDSTONE_TRANSMISSION)
-        .renderer(() -> TransmissionRenderer::new)
+        .renderer(() -> RedstoneTransmissionRenderer::new)
         .register();
 
     //OLD

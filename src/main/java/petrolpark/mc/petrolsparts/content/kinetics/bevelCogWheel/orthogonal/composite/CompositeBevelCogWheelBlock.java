@@ -71,9 +71,11 @@ public abstract class CompositeBevelCogWheelBlock extends MultiPartCompositeKine
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        final IPlacementHelper helper = PlacementHelpers.get(getSet().singleAxisBlock().get().shaftPlacementHelperId);
-		if (helper.matchesItem(stack))
-			return helper.getOffset(player, level, state, pos, hitResult).placeInWorld(level, (BlockItem) stack.getItem(), player, hand, hitResult);
+        for (int placementHelperId : new int[]{getSet().singleAxisBlock().get().shaftPlacementHelperId, ShaftBlock.placementHelperId}) {
+            final IPlacementHelper helper = PlacementHelpers.get(placementHelperId);
+            if (helper.matchesItem(stack))
+                return helper.getOffset(player, level, state, pos, hitResult).placeInWorld(level, (BlockItem) stack.getItem(), player, hand, hitResult);
+        };
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     };
 

@@ -71,7 +71,7 @@ public class OverloadClutchBlockEntity extends CompositeKineticBlockEntity imple
     };
 
     public void update() {
-        impactPart.getOrCreateNetwork().updateStressFor(impactPart, impactPart.calculateStressApplied());
+        if (impactPart.hasNetwork()) impactPart.getOrCreateNetwork().updateStressFor(impactPart, impactPart.calculateStressApplied());
         generatingPart.updateGeneratedRotation();
     };
 

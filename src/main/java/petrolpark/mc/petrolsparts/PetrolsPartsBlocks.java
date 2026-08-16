@@ -81,7 +81,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.hydraulicTransmission.Hydraul
 import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.overloadClutch.OverloadClutchBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.planetaryGearset.PlanetaryGearsetBlock;
-import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.TransmissionBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.RedstoneTransmissionBlock;
 import petrolpark.mc.petrolsparts.content.legacy.LegacyCoaxialGearBlock;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlock;
 import petrolpark.mc.petrolsparts.content.processing.brassDepot.BrassDepotBlock;
@@ -392,7 +392,7 @@ public class PetrolsPartsBlocks {
         .build()
         .register();
 
-    public static final BlockEntry<TransmissionBlock> REDSTONE_TRANSMISSION = REGISTRATE.block("redstone_transmission", TransmissionBlock::new)
+    public static final BlockEntry<RedstoneTransmissionBlock> REDSTONE_TRANSMISSION = REGISTRATE.block("redstone_transmission", RedstoneTransmissionBlock::new)
         .defaultLoot()
         .item()
         .build()

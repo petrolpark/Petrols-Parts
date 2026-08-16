@@ -2,8 +2,8 @@
 	"format_version": "1.9.0",
 	"credit": "Made with Blockbench",
 	"textures": {
-		"closed_side": "petrolsparts:block/closed_andesite_encased_assemblage_side",
-		"open_side": "petrolsparts:block/open_andesite_encased_assemblage_side",
+		"closed_side": "petrolsparts:block/assemblage/encased/andesite/closed",
+		"open_side": "petrolsparts:block/assemblage/encased/andesite/open",
 		"end": "create:block/andesite_casing",
 		"inside": "minecraft:block/stripped_spruce_log_top",
 		"gearbox": "create:block/gearbox",

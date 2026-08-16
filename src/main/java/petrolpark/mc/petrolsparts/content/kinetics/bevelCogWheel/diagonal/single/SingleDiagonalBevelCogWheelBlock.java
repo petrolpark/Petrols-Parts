@@ -3,13 +3,18 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.singl
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.simibubi.create.content.decoration.encasing.EncasableBlock;
-import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
 
+import net.createmod.catnip.ghostblock.GhostBlockParams;
+import net.createmod.catnip.ghostblock.GhostBlocks;
+import net.createmod.catnip.placement.IPlacementHelper;
+import net.createmod.catnip.placement.PlacementHelpers;
+import net.createmod.catnip.placement.PlacementOffset;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
@@ -17,6 +22,7 @@ import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
@@ -31,32 +37,34 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import petrolpark.mc.library.compat.create.core.world.block.IReplaceableBlock;
-import petrolpark.mc.library.compat.create.core.world.block.MultiPartKineticBlock;
+import petrolpark.mc.library.compat.create.core.world.block.multiPart.WaterloggedMultiPartKineticBlock;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.IAssemblageBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.IDualDiagonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.CornerBevelCogWheelsBlock;
 
-public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<DiagonalBevelCogWheelPart> implements ISingleDiagonalBevelCogWheelBlock, IReplaceableBlock, ProperWaterloggedBlock, EncasableBlock {
+public class SingleDiagonalBevelCogWheelBlock extends WaterloggedMultiPartKineticBlock<DiagonalBevelCogWheelPart> implements ISingleDiagonalBevelCogWheelBlock, IReplaceableBlock, EncasableBlock {
 
     private final Supplier<BevelCogWheelSet> set;
+
+    public final int shaftHalfPlacementHelperId;
 
     public SingleDiagonalBevelCogWheelBlock(Supplier<BevelCogWheelSet> set, BlockBehaviour.Properties properties) {
         super(properties);
         this.set = set;
+        shaftHalfPlacementHelperId = PlacementHelpers.register(new ShaftHalfPlacementHelper());
         registerDefaultState(defaultBlockState()
             .setValue(ORIENTATION, Orientation.UP_SOUTH)
-            .setValue(FIRST_AXIS_SHAFT, false)
-            .setValue(SECOND_AXIS_SHAFT, false)
-            .setValue(WATERLOGGED, false)
+            .setValue(SHAFT, CornerBevelCogWheelsBlock.ShaftType.NONE)
         );
     };
 
     @Override
     public void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(ORIENTATION, FIRST_AXIS_SHAFT, SECOND_AXIS_SHAFT, WATERLOGGED));
+        super.createBlockStateDefinition(builder.add(ORIENTATION, SHAFT));
     };
 
     @Override
@@ -72,17 +80,16 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
     @Override
     public Collection<DiagonalBevelCogWheelPart> getParts(BlockState state) {
         final Orientation orientation = state.getValue(ORIENTATION);
-        final List<DiagonalBevelCogWheelPart> parts = new ArrayList<>(3);
+        final CornerBevelCogWheelsBlock.ShaftType shaft = state.getValue(SHAFT);
+        final List<DiagonalBevelCogWheelPart> parts = new ArrayList<>(2);
         parts.add(getSet().diagonalCogParts().get(orientation));
-        if (state.getValue(FIRST_AXIS_SHAFT)) parts.add(getSet().shaftHalfParts().get(orientation.top.getOpposite()));
-        if (state.getValue(SECOND_AXIS_SHAFT)) parts.add(getSet().shaftHalfParts().get(orientation.front.getOpposite()));
+        if (shaft != CornerBevelCogWheelsBlock.ShaftType.NONE) parts.add(getSet().shaftHalfParts().get((shaft == CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS ? orientation.top : orientation.front).getOpposite()));
         return parts;
     };
 
     @Override
     public BlockState withoutPart(BlockState state, DiagonalBevelCogWheelPart part) {
-        if (!(part instanceof DiagonalBevelCogWheelPart.ShaftHalf shaft)) return state;
-        return state.setValue(state.getValue(ORIENTATION).top == shaft.face.getOpposite() ? FIRST_AXIS_SHAFT : SECOND_AXIS_SHAFT, false);
+        return part instanceof DiagonalBevelCogWheelPart.ShaftHalf ? state.setValue(SHAFT, CornerBevelCogWheelsBlock.ShaftType.NONE) : state;
     };
 
     @Override
@@ -113,6 +120,8 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
     };
 
     public static final BlockState getReplacedWithAssemblageShaftHalf(BlockState bevelCogWheelState, BlockState potentialAssemblageState) {
+        final CornerBevelCogWheelsBlock.ShaftType shaft = bevelCogWheelState.getValue(SHAFT);
+        if (shaft != CornerBevelCogWheelsBlock.ShaftType.NONE) return null;
         final Orientation orientation = bevelCogWheelState.getValue(ORIENTATION);
         if (!(potentialAssemblageState.getBlock() instanceof AssemblageBlock assemblage)) return null;
         final Axis axis = potentialAssemblageState.getValue(IAssemblageBlock.AXIS);
@@ -120,28 +129,26 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
         if (!potentialAssemblageState.getValue(IAssemblageBlock.TOP_COG).isNone() || !potentialAssemblageState.getValue(IAssemblageBlock.MIDDLE_COG).isNone() || !potentialAssemblageState.getValue(IAssemblageBlock.BOTTOM_COG).isNone()) return null;
         if (assemblage.hasTopShaft(potentialAssemblageState) == assemblage.hasBottomShaft(potentialAssemblageState)) return null;
         bevelCogWheelState.setValue(WATERLOGGED, bevelCogWheelState.getValue(WATERLOGGED) || potentialAssemblageState.getValue(WATERLOGGED));
-        final boolean topShaft = assemblage.hasTopShaft(potentialAssemblageState); // top and bottom both being missing should be impossible as we have checked there are no cogs, and assemblages without anything at all are invalid
-        if (axis == orientation.top.getAxis()) {
-            if (topShaft == (orientation.top.getAxisDirection() == AxisDirection.NEGATIVE) && !bevelCogWheelState.getValue(FIRST_AXIS_SHAFT)) return bevelCogWheelState.setValue(FIRST_AXIS_SHAFT, true);
-        } else { // Axis aligned front
-            if (topShaft == (orientation.front.getAxisDirection() == AxisDirection.NEGATIVE) && !bevelCogWheelState.getValue(SECOND_AXIS_SHAFT)) return bevelCogWheelState.setValue(SECOND_AXIS_SHAFT, true);
-        };
+        final Direction face = Direction.get(assemblage.hasTopShaft(potentialAssemblageState) ? AxisDirection.POSITIVE : AxisDirection.NEGATIVE, axis);
+        if (face == orientation.top.getOpposite()) return bevelCogWheelState.setValue(SHAFT, CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS);
+        if (face == orientation.front.getOpposite()) return bevelCogWheelState.setValue(SHAFT, CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS);
         return null;
     };
 
     @Override
     public ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
+        final IPlacementHelper helper = PlacementHelpers.get(shaftHalfPlacementHelperId);
+        if (helper.matchesItem(stack)) {
+            final ItemInteractionResult result = helper.getOffset(player, level, state, pos, hitResult, stack).placeInWorld(level, (BlockItem) stack.getItem(), player, hand, hitResult);
+            if (result.consumesAction()) return result;
+        };
+        
         return placeCogOrEncase(stack, state, level, pos, player, hand, hitResult);
     };
 
     @Override
     protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
         return ISingleDiagonalBevelCogWheelBlock.super.canDiagonalBevelCogWheelSurvive(state, level, pos);
-    };
-
-    @Override
-    protected boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState assemblageState) {
-        return false;
     };
 
     @Override
@@ -173,6 +180,38 @@ public class SingleDiagonalBevelCogWheelBlock extends MultiPartKineticBlock<Diag
     @Override
     public BlockState mirror(BlockState state, Mirror mirror) {
         return ISingleDiagonalBevelCogWheelBlock.super.mirrorDiagonalBevelCogWheel(state, mirror);
+    };
+
+    public class ShaftHalfPlacementHelper implements IPlacementHelper {
+
+        @Override
+        public Predicate<ItemStack> getItemPredicate() {
+            return getSet().shaftHalfItem()::isIn;
+        };
+
+        @Override
+        public Predicate<BlockState> getStatePredicate() {
+            return s -> s.getBlock() == SingleDiagonalBevelCogWheelBlock.this && s.getValue(SHAFT) == CornerBevelCogWheelsBlock.ShaftType.NONE;
+        };
+
+        @Override
+        public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
+            final Orientation orientation = state.getValue(ORIENTATION);
+            final Direction dir = IPlacementHelper.orderedByDistance(pos, ray.getLocation(), List.of(orientation.top.getOpposite(), orientation.front.getOpposite())).getFirst();
+            return PlacementOffset.success(pos, s -> s.setValue(IAssemblageBlock.AXIS, dir.getAxis())
+                .setValue(dir.getAxisDirection() == AxisDirection.POSITIVE ? IAssemblageBlock.TOP_SHAFT_HALF : IAssemblageBlock.BOTTOM_SHAFT_HALF, true)
+            );
+        };
+
+        @Override
+        public void renderAt(BlockPos pos, BlockState state, BlockHitResult ray, PlacementOffset offset) {
+            if (!offset.hasGhostState() || getSet().shaftHalfItem().get().getGhostBlockRenderer() == null) return;
+
+            GhostBlocks.getInstance().showGhost(this, getSet().shaftHalfItem().get().getGhostBlockRenderer(), GhostBlockParams.of(offset.getTransform().apply(offset.getGhostState())), 1)
+                .at(offset.getBlockPos())
+                .breathingAlpha();
+        };
+
     };
     
 };

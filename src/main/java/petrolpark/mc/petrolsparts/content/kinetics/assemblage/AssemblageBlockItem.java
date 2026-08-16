@@ -41,6 +41,12 @@ public abstract class AssemblageBlockItem extends ItemNameBlockItem {
         return set.get();
     };
 
+    @OnlyIn(Dist.CLIENT)
+    @Nullable
+    public AssemblageGhostBlockRenderer getGhostBlockRenderer() {
+        return ghostBlockRenderer;
+    };
+
     @Override
     public SeparateShaftHalvesAssemblageBlock getBlock() {
         return getSet().separateShaftsAssemblageBlock().get();
@@ -87,9 +93,9 @@ public abstract class AssemblageBlockItem extends ItemNameBlockItem {
         
         @Override
         public void renderAt(BlockPos pos, BlockState state, BlockHitResult ray, PlacementOffset offset) {
-            if (!offset.hasGhostState() || ghostBlockRenderer == null) return;
+            if (!offset.hasGhostState() || getGhostBlockRenderer() == null) return;
 
-            GhostBlocks.getInstance().showGhost(this, ghostBlockRenderer, GhostBlockParams.of(offset.getTransform().apply(offset.getGhostState())), 1)
+            GhostBlocks.getInstance().showGhost(this, getGhostBlockRenderer(), GhostBlockParams.of(offset.getTransform().apply(offset.getGhostState())), 1)
                 .at(offset.getBlockPos())
                 .breathingAlpha();
         };

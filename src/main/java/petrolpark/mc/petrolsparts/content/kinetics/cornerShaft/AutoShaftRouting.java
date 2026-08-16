@@ -27,7 +27,7 @@ public class AutoShaftRouting {
      * @param goal
      */
     public static final List<Pair<BlockPos, BlockState>> getPath(Level level, BlockFace start, BlockFace goal) {
-        if (start.equals(goal) || start.equals(goal.getOpposite())) return Collections.emptyList();
+        if (start.equals(goal) || start.equals(goal.getOpposite()) || !level.getBlockState(goal.getPos()).canBeReplaced()) return Collections.emptyList();
 
         final PriorityQueue<Node> frontier = new PriorityQueue<>(Comparator.comparing(Node::f));
         final Map<BlockFace, Cost> bestCosts = new HashMap<>();

@@ -11,26 +11,26 @@ import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.EnumProperty;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.CornerBevelCogWheelsBlock;
 
 public interface ISingleDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWheelBlock, IBE<SingleDiagonalBevelCogWheelBlockEntity> {
     
     public static final EnumProperty<Orientation> ORIENTATION = Orientation.EDGE_ORIENTATION_PROPERTY;
-    public static final BooleanProperty FIRST_AXIS_SHAFT = BooleanProperty.create("first_axis_shaft");
-    public static final BooleanProperty SECOND_AXIS_SHAFT = BooleanProperty.create("second_axis_shaft");
-
+    public static final EnumProperty<CornerBevelCogWheelsBlock.ShaftType> SHAFT = CornerBevelCogWheelsBlock.SHAFT;
     public BevelCogWheelSet getSet();
 
     @Override
     public default boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
         final Orientation orientation = state.getValue(ORIENTATION);
-        if (face == orientation.top.getOpposite()) return state.getValue(FIRST_AXIS_SHAFT);
-        if (face == orientation.front.getOpposite()) return state.getValue(SECOND_AXIS_SHAFT);
-        return false;
+        return switch (state.getValue(SHAFT)) {
+            case NONE -> false;
+            case FIRST_AXIS -> face == orientation.top.getOpposite();
+            case SECOND_AXIS -> face == orientation.front.getOpposite();
+        };
     };
 
     @Override
@@ -52,8 +52,11 @@ public interface ISingleDiagonalBevelCogWheelBlock extends IDiagonalBevelCogWhee
         final Orientation newOrientation = initialOrientation.mirror(transform.mirror).rotate(transform.rotationAxis, transform.rotation);
         final boolean axisOrderInverted = (newOrientation != newOrientation.asEdge());
         return state.setValue(ORIENTATION, newOrientation.asEdge())
-            .setValue(axisOrderInverted ? FIRST_AXIS_SHAFT : SECOND_AXIS_SHAFT, state.getValue(FIRST_AXIS_SHAFT))
-            .setValue(axisOrderInverted ? SECOND_AXIS_SHAFT : FIRST_AXIS_SHAFT, state.getValue(SECOND_AXIS_SHAFT));
+            .setValue(SHAFT, switch (state.getValue(SHAFT)) {
+                case NONE -> CornerBevelCogWheelsBlock.ShaftType.NONE;
+                case FIRST_AXIS -> axisOrderInverted ? CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS : CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS;
+                case SECOND_AXIS -> axisOrderInverted ? CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS : CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS;
+            });
     };
 
     public default BlockState rotateDiagonalBevelCogWheel(BlockState state, Rotation direction) {

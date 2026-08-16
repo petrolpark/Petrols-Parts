@@ -19,7 +19,7 @@ import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import petrolpark.mc.library.compat.create.core.world.block.CreateMultiPartBlock;
+import petrolpark.mc.library.compat.create.core.world.block.multiPart.CreateMultiPartBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelBlock;
 
 public sealed abstract class BevelCogWheelPart implements CreateMultiPartBlock.ICreatePart permits BevelCogWheelPart.Cog, BevelCogWheelPart.Shaft {

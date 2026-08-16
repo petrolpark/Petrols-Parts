@@ -5,8 +5,8 @@ import net.createmod.catnip.config.ConfigBase;
 public class PPCCommon extends ConfigBase {
 
     public final ConfigGroup compat = group(0, "compat", "Compatibility with other mods");
-        public final ConfigBool removeCreateGearsNKineticsRecipes = b(false, "replaceCreateGearsNKineticsComponents", "Remove recipes for Create: Gears n' Kinetics Shaftless and Hollow Cogwheels (as they have Petrol's Parts equivalents)");
-        //public final ConfigBool replaceCreateConnectedComponents = b(false, "replaceCreateConnectedComponents", "Replace Create: Connected Shaftless Cogwheels with Petrol's Parts equivalents");
+        // public final ConfigBool removeCreateGearsNKineticsRecipes = b(false, "replaceCreateGearsNKineticsComponents", "Remove recipes for Create: Gears n' Kinetics Shaftless and Hollow Cogwheels (as they have Petrol's Parts equivalents)");
+        // public final ConfigBool replaceCreateConnectedComponents = b(false, "replaceCreateConnectedComponents", "Replace Create: Connected Shaftless Cogwheels with Petrol's Parts equivalents");
 
     public final ConfigGroup recipes = group(0, "recipes", "recipes for Petrol's Parts components");
         public final ConfigBool bevelCogwheel = b(true, "bevelCogwheel", "Enable default recipe for the Bevel Cogwheel");

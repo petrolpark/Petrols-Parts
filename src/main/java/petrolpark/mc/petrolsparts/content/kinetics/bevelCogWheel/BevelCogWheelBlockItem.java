@@ -205,18 +205,22 @@ public class BevelCogWheelBlockItem extends BlockItem {
             final Axis axis = state.getValue(CogWheelBlock.AXIS);
             if (hitOnShaft(state, ray)) return PlacementOffset.fail();
             final List<Direction> perpendicularDirections = IPlacementHelper.orderedByDistanceOnlyAxis(pos, ray.getLocation(), axis);
-            final Direction facing = perpendicularDirections.get(0);
             return IPlacementHelper.orderedByDistanceExceptAxis(pos, ray.getLocation(), axis).stream()
                 .<PlacementOffset>mapMulti((direction, consumer) -> {
                     final BlockPos offsetPos = pos.relative(direction);
-                    Direction secondaryDirection = facing;
-                    for (Direction perpendicularDirection : Lists.reverse(perpendicularDirections)) {
-                        final BlockState otherCogState = world.getBlockState(offsetPos.relative(perpendicularDirection));
-                        if (ICogWheel.isSmallCog(otherCogState) && otherCogState.getValue(CogWheelBlock.AXIS) == direction.getAxis()) secondaryDirection = perpendicularDirection; 
+                    
+                    final BlockState otherCogState = world.getBlockState(offsetPos.relative(perpendicularDirections.get(1)));
+                    final List<Direction> secondaryDirections = (ICogWheel.isSmallCog(otherCogState) && otherCogState.getValue(CogWheelBlock.AXIS) == direction.getAxis()) ? Lists.reverse(perpendicularDirections) : perpendicularDirections;
+
+                    for (Direction secondaryDirection : secondaryDirections) {
+                        final BlockState bevelState = getSet().singleDiagonalBlock().getDefaultState().setValue(ISingleDiagonalBevelCogWheelBlock.ORIENTATION, Orientation.fromTopAndFront(direction.getOpposite(), secondaryDirection).asEdge());
+                        if (!getSet().singleDiagonalBlock().get().canDiagonalBevelCogWheelSurvive(bevelState, world, offsetPos)) continue;
+                        if (world.getBlockState(offsetPos).canBeReplaced() || getSet().singleDiagonalBlock().get().canBeReplaced(world, offsetPos, world.getBlockState(offsetPos), bevelState, player)) {
+                            consumer.accept(PlacementOffset.success(offsetPos, $ -> bevelState));
+                            return;
+                        };
                     };
-                    final BlockState bevelState = getSet().singleDiagonalBlock().getDefaultState().setValue(ISingleDiagonalBevelCogWheelBlock.ORIENTATION, Orientation.fromTopAndFront(direction.getOpposite(), secondaryDirection).asEdge());
-                    if (world.getBlockState(offsetPos).canBeReplaced() || getSet().singleDiagonalBlock().get().canBeReplaced(world, offsetPos, world.getBlockState(offsetPos), bevelState, player))
-                        consumer.accept(PlacementOffset.success(offsetPos, $ -> bevelState));
+                    
                 }).findFirst()
                 .orElseGet(PlacementOffset::fail);
         };

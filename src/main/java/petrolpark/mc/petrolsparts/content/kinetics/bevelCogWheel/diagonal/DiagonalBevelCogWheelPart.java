@@ -17,7 +17,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import petrolpark.mc.library.compat.create.core.world.block.CreateMultiPartBlock.ICreatePart;
+import petrolpark.mc.library.compat.create.core.world.block.multiPart.CreateMultiPartBlock.ICreatePart;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.library.util.Orientation.OrientedVoxelShaper;
 import petrolpark.mc.petrolsparts.PetrolsPartsShapes;

@@ -21,6 +21,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.particles.DustParticleOptions;
 import net.minecraft.world.InteractionHand;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
@@ -33,6 +34,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import petrolpark.mc.library.compat.create.util.BlueprintOverlayHelper;
 import petrolpark.mc.library.util.BigItemStack;
+import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 @OnlyIn(Dist.CLIENT)
@@ -55,6 +57,10 @@ public class AutoShaftRoutingClientHelper {
         particleLocations = null;
     };
 
+    public static final boolean isActive() {
+        return startFace != null;
+    };
+
     @SubscribeEvent
     public static final void tick(ClientTickEvent.Post event) {
         final Minecraft mc = Minecraft.getInstance();
@@ -62,7 +68,7 @@ public class AutoShaftRoutingClientHelper {
         final LocalPlayer player = mc.player;
         if (level == null || player == null) return;
 
-        if (startFace == null) return;
+        if (!isActive()) return;
 
         // Maybe cancel
         if (!PetrolsPartsBlocks.CORNER_SHAFT.isIn(player.getItemInHand(InteractionHand.MAIN_HAND))) {
@@ -119,13 +125,20 @@ public class AutoShaftRoutingClientHelper {
     };
 
     public static final void tryPlace(BlockPlaceContext context) {
-        if (startFace == null) {
+        if (!isActive()) {
             startFace = getFace(context.getLevel(), context.getHitResult());
+            context.getPlayer().displayClientMessage(PetrolsParts.translate("gui.auto_shaft_placement"), true);
         } else {
             if (statesToPlace != null && !statesToPlace.isEmpty()) {
                 CatnipClientServices.NETWORK.sendToServer(new PlaceCornerShaftsPacket(statesToPlace));
                 cancel();
             };
         };
+    };
+
+    public static final void tryPlace(Player player, BlockPos pos, Direction face) {
+        if (isActive()) return;
+        startFace = new BlockFace(pos, face);
+        player.displayClientMessage(PetrolsParts.translate("gui.auto_shaft_placement"), true);
     };
 };

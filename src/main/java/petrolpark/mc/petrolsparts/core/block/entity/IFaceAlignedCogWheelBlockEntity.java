@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity.CompositeKineticBlockEntityPart;
 import petrolpark.mc.petrolsparts.PetrolsPartsTags;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.core.block.CogType;
 
 public interface IFaceAlignedCogWheelBlockEntity {
@@ -27,7 +28,7 @@ public interface IFaceAlignedCogWheelBlockEntity {
         if (be instanceof CompositeKineticBlockEntity ckbe) {
             for (CompositeKineticBlockEntityPart part : ckbe.getParts()) {
                 final CogType cogType = getCogType(part, face);
-                if (!cogType.isNone()) return cogType;
+                if (!cogType.isNone()) return cogType; // Hopefully not multiple in one block
             };
         };
         return CogType.NONE;
@@ -59,6 +60,7 @@ public interface IFaceAlignedCogWheelBlockEntity {
 			final BlockState offsetState = worldIn.getBlockState(offsetPos);
 
             if (large && CompositeKineticBlockEntity.streamAny(worldIn, offsetPos.relative(cogFace)).anyMatch(kbe -> getCogType(kbe, perpFace.getOpposite()) == CogType.LARGE)) return false;
+            if (large && (offsetState.getBlock() instanceof IDiagonalBevelCogWheelBlock bevelBlock) && bevelBlock.getCogRotationAxisConnectedToFace(offsetState, cogFace) != null) return false;
 
 			if (!(offsetState.getBlock() instanceof IRotate rotate)) continue;
             final Axis axis = rotate.getRotationAxis(offsetState);
@@ -98,6 +100,10 @@ public interface IFaceAlignedCogWheelBlockEntity {
 		return true;
 	};
     
+    /**
+     * For internal implementation only. Use {@link IFaceAlignedCogWheelBlockEntity#getCogType(KineticBlockEntity, Direction)} externally.
+     * @param face
+     */
     public CogType getCogType(Direction face);
 
     public static float propagateFaceAlignedCogwheels(KineticBlockEntity from, KineticBlockEntity to, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {

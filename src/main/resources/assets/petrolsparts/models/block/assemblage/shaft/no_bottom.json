@@ -1,6 +1,6 @@
 {
     "parent": "create:block/shaft",
     "textures": {
-        "0": "petrolsparts:block/assemblage/shaft_no_bottom"
+        "0": "petrolsparts:block/assemblage/shaft/no_bottom"
     }
 }

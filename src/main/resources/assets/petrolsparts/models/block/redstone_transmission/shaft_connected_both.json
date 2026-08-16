@@ -4,7 +4,7 @@
 	"parent": "block/block",
 	"textures": {
 		"2": "petrolsparts:block/transmission_shaft",
-		"particle": "petrolsparts:block/assemblage_shaft"
+		"particle": "petrolsparts:block/transmission_shaft"
 	},
 	"elements": [
 		{

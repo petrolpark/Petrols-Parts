@@ -6,14 +6,15 @@ import java.util.stream.IntStream;
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.api.stress.BlockStressValues;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
+import petrolpark.mc.library.compat.create.core.world.block.entity.ISplitShaftKineticBlockEntity;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SimpleBevelCogWheelBlock;
@@ -48,7 +49,7 @@ public class CompositeBevelCogWheelBlockEntity extends CompositeKineticBlockEnti
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {};
 
-    public class Part extends CompositeKineticBlockEntityPart {
+    public class Part extends CompositeKineticBlockEntityPart implements ISplitShaftKineticBlockEntity {
 
         protected final int index;
         protected final BlockState effectiveBlockState;
@@ -86,8 +87,8 @@ public class CompositeBevelCogWheelBlockEntity extends CompositeKineticBlockEnti
         };
 
         @Override
-        public float propagateRotationTo(KineticBlockEntity target, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
-            return SimpleBevelCogWheelBlockEntity.propagateRotationTo(this, target, stateFrom, stateTo, diff, connectedViaAxes);
+        public float getRotationSpeedModifier(Direction face) {
+            return SimpleBevelCogWheelBlockEntity.getRotationRatio(getBlockState(), face);
         };
 
         @Override

@@ -41,7 +41,7 @@ public class MovementBlock extends WaterloggedHorizontalCompositeKineticBlock im
         return onBlockEntityUseItemOn(level, pos, be -> {
             if (!be.weightStack.isEmpty() || stack.getItem().builtInRegistryHolder().getData(PetrolsPartsDataMapTypes.MOVEMENT_WEIGHT) == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
             be.setWeightStack(stack.copyWithCount(1));
-            stack.shrink(1);
+            if (!player.hasInfiniteMaterials()) stack.shrink(1);
             level.playSound(player, pos, SoundEvents.ITEM_FRAME_ADD_ITEM, SoundSource.BLOCKS);
             return ItemInteractionResult.SUCCESS;
         });
@@ -51,7 +51,7 @@ public class MovementBlock extends WaterloggedHorizontalCompositeKineticBlock im
     protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player, BlockHitResult hitResult) {
         return onBlockEntityUse(level, pos, be -> {
             if (be.weightStack.isEmpty() || !player.getItemInHand(InteractionHand.MAIN_HAND).isEmpty()) return InteractionResult.PASS;
-            player.getInventory().placeItemBackInInventory(be.weightStack);
+            if (!player.hasInfiniteMaterials()) player.getInventory().placeItemBackInInventory(be.weightStack);
             be.setWeightStack(ItemStack.EMPTY);
             level.playSound(player, pos, SoundEvents.ITEM_FRAME_REMOVE_ITEM, SoundSource.BLOCKS);
             return InteractionResult.SUCCESS;
@@ -76,7 +76,7 @@ public class MovementBlock extends WaterloggedHorizontalCompositeKineticBlock im
     @Override
     protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, BlockPos neighborPos, boolean movedByPiston) {
         super.neighborChanged(state, level, pos, neighborBlock, neighborPos, movedByPiston);
-        withBlockEntityDo(level, pos, be -> be.generatingPart.updateGeneratedRotation());
+        withBlockEntityDo(level, pos, MovementBlockEntity::update);
     };
 
     @Override

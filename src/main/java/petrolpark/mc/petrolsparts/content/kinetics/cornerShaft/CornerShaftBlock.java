@@ -54,7 +54,7 @@ public class CornerShaftBlock extends AbstractCornerShaftBlock implements Proper
 		ItemInteractionResult result = tryEncase(state, level, pos, stack, player, hand, hitResult);
 		if (result.consumesAction()) return result;
 		return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-	}
+	};
 
     @Override
 	public VoxelShape getShape(BlockState state, BlockGetter worldIn, BlockPos pos, CollisionContext context) {

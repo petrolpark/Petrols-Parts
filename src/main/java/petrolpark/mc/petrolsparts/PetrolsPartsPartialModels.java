@@ -24,6 +24,7 @@ public class PetrolsPartsPartialModels {
     BEVEL_COGWHEEL = block("bevel_cogwheel/four_teeth"),
     BEVEL_COGWHEEL_FIVE_TEETH = block("bevel_cogwheel/five_teeth"),
     BEVEL_COGWHEEL_CAP = block("bevel_cogwheel/cog_cap"),
+    BEVEL_COGWHEEL_DIAGONAL_SHAFT = block("bevel_cogwheel/diagonal_shaft"),
 
     // Corner Shaft
     CORNER_SHAFT_CENTER = block("corner_shaft/center_shaft"),

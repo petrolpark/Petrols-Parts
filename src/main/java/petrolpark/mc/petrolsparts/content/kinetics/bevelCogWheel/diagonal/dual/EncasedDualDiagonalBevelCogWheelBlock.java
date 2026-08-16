@@ -38,7 +38,6 @@ import petrolpark.mc.library.util.BlockHelper;
 import petrolpark.mc.library.util.Lang;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IEncasedBevelCogWheelBlock;
-import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.EncasedDiagonalBevelCogWheelCTBehaviour;
 
 public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock implements IDualDiagonalBevelCogWheelBlock, IEncasedBevelCogWheelBlock {
 
@@ -129,17 +128,17 @@ public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock
         return builder -> builder
             .properties(BlockBehaviour.Properties::noOcclusion)
             .blockstate((ctx, prov) -> {
-                final ModelFile model = prov.models().getExistingFile(ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/dual_diagonal/" + casing));
+                final ModelFile model = prov.models().getExistingFile(ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/diagonal/dual/" + casing));
                 prov.getVariantBuilder(ctx.get())
                     .partialState().with(EXCLUDED_AXIS, Axis.Y)
-                    .modelForState().modelFile(model).uvLock(true).addModel()
+                    .modelForState().modelFile(model).addModel()
                     .partialState().with(EXCLUDED_AXIS, Axis.Z)
-                    .modelForState().modelFile(model).rotationX(90).uvLock(true).addModel()
+                    .modelForState().modelFile(model).rotationX(90).addModel()
                     .partialState().with(EXCLUDED_AXIS, Axis.X)
-                    .modelForState().modelFile(model).rotationX(90).rotationY(90).uvLock(true).addModel();
+                    .modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
             }).loot((lt, b) -> lt.add(b, lt.createSingleItemTable(b.getSet().item(), ConstantValue.exactly(2))))
             .onRegisterAfter(Registries.BLOCK, b -> EncasingRegistry.addVariant(b.getSet().dualDiagonalBlock().get(), b))
-            .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedDiagonalBevelCogWheelCTBehaviour(spriteShiftEntry)))
+            .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedDualDiagonalBevelCogWheelCTBehaviour(spriteShiftEntry)))
             .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, spriteShiftEntry, (s, f) -> f.getAxis() == s.getValue(IDualDiagonalBevelCogWheelBlock.EXCLUDED_AXIS))))
             .transform(TagGen.axeOrPickaxe());
     };

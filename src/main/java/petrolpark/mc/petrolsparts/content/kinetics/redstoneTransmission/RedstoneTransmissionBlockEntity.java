@@ -15,20 +15,20 @@ import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.petrolsparts.core.block.CogType;
 import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 
-public class TransmissionBlockEntity extends KineticBlockEntity implements IFaceAlignedCogWheelBlockEntity {
+public class RedstoneTransmissionBlockEntity extends KineticBlockEntity implements IFaceAlignedCogWheelBlockEntity {
 
     protected final BitSet cogs = new BitSet();
     protected int displacement = 0; // How many spaces the Cogs have moved since last tick
 
-    public TransmissionBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
+    public RedstoneTransmissionBlockEntity(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {
         super(typeIn, pos, state);  
     };
 
     @Override
     public CogType getCogType(Direction face) {
-        final Direction facing = getBlockState().getValue(TransmissionBlock.FACING);
-        if (face == facing) return CogType.small(getBlockState().getValue(TransmissionBlock.UPPER_COG));
-        if (face == facing.getOpposite()) return CogType.small(getBlockState().getValue(TransmissionBlock.LOWER_COG));
+        final Direction facing = getBlockState().getValue(RedstoneTransmissionBlock.FACING);
+        if (face == facing) return CogType.small(getBlockState().getValue(RedstoneTransmissionBlock.UPPER_COG));
+        if (face == facing.getOpposite()) return CogType.small(getBlockState().getValue(RedstoneTransmissionBlock.LOWER_COG));
         return CogType.NONE;
     };
 

@@ -1,7 +1,7 @@
 {
 	"parent": "petrolsparts:block/assemblage/encased/andesite/bottom_closed",
 	"textures": {
-		"closed_side": "petrolsparts:block/closed_brass_encased_assemblage_side",
+		"closed_side": "petrolsparts:block/assemblage/encased/brass/closed",
 		"end": "create:block/brass_casing",
 		"gearbox": "create:block/brass_gearbox",
 		"particle": "create:block/brass_casing"

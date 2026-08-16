@@ -1,11 +1,11 @@
-// 1.21.1	2026-08-11T16:34:26.6997632	Registrate Provider for petrolsparts [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Conditional Loot Tables, Tags (block_entity_types), Tags (mob_effects), Tags (potions), Registries]
+// 1.21.1	2026-08-15T09:01:23.5413888	Registrate Provider for petrolsparts [Registries, Data Maps, Recipes, Advancements, Loot Tables, Tags (blocks), Tags (enchantments), Tags (items), Tags (fluids), Tags (entity_types), generic_server_provider, Blockstates, Item models, Lang (en_us/en_ud), generic_client_provider, Conditional Loot Tables, Tags (block_entity_types), Tags (mob_effects), Tags (potions), Registries]
 9719ef09b58439278cc3274face28267dd03dae4 assets/petrolsparts/blockstates/andesite_encased_separate_shaft_halves_assemblage.json
 d589cb0d4bb24cc766ecf73116462086fbf2f451 assets/petrolsparts/blockstates/andesite_encased_single_shaft_assemblage.json
 7ffa3be6b7e23031dd73d398036922711cdc404f assets/petrolsparts/blockstates/bevel_cogwheel/corner.json
 7ffa3be6b7e23031dd73d398036922711cdc404f assets/petrolsparts/blockstates/bevel_cogwheel/corner_and_shaft.json
 7ffa3be6b7e23031dd73d398036922711cdc404f assets/petrolsparts/blockstates/bevel_cogwheel/diagonal/dual.json
-c51da01c3cfc35f30ce99101bd75978bbd3a4b0e assets/petrolsparts/blockstates/bevel_cogwheel/diagonal/encased/dual/andesite.json
-39fe7d56c2c268f48ab75fe9507c5af1759a2601 assets/petrolsparts/blockstates/bevel_cogwheel/diagonal/encased/dual/brass.json
+c670a0426743e46712b2564e1f79141a354fcdaa assets/petrolsparts/blockstates/bevel_cogwheel/diagonal/encased/dual/andesite.json
+d0d6d3c42f12be86892514e484bc6988240e43a9 assets/petrolsparts/blockstates/bevel_cogwheel/diagonal/encased/dual/brass.json
 7ffa3be6b7e23031dd73d398036922711cdc404f assets/petrolsparts/blockstates/bevel_cogwheel/diagonal/single.json
 7ffa3be6b7e23031dd73d398036922711cdc404f assets/petrolsparts/blockstates/bevel_cogwheel/four.json
 7ffa3be6b7e23031dd73d398036922711cdc404f assets/petrolsparts/blockstates/bevel_cogwheel/four_and_shaft.json

@@ -33,6 +33,7 @@ public class CogWheelBlockMixin {
     )
     public void petrolsparts$forbidLargeCogWheelsOverlappingFaceAlignedCogWheels(boolean large, LevelReader worldIn, BlockPos pos, Axis cogAxis, CallbackInfoReturnable<Boolean> cir, @Local Direction facing, @Local BlockPos offsetPos, @Local BlockState offsetState) {
         if (large && CompositeKineticBlockEntity.streamAny(worldIn, offsetPos).anyMatch(kbe -> IFaceAlignedCogWheelBlockEntity.getCogType(kbe, facing.getOpposite()) != CogType.NONE)) cir.setReturnValue(false);
+        //if (large && offsetState.getBlock() instanceof IDiagonalBevelCogWheelBlock bevelBlock && bevelBlock.getCogRotationAxisConnectedToFace(offsetState, facing.getOpposite()) != null) cir.setReturnValue(false);
     };
     
     @Inject(

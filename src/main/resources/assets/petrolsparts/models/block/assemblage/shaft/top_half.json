@@ -5,7 +5,7 @@
 	"textures": {
 		"2": "create:block/axis_top",
 		"particle": "create:block/axis_top",
-		"side": "petrolsparts:block/assemblage/shaft_all"
+		"side": "petrolsparts:block/assemblage/shaft/all"
 	},
 	"elements": [
 		{

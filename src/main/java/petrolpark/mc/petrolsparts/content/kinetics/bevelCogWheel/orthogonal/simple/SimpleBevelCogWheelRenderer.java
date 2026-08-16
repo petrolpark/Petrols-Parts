@@ -9,7 +9,6 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 
-import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.data.Iterate;
 import net.createmod.catnip.render.CachedBuffers;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -58,7 +57,7 @@ public class SimpleBevelCogWheelRenderer extends KineticBlockEntityRenderer<Kine
 
         if (shaftAxis != null) {
             final Direction positiveShaftFace = Direction.get(AxisDirection.POSITIVE, shaftAxis);
-            final float shaftAngle = getAngleForBe(be, be.getBlockPos(), shaftAxis) * SimpleBevelCogWheelBlockEntity.getRotationRatio(be, state, positiveShaftFace);
+            final float shaftAngle = getAngleForBe(be, be.getBlockPos(), shaftAxis) * SimpleBevelCogWheelBlockEntity.getRotationRatio(state, positiveShaftFace);
             kineticRotationTransform(CachedBuffers.partialFacingVertical(set.shaft(), state, positiveShaftFace), be, shaftAxis, shaftAngle, light)
                 .renderInto(ms, vc);
         };
@@ -69,12 +68,9 @@ public class SimpleBevelCogWheelRenderer extends KineticBlockEntityRenderer<Kine
         for (Direction face : Iterate.directions) {
             if (!block.hasShaftTowards(be.getLevel(), be.getBlockPos(), state, face)) continue;
             if (shaftAxis != null && face.getOpposite() == primaryCogFace) continue;
-
-            // getAngleForBe's position-based checkerboard offset (see KineticBlockEntityVisual#rotationOffset) is only
-            // meaningful relative to a real Shaft axis; with none, it degrades to an arbitrary, inconsistent offset,
-            // so fall back to our own fixed 0/45 degree convention (primaryCogFace) instead
-            float angle = shaftAxis != null ? getAngleForBe(be, be.getBlockPos(), shaftAxis) : getAngleForBeWithoutPositionOffset(be);
-            angle *= SimpleBevelCogWheelBlockEntity.getRotationRatio(be, state, face);
+            
+            float angle = getAngleForBe(be, be.getBlockPos(), primaryCogFace.getAxis());
+            angle *= SimpleBevelCogWheelBlockEntity.getRotationRatio(state, face);
             if (face.getAxis() != primaryCogFace.getAxis()) angle += Mth.PI / 4f;
 
             kineticRotationTransform(CachedBuffers.partialFacingVertical(set.fourTeeth(), state, face.getOpposite()), be, face.getAxis(), angle, light)
@@ -83,15 +79,6 @@ public class SimpleBevelCogWheelRenderer extends KineticBlockEntityRenderer<Kine
             if (Objects.equals(face.getAxis(), shaftAxis)) kineticRotationTransform(CachedBuffers.partialFacingVertical(set.cogCap(), state, face.getOpposite()), be, face.getAxis(), angle, light)
                 .renderInto(ms, vc);
         };
-    };
-
-    /**
-     * Like {@link #getAngleForBe}, but without {@link com.simibubi.create.content.kinetics.base.KineticBlockEntityVisual#rotationOffset}'s
-     * position-based checkerboard offset, which is only meaningful relative to a real Shaft axis.
-     */
-    private static float getAngleForBeWithoutPositionOffset(KineticBlockEntity be) {
-        final float time = AnimationTickHolder.getRenderTime(be.getLevel());
-        return ((time * be.getSpeed() * 3f / 10f) % 360f) / 180f * Mth.PI;
     };
 
 };

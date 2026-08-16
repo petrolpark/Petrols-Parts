@@ -14,21 +14,21 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 
-public class TransmissionRenderer extends KineticBlockEntityRenderer<TransmissionBlockEntity> {
+public class RedstoneTransmissionRenderer extends KineticBlockEntityRenderer<RedstoneTransmissionBlockEntity> {
 
-    public TransmissionRenderer(BlockEntityRendererProvider.Context context) {
+    public RedstoneTransmissionRenderer(BlockEntityRendererProvider.Context context) {
         super(context);
     };
 
     @Override
-    protected void renderSafe(TransmissionBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
+    protected void renderSafe(RedstoneTransmissionBlockEntity be, float partialTicks, PoseStack ms, MultiBufferSource bufferSource, int light, int overlay) {
         super.renderSafe(be, partialTicks, ms, bufferSource, light, overlay);
 
         //TODO visual
         if (be.cogs.isEmpty()) return;
 
         final BlockState state = be.getBlockState();
-        final Direction axisFacing = Direction.get(AxisDirection.POSITIVE, state.getValue(TransmissionBlock.FACING).getAxis());
+        final Direction axisFacing = Direction.get(AxisDirection.POSITIVE, state.getValue(RedstoneTransmissionBlock.FACING).getAxis());
         final VertexConsumer buffer = bufferSource.getBuffer(getRenderType(be, state));
 
         for (int cog = 0; cog < be.cogs.length(); cog++) {
@@ -40,7 +40,7 @@ public class TransmissionRenderer extends KineticBlockEntityRenderer<Transmissio
             renderRotatingBuffer(
                 be,
                 CachedBuffers.partialFacingVertical(PetrolsPartsPartialModels.COAXIAL_COGWHEEL, state, axisFacing)
-                    .translate(Vec3.atLowerCornerOf(state.getValue(TransmissionBlock.FACING).getNormal()).scale(offset)),
+                    .translate(Vec3.atLowerCornerOf(state.getValue(RedstoneTransmissionBlock.FACING).getNormal()).scale(offset)),
                 ms, buffer, light
             );
         };

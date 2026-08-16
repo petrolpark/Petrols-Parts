@@ -10,7 +10,7 @@
   ],
   "results": [
     {
-      "item": "petrolsparts:high_friction_compound"
+      "id": "petrolsparts:high_friction_compound"
     }
   ],
   "heatRequirement": "superheated"

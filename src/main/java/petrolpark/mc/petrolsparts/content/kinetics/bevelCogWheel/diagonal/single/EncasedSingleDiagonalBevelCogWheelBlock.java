@@ -1,11 +1,23 @@
 package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single;
 
+import static net.minecraft.world.level.storage.loot.LootPool.lootPool;
+import static net.minecraft.world.level.storage.loot.LootTable.lootTable;
+
 import java.util.function.Supplier;
 
+import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.kinetics.base.KineticBlock;
+import com.simibubi.create.foundation.block.connected.CTSpriteShiftEntry;
+import com.simibubi.create.foundation.data.CreateRegistrate;
+import com.simibubi.create.foundation.data.TagGen;
+import com.tterrag.registrate.builders.BlockBuilder;
+import com.tterrag.registrate.util.nullness.NonNullUnaryOperator;
 
 import net.minecraft.Util;
+import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -21,12 +33,18 @@ import net.minecraft.world.level.block.Rotation;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
+import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
+import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
 import petrolpark.mc.library.util.BlockHelper;
 import petrolpark.mc.library.util.Lang;
+import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IEncasedBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.CornerBevelCogWheelsBlock;
 
 public class EncasedSingleDiagonalBevelCogWheelBlock extends KineticBlock implements ISingleDiagonalBevelCogWheelBlock, IEncasedBevelCogWheelBlock {
 
@@ -43,7 +61,7 @@ public class EncasedSingleDiagonalBevelCogWheelBlock extends KineticBlock implem
 
     @Override
     protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> builder) {
-        super.createBlockStateDefinition(builder.add(ORIENTATION, FIRST_AXIS_SHAFT, SECOND_AXIS_SHAFT));
+        super.createBlockStateDefinition(builder.add(ORIENTATION, SHAFT));
     };
 
     @Override
@@ -101,6 +119,59 @@ public class EncasedSingleDiagonalBevelCogWheelBlock extends KineticBlock implem
     @Override
     public BlockState mirror(BlockState state, Mirror mirror) {
         return ISingleDiagonalBevelCogWheelBlock.super.mirrorDiagonalBevelCogWheel(state, mirror);
+    };
+
+    public boolean isCasingSide(BlockState state, Direction face) {
+        final Orientation orientation = state.getValue(ORIENTATION);
+        if (face.getAxis() == orientation.right.getAxis()) return true;
+        if (face == orientation.top || face == orientation.front) return false;
+        else return switch (state.getValue(SHAFT)) {
+            case NONE -> true;
+            case FIRST_AXIS -> face != orientation.top.getOpposite();
+            case SECOND_AXIS -> face != orientation.front.getOpposite();
+        };
+    };
+
+    public static final <B extends EncasedSingleDiagonalBevelCogWheelBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> builderTransformer(CTSpriteShiftEntry spriteShiftEntry, String casing) {
+        return builder -> builder
+            .properties(BlockBehaviour.Properties::noOcclusion)
+            // .blockstate((ctx, prov) -> {
+            //     final ModelFile model = prov.models().getExistingFile(ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/diagonal/dual/" + casing));
+            //     prov.getVariantBuilder(ctx.get())
+            //         .partialState().with(EXCLUDED_AXIS, Axis.Y)
+            //         .modelForState().modelFile(model).addModel()
+            //         .partialState().with(EXCLUDED_AXIS, Axis.Z)
+            //         .modelForState().modelFile(model).rotationX(90).addModel()
+            //         .partialState().with(EXCLUDED_AXIS, Axis.X)
+            //         .modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
+            // })
+            
+            .loot((lt, b) -> lt.add(b, lootTable()
+                .withPool(lootPool()
+                    .add(NestedLootTable.lootTableReference(b.getSet().cogLoot()))
+                    .setRolls(ConstantValue.exactly(1f))
+                ).withPool(lootPool()
+                    .when(AnyOfCondition.anyOf(
+                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)
+                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(SHAFT, CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS)
+                            ),
+                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)
+                            .setProperties(StatePropertiesPredicate.Builder.properties()
+                                .hasProperty(SHAFT, CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS)
+                            )
+                    ))
+                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)
+                        .setProperties(StatePropertiesPredicate.Builder.properties()
+                            .hasProperty(SHAFT, CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS)
+                        )
+                    ).add(NestedLootTable.lootTableReference(b.getSet().shaftHalfLoot()))
+                    .setRolls(ConstantValue.exactly(1f))
+                )
+            )).onRegisterAfter(Registries.BLOCK, b -> EncasingRegistry.addVariant(b.getSet().singleDiagonalBlock().get(), b))
+            .onRegister(CreateRegistrate.connectedTextures(() -> new EncasedSingleDiagonalBevelCogWheelCTBehaviour(spriteShiftEntry)))
+            .onRegister(CreateRegistrate.casingConnectivity((block, cc) -> cc.make(block, spriteShiftEntry, block::isCasingSide)))
+            .transform(TagGen.axeOrPickaxe());
     };
     
 };

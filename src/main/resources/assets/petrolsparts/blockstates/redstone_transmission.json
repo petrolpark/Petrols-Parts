@@ -1,107 +1,107 @@
 {
   "variants": {
     "facing=east,upper_connection=false,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft",
+      "model": "petrolsparts:block/redstone_transmission/shaft",
       "x": 90,
       "y": 90
     },
     "facing=west,upper_connection=false,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft",
+      "model": "petrolsparts:block/redstone_transmission/shaft",
       "x": 90,
       "y": 270
     },
     "facing=up,upper_connection=false,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft"
+      "model": "petrolsparts:block/redstone_transmission/shaft"
     },
     "facing=down,upper_connection=false,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft",
+      "model": "petrolsparts:block/redstone_transmission/shaft",
       "x": 180
     },
     "facing=south,upper_connection=false,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft",
+      "model": "petrolsparts:block/redstone_transmission/shaft",
       "x": 90,
       "y": 180
     },
     "facing=north,upper_connection=false,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft",
+      "model": "petrolsparts:block/redstone_transmission/shaft",
       "x": 90
     },
     "facing=east,upper_connection=true,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft_connected_upper",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_upper",
       "x": 90,
       "y": 90
     },
     "facing=west,upper_connection=true,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft_connected_upper",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_upper",
       "x": 90,
       "y": 270
     },
     "facing=up,upper_connection=true,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft_connected_upper"
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_upper"
     },
     "facing=down,upper_connection=true,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft_connected_upper",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_upper",
       "x": 180
     },
     "facing=south,upper_connection=true,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft_connected_upper",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_upper",
       "x": 90,
       "y": 180
     },
     "facing=north,upper_connection=true,lower_connection=false": {
-      "model": "petrolsparts:block/transmission/shaft_connected_upper",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_upper",
       "x": 90
     },
     "facing=east,upper_connection=false,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_lower",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_lower",
       "x": 90,
       "y": 90
     },
     "facing=west,upper_connection=false,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_lower",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_lower",
       "x": 90,
       "y": 270
     },
     "facing=up,upper_connection=false,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_lower"
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_lower"
     },
     "facing=down,upper_connection=false,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_lower",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_lower",
       "x": 180
     },
     "facing=south,upper_connection=false,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_lower",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_lower",
       "x": 90,
       "y": 180
     },
     "facing=north,upper_connection=false,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_lower",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_lower",
       "x": 90
     },
     "facing=east,upper_connection=true,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_both",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_both",
       "x": 90,
       "y": 90
     },
     "facing=west,upper_connection=true,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_both",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_both",
       "x": 90,
       "y": 270
     },
     "facing=up,upper_connection=true,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_both"
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_both"
     },
     "facing=down,upper_connection=true,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_both",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_both",
       "x": 180
     },
     "facing=south,upper_connection=true,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_both",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_both",
       "x": 90,
       "y": 180
     },
     "facing=north,upper_connection=true,lower_connection=true": {
-      "model": "petrolsparts:block/transmission/shaft_connected_both",
+      "model": "petrolsparts:block/redstone_transmission/shaft_connected_both",
       "x": 90
     }
   }

@@ -1,11 +1,6 @@
 package petrolpark.mc.petrolsparts;
 
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import com.simibubi.create.AllBlockEntityTypes;
 import com.simibubi.create.AllBlocks;
@@ -17,28 +12,27 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.RegisterEvent;
-import petrolpark.mc.library.compat.Mods;
 
 @EventBusSubscriber
 public class PetrolsPartsRemaps {
 
-    // Remove Items from JEI
-    public static final List<CompatRemoval> COMPAT_ITEM_REMOVALS = Stream.of(
-        gearsNKineticsRemoval("hollow_cogwheel"),
-        gearsNKineticsRemoval("hollow_large_cogwheel"),
-        gearsNKineticsRemoval("shaftless_cogwheel"),
-        gearsNKineticsRemoval("shaftless_large_cogwheel")
-    ).toList();
+    // // Remove Items from JEI
+    // public static final List<CompatRemoval> COMPAT_ITEM_REMOVALS = Stream.of(
+    //     gearsNKineticsRemoval("hollow_cogwheel"),
+    //     gearsNKineticsRemoval("hollow_large_cogwheel"),
+    //     gearsNKineticsRemoval("shaftless_cogwheel"),
+    //     gearsNKineticsRemoval("shaftless_large_cogwheel")
+    // ).toList();
 
-    // Remove recipes
-    public static final Map<ResourceLocation, CompatRemoval> COMPAT_RECIPE_REMOVALS = Stream.of(
-        gearsNKineticsRemoval("crafting/cogwheel_from_conversion"),
-        gearsNKineticsRemoval("crafting/large_cogwheel_from_conversion"),
-        gearsNKineticsRemoval("crafting/hollow_cogwheel_from_conversion"),
-        gearsNKineticsRemoval("crafting/hollow_large_cogwheel_from_conversion"),
-        gearsNKineticsRemoval("crafting/shaftless_cogwheel_from_conversion"),
-        gearsNKineticsRemoval("crafting/shaftless_large_cogwheel_from_conversion")
-    ).collect(Collectors.toMap(CompatRemoval::id, Function.identity()));
+    // // Remove recipes
+    // public static final Map<ResourceLocation, CompatRemoval> COMPAT_RECIPE_REMOVALS = Stream.of(
+    //     gearsNKineticsRemoval("crafting/cogwheel_from_conversion"),
+    //     gearsNKineticsRemoval("crafting/large_cogwheel_from_conversion"),
+    //     gearsNKineticsRemoval("crafting/hollow_cogwheel_from_conversion"),
+    //     gearsNKineticsRemoval("crafting/hollow_large_cogwheel_from_conversion"),
+    //     gearsNKineticsRemoval("crafting/shaftless_cogwheel_from_conversion"),
+    //     gearsNKineticsRemoval("crafting/shaftless_large_cogwheel_from_conversion")
+    // ).collect(Collectors.toMap(CompatRemoval::id, Function.identity()));
     
     @SubscribeEvent
     public static final void onRegister(RegisterEvent event) {
@@ -59,7 +53,7 @@ public class PetrolsPartsRemaps {
 
     public record CompatRemoval(ResourceLocation id, Supplier<Boolean> condition) {};
 
-    private static final CompatRemoval gearsNKineticsRemoval(String name) {
-        return new CompatRemoval(Mods.CREATE_GEARS_N_KINETICS.asResource(name), () -> PetrolsPartsConfigs.common().removeCreateGearsNKineticsRecipes.get());
-    };
+    // private static final CompatRemoval gearsNKineticsRemoval(String name) {
+    //     return new CompatRemoval(Mods.CREATE_GEARS_N_KINETICS.asResource(name), () -> PetrolsPartsConfigs.common().removeCreateGearsNKineticsRecipes.get());
+    // };
 };

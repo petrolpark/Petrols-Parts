@@ -2,6 +2,7 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel;
 
 import java.util.Map;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 import javax.annotation.Nullable;
 
@@ -18,8 +19,8 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootTable;
 import petrolpark.mc.library.util.CollectionHelper;
@@ -28,6 +29,7 @@ import petrolpark.mc.petrolsparts.PetrolsParts;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
+import petrolpark.mc.petrolsparts.content.kinetics.assemblage.ShaftHalfBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.DiagonalBevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelBlockEntity;
@@ -65,7 +67,7 @@ public record BevelCogWheelSet(
     BlockEntityEntry<? extends SingleAxisBevelCogWheelBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
     BlockEntityEntry<? extends SingleDiagonalBevelCogWheelBlockEntity> singleDiagonalBE, BlockEntityEntry<? extends DualDiagonalBevelCogWheelBlockEntity> dualDiagonalBE, 
     // Items
-    ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends Item> shaftHalfItem,
+    ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends ShaftHalfBlockItem> shaftHalfItem,
     // Loot
     ResourceKey<LootTable> cogLoot, ResourceKey<LootTable> shaftLoot, ResourceKey<LootTable> shaftHalfLoot,
     // Parts
@@ -89,7 +91,7 @@ public record BevelCogWheelSet(
         BlockEntityEntry<? extends SingleAxisBevelCogWheelBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
         BlockEntityEntry<? extends SingleDiagonalBevelCogWheelBlockEntity> singleDiagonalBE, BlockEntityEntry<? extends DualDiagonalBevelCogWheelBlockEntity> dualDiagonalBE,
         // Items
-        ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends Item> shaftHalfItem,
+        ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends ShaftHalfBlockItem> shaftHalfItem,
         // Loot
         ResourceKey<LootTable> cogLoot, ResourceKey<LootTable> shaftLoot, ResourceKey<LootTable> shaftHalfLoot
     ) {
@@ -109,7 +111,7 @@ public record BevelCogWheelSet(
             CollectionHelper.map(Direction.values(), dir -> new BevelCogWheelPart.Cog(dir, cogLoot, item)),
             CollectionHelper.map(Axis.values(), axis -> new BevelCogWheelPart.Shaft(axis, shaftLoot, shaftBlock)),
             CollectionHelper.map(Orientation.EDGE_ORIENTATIONS, orientation -> new DiagonalBevelCogWheelPart.Cog(orientation, cogLoot, item)),
-            CollectionHelper.map(Direction.values(), dir -> new DiagonalBevelCogWheelPart.ShaftHalf(dir, shaftHalfLoot, null))
+            CollectionHelper.map(Direction.values(), dir -> new DiagonalBevelCogWheelPart.ShaftHalf(dir, shaftHalfLoot, shaftHalfItem))
         );
     };
 
@@ -129,7 +131,7 @@ public record BevelCogWheelSet(
         BlockEntityEntry<? extends SingleAxisBevelCogWheelBlockEntity> singleAxisBE, BlockEntityEntry<? extends SimpleBevelCogWheelBlockEntity> simpleBE, BlockEntityEntry<? extends CompositeBevelCogWheelBlockEntity> compositeBE,
         BlockEntityEntry<? extends SingleDiagonalBevelCogWheelBlockEntity> singleDiagonalBE, BlockEntityEntry<? extends DualDiagonalBevelCogWheelBlockEntity> dualDiagonalBE,
         // Items
-        ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends Item> shaftHalfItem
+        ItemEntry<? extends BevelCogWheelBlockItem> item, ItemEntry<? extends ShaftHalfBlockItem> shaftHalfItem
     ) {
         this(
             id,
@@ -163,6 +165,16 @@ public record BevelCogWheelSet(
             };
         };
         return null;
+    };
+
+    public Stream<? extends Block> streamBlocks() {
+        return Stream.of(
+            singleAxisBlock().get(), cornerBlock().get(),
+            threeBlock().get(), fourBlock().get(),
+            singleAndShaftBlock().get(), oppositesBlock().get(), oppositesAndShaftBlock().get(),
+            cornerAndShaftBlock().get(), threeAndShaftBlock().get(), fourAndShaftBlock().get(),
+            singleDiagonalBlock().get(), dualDiagonalBlock().get()
+        );
     };
 
     public static final Supplier<BevelCogWheelSet> VANILLA = Suppliers.memoize(() -> new BevelCogWheelSet(

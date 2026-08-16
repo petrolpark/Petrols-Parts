@@ -17,6 +17,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCogWheel
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageSet;
 import petrolpark.mc.petrolsparts.content.kinetics.assemblage.ShaftHalfBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelBlockItem;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelClientSet;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
 
 public class PetrolsPartsItems {
@@ -33,6 +34,7 @@ public class PetrolsPartsItems {
         .register();
 
     public static final ItemEntry<BevelCogWheelBlockItem> BEVEL_COGWHEEL = REGISTRATE.item("bevel_cogwheel", p -> new BevelCogWheelBlockItem(BevelCogWheelSet.VANILLA, p))
+        .onRegister(BevelCogWheelBlockItem.registerClientSet(BevelCogWheelClientSet::vanilla))
         .onRegister(item -> TooltipModifier.REGISTRY.register(item, KineticStats.create(item)))
         .register();
 
