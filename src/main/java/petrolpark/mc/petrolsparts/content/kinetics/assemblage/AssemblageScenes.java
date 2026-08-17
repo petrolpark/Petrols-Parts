@@ -202,6 +202,51 @@ public class AssemblageScenes {
         scene.title("assemblage.coaxial_cogwheel", "This text is defined in a language file");
 		scene.configureBasePlate(0, 0, 5);
 		scene.showBasePlate();
+
+        scene.idle(5);
+        scene.world().showSection(util.select().position(1, 0, 5), Direction.NORTH);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(1, 1, 4), Direction.DOWN);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(0, 1, 3), Direction.DOWN);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(0, 1, 2), Direction.DOWN);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(1, 1, 2), Direction.DOWN);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(2, 1, 2), Direction.DOWN);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(3, 1, 2), Direction.DOWN);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(4, 1, 1), Direction.DOWN);
+        scene.idle(5);
+        scene.world().showSection(util.select().position(4, 1, 2), Direction.DOWN);
+        scene.idle(20);
+        final ElementLink<WorldSectionElement> coaxial3 = scene.world().showIndependentSection(util.select().position(3, 2, 2), Direction.DOWN);
+        scene.world().moveSection(coaxial3, util.vector().of(0d, -1d, 0d), 0);
+        scene.idle(20);
+
+        scene.overlay().showText(60)
+            .attachKeyFrame()
+            .pointAt(util.vector().topOf(3, 1, 2))
+            .text("This text was defined in a language file");
+        scene.idle(80);
+
+        final ElementLink<WorldSectionElement> coaxial2 = scene.world().showIndependentSection(util.select().position(2, 2, 2), Direction.DOWN);
+        scene.world().moveSection(coaxial2, util.vector().of(0d, -1d, 0d), 0);
+        scene.idle(5);
+        final ElementLink<WorldSectionElement> coaxial1 = scene.world().showIndependentSection(util.select().position(1, 2, 2), Direction.DOWN);
+        scene.world().moveSection(coaxial1, util.vector().of(0d, -1d, 0d), 0);
+        scene.idle(5);
+        final ElementLink<WorldSectionElement> coaxial0 = scene.world().showIndependentSection(util.select().position(0, 2, 3), Direction.DOWN);
+        scene.world().moveSection(coaxial0, util.vector().of(0d, -1d, 0d), 0);
+        scene.idle(5);
+
+        scene.overlay().showText(60)
+            .attachKeyFrame()
+            .pointAt(util.vector().topOf(0, 1, 3))
+            .text("This text was defined in a language file");
+        scene.idle(80);
         
         scene.markAsFinished();
     };

@@ -37,7 +37,7 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
             .addStoryBoard("kinetics/assemblage/shaft", AssemblageScenes::shafts);
         itemProviderHelper.forComponents(PetrolsPartsItems.COAXIAL_COGWHEEL, PetrolsPartsItems.LARGE_COAXIAL_COGWHEEL)
             .addStoryBoard("kinetics/assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
-            .addStoryBoard("kinetics/assemblage/coaxial_cogwheel", AssemblageScenes::shafts);
+            .addStoryBoard("kinetics/assemblage/coaxial_cogwheel", AssemblageScenes::coaxialCogwheels);
         itemProviderHelper.forComponents(PetrolsPartsItems.SHAFT_HALF, AllBlocks.SHAFT)
             .addStoryBoard("kinetics/assemblage/shaftless_cogwheel", AssemblageScenes::shaftlessCogwheels)
             .addStoryBoard("kinetics/assemblage/shaft", AssemblageScenes::shafts);
@@ -68,9 +68,9 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
         itemProviderHelper.forComponents(PetrolsPartsBlocks.CORNER_SHAFT)
             .addStoryBoard("kinetics/corner_shaft", PetrolsPartsKineticsScenes::cornerShaft);
 
-        // // Differential
-        // itemProviderHelper.forComponents(PetrolsPartsBlocks.DIFFERENTIAL)
-        //     .addStoryBoard("kinetics/differential", PetrolsPartsScenes::differential);
+        // Differential
+        itemProviderHelper.forComponents(PetrolsPartsBlocks.DIFFERENTIAL)
+            .addStoryBoard("kinetics/differential", PetrolsPartsKineticsScenes::differential);
     
         // Friction Heater
         itemProviderHelper.forComponents(PetrolsPartsBlocks.FRICTION_HEATER)

@@ -225,8 +225,10 @@ public class PetrolsPartsKineticsScenes {
             .text("This text is defined in a language file")
             .attachKeyFrame();
         scene.idle(10);
-        scene.world().multiplyKineticSpeed(center, 8 / 14f);
+        scene.world().multiplyKineticSpeed(center, 8 / 22f);
         scene.world().multiplyKineticSpeed(west, 1 / 1000f);
+        multiplyCompositeKBESpeed(scene, center, 1,  1 / 1000f);
+        multiplyCompositeKBESpeed(scene, center, 2, 8 / 22f);
         scene.world().moveSection(bigGearElement, util.vector().of(-1d, 0d, 0d), 10);
         scene.idle(15);
         scene.world().rotateSection(bigGearElement, 0d, 0d, 180d, 10);
@@ -235,8 +237,10 @@ public class PetrolsPartsKineticsScenes {
         scene.idle(10);
         scene.world().rotateSection(bigGearElement, 0d, 0d, 180d, 0);
         scene.world().setKineticSpeed(util.select().position(westBigGear), -3f);
-        scene.world().multiplyKineticSpeed(center, 2 / 8f);
+        scene.world().multiplyKineticSpeed(center, 10 / 8f);
         scene.world().multiplyKineticSpeed(west, -1000f);
+        multiplyCompositeKBESpeed(scene, center, 1,  -1000f);
+        multiplyCompositeKBESpeed(scene, center, 2, 10 / 8f);
         scene.idle(20);
         scene.overlay().showOutline(PonderPalette.BLUE, "east", util.select().position(eastSpeedometer), 100);
         scene.overlay().showText(100)
@@ -255,9 +259,7 @@ public class PetrolsPartsKineticsScenes {
             .text("This text is defined in a language file")
             .colored(PonderPalette.FAST)
             .independent(80);
-        scene.idle(70);
-        scene.world().hideSection(util.select().position(middleSmallGear).add(util.select().position(middleSpeedometer)), Direction.SOUTH);
-        scene.idle(10);
+        scene.idle(80);
 
         scene.markAsFinished();
     };

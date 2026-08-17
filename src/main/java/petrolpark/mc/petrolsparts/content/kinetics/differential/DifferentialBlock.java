@@ -1,5 +1,6 @@
 package petrolpark.mc.petrolsparts.content.kinetics.differential;
 
+import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.foundation.block.IBE;
 
@@ -26,6 +27,11 @@ public class DifferentialBlock extends WaterloggedRotatedPillarCompositeKineticB
     @Override
     public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
         return face.getAxis() == getRotationAxis(state);
+    };
+
+    @Override
+    protected boolean canSurvive(BlockState state, LevelReader level, BlockPos pos) {
+        return CogWheelBlock.isValidCogwheelPosition(true, level, pos, state.getValue(AXIS));
     };
 
     @Override

@@ -40,8 +40,8 @@ public class PetrolsPartsPartialModels {
 
     // Differential
     DIFFERENTIAL_RING_COG = block("differential/ring_cog"),
-    DIFFERENTIAL_SUN_COG = block("differential/sun_cog"),
-    DIFFERENTIAL_SPIDER_COG = block("differential/spider_cog"),
+    DIFFERENTIAL_INNER_COG = block("differential/inner_cog"),
+    DIFFERENTIAL_SHAFT = block("differential/shaft"),
 
     // Friction Heater
     FRICTION_HEATER_COG = block("friction_heater/cog"),

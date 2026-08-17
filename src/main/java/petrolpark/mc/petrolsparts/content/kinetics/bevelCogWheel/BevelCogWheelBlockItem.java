@@ -42,6 +42,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.Diagon
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.ISingleDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.BevelCogWheelPart;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.CornerBevelCogWheelsBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.SingleAxisBevelCogWheelBlock;
 
 public class BevelCogWheelBlockItem extends BlockItem {
@@ -55,6 +56,7 @@ public class BevelCogWheelBlockItem extends BlockItem {
     protected final int[] placementHelperIds = new int[]{
         PlacementHelpers.register(new OrthogonalPlacementHelper()),
         PlacementHelpers.register(new DiagonalPlacementHelper()),
+        PlacementHelpers.register(new DualDiagonalPlacementHelper())
     };
 
     public BevelCogWheelBlockItem(Supplier<BevelCogWheelSet> set, Item.Properties properties) {
@@ -233,6 +235,20 @@ public class BevelCogWheelBlockItem extends BlockItem {
                 .at(offset.getBlockPos())
                 .breathingAlpha();
         };
+    };
+
+    public class DualDiagonalPlacementHelper extends DiagonalPlacementHelper {
+
+        @Override
+        public Predicate<BlockState> getStatePredicate() {
+            return s -> getSet().singleDiagonalBlock().has(s) && s.getValue(ISingleDiagonalBevelCogWheelBlock.SHAFT) == CornerBevelCogWheelsBlock.ShaftType.NONE;
+        };
+
+        @Override
+        public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
+            return PlacementOffset.success(pos, $ -> getSet().singleDiagonalBlock().getDefaultState().setValue(ISingleDiagonalBevelCogWheelBlock.ORIENTATION, state.getValue(ISingleDiagonalBevelCogWheelBlock.ORIENTATION).opposite()));
+        };
+        
     };
 
     public static final <I extends BevelCogWheelBlockItem> NonNullConsumer<I> registerClientSet(NonNullSupplier<BevelCogWheelClientSet> clientSet) {

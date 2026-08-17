@@ -4,16 +4,21 @@ import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 
 import net.createmod.catnip.math.Pointing;
+import net.createmod.ponder.api.PonderPalette;
 import net.createmod.ponder.api.element.ElementLink;
 import net.createmod.ponder.api.element.WorldSectionElement;
 import net.createmod.ponder.api.scene.SceneBuilder;
 import net.createmod.ponder.api.scene.SceneBuildingUtil;
 import net.createmod.ponder.api.scene.Selection;
+import net.createmod.ponder.foundation.instruction.DisplayWorldSectionInstruction;
+import net.createmod.ponder.foundation.instruction.FadeOutOfSceneInstruction;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
+import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.CornerBevelCogWheelsBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.FourBevelCogWheelsBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.ThreeBevelCogWheelsBlock;
@@ -129,6 +134,87 @@ public class BevelCogWheelScenes {
         scene.title("bevel_cogwheel.diagonal", "This text is defined in a language file");
         scene.configureBasePlate(0, 0, 5);
         scene.showBasePlate();
+
+        scene.idle(5);
+        scene.world().showSection(util.select().position(0, 0, 5), Direction.NORTH);
+        for (int z = 5; z >= 2; z--) {
+            scene.idle(5);
+            scene.world().showSection(util.select().position(1, 1, z), Direction.DOWN);
+        };
+        scene.idle(15);
+        final ElementLink<WorldSectionElement> westNorth = scene.world().showIndependentSection(util.select().position(2, 3, 2), Direction.DOWN);
+        scene.world().moveSection(westNorth, util.vector().of(0d, -2d, 0d), 0);
+        scene.idle(15);
+
+        final Vec3 side = util.vector().blockSurface(util.grid().at(2, 1, 2), Direction.WEST);
+
+        scene.overlay().showText(60)
+            .attachKeyFrame()
+            .pointAt(side)
+            .text("This text is defined in a language file");
+        scene.idle(80);
+
+        scene.world().showSection(util.select().position(2, 1, 1), Direction.DOWN);
+        scene.idle(15);
+        scene.overlay().showText(60)
+            .pointAt(side)
+            .text("This text is defined in a language file");
+        scene.idle(20);
+        scene.effects().rotationSpeedIndicator(util.grid().at(1, 1, 2));
+        scene.effects().rotationSpeedIndicator(util.grid().at(2, 1, 1));
+        scene.idle(60);
+
+        scene.rotateCameraY(180);
+        scene.idle(30);
+
+        scene.world().showSection(util.select().position(3, 1, 1), Direction.DOWN);
+        scene.idle(10);
+        scene.world().showSection(util.select().position(3, 1, 2), Direction.DOWN);
+        scene.idle(10);
+        final ElementLink<WorldSectionElement> eastSouth = scene.world().showIndependentSection(util.select().position(2, 5, 2), Direction.DOWN);
+        scene.world().moveSection(eastSouth, util.vector().of(0d, -4d, 0d), 0);
+        scene.idle(10);
+        scene.world().showSection(util.select().position(2, 1, 3), Direction.DOWN);
+        scene.idle(20);
+
+        scene.overlay().showOutlineWithText(util.select().position(2, 1, 2), 80)
+            .attachKeyFrame()
+            .colored(PonderPalette.GREEN)
+            .text("This text is defined in a language file");
+        scene.idle(70);
+
+        scene.rotateCameraY(-180);
+        scene.idle(30);
+
+        final ElementLink<WorldSectionElement> eastDown = scene.world().showIndependentSection(util.select().position(2, 4, 1), Direction.DOWN);
+        scene.world().moveSection(eastDown, util.vector().of(0d, -2d, 0d), 0);
+        scene.idle(20);
+
+        scene.overlay().showControls(util.vector().centerOf(util.grid().at(2, 2, 1)), Pointing.DOWN, 40)
+            .withItem(PetrolsPartsItems.SHAFT_HALF.asStack());
+        scene.idle(30);
+
+        scene.addInstruction(new FadeOutOfSceneInstruction<>(0, Direction.DOWN, eastDown));
+        scene.addInstruction(new DisplayWorldSectionInstruction(0, Direction.DOWN, util.select().position(2, 2, 1), scene.getScene()::getBaseWorldSection));
+        scene.idle(20);
+
+        scene.overlay().showText(80)
+            .attachKeyFrame()
+            .pointAt(util.vector().blockSurface(util.grid().at(2, 2, 1), Direction.WEST))
+            .text("This text is defined in a language file");
+        scene.idle(60);
+        scene.world().showSection(util.select().position(1, 2, 1), Direction.EAST);
+        scene.idle(40);
+
+        scene.overlay().showText(60)
+            .pointAt(util.vector().blockSurface(util.grid().at(1, 2, 1), Direction.WEST))
+            .text("This text is defined in a language file");
+        scene.idle(20);
+        scene.effects().rotationSpeedIndicator(util.grid().at(1, 2, 1));
+        scene.effects().rotationSpeedIndicator(util.grid().at(2, 1, 1));
+        scene.idle(60);
+
+        scene.markAsFinished();
     };
 
     public static final void encasing(SceneBuilder sceneIn, SceneBuildingUtil util) {
