@@ -17,7 +17,6 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 public class AutoShaftRouting {
 
@@ -26,7 +25,7 @@ public class AutoShaftRouting {
      * @param start
      * @param goal
      */
-    public static final List<Pair<BlockPos, BlockState>> getPath(Level level, BlockFace start, BlockFace goal) {
+    public static final List<Pair<BlockPos, BlockState>> getPath(Level level, CornerShaftSet set, BlockFace start, BlockFace goal) {
         if (start.equals(goal) || start.equals(goal.getOpposite()) || !level.getBlockState(goal.getPos()).canBeReplaced()) return Collections.emptyList();
 
         final PriorityQueue<Node> frontier = new PriorityQueue<>(Comparator.comparing(Node::f));
@@ -49,7 +48,7 @@ public class AutoShaftRouting {
 
             final Node current = frontier.poll();
 
-            if (current.face().equals(goal)) return getBlockStatesForPath(current);
+            if (current.face().equals(goal)) return getBlockStatesForPath(set, current);
 
             for (final BlockFace next : getNeighbours(level, start, current.face())) {
 
@@ -88,7 +87,7 @@ public class AutoShaftRouting {
         return new Cost(0, goal.getPos().distManhattan(current.getPos()));
     };
 
-    public static final List<Pair<BlockPos, BlockState>> getBlockStatesForPath(Node goal) {
+    public static final List<Pair<BlockPos, BlockState>> getBlockStatesForPath(CornerShaftSet set, Node goal) {
         final List<BlockFace> path = new ArrayList<>();
         for (Node node = goal; node != null; node = node.parent()) {
             path.add(node.face());
@@ -99,7 +98,7 @@ public class AutoShaftRouting {
 
         for (int i = 1; i < path.size(); i++) {
             final BlockFace face = path.get(i);
-            states.add(Pair.of(face.getPos(), PetrolsPartsBlocks.CORNER_SHAFT.get().getBlockstateConnectingDirections(path.get(i - 1).getFace().getOpposite(), face.getFace())));
+            states.add(Pair.of(face.getPos(), set.cornerShaftBlock().get().getBlockstateConnectingDirections(path.get(i - 1).getFace().getOpposite(), face.getFace())));
         };
 
         return states;

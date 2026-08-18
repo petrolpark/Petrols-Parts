@@ -57,7 +57,9 @@ import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IBevelCogWheelB
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.IEncasedBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.DualDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.dual.EncasedDualDiagonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.EncasedSingleDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.single.SingleDiagonalBevelCogWheelBlock;
+import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.IOrthogonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.BevelCogWheelAndShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.CornerBevelCogWheelsAndShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.composite.FourBevelCogWheelsAndShaftBlock;
@@ -73,6 +75,7 @@ import petrolpark.mc.petrolsparts.content.kinetics.colossalCogwheel.ColossalCogw
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.AbstractCornerShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.CornerShaftBlockItem;
+import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.CornerShaftSet;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.EncasedCornerShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.EncasedStraightCornerShaftBlock;
 import petrolpark.mc.petrolsparts.content.kinetics.cornerShaft.StraightCornerShaftBlock;
@@ -155,7 +158,7 @@ public class PetrolsPartsBlocks {
 
     // BEVEL COGWHEELS
 
-    public static final BlockEntry<SingleAxisBevelCogWheelBlock> SINGLE_AXIS_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/single_axis", p -> new SingleAxisBevelCogWheelBlock(BevelCogWheelSet.VANILLA, p))
+    public static final BlockEntry<SingleAxisBevelCogWheelBlock> SINGLE_AXIS_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/orthogonal/single_axis", p -> new SingleAxisBevelCogWheelBlock(BevelCogWheelSet.VANILLA, p))
         .initialProperties(AllBlocks.COGWHEEL)
         .properties(p -> p
             .noOcclusion()
@@ -166,37 +169,47 @@ public class PetrolsPartsBlocks {
         .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
         .register();
 
-    public static final BlockEntry<CornerBevelCogWheelsBlock> CORNER_BEVEL_COGWHEELS = bevelCogwheel("corner", CornerBevelCogWheelsBlock::new)
+    public static final BlockEntry<CornerBevelCogWheelsBlock> CORNER_BEVEL_COGWHEELS = orthogonalBevelCogWheel("corner", CornerBevelCogWheelsBlock::new)
         .register();
     
-    public static final BlockEntry<ThreeBevelCogWheelsBlock> THREE_BEVEL_COGWHEELS = bevelCogwheel("three", ThreeBevelCogWheelsBlock::new)
+    public static final BlockEntry<ThreeBevelCogWheelsBlock> THREE_BEVEL_COGWHEELS = orthogonalBevelCogWheel("three", ThreeBevelCogWheelsBlock::new)
         .register();
 
-    public static final BlockEntry<FourBevelCogWheelsBlock> FOUR_BEVEL_COGWHEELS = bevelCogwheel("four", FourBevelCogWheelsBlock::new)
+    public static final BlockEntry<FourBevelCogWheelsBlock> FOUR_BEVEL_COGWHEELS = orthogonalBevelCogWheel("four", FourBevelCogWheelsBlock::new)
         .register();
 
-    public static final BlockEntry<BevelCogWheelAndShaftBlock> SINGLE_BEVEL_COGWHEEL_AND_SHAFT = bevelCogwheel("single_and_shaft", BevelCogWheelAndShaftBlock::new)
+    public static final BlockEntry<BevelCogWheelAndShaftBlock> SINGLE_BEVEL_COGWHEEL_AND_SHAFT = orthogonalBevelCogWheel("single_and_shaft", BevelCogWheelAndShaftBlock::new)
         .register();
 
-    public static final BlockEntry<OppositeBevelCogWheelsBlock> OPPOSITE_BEVEL_COGWHEELS = bevelCogwheel("opposite", OppositeBevelCogWheelsBlock::new)
+    public static final BlockEntry<OppositeBevelCogWheelsBlock> OPPOSITE_BEVEL_COGWHEELS = orthogonalBevelCogWheel("opposite", OppositeBevelCogWheelsBlock::new)
         .register();
 
-    public static final BlockEntry<OppositeBevelCogWheelsAndShaftBlock> OPPOSITE_BEVEL_COGWHEELS_AND_SHAFT = bevelCogwheel("opposite_and_shaft", OppositeBevelCogWheelsAndShaftBlock::new)
+    public static final BlockEntry<OppositeBevelCogWheelsAndShaftBlock> OPPOSITE_BEVEL_COGWHEELS_AND_SHAFT = orthogonalBevelCogWheel("opposite_and_shaft", OppositeBevelCogWheelsAndShaftBlock::new)
         .register();
 
-    public static final BlockEntry<CornerBevelCogWheelsAndShaftBlock> CORNER_BEVEL_COGWHEELS_AND_SHAFT = bevelCogwheel("corner_and_shaft", CornerBevelCogWheelsAndShaftBlock::new)
+    public static final BlockEntry<CornerBevelCogWheelsAndShaftBlock> CORNER_BEVEL_COGWHEELS_AND_SHAFT = orthogonalBevelCogWheel("corner_and_shaft", CornerBevelCogWheelsAndShaftBlock::new)
         .register();
 
-    public static final BlockEntry<ThreeBevelCogWheelsAndShaftBlock> THREE_BEVEL_COGWHEELS_AND_SHAFT = bevelCogwheel("three_and_shaft", ThreeBevelCogWheelsAndShaftBlock::new)
+    public static final BlockEntry<ThreeBevelCogWheelsAndShaftBlock> THREE_BEVEL_COGWHEELS_AND_SHAFT = orthogonalBevelCogWheel("three_and_shaft", ThreeBevelCogWheelsAndShaftBlock::new)
         .register();
 
-    public static final BlockEntry<FourBevelCogWheelsAndShaftBlock> FOUR_BEVEL_COGWHEELS_AND_SHAFT = bevelCogwheel("four_and_shaft", FourBevelCogWheelsAndShaftBlock::new)
+    public static final BlockEntry<FourBevelCogWheelsAndShaftBlock> FOUR_BEVEL_COGWHEELS_AND_SHAFT = orthogonalBevelCogWheel("four_and_shaft", FourBevelCogWheelsAndShaftBlock::new)
         .register();
 
     public static final BlockEntry<SingleDiagonalBevelCogWheelBlock> SINGLE_DIAGONAL_BEVEL_COGWHEEL = bevelCogwheel("diagonal/single", SingleDiagonalBevelCogWheelBlock::new)
         .register();
 
     public static final BlockEntry<DualDiagonalBevelCogWheelBlock> DUAL_DIAGONAL_BEVEL_COGWHEEL = bevelCogwheel("diagonal/dual", DualDiagonalBevelCogWheelBlock::new)
+        .register();
+
+    public static final BlockEntry<EncasedSingleDiagonalBevelCogWheelBlock> ANDESITE_ENCASED_SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/diagonal/encased/single/andesite", IEncasedBevelCogWheelBlock.andesite(BevelCogWheelSet.VANILLA, EncasedSingleDiagonalBevelCogWheelBlock::new))
+        .initialProperties(AllBlocks.ANDESITE_ENCASED_COGWHEEL)
+        .transform(EncasedSingleDiagonalBevelCogWheelBlock.builderTransformer(AllSpriteShifts.ANDESITE_CASING, "andesite"))
+        .register();
+
+    public static final BlockEntry<EncasedSingleDiagonalBevelCogWheelBlock> BRASS_ENCASED_SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/diagonal/encased/single/brass", IEncasedBevelCogWheelBlock.brass(BevelCogWheelSet.VANILLA, EncasedSingleDiagonalBevelCogWheelBlock::new))
+        .initialProperties(AllBlocks.BRASS_ENCASED_COGWHEEL)
+        .transform(EncasedSingleDiagonalBevelCogWheelBlock.builderTransformer(AllSpriteShifts.BRASS_CASING, "brass"))
         .register();
 
     public static final BlockEntry<EncasedDualDiagonalBevelCogWheelBlock> ANDESITE_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE.block("bevel_cogwheel/diagonal/encased/dual/andesite", IEncasedBevelCogWheelBlock.andesite(BevelCogWheelSet.VANILLA, EncasedDualDiagonalBevelCogWheelBlock::new))
@@ -237,7 +250,7 @@ public class PetrolsPartsBlocks {
     
     // CORNER SHAFTS
 
-    public static final BlockEntry<CornerShaftBlock> CORNER_SHAFT = REGISTRATE.block("corner_shaft", CornerShaftBlock::new)
+    public static final BlockEntry<CornerShaftBlock> CORNER_SHAFT = REGISTRATE.block("corner_shaft", CornerShaftBlock::vanilla)
         .initialProperties(AllBlocks.SHAFT)
         .properties(p -> p
             .mapColor(MapColor.METAL)
@@ -251,7 +264,7 @@ public class PetrolsPartsBlocks {
         .build()
         .register();
 
-    public static final BlockEntry<EncasedCornerShaftBlock> ANDESITE_ENCASED_CORNER_SHAFT = REGISTRATE.block("andesite_encased_corner_shaft", p -> new EncasedCornerShaftBlock(p, AllBlocks.ANDESITE_CASING::get))
+    public static final BlockEntry<EncasedCornerShaftBlock> ANDESITE_ENCASED_CORNER_SHAFT = REGISTRATE.block("andesite_encased_corner_shaft", EncasedCornerShaftBlock.andesite(CornerShaftSet::vanilla))
         .initialProperties(SharedProperties::stone)
         .properties(p -> p
             .noOcclusion()
@@ -263,7 +276,7 @@ public class PetrolsPartsBlocks {
 		.transform(TagGen.axeOrPickaxe())
 		.register();
 
-    public static final BlockEntry<EncasedCornerShaftBlock> BRASS_ENCASED_CORNER_SHAFT = REGISTRATE.block("brass_encased_corner_shaft", p -> new EncasedCornerShaftBlock(p, AllBlocks.BRASS_CASING::get))
+    public static final BlockEntry<EncasedCornerShaftBlock> BRASS_ENCASED_CORNER_SHAFT = REGISTRATE.block("brass_encased_corner_shaft", EncasedCornerShaftBlock.brass(CornerShaftSet::vanilla))
         .initialProperties(SharedProperties::stone)
         .properties(p -> p
             .noOcclusion()
@@ -275,7 +288,7 @@ public class PetrolsPartsBlocks {
 		.transform(TagGen.axeOrPickaxe())
 		.register();
 
-    public static final BlockEntry<StraightCornerShaftBlock> STRAIGHT_CORNER_SHAFT = REGISTRATE.block("straight_corner_shaft", StraightCornerShaftBlock::new)
+    public static final BlockEntry<StraightCornerShaftBlock> STRAIGHT_CORNER_SHAFT = REGISTRATE.block("straight_corner_shaft", StraightCornerShaftBlock::vanilla)
         .initialProperties(AllBlocks.SHAFT)
         .loot((lt, b) -> lt.dropOther(b, CORNER_SHAFT))
 		.transform(PPCStress.setNoImpact())
@@ -284,13 +297,13 @@ public class PetrolsPartsBlocks {
         .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
         .register();
 
-    public static final BlockEntry<EncasedStraightCornerShaftBlock> ANDESITE_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("andesite_encased_straight_corner_shaft", p -> new EncasedStraightCornerShaftBlock(p, AllBlocks.ANDESITE_CASING::get))
+    public static final BlockEntry<EncasedStraightCornerShaftBlock> ANDESITE_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("andesite_encased_straight_corner_shaft", EncasedStraightCornerShaftBlock.andesite(CornerShaftSet::vanilla))
         .transform(encasedStraightCornerShaft("andesite", () -> AllSpriteShifts.ANDESITE_CASING))
         .transform(EncasingRegistry.addVariantTo(STRAIGHT_CORNER_SHAFT))
         .transform(TagGen.axeOrPickaxe())
         .register();
 
-	public static final BlockEntry<EncasedStraightCornerShaftBlock> BRASS_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("brass_encased_straight_corner_shaft", p -> new EncasedStraightCornerShaftBlock(p, AllBlocks.BRASS_CASING::get))
+	public static final BlockEntry<EncasedStraightCornerShaftBlock> BRASS_ENCASED_STRAIGHT_CORNER_SHAFT = REGISTRATE.block("brass_encased_straight_corner_shaft", EncasedStraightCornerShaftBlock.brass(CornerShaftSet::vanilla))
         .transform(encasedStraightCornerShaft("brass", () -> AllSpriteShifts.BRASS_CASING))
         .transform(EncasingRegistry.addVariantTo(STRAIGHT_CORNER_SHAFT))
         .transform(TagGen.axeOrPickaxe())
@@ -406,6 +419,10 @@ public class PetrolsPartsBlocks {
     //
 
     public static final void register() {};
+
+    private static final <B extends Block & IOrthogonalBevelCogWheelBlock> BlockBuilder<B, PetrolsPartsRegistrate> orthogonalBevelCogWheel(String suffix, NonNullBiFunction<Supplier<BevelCogWheelSet>, BlockBehaviour.Properties, B> factory) {
+        return bevelCogwheel("orthogonal/" + suffix, factory);
+    };
 
     private static final <B extends Block & IBevelCogWheelBlock> BlockBuilder<B, PetrolsPartsRegistrate> bevelCogwheel(String suffix, NonNullBiFunction<Supplier<BevelCogWheelSet>, BlockBehaviour.Properties, B> factory) {
         return REGISTRATE.block("bevel_cogwheel/" + suffix, p -> factory.apply(BevelCogWheelSet.VANILLA, p))

@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.AABB;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.compat.create.core.world.block.entity.IKineticBlockEntityDuck;
 import petrolpark.mc.library.compat.create.core.world.block.entity.IOverridableKineticBlockEntity;
@@ -44,6 +45,11 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
 
     @Override
     public void addBehaviours(List<BlockEntityBehaviour> behaviours) {};
+
+    @Override
+	protected AABB createRenderBoundingBox() {
+		return new AABB(getBlockPos()).inflate(1);
+	};
 
     @Override
     public List<DifferentialBlockEntity.Part> getParts() {

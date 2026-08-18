@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/bevel_cogwheel"
+        }
+      ],
+      "rolls": 1.0
+    },
+    {
+      "bonus_rolls": 0.0,
+      "conditions": [
+        {
+          "condition": "minecraft:inverted",
+          "term": {
+            "block": "petrolsparts:bevel_cogwheel/diagonal/encased/single/andesite",
+            "condition": "minecraft:block_state_property",
+            "properties": {
+              "shaft": "none"
+            }
+          }
+        }
+      ],
+      "entries": [
+        {
+          "type": "minecraft:loot_table",
+          "value": "petrolsparts:blocks/shaft_half"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "petrolsparts:blocks/bevel_cogwheel/diagonal/encased/single/andesite"
+}

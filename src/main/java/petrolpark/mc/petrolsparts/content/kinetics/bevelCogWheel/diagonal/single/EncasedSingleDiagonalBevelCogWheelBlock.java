@@ -18,6 +18,7 @@ import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
@@ -34,12 +35,15 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.storage.loot.entries.NestedLootTable;
-import net.minecraft.world.level.storage.loot.predicates.AnyOfCondition;
+import net.minecraft.world.level.storage.loot.predicates.InvertedLootItemCondition;
 import net.minecraft.world.level.storage.loot.predicates.LootItemBlockStatePropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
+import net.neoforged.neoforge.client.model.generators.VariantBlockStateBuilder;
 import petrolpark.mc.library.util.BlockHelper;
+import petrolpark.mc.library.util.BlockStateProviderHelper;
 import petrolpark.mc.library.util.Lang;
 import petrolpark.mc.library.util.Orientation;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.BevelCogWheelSet;
@@ -135,37 +139,35 @@ public class EncasedSingleDiagonalBevelCogWheelBlock extends KineticBlock implem
     public static final <B extends EncasedSingleDiagonalBevelCogWheelBlock, P> NonNullUnaryOperator<BlockBuilder<B, P>> builderTransformer(CTSpriteShiftEntry spriteShiftEntry, String casing) {
         return builder -> builder
             .properties(BlockBehaviour.Properties::noOcclusion)
-            // .blockstate((ctx, prov) -> {
-            //     final ModelFile model = prov.models().getExistingFile(ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/diagonal/dual/" + casing));
-            //     prov.getVariantBuilder(ctx.get())
-            //         .partialState().with(EXCLUDED_AXIS, Axis.Y)
-            //         .modelForState().modelFile(model).addModel()
-            //         .partialState().with(EXCLUDED_AXIS, Axis.Z)
-            //         .modelForState().modelFile(model).rotationX(90).addModel()
-            //         .partialState().with(EXCLUDED_AXIS, Axis.X)
-            //         .modelForState().modelFile(model).rotationX(90).rotationY(90).addModel();
-            // })
-            
-            .loot((lt, b) -> lt.add(b, lootTable()
+            .blockstate((ctx, prov) -> {
+                final ResourceLocation modelsFolder = ctx.get().getSet().id().withPrefix("block/").withSuffix("/encased/diagonal/single/" + casing);
+                final ModelFile noShaftModel = prov.models().getExistingFile(modelsFolder.withSuffix("/no_shaft"));
+                final ModelFile upSouthShaftModel = prov.models().getExistingFile(modelsFolder.withSuffix("/shaft_up_south"));
+                final ModelFile eastSouthShaftModel = prov.models().getExistingFile(modelsFolder.withSuffix("/shaft_east_south"));
+                final VariantBlockStateBuilder stateBuilder = prov.getVariantBuilder(ctx.get());
+                BlockStateProviderHelper.edgeOrientedBlock(stateBuilder, b -> b.with(ISingleDiagonalBevelCogWheelBlock.SHAFT, CornerBevelCogWheelsBlock.ShaftType.NONE), noShaftModel);
+                for (Orientation orientation : Orientation.values()) {
+                    final Orientation edge = orientation.asEdge();
+                    stateBuilder.partialState()
+                        .with(ISingleDiagonalBevelCogWheelBlock.ORIENTATION, edge)
+                        .with(ISingleDiagonalBevelCogWheelBlock.SHAFT, orientation == edge ? CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS : CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS)
+                        .modelForState()
+                            .modelFile(orientation.isTopVertical() ? upSouthShaftModel : eastSouthShaftModel)
+                            .rotationX(orientation.blockStateXRotation)
+                            .rotationY(orientation.blockStateYRotation)
+                        .addModel();
+                };
+            }).loot((lt, b) -> lt.add(b, lootTable()
                 .withPool(lootPool()
                     .add(NestedLootTable.lootTableReference(b.getSet().cogLoot()))
                     .setRolls(ConstantValue.exactly(1f))
                 ).withPool(lootPool()
-                    .when(AnyOfCondition.anyOf(
+                    .when(InvertedLootItemCondition.invert(
                         LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)
                             .setProperties(StatePropertiesPredicate.Builder.properties()
-                                .hasProperty(SHAFT, CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS)
-                            ),
-                        LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)
-                            .setProperties(StatePropertiesPredicate.Builder.properties()
-                                .hasProperty(SHAFT, CornerBevelCogWheelsBlock.ShaftType.SECOND_AXIS)
+                                .hasProperty(SHAFT, CornerBevelCogWheelsBlock.ShaftType.NONE)
                             )
-                    ))
-                    .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(b)
-                        .setProperties(StatePropertiesPredicate.Builder.properties()
-                            .hasProperty(SHAFT, CornerBevelCogWheelsBlock.ShaftType.FIRST_AXIS)
-                        )
-                    ).add(NestedLootTable.lootTableReference(b.getSet().shaftHalfLoot()))
+                    )).add(NestedLootTable.lootTableReference(b.getSet().shaftHalfLoot()))
                     .setRolls(ConstantValue.exactly(1f))
                 )
             )).onRegisterAfter(Registries.BLOCK, b -> EncasingRegistry.addVariant(b.getSet().singleDiagonalBlock().get(), b))

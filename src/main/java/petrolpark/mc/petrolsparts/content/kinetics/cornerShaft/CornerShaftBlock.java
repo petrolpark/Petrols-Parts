@@ -1,5 +1,7 @@
 package petrolpark.mc.petrolsparts.content.kinetics.cornerShaft;
 
+import java.util.function.Supplier;
+
 import com.simibubi.create.AllShapes;
 import com.simibubi.create.content.decoration.encasing.EncasableBlock;
 import com.simibubi.create.foundation.block.ProperWaterloggedBlock;
@@ -16,25 +18,28 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition.Builder;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
 
 public class CornerShaftBlock extends AbstractCornerShaftBlock implements ProperWaterloggedBlock, EncasableBlock {
 
-    public CornerShaftBlock(Properties properties) {
-        super(properties);
+    public static CornerShaftBlock vanilla(BlockBehaviour.Properties properties) {
+        return new CornerShaftBlock(CornerShaftSet::vanilla, properties);
+    };
+
+    public CornerShaftBlock(Supplier<CornerShaftSet> set, BlockBehaviour.Properties properties) {
+        super(set, properties);
         registerDefaultState(defaultBlockState().setValue(WATERLOGGED, false));
     };
 
     @Override
     protected void createBlockStateDefinition(Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED);
-        super.createBlockStateDefinition(builder);
+        super.createBlockStateDefinition(builder.add(WATERLOGGED));
     };
 
     @Override
@@ -93,7 +98,7 @@ public class CornerShaftBlock extends AbstractCornerShaftBlock implements Proper
 
     @Override
     public BlockEntityType<? extends CornerShaftBlockEntity> getBlockEntityType() {
-        return PetrolsPartsBlockEntityTypes.CORNER_SHAFT.get();
+        return getSet().cornerBlockEntity().get();
     };
     
 };

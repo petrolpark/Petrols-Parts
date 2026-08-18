@@ -5,25 +5,33 @@ import java.util.List;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
-import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntityRenderer;
 
+import dev.engine_room.flywheel.lib.model.baked.PartialModel;
 import net.createmod.catnip.animation.AnimationTickHolder;
 import net.createmod.catnip.render.CachedBuffers;
 import net.createmod.catnip.render.SuperByteBuffer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider.Context;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.state.BlockState;
+import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
 
 public class EncasedCornerShaftRenderer extends KineticBlockEntityRenderer<CornerShaftBlockEntity> {
 
-    public EncasedCornerShaftRenderer(Context context) {
+    public static EncasedCornerShaftRenderer vanilla(BlockEntityRendererProvider.Context context) {
+        return new EncasedCornerShaftRenderer(PetrolsPartsPartialModels.CORNER_SHAFT_SIDE, context);
+    };
+
+    protected final PartialModel side;
+
+    public EncasedCornerShaftRenderer(PartialModel side, BlockEntityRendererProvider.Context context) {
         super(context);
+        this.side = side;
     };
 
     @Override
@@ -44,11 +52,11 @@ public class EncasedCornerShaftRenderer extends KineticBlockEntityRenderer<Corne
         float offset1 = Mth.PI * getRotationOffsetForPosition(cornerShaftBlockEntity, cornerShaftBlockEntity.getBlockPos(), shaft1Direction.getAxis()) / 180f;
         float offset2 = Mth.PI * getRotationOffsetForPosition(cornerShaftBlockEntity, cornerShaftBlockEntity.getBlockPos(), shaft2Direction.getAxis()) / 180f;
 
-        SuperByteBuffer shaft1 = CachedBuffers.partialFacing(PetrolsPartsPartialModels.CORNER_SHAFT_SIDE, state, shaft1Direction);
+        SuperByteBuffer shaft1 = CachedBuffers.partialFacing(side, state, shaft1Direction);
         kineticRotationTransform(shaft1, cornerShaftBlockEntity, shaft1Direction.getAxis(), gimbal1Angle + offset1, light);
         shaft1.renderInto(ms, vbSolid);
 
-        SuperByteBuffer shaft2 = CachedBuffers.partialFacing(PetrolsPartsPartialModels.CORNER_SHAFT_SIDE, state, shaft2Direction);
+        SuperByteBuffer shaft2 = CachedBuffers.partialFacing(side, state, shaft2Direction);
         kineticRotationTransform(shaft2, cornerShaftBlockEntity, shaft2Direction.getAxis(), gimbal2Angle + offset2, light);
         shaft2.renderInto(ms, vbSolid);
         

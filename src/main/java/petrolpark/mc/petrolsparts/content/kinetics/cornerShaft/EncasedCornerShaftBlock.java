@@ -4,13 +4,13 @@ import java.util.function.Supplier;
 
 import org.jetbrains.annotations.Nullable;
 
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.api.schematic.requirement.SpecialBlockItemRequirement;
 import com.simibubi.create.content.decoration.encasing.EncasedBlock;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.schematics.requirement.ItemRequirement;
+import com.tterrag.registrate.util.nullness.NonNullFunction;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.registries.Registries;
@@ -23,19 +23,29 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 @EventBusSubscriber
 public class EncasedCornerShaftBlock extends AbstractCornerShaftBlock implements SpecialBlockItemRequirement, EncasedBlock {
 
+    public static final NonNullFunction<BlockBehaviour.Properties, EncasedCornerShaftBlock> andesite(Supplier<CornerShaftSet> set) {
+        return p -> new EncasedCornerShaftBlock(set, p, AllBlocks.ANDESITE_CASING::get);
+    };
+
+    public static final NonNullFunction<BlockBehaviour.Properties, EncasedCornerShaftBlock> brass(Supplier<CornerShaftSet> set) {
+        return p -> new EncasedCornerShaftBlock(set, p, AllBlocks.BRASS_CASING::get);
+    };
+
     private final Supplier<Block> casing;
 
-    public EncasedCornerShaftBlock(Properties properties, Supplier<Block> casing) {
-        super(properties);
+    public EncasedCornerShaftBlock(Supplier<CornerShaftSet> set, BlockBehaviour.Properties properties, Supplier<Block> casing) {
+        super(set, properties);
         this.casing = casing;
     };
 
@@ -46,12 +56,12 @@ public class EncasedCornerShaftBlock extends AbstractCornerShaftBlock implements
 
     @Override
     public ItemRequirement getRequiredItems(BlockState state, @Nullable BlockEntity blockEntity) {
-        return ItemRequirement.of(PetrolsPartsBlocks.CORNER_SHAFT.getDefaultState(), blockEntity);
+        return ItemRequirement.of(getSet().cornerShaftBlock().getDefaultState(), blockEntity);
     };
 
     @Override
     public BlockEntityType<? extends CornerShaftBlockEntity> getBlockEntityType() {
-        return PetrolsPartsBlockEntityTypes.ENCASED_CORNER_SHAFT.get();
+        return getSet().encasedCornerShaftBlockEntity().get();
     };
 
     @Override
@@ -63,7 +73,7 @@ public class EncasedCornerShaftBlock extends AbstractCornerShaftBlock implements
     public InteractionResult onSneakWrenched(BlockState state, UseOnContext context) {
         if (context.getLevel().isClientSide()) return InteractionResult.SUCCESS;
 		context.getLevel().levelEvent(2001, context.getClickedPos(), Block.getId(state));
-		KineticBlockEntity.switchToBlockState(context.getLevel(), context.getClickedPos(), PetrolsPartsBlocks.CORNER_SHAFT.getDefaultState().setValue(FACING, state.getValue(FACING)).setValue(AXIS_ALONG_FIRST_COORDINATE, state.getValue(AXIS_ALONG_FIRST_COORDINATE)));
+		KineticBlockEntity.switchToBlockState(context.getLevel(), context.getClickedPos(), getSet().cornerShaftBlock().getDefaultState().setValue(FACING, state.getValue(FACING)).setValue(AXIS_ALONG_FIRST_COORDINATE, state.getValue(AXIS_ALONG_FIRST_COORDINATE)));
 		return InteractionResult.SUCCESS;
     };
 

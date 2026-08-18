@@ -1,0 +1,164 @@
+{
+  "variants": {
+    "orientation=down_north,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_up_south",
+      "x": 180
+    },
+    "orientation=down_north,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 270,
+      "y": 270
+    },
+    "orientation=down_north,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 270,
+      "y": 270
+    },
+    "orientation=down_south,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_up_south",
+      "x": 180,
+      "y": 180
+    },
+    "orientation=down_south,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 270,
+      "y": 90
+    },
+    "orientation=down_south,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 270,
+      "y": 90
+    },
+    "orientation=east_down,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 270
+    },
+    "orientation=east_down,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 270
+    },
+    "orientation=east_down,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_up_south",
+      "x": 180,
+      "y": 90
+    },
+    "orientation=east_north,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 180
+    },
+    "orientation=east_north,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 180
+    },
+    "orientation=east_north,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "y": 270
+    },
+    "orientation=east_south,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south"
+    },
+    "orientation=east_south,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft"
+    },
+    "orientation=east_south,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 180,
+      "y": 90
+    },
+    "orientation=east_up,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 90
+    },
+    "orientation=east_up,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 90
+    },
+    "orientation=east_up,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_up_south",
+      "y": 270
+    },
+    "orientation=up_north,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_up_south",
+      "y": 180
+    },
+    "orientation=up_north,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 90,
+      "y": 270
+    },
+    "orientation=up_north,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 90,
+      "y": 270
+    },
+    "orientation=up_south,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_up_south"
+    },
+    "orientation=up_south,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 90,
+      "y": 90
+    },
+    "orientation=up_south,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 90,
+      "y": 90
+    },
+    "orientation=west_down,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 270,
+      "y": 180
+    },
+    "orientation=west_down,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 270,
+      "y": 180
+    },
+    "orientation=west_down,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_up_south",
+      "x": 180,
+      "y": 270
+    },
+    "orientation=west_north,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "y": 180
+    },
+    "orientation=west_north,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "y": 180
+    },
+    "orientation=west_north,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 180,
+      "y": 270
+    },
+    "orientation=west_south,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 180,
+      "y": 180
+    },
+    "orientation=west_south,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 180,
+      "y": 180
+    },
+    "orientation=west_south,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "y": 90
+    },
+    "orientation=west_up,shaft=first_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_east_south",
+      "x": 90,
+      "y": 180
+    },
+    "orientation=west_up,shaft=none": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/no_shaft",
+      "x": 90,
+      "y": 180
+    },
+    "orientation=west_up,shaft=second_axis": {
+      "model": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/brass/shaft_up_south",
+      "y": 90
+    }
+  }
+}

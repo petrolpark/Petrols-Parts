@@ -1,0 +1,11 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made with Blockbench",
+	"parent": "petrolsparts:block/bevel_cogwheel/encased/diagonal/single/andesite/no_shaft",
+	"textures": {
+		"particle": "create:block/brass_casing",
+		"end": "create:block/brass_casing",
+		"side": "create:block/brass_encased_cogwheel_side",
+		"inner": "minecraft:block/stripped_dark_oak_log_top"
+	}
+}

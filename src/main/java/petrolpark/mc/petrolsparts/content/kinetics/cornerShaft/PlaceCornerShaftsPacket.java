@@ -1,6 +1,7 @@
 package petrolpark.mc.petrolsparts.content.kinetics.cornerShaft;
 
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 
@@ -18,16 +19,22 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.items.wrapper.InvWrapper;
 import petrolpark.mc.library.util.ItemHelper;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
-import petrolpark.mc.petrolsparts.PetrolsPartsPackets;
 
-public record PlaceCornerShaftsPacket(List<Pair<BlockPos, BlockState>> statesToPlace) implements ServerboundPacketPayload {
+public record PlaceCornerShaftsPacket(Supplier<CornerShaftSet> setSupplier, List<Pair<BlockPos, BlockState>> statesToPlace) implements ServerboundPacketPayload {
 
-    public static final StreamCodec<ByteBuf, PlaceCornerShaftsPacket> STREAM_CODEC = Pair.streamCodec(BlockPos.STREAM_CODEC, CatnipStreamCodecs.BLOCK_STATE).apply(ByteBufCodecs.list()).map(PlaceCornerShaftsPacket::new, PlaceCornerShaftsPacket::statesToPlace);
+    public static PlaceCornerShaftsPacket vanilla(List<Pair<BlockPos, BlockState>> statesToPlace) {
+        return new PlaceCornerShaftsPacket(CornerShaftSet::vanilla, statesToPlace);
+    };
+
+    public static final StreamCodec<ByteBuf, PlaceCornerShaftsPacket> VANILLA_STREAM_CODEC = Pair.streamCodec(BlockPos.STREAM_CODEC, CatnipStreamCodecs.BLOCK_STATE).apply(ByteBufCodecs.list()).map(PlaceCornerShaftsPacket::vanilla, PlaceCornerShaftsPacket::statesToPlace);
+
+    public CornerShaftSet set() {
+        return setSupplier().get();
+    };
 
     @Override
     public PacketTypeProvider getTypeProvider() {
-        return PetrolsPartsPackets.PLACE_CORNER_SHAFTS;
+        return set().packetType();
     };
 
     @Override
@@ -42,9 +49,9 @@ public record PlaceCornerShaftsPacket(List<Pair<BlockPos, BlockState>> statesToP
                 place(player, pos, state, stack);
                 continue;
             } else if (state.getBlock() instanceof ShaftBlock) { // Try substitute regular Shafts for Straight Corner Shafts
-                final ItemStack straightCornerShaftStack = ItemHelper.removeItem(inv, PetrolsPartsBlocks.CORNER_SHAFT::isIn, player.hasInfiniteMaterials());
+                final ItemStack straightCornerShaftStack = ItemHelper.removeItem(inv, set().cornerShaftBlock()::isIn, player.hasInfiniteMaterials());
                 if (!straightCornerShaftStack.isEmpty()) {
-                    place(player, pos, PetrolsPartsBlocks.STRAIGHT_CORNER_SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, state.getValue(ShaftBlock.AXIS)), straightCornerShaftStack);
+                    place(player, pos, set().straightCornerShaftBlock().getDefaultState().setValue(ShaftBlock.AXIS, state.getValue(ShaftBlock.AXIS)), straightCornerShaftStack);
                     continue;
                 };
             };
@@ -57,6 +64,12 @@ public record PlaceCornerShaftsPacket(List<Pair<BlockPos, BlockState>> statesToP
         BlockItem.updateCustomBlockEntityTag(player.level(), player, pos, stack);
         BlockItem.updateBlockEntityComponents(player.level(), pos, stack);
         state.getBlock().setPlacedBy(player.level(), pos, state, player, stack);
+    };
+
+    @FunctionalInterface
+    public interface Factory {
+
+        public PlaceCornerShaftsPacket create(List<Pair<BlockPos, BlockState>> statesToPlace);
     };
     
 };

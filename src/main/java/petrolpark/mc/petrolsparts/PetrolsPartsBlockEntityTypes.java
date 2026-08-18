@@ -95,7 +95,7 @@ public class PetrolsPartsBlockEntityTypes {
 
     public static final BlockEntityEntry<SingleDiagonalBevelCogWheelBlockEntity> SINGLE_DIAGONAL_BEVEL_COGWHEEL = REGISTRATE
         .blockEntity("bevel_cogwheel/single_diagonal", SingleDiagonalBevelCogWheelBlockEntity::new)
-        .validBlocks(PetrolsPartsBlocks.SINGLE_DIAGONAL_BEVEL_COGWHEEL)
+        .validBlocks(PetrolsPartsBlocks.SINGLE_DIAGONAL_BEVEL_COGWHEEL, PetrolsPartsBlocks.ANDESITE_ENCASED_SINGLE_DIAGONAL_BEVEL_COGWHEEL, PetrolsPartsBlocks.BRASS_ENCASED_SINGLE_DIAGONAL_BEVEL_COGWHEEL)
         .renderer(() -> SingleDiagonalBevelCogWheelRenderer::vanilla)
         .register();
 
@@ -125,7 +125,7 @@ public class PetrolsPartsBlockEntityTypes {
         .createBlockEntity("corner_shaft", CornerShaftBlockEntity::new)
         //.visual(() -> CornerShaftvisual::new) //TODO fix
         .validBlock(PetrolsPartsBlocks.CORNER_SHAFT)
-        .renderer(() -> CornerShaftRenderer::new)
+        .renderer(() -> CornerShaftRenderer::vanilla)
         .register();
 
     public static final BlockEntityEntry<BracketedKineticBlockEntity> STRAIGHT_CORNER_SHAFT = REGISTRATE
@@ -138,7 +138,7 @@ public class PetrolsPartsBlockEntityTypes {
     public static final BlockEntityEntry<CornerShaftBlockEntity> ENCASED_CORNER_SHAFT = REGISTRATE
         .createBlockEntity("encased_corner_shaft", CornerShaftBlockEntity::new)
         .validBlocks(PetrolsPartsBlocks.ANDESITE_ENCASED_CORNER_SHAFT, PetrolsPartsBlocks.BRASS_ENCASED_CORNER_SHAFT)
-        .renderer(() -> EncasedCornerShaftRenderer::new)
+        .renderer(() -> EncasedCornerShaftRenderer::vanilla)
         .register();
 
     public static final BlockEntityEntry<DifferentialBlockEntity> DIFFERENTIAL = REGISTRATE

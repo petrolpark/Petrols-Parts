@@ -6,7 +6,6 @@ import java.util.Objects;
 
 import org.joml.Vector3f;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.simpleRelays.AbstractShaftBlock;
 
@@ -35,7 +34,6 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import petrolpark.mc.library.compat.create.util.BlueprintOverlayHelper;
 import petrolpark.mc.library.util.BigItemStack;
 import petrolpark.mc.petrolsparts.PetrolsParts;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 @OnlyIn(Dist.CLIENT)
 @EventBusSubscriber(Dist.CLIENT)
@@ -43,6 +41,7 @@ public class AutoShaftRoutingClientHelper {
 
     private static final Vector3f PARTICLE_COLOR = new Vector3f(0.3f, 0.9f, 0.5f);
   
+    protected static CornerShaftSet set = null;
     protected static BlockFace startFace = null;
     protected static BlockFace goalFace = null;
     protected static List<Pair<BlockPos, BlockState>> statesToPlace = null;
@@ -50,6 +49,7 @@ public class AutoShaftRoutingClientHelper {
     protected static List<Vec3> particleLocations = null;
 
     public static final void cancel() {
+        set = null;
         startFace = null;
         goalFace = null;
         statesToPlace = null;
@@ -71,7 +71,7 @@ public class AutoShaftRoutingClientHelper {
         if (!isActive()) return;
 
         // Maybe cancel
-        if (!PetrolsPartsBlocks.CORNER_SHAFT.isIn(player.getItemInHand(InteractionHand.MAIN_HAND))) {
+        if (!set.cornerShaftBlock().isIn(player.getItemInHand(InteractionHand.MAIN_HAND))) {
             cancel();
             return;
         };
@@ -95,7 +95,7 @@ public class AutoShaftRoutingClientHelper {
 
         goalFace = targetedFace;
         if (goalFace == null) return;
-        statesToPlace = AutoShaftRouting.getPath(level, startFace, goalFace);
+        statesToPlace = AutoShaftRouting.getPath(level, set, startFace, goalFace);
         particleLocations = new ArrayList<>(statesToPlace.size() * 5);
         int straightShafts = 0;
         int cornerShafts = 0;
@@ -109,7 +109,7 @@ public class AutoShaftRoutingClientHelper {
                 particleLocations.add(center.relative(dir, 0.2f));
             };
         };
-        itemRequirements = List.of(new BigItemStack(AllBlocks.SHAFT, straightShafts), new BigItemStack(PetrolsPartsBlocks.CORNER_SHAFT, cornerShafts));
+        itemRequirements = List.of(new BigItemStack(set.shaftBlock(), straightShafts), new BigItemStack(set.cornerShaftBlock(), cornerShafts));
     };
 
     public static final BlockFace getFace(Level level, BlockHitResult bhr) {
@@ -124,20 +124,22 @@ public class AutoShaftRoutingClientHelper {
         return new BlockFace(pos, bhr.getDirection());
     };
 
-    public static final void tryPlace(BlockPlaceContext context) {
+    public static final void tryPlace(CornerShaftSet set, BlockPlaceContext context) {
         if (!isActive()) {
+            AutoShaftRoutingClientHelper.set = set;
             startFace = getFace(context.getLevel(), context.getHitResult());
             context.getPlayer().displayClientMessage(PetrolsParts.translate("gui.auto_shaft_placement"), true);
         } else {
             if (statesToPlace != null && !statesToPlace.isEmpty()) {
-                CatnipClientServices.NETWORK.sendToServer(new PlaceCornerShaftsPacket(statesToPlace));
+                CatnipClientServices.NETWORK.sendToServer(set.packetFactory().create(statesToPlace));
                 cancel();
             };
         };
     };
 
-    public static final void tryPlace(Player player, BlockPos pos, Direction face) {
+    public static final void tryPlace(CornerShaftSet set, Player player, BlockPos pos, Direction face) {
         if (isActive()) return;
+        AutoShaftRoutingClientHelper.set = set;
         startFace = new BlockFace(pos, face);
         player.displayClientMessage(PetrolsParts.translate("gui.auto_shaft_placement"), true);
     };

@@ -1,6 +1,7 @@
 package petrolpark.mc.petrolsparts.content.kinetics.cornerShaft;
 
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import com.simibubi.create.content.equipment.extendoGrip.ExtendoGripItem;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
@@ -24,22 +25,26 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.phys.BlockHitResult;
 import petrolpark.mc.library.Petrolpark;
 import petrolpark.mc.library.core.world.block.multiPart.MultiPartBlock;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.util.ShaftHelper;
 
 public class CornerShaftBlockItem extends BlockItem {
 
+    protected final Supplier<CornerShaftSet> set;
     public final int placementHelperId;
 
-    public CornerShaftBlockItem(Block block, Item.Properties properties) {
+    public CornerShaftBlockItem(CornerShaftBlock block, Item.Properties properties) {
         super(block, properties);
+        this.set = block.set;
         placementHelperId = PlacementHelpers.register(new PlacementHelper());
+    };
+    
+    public CornerShaftSet getSet() {
+        return set.get();
     };
 
     @Override
@@ -54,7 +59,7 @@ public class CornerShaftBlockItem extends BlockItem {
             if (offset.isSuccessful()) {
                 if (context.getLevel().isClientSide()) CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> {
                     final Direction facing = offset.getTransform().apply(getBlock().defaultBlockState()).getValue(CornerShaftBlock.FACING);
-                    AutoShaftRoutingClientHelper.tryPlace(player, offset.getBlockPos().relative(facing.getOpposite()), facing);
+                    AutoShaftRoutingClientHelper.tryPlace(getSet(), player, offset.getBlockPos().relative(facing.getOpposite()), facing);
                 });
                 return InteractionResult.FAIL;
             };
@@ -66,7 +71,7 @@ public class CornerShaftBlockItem extends BlockItem {
 
         if (!context.getPlayer().isShiftKeyDown() && defaultPlacementState != null && canPlace(blockPlaceContext, defaultPlacementState)) {
             if (context.getLevel().isClientSide()) {
-                CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> AutoShaftRoutingClientHelper.tryPlace(blockPlaceContext));
+                CatnipServices.PLATFORM.executeOnClientOnly(() -> () -> AutoShaftRoutingClientHelper.tryPlace(getSet(), blockPlaceContext));
             };
             return InteractionResult.FAIL;
         };
@@ -110,7 +115,7 @@ public class CornerShaftBlockItem extends BlockItem {
                         if (s.hasProperty(property)) return s.setValue(property, state.getValue(property));
                         else if (s.hasProperty(BlockStateProperties.FACING)) return s.setValue(BlockStateProperties.FACING, dir);
                         else return s;
-                    }).withGhostState(PetrolsPartsBlocks.STRAIGHT_CORNER_SHAFT.getDefaultState());
+                    }).withGhostState(getSet().straightCornerShaftBlock().getDefaultState());
             };
 
             return PlacementOffset.fail();

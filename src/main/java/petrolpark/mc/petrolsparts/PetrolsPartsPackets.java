@@ -12,7 +12,7 @@ import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeI
 
 public enum PetrolsPartsPackets implements BasePacketPayload.PacketTypeProvider {
 
-	PLACE_CORNER_SHAFTS(PlaceCornerShaftsPacket.class, PlaceCornerShaftsPacket.STREAM_CODEC),
+	PLACE_VANILLA_CORNER_SHAFTS(PlaceCornerShaftsPacket.class, PlaceCornerShaftsPacket.VANILLA_STREAM_CODEC),
     PNEUMATIC_TUBE_ITEM_TRANSPORT(PneumaticTubeItemTransportPacket.class, PneumaticTubeItemTransportPacket.STREAM_CODEC)
     ;
 

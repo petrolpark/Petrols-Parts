@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
-import com.simibubi.create.AllBlocks;
 import com.simibubi.create.content.contraptions.StructureTransform;
 import com.simibubi.create.content.kinetics.base.DirectionalAxisKineticBlock;
 import com.simibubi.create.content.kinetics.base.DirectionalKineticBlock;
@@ -21,12 +21,20 @@ import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Mirror;
 import net.minecraft.world.level.block.Rotation;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 
 public abstract class AbstractCornerShaftBlock extends DirectionalAxisKineticBlock implements IBE<CornerShaftBlockEntity> {
 
-    public AbstractCornerShaftBlock(Properties properties) {
+    protected final Supplier<CornerShaftSet> set;
+
+    public AbstractCornerShaftBlock(Supplier<CornerShaftSet> set, BlockBehaviour.Properties properties) {
         super(properties);
+        this.set = set;
+    };
+
+    public CornerShaftSet getSet() {
+        return set.get();
     };
 
     @Override
@@ -100,7 +108,7 @@ public abstract class AbstractCornerShaftBlock extends DirectionalAxisKineticBlo
     };
 
     public BlockState getBlockstateConnectingDirections(Direction direction1, Direction direction2) {
-        if (direction1.getAxis() == direction2.getAxis()) return AllBlocks.SHAFT.getDefaultState().setValue(ShaftBlock.AXIS, direction1.getAxis());
+        if (direction1.getAxis() == direction2.getAxis()) return getSet().shaftBlock().getDefaultState().setValue(ShaftBlock.AXIS, direction1.getAxis());
         final boolean axisAlongFirst = (direction1.getAxisDirection() == direction2.getAxisDirection());
         final Map<Axis, Direction> directionsForEachAxis = Map.of(direction1.getAxis(), direction1, direction2.getAxis(), direction2);
         final List<Axis> axes = new ArrayList<>();

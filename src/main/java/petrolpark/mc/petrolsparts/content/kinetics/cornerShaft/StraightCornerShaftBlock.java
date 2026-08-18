@@ -1,5 +1,7 @@
 package petrolpark.mc.petrolsparts.content.kinetics.cornerShaft;
 
+import java.util.function.Supplier;
+
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
 
@@ -14,23 +16,32 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
-import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 
 public class StraightCornerShaftBlock extends ShaftBlock {
 
-    public StraightCornerShaftBlock(BlockBehaviour.Properties properties) {
+    public static StraightCornerShaftBlock vanilla(BlockBehaviour.Properties properties) {
+        return new StraightCornerShaftBlock(CornerShaftSet::vanilla, properties);
+    };
+
+    protected final Supplier<CornerShaftSet> set;
+
+    public StraightCornerShaftBlock(Supplier<CornerShaftSet> set, BlockBehaviour.Properties properties) {
         super(properties);
+        this.set = set;
+    };
+
+    public CornerShaftSet getSet() {
+        return set.get();
     };
 
     @Override
     public Item asItem() {
-        return PetrolsPartsBlocks.CORNER_SHAFT.asItem();
+        return getSet().cornerShaftBlock().asItem();
     };
 
     @Override
     public String getDescriptionId() {
-        return PetrolsPartsBlocks.CORNER_SHAFT.get().getDescriptionId();
+        return getSet().cornerShaftBlock().get().getDescriptionId();
     };
 
     @Override
@@ -40,7 +51,7 @@ public class StraightCornerShaftBlock extends ShaftBlock {
 
     @Override
     public BlockEntityType<? extends KineticBlockEntity> getBlockEntityType() {
-        return PetrolsPartsBlockEntityTypes.STRAIGHT_CORNER_SHAFT.get();
+        return getSet().straightBlockEntity().get();
     };
     
 };
