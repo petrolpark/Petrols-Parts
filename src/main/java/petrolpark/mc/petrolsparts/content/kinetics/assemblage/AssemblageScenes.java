@@ -1,5 +1,6 @@
 package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.foundation.ponder.CreateSceneBuilder;
 
 import net.createmod.catnip.math.Pointing;
@@ -12,6 +13,8 @@ import net.createmod.ponder.foundation.instruction.DisplayWorldSectionInstructio
 import net.createmod.ponder.foundation.instruction.FadeOutOfSceneInstruction;
 import net.minecraft.core.Direction;
 import petrolpark.mc.library.core.client.ponder.instruction.SetElementVisibilityInstruction;
+import petrolpark.mc.library.util.PonderHelper;
+import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 
 public class AssemblageScenes {
@@ -255,7 +258,46 @@ public class AssemblageScenes {
         final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
         scene.title("assemblage.encasing", "This text is defined in a language file");
 		scene.configureBasePlate(0, 0, 5);
-		scene.showBasePlate();
+		scene.world().showSection(util.select().layer(0), Direction.DOWN);
+        scene.idle(5);
+		scene.world().showSection(util.select().layersFrom(1), Direction.DOWN);
+		scene.idle(20);
+
+        scene.overlay().showControls(util.vector().topOf(2, 1, 1), Pointing.DOWN, 20)
+            .rightClick()
+            .withItem(AllBlocks.ANDESITE_CASING.asStack());
+        scene.idle(7);
+        PonderHelper.swapBlockState(scene, util.grid().at(2, 1, 1), PetrolsPartsBlocks.ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE.getDefaultState(), true);
+        scene.idle(20);
+
+        scene.overlay().showControls(util.vector().topOf(2, 1, 3), Pointing.DOWN, 20)
+            .rightClick()
+            .withItem(AllBlocks.BRASS_CASING.asStack());
+        scene.idle(7);
+        PonderHelper.swapBlockState(scene, util.grid().at(2, 1, 3), PetrolsPartsBlocks.BRASS_ENCASED_SINGLE_SHAFT_ASSEMBLAGE.getDefaultState(), true);
+        scene.idle(20);
+
+        scene.overlay().showText(80)
+            .attachKeyFrame()
+            .pointAt(util.vector().centerOf(2, 1, 1))
+            .text("This text is defined in a language file");
+        scene.idle(40);
+
+        PonderHelper.swapBlockState(scene, util.grid().at(1, 2, 3), PetrolsPartsBlocks.ANDESITE_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE.getDefaultState(), true);
+        scene.idle(10);
+        PonderHelper.swapBlockState(scene, util.grid().at(3, 1, 2), PetrolsPartsBlocks.BRASS_ENCASED_SINGLE_SHAFT_ASSEMBLAGE.getDefaultState(), true);
+        scene.idle(10);
+        PonderHelper.swapBlockState(scene, util.grid().at(1, 2, 2), PetrolsPartsBlocks.ANDESITE_ENCASED_SINGLE_SHAFT_ASSEMBLAGE.getDefaultState(), true);
+        scene.idle(10);
+        PonderHelper.swapBlockState(scene, util.grid().at(3, 1, 3), PetrolsPartsBlocks.BRASS_ENCASED_SEPARATE_SHAFT_HALVES_ASSEMBLAGE.getDefaultState(), true);
+        scene.idle(30);
+
+        scene.overlay().showText(60)
+            .attachKeyFrame()
+            .colored(PonderPalette.RED)
+            .pointAt(util.vector().blockSurface(util.grid().at(1, 2, 2), Direction.NORTH))
+            .text("This text is defined in a language file");
+        scene.idle(80);
         
         scene.markAsFinished();
     };

@@ -101,7 +101,8 @@ public class EncasedDualDiagonalBevelCogWheelBlock extends CompositeKineticBlock
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
-        return new ItemStack(getCasing());
+        if (target instanceof BlockHitResult bhr && bhr.getDirection().getAxis() != state.getValue(EXCLUDED_AXIS)) return getSet().item().asStack();
+        return new ItemStack(getCasing()); 
     };
 
     @Override

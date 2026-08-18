@@ -140,6 +140,7 @@ public abstract class EncasedAssemblageBlock extends Block implements IBE<Assemb
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
         return new ItemStack(getCasing());
+        //TODO
     };
 
     @Override

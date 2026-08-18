@@ -144,10 +144,10 @@ public class DifferentialBlockEntity extends CompositeKineticBlockEntity {
 
         @Override
         public void setSource(BlockPos source) {
-            if (resetting && hasSource()) { // Shouldn't change source while resetting
+            if (resetting && hasSource() && !isSourceAlwaysOverridable() && !Objects.equals(source, this.source)) { // Shouldn't change source while resetting
                 getLevel().destroyBlock(getBlockPos(), true);
                 return;
-            }; 
+            };
             super.setSource(source);
         };
 

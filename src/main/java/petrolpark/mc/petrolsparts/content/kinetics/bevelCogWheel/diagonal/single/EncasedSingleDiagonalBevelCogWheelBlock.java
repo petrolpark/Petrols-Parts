@@ -102,6 +102,15 @@ public class EncasedSingleDiagonalBevelCogWheelBlock extends KineticBlock implem
 
     @Override
     public ItemStack getCloneItemStack(BlockState state, HitResult target, LevelReader level, BlockPos pos, Player player) {
+        if (target instanceof BlockHitResult bhr) {
+            final Orientation orientation = state.getValue(ORIENTATION);
+            if (bhr.getDirection() == orientation.top || bhr.getDirection() == orientation.front) return getSet().item().asStack();
+            if (switch (state.getValue(SHAFT)) {
+                case FIRST_AXIS -> bhr.getDirection() == orientation.top.getOpposite();
+                case SECOND_AXIS -> bhr.getDirection() == orientation.front.getOpposite();
+                case NONE -> false;
+            }) return getSet().shaftHalfItem().asStack();
+        };
         return new ItemStack(getCasing());
     };
 

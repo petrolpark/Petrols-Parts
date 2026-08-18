@@ -81,6 +81,7 @@ public class BevelCogWheelScenes {
         scene.idle(50);
 
         scene.overlay().showControls(util.vector().topOf(middle), Pointing.DOWN, 30)
+            .rightClick()
             .withItem(AllBlocks.SHAFT.asStack());
         scene.idle(20);
         scene.world().cycleBlockProperty(middle, CornerBevelCogWheelsBlock.SHAFT);
@@ -191,6 +192,7 @@ public class BevelCogWheelScenes {
         scene.idle(20);
 
         scene.overlay().showControls(util.vector().centerOf(util.grid().at(2, 2, 1)), Pointing.DOWN, 40)
+            .rightClick()
             .withItem(PetrolsPartsItems.SHAFT_HALF.asStack());
         scene.idle(30);
 
