@@ -406,8 +406,13 @@ public class PetrolsPartsBlocks {
         .register();
 
     public static final BlockEntry<RedstoneTransmissionBlock> REDSTONE_TRANSMISSION = REGISTRATE.block("redstone_transmission", RedstoneTransmissionBlock::new)
+        .initialProperties(AllBlocks.SHAFT)
         .defaultLoot()
+        .transform(PPCStress.setNoImpact())
+        .transform(TagGen.axeOrPickaxe())
+        .onRegister(CreateRegistrate.blockModel(() -> BracketedKineticBlockModel::new))
         .item()
+        .onRegister(item -> TooltipModifier.REGISTRY.register(item, KineticStats.create(item)))
         .build()
         .register();
 

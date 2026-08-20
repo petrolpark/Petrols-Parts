@@ -17,6 +17,7 @@ import net.minecraft.core.Direction;
 import net.minecraft.core.Direction.Axis;
 import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.util.Orientation;
+import petrolpark.mc.library.util.PonderHelper;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
 import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.orthogonal.simple.CornerBevelCogWheelsBlock;
@@ -223,6 +224,44 @@ public class BevelCogWheelScenes {
         final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
         scene.title("bevel_cogwheel.encasing", "This text is defined in a language file");
         scene.configureBasePlate(0, 0, 5);
-        scene.showBasePlate();
+
+        scene.world().showSection(util.select().layer(0), Direction.DOWN);
+        scene.idle(10);
+        scene.world().showSection(util.select().layer(1), Direction.DOWN);
+        scene.idle(20);
+
+        scene.overlay().showControls(util.vector().topOf(2, 1, 2), Pointing.DOWN, 20)
+            .rightClick()
+            .withItem(AllBlocks.ANDESITE_CASING.asStack());
+        scene.idle(7);
+        PonderHelper.swapBlockState(scene, util.grid().at(2, 1, 2), PetrolsPartsBlocks.ANDESITE_ENCASED_SINGLE_DIAGONAL_BEVEL_COGWHEEL.getDefaultState(), true);
+        scene.idle(20);
+        scene.overlay().showControls(util.vector().topOf(1, 1, 3), Pointing.DOWN, 20)
+            .rightClick()
+            .withItem(AllBlocks.BRASS_CASING.asStack());
+        scene.idle(7);
+        PonderHelper.swapBlockState(scene, util.grid().at(1, 1, 3), PetrolsPartsBlocks.BRASS_ENCASED_SINGLE_DIAGONAL_BEVEL_COGWHEEL.getDefaultState(), true);
+        scene.idle(20);
+
+        scene.overlay().showText(80)
+            .attachKeyFrame()
+            .pointAt(util.vector().centerOf(1, 1, 3))
+            .text("This text is defined in a language file");
+        scene.idle(40);
+
+        PonderHelper.swapBlockState(scene, util.grid().at(1, 1, 1), PetrolsPartsBlocks.BRASS_ENCASED_SINGLE_DIAGONAL_BEVEL_COGWHEEL.getDefaultState(), true);
+        scene.idle(20);
+        PonderHelper.swapBlockState(scene, util.grid().at(0, 1, 2), PetrolsPartsBlocks.ANDESITE_ENCASED_DUAL_DIAGONAL_BEVEL_COGWHEEL.getDefaultState(), true);
+        scene.idle(20);
+
+        scene.rotateCameraY(180);
+        scene.idle(20);
+    
+        scene.overlay().showOutlineWithText(util.select().position(3, 1, 3), 60)
+            .colored(PonderPalette.RED)
+            .attachKeyFrame()
+            .text("This text is defined in a language file");
+        scene.idle(80);
+        scene.markAsFinished();
     };
 };

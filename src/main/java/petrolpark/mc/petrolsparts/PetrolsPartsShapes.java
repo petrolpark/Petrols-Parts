@@ -19,7 +19,7 @@ public class PetrolsPartsShapes {
     FACIAL_LARGE_COGWHEEL = shape(0, 11, 0, 16, 15, 16).forDirectional(),
     MIDDLE_LARGE_COGWHEEL = shape(0, 6, 0, 16, 10, 16).forAxis(),
     
-    TRANSMISSION_SHAFT = shape(5d, 0d, 5d, 11d, 16d, 11d).forAxis();
+    TRANSMISSION_SHAFT = shape(4d, 0d, 4d, 12d, 16d, 12d).forAxis();
 
     public static AllShapes.Builder shape(double x1, double y1, double z1, double x2, double y2, double z2) {
         return new AllShapes.Builder(Block.box(x1, y1, z1, x2, y2, z2));

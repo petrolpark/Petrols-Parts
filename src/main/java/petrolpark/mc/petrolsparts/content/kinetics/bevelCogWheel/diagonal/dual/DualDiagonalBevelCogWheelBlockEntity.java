@@ -32,7 +32,7 @@ public class DualDiagonalBevelCogWheelBlockEntity extends CompositeKineticBlockE
 
     @Override
     public void setBlockState(BlockState blockState) {
-        setPartsFromBlockState(blockState);
+        if (parts == null || parts.get(0).getOrientation() != IDualDiagonalBevelCogWheelBlock.getCogOrientations(blockState)[0]) setPartsFromBlockState(blockState);
         super.setBlockState(blockState);
     };
 

@@ -259,7 +259,7 @@ public class AssemblageScenes {
         scene.title("assemblage.encasing", "This text is defined in a language file");
 		scene.configureBasePlate(0, 0, 5);
 		scene.world().showSection(util.select().layer(0), Direction.DOWN);
-        scene.idle(5);
+        scene.idle(10);
 		scene.world().showSection(util.select().layersFrom(1), Direction.DOWN);
 		scene.idle(20);
 

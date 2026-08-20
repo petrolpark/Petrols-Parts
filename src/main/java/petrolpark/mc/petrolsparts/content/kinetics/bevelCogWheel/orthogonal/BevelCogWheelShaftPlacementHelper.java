@@ -46,6 +46,12 @@ public class BevelCogWheelShaftPlacementHelper implements IPlacementHelper {
 
     @Override
     public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
+        if (switch (((IOrthogonalBevelCogWheelBlock)state.getBlock()).getTargetedPart(state, pos, player)) {
+            case BevelCogWheelPart.Cog cog -> cog.face == ray.getDirection();
+            case BevelCogWheelPart.Shaft shaft -> shaft.axis == ray.getDirection().getAxis();
+            case null -> false;
+        }) return PlacementOffset.fail(); // Don't place on ends
+
         for (final Direction dir : IPlacementHelper.orderedByDistance(pos, ray.getLocation())) {
             if (state.getBlock() instanceof IOrthogonalBevelCogWheelBlock block && block.withPart(state, getSet().shaftParts().get(dir.getAxis())) != null) {
                 return PlacementOffset.success(pos, s -> s.setValue(ShaftBlock.AXIS, dir.getAxis()));

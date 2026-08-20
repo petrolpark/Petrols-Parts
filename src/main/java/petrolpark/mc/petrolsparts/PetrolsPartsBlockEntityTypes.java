@@ -210,8 +210,9 @@ public class PetrolsPartsBlockEntityTypes {
         .renderer(() -> PneumaticTubeRenderer::new)
         .register();
 
-    public static final BlockEntityEntry<RedstoneTransmissionBlockEntity> TRANSMISSION = REGISTRATE
-        .createBlockEntity("transmission", RedstoneTransmissionBlockEntity::new)
+    public static final BlockEntityEntry<RedstoneTransmissionBlockEntity> REDSTONE_TRANSMISSION = REGISTRATE
+        .createBlockEntity("redstone_transmission", RedstoneTransmissionBlockEntity::new)
+        //.visual(() -> SingleAxisRotatingVisual::new, true)
         .validBlocks(PetrolsPartsBlocks.REDSTONE_TRANSMISSION)
         .renderer(() -> RedstoneTransmissionRenderer::new)
         .register();
