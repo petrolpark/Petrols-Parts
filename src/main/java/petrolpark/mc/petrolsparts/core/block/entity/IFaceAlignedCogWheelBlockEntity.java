@@ -18,6 +18,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity.CompositeKineticBlockEntityPart;
 import petrolpark.mc.petrolsparts.PetrolsPartsTags;
+import petrolpark.mc.petrolsparts.content.kinetics.assemblage.AssemblageCogWheelBlockItem;
 import petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal.IDiagonalBevelCogWheelBlock;
 import petrolpark.mc.petrolsparts.core.block.CogType;
 
@@ -105,6 +106,13 @@ public interface IFaceAlignedCogWheelBlockEntity {
      * @param face
      */
     public CogType getCogType(Direction face);
+
+    /**
+     * In {@link AssemblageCogWheelBlockItem.PlacementHelper}, attempt to place on the other two Cogwheel positions; not just just the one hovered
+     */
+    public default boolean tryToPlaceOnOtherFaces() {
+        return true;
+    };
 
     public static float propagateFaceAlignedCogwheels(KineticBlockEntity from, KineticBlockEntity to, BlockState stateFrom, BlockState stateTo, BlockPos diff, boolean connectedViaAxes, boolean connectedViaCogs) {
 

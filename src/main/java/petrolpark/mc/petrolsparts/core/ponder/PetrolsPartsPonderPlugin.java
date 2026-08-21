@@ -96,6 +96,10 @@ public class PetrolsPartsPonderPlugin implements PonderPlugin {
         // Pneumatic Tube
         itemProviderHelper.forComponents(PetrolsPartsBlocks.PNEUMATIC_TUBE)
             .addStoryBoard("logistics/pneumatic_tube", PetrolsPartsKineticsScenes::pneumaticTube);
+
+        // Redstone Transmission
+        itemProviderHelper.forComponents(PetrolsPartsBlocks.REDSTONE_TRANSMISSION, PetrolsPartsItems.COAXIAL_COGWHEEL)
+            .addStoryBoard("kinetics/redstone_transmission", PetrolsPartsKineticsScenes::redstoneTransmission);
     };
 
     @Override

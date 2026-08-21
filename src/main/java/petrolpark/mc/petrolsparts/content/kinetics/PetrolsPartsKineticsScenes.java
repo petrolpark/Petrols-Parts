@@ -2,6 +2,7 @@ package petrolpark.mc.petrolsparts.content.kinetics;
 
 import java.util.function.UnaryOperator;
 
+import com.simibubi.create.AllBlocks;
 import com.simibubi.create.AllItems;
 import com.simibubi.create.content.kinetics.gauge.StressGaugeBlockEntity;
 import com.simibubi.create.content.redstone.analogLever.AnalogLeverBlockEntity;
@@ -27,9 +28,13 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.core.client.ponder.instruction.CameraShakeInstruction;
+import petrolpark.mc.library.core.client.ponder.instruction.OutlineAABBInstruction;
+import petrolpark.mc.library.core.client.ponder.instruction.SetElementVisibilityInstruction;
 import petrolpark.mc.library.core.client.ponder.particle.PetrolparkEmitters;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlocks;
+import petrolpark.mc.petrolsparts.PetrolsPartsItems;
 import petrolpark.mc.petrolsparts.content.kinetics.movement.MovementBlockEntity;
+import petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission.RedstoneTransmissionBlock;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeBlockEntity;
 import petrolpark.mc.petrolsparts.content.logistics.pneumaticTube.PneumaticTubeTransportInstruction;
 
@@ -342,7 +347,7 @@ public class PetrolsPartsKineticsScenes {
         scene.markAsFinished();
     };
 
-    public static final void movement(SceneBuilder sceneIn, SceneBuildingUtil util) {
+    public static void movement(SceneBuilder sceneIn, SceneBuildingUtil util) {
         final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
         scene.title("movement", "This text is defined in a language file");
         scene.configureBasePlate(0, 0, 5);
@@ -452,7 +457,7 @@ public class PetrolsPartsKineticsScenes {
         scene.world().setKineticSpeed(util.select().fromTo(2, 2, 0, 2, 2, 1), 0f);
     };
 
-    public static final void movementBattery(SceneBuilder scene, SceneBuildingUtil util) {
+    public static void movementBattery(SceneBuilder scene, SceneBuildingUtil util) {
         scene.title("movement_battery", "This text is defined in a language file");
         scene.configureBasePlate(0, 0, 5);
         scene.world().showSection(util.select().layer(0), Direction.DOWN);
@@ -477,7 +482,7 @@ public class PetrolsPartsKineticsScenes {
             .text("This text is defined in a language file");
     };
     
-    public static final void overloadClutch(SceneBuilder sceneIn, SceneBuildingUtil util) {
+    public static void overloadClutch(SceneBuilder sceneIn, SceneBuildingUtil util) {
         final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
         scene.title("overload_clutch", "This text is defined in a language file");
         scene.configureBasePlate(0, 0, 5);
@@ -556,7 +561,7 @@ public class PetrolsPartsKineticsScenes {
             scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
             scene.effects().indicateRedstone(dust);
             final int power = i;
-            scene.world().modifyBlockEntityNBT(util.select().position(0, 2, 3), AnalogLeverBlockEntity.class, nbt -> nbt.putInt("State", power));
+            setLeverPower(scene, util.select().position(0, 2, 3), power);
             setStress(scene, gauge, 0.3f + power / 20f);
         };
 
@@ -565,7 +570,7 @@ public class PetrolsPartsKineticsScenes {
             .text("This text is defined in a lamguage file")
             .attachKeyFrame();
         scene.idle(20);
-        scene.world().modifyBlockEntityNBT(util.select().position(0, 2, 3), AnalogLeverBlockEntity.class, nbt -> nbt.putInt("State", 15));
+        setLeverPower(scene, util.select().position(0, 2, 3), 15);
         scene.world().multiplyKineticSpeed(subnet, 1 / 256f / 256f);
         multiplyCompositeKBESpeed(scene, clutch, 0, 1 / 256f / 256f);
         setStress(scene, gauge, 1.125f);
@@ -592,11 +597,15 @@ public class PetrolsPartsKineticsScenes {
         scene.markAsFinished();
     };
 
-    private static final void setStress(SceneBuilder scene, Selection selection, float stress) {
+    private static void setStress(SceneBuilder scene, Selection selection, float stress) {
         scene.world().modifyBlockEntityNBT(selection, StressGaugeBlockEntity.class, nbt -> nbt.putFloat("Value", stress));
     };
 
-    public static final void planetaryGearset(SceneBuilder baseScene, SceneBuildingUtil util) {
+    private static void setLeverPower(SceneBuilder scene, Selection selection, int power) {
+        scene.world().modifyBlockEntityNBT(selection, AnalogLeverBlockEntity.class, nbt -> nbt.putInt("State", power));
+    };
+
+    public static void planetaryGearset(SceneBuilder baseScene, SceneBuildingUtil util) {
         CreateSceneBuilder scene = new CreateSceneBuilder(baseScene);
         scene.title("planetary_gearset", "This text is defined in a language file");
         scene.configureBasePlate(0, 0, 3);
@@ -748,6 +757,153 @@ public class PetrolsPartsKineticsScenes {
         scene.idle(70);
     };
 
+    public static void redstoneTransmission(SceneBuilder sceneIn, SceneBuildingUtil util) {
+        final CreateSceneBuilder scene = new CreateSceneBuilder(sceneIn);
+        scene.title("redstone_transmission", "This text is defined in a language file");
+        scene.configureBasePlate(0, 0, 5);
+        scene.showBasePlate();
+
+        final BlockPos controller = util.grid().at(2, 1, 4);
+
+        scene.idle(10);
+        scene.world().showSection(util.select().position(1, 0, 5), Direction.NORTH);
+        scene.idle(10);
+        scene.world().showSection(util.select().position(2, 1, 5), Direction.DOWN);
+        scene.idle(10);
+        scene.world().cycleBlockProperty(controller, RedstoneTransmissionBlock.UPPER_CONNECTION);
+        scene.world().showSection(util.select().position(controller), Direction.DOWN);
+        scene.idle(20);
+
+        scene.overlay().showControls(util.vector().of(2.5d, 2d, 4.75d), Pointing.DOWN, 30)
+            .rightClick()
+            .withItem(PetrolsPartsItems.COAXIAL_COGWHEEL.asStack());
+        scene.idle(10);
+        final ElementLink<WorldSectionElement> cog1 = scene.world().showIndependentSectionImmediately(util.select().position(2, 3, 4));
+        scene.world().moveSection(cog1, util.vector().of(0d, -2d, 0d), 0);
+        scene.idle(30);
+
+        scene.overlay().showText(60)
+            .pointAt(util.vector().centerOf(controller))
+            .attachKeyFrame()
+            .text("This text is defined in a language file");
+        scene.idle(70);
+
+        scene.addInstruction(new SetElementVisibilityInstruction(cog1, false));
+        scene.world().setBlock(controller, AllBlocks.COGWHEEL.getDefaultState(), false);
+        scene.world().setBlock(controller, PetrolsPartsBlocks.REDSTONE_TRANSMISSION.getDefaultState().setValue(RedstoneTransmissionBlock.FACING, Direction.NORTH), true);
+        scene.world().setKineticSpeed(util.select().position(controller), 32f);
+        scene.idle(20);
+
+        scene.overlay().showText(60)
+            .pointAt(util.vector().centerOf(controller))
+            .attachKeyFrame()
+            .text("This text is defined in a language file");
+        scene.idle(20);
+        scene.overlay().showControls(util.vector().of(2.5d, 2d, 4.25d), Pointing.DOWN, 40)
+            .rightClick()
+            .withItem(PetrolsPartsItems.COAXIAL_COGWHEEL.asStack());
+        scene.idle(10);
+        scene.addInstruction(new SetElementVisibilityInstruction(cog1, true));
+        scene.world().moveSection(cog1, util.vector().of(0d, 0d, -10 / 16d), 0);
+        scene.idle(10);
+        scene.world().moveSection(cog1, util.vector().of(0d, 0d, 10 / 16d), 10);
+        scene.idle(40);
+
+        scene.world().showSection(util.select().fromTo(0, 1, 4, 1, 1, 4), Direction.DOWN);
+        scene.idle(20);
+        final BlockPos dust = util.grid().at(1, 1, 4);
+        final Selection leverS = util.select().position(0, 1, 4);
+
+        scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
+        scene.effects().indicateRedstone(dust);
+        setLeverPower(scene, leverS, 1);
+        scene.world().moveSection(cog1, util.vector().of(0d, 0d, -5 / 16d), 10);
+        scene.idle(20);
+
+        scene.overlay().showText(80)
+            .pointAt(util.vector().blockSurface(dust, Direction.DOWN))
+            .attachKeyFrame()
+            .text("This text is defined in a language file");
+
+        scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
+        scene.effects().indicateRedstone(dust);
+        setLeverPower(scene, leverS, 2);
+        scene.world().moveSection(cog1, util.vector().of(0d, 0d, -5 / 16d), 10);
+        scene.idle(10);
+        scene.world().showSection(util.select().fromTo(2, 1, 0, 2, 1, 3), Direction.DOWN);
+        scene.idle(10);
+        scene.world().cycleBlockProperty(controller, RedstoneTransmissionBlock.UPPER_CONNECTION);
+
+        scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
+        scene.effects().indicateRedstone(dust);
+        setLeverPower(scene, leverS, 3);
+        scene.world().moveSection(cog1, util.vector().of(0d, 0d, -6 / 16d), 10);
+        scene.idle(2);
+        for (int z = 3; z >= 1; z--) {
+            scene.world().showSection(util.select().position(3, 1, z), Direction.WEST);
+            scene.idle(6);
+        };
+
+        scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
+        scene.effects().indicateRedstone(dust);
+        setLeverPower(scene, leverS, 4);
+        scene.world().moveSection(cog1, util.vector().of(0d, 0d, -5 / 16d), 10);
+        scene.idle(10);
+        setCompositeKBESpeed(scene, util.select().position(3, 1, 3), 0, -32f);
+        scene.idle(10);
+
+        scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
+        scene.effects().indicateRedstone(dust);
+        setLeverPower(scene, leverS, 5);
+        scene.world().moveSection(cog1, util.vector().of(0d, 0d, -5 / 16d), 10);
+        scene.idle(5);
+        setCompositeKBESpeed(scene, util.select().position(3, 1, 3), 0, 0f);
+        scene.idle(35);
+
+        scene.overlay().showControls(util.vector().of(2.5d, 2d, 2.25d), Pointing.DOWN, 60)
+            .rightClick()
+            .withItem(PetrolsPartsItems.COAXIAL_COGWHEEL.asStack());
+        scene.idle(10);
+        final ElementLink<WorldSectionElement> cog2 = scene.world().showIndependentSectionImmediately(util.select().position(2, 3, 3));
+        scene.world().moveSection(cog2, util.vector().of(0d, -2d, -21 / 16d), 0);
+        scene.idle(20);
+
+        scene.overlay().showText(30)
+            .attachKeyFrame()
+            .pointAt(util.vector().centerOf(2, 1, 2))
+            .text("This text is defined in a language file");
+        scene.idle(40);
+
+        scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
+        scene.effects().indicateRedstone(dust);
+        setLeverPower(scene, leverS, 6);
+        scene.world().moveSection(cog1, util.vector().of(0d, 0d, -6 / 16d), 10);
+        scene.world().moveSection(cog2, util.vector().of(0d, 0d, -6 / 16d), 10);
+        scene.idle(20);
+
+        scene.addInstruction(new OutlineAABBInstruction(PonderPalette.GREEN, "cogs", new AABB(2d, 1d, 1.6d, 3d, 2d, 3d), 22));
+        scene.idle(20);
+
+        scene.world().cycleBlockProperty(dust, RedStoneWireBlock.POWER);
+        scene.effects().indicateRedstone(dust);
+        setLeverPower(scene, leverS, 7);
+        scene.world().moveSection(cog1, util.vector().of(0d, 0d, -5 / 16d), 10);
+        scene.world().moveSection(cog2, util.vector().of(0d, 0d, -5 / 16d), 10);
+        scene.idle(5);
+        scene.overlay().chaseBoundingBoxOutline(PonderPalette.GREEN, "cogs", new AABB(2d, 1d, 1.4d, 3d, 2d, 2.8d), 75);
+        scene.idle(5);
+        setCompositeKBESpeed(scene, util.select().fromTo(3, 1, 1, 3, 1, 2), 0, -32f);
+        scene.idle(10);
+        
+        scene.overlay().showText(60)
+            .colored(PonderPalette.GREEN)
+            .pointAt(util.vector().blockSurface(util.grid().at(2, 1, 2), Direction.WEST))
+            .text("This text is defined in a language file");
+        scene.idle(60);
+
+        scene.markAsFinished();
+    };
+
     public static final void modifyCompositeKBESpeed(SceneBuilder scene, Selection selection, int partIndex, UnaryOperator<Float> speedFunc) {
         scene.world().modifyBlockEntityNBT(selection, CompositeKineticBlockEntity.class, tag -> {
             final CompoundTag partTag = tag.getList("Parts", Tag.TAG_COMPOUND).getCompound(partIndex);
@@ -757,5 +913,9 @@ public class PetrolsPartsKineticsScenes {
 
     public static final void multiplyCompositeKBESpeed(SceneBuilder scene, Selection selection, int partIndex, float factor) {
         modifyCompositeKBESpeed(scene, selection, partIndex, s -> s * factor);
+    };
+
+    public static final void setCompositeKBESpeed(SceneBuilder scene, Selection selection, int partIndex, float speed) {
+        modifyCompositeKBESpeed(scene, selection, partIndex, $ -> speed);
     };
 };

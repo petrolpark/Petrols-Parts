@@ -57,7 +57,7 @@ public class ShaftHelper {
 
     /**
      * @param state
-     * @return {@code true} if the state can be expanded upon by the {@link ShaftBlock.PlacementHelper}
+     * @return {@code true} if the state can be expanded upon by the Shaft block Placement Helper
      * The state is <strong>not</strong> guaranteed to have the property {@link BlockStateProperties#AXIS}
      */
     public static boolean isStateForShaftPlacementHelper(BlockState state) {

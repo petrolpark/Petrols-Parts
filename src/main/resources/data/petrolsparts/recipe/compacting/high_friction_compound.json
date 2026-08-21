@@ -6,6 +6,9 @@
     },
     {
       "item": "minecraft:charcoal"
+    },
+    {
+      "item": "create:powdered_obsidian"
     }
   ],
   "results": [
@@ -13,5 +16,5 @@
       "id": "petrolsparts:high_friction_compound"
     }
   ],
-  "heatRequirement": "superheated"
+  "heat_requirement": "superheated"
 }

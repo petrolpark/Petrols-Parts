@@ -142,6 +142,12 @@
     "petrolsparts.ponder.pneumatic_tube.text_3": "The extracted items can be filtered on the input end",
     "petrolsparts.ponder.pneumatic_tube.text_4": "If the output end has no connected inventory, it will shoot the items out",
     "petrolsparts.ponder.pneumatic_tube.text_5": "The direction of transport can be inverted as long as the Tube is empty",
+    "petrolsparts.ponder.redstone_transmission.header": "Kinetic control with the Redstone Transmission",
+    "petrolsparts.ponder.redstone_transmission.text_1": "(Small) Coaxial Cogwheels can be placed on Redstone Transmissions",
+    "petrolsparts.ponder.redstone_transmission.text_2": "While unpowered, the Cogwheel will slide to the base of the Transmission (as indicated by the arrows)",
+    "petrolsparts.ponder.redstone_transmission.text_3": "Each additional Redstone power level will move the Cogwheel by a third of a block",
+    "petrolsparts.ponder.redstone_transmission.text_4": "Additional Cogwheels can be added",
+    "petrolsparts.ponder.redstone_transmission.text_5": "They will maintain their relative distances",
 
     "petrolsparts.tooltip.movement.weight": "Weight Attached: %1$s",
     "petrolsparts.tooltip.stored_rotations": "Stored Rotations: %1$s",

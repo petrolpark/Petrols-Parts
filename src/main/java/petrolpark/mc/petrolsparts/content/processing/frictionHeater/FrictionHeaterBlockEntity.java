@@ -99,8 +99,9 @@ public class FrictionHeaterBlockEntity extends CompositeKineticBlockEntity imple
         if (topPart.getSpeed() == bottomPart.getSpeed()) return;
 
 		final Vec3 c = VecHelper.getCenterOf(getBlockPos());
-		final Vec3 smokePos = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .125f)
-			.multiply(1, 0, 1));
+		final Vec3 smokePos = c.add(VecHelper.offsetRandomly(Vec3.ZERO, r, .25f)
+			.multiply(1, 0, 1))
+            .add(0d, 0.5d, 0d);
 
 		final boolean empty = level.getBlockState(getBlockPos().above())
 			.getCollisionShape(level, getBlockPos().above())

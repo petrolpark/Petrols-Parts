@@ -4,6 +4,8 @@ import net.createmod.catnip.config.ConfigBase;
 
 public class PPCServer extends ConfigBase {
 
+    public final ConfigInt redstoneTransmissionMaxLength = i(8, 0, 32, "redstoneTransmissionMaxLength", "Maximum length of a Redstone Transmission");
+
     public final PPCStress stress = nested(1, PPCStress::new, Comments.stress);
 
     public final ConfigGroup tubes = group(1, "tubes", Comments.tubes);

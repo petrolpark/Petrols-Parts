@@ -164,7 +164,7 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
                 if (coord <= 5.5 / 16d) {
                     attemptStates = List.of(defaultState.setValue(IAssemblageBlock.BOTTOM_COG, getCog()), defaultState.setValue(IAssemblageBlock.MIDDLE_COG, getCog()), defaultState.setValue(IAssemblageBlock.TOP_COG, getCog()));
                 } else if (coord <= 8 / 16d) {
-                     attemptStates = List.of(defaultState.setValue(IAssemblageBlock.MIDDLE_COG, getCog()), defaultState.setValue(IAssemblageBlock.BOTTOM_COG, getCog()), defaultState.setValue(IAssemblageBlock.TOP_COG, getCog()));
+                    attemptStates = List.of(defaultState.setValue(IAssemblageBlock.MIDDLE_COG, getCog()), defaultState.setValue(IAssemblageBlock.BOTTOM_COG, getCog()), defaultState.setValue(IAssemblageBlock.TOP_COG, getCog()));
                 } else if (coord <= 10.5 / 16d) {
                     attemptStates = List.of(defaultState.setValue(IAssemblageBlock.MIDDLE_COG, getCog()), defaultState.setValue(IAssemblageBlock.TOP_COG, getCog()), defaultState.setValue(IAssemblageBlock.BOTTOM_COG, getCog()));
                 } else {
@@ -181,7 +181,10 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
                 } else {
                     cogType = IFaceAlignedCogWheelBlockEntity.getPossibleCogType(be, Direction.get(AxisDirection.NEGATIVE, axis));
                 };
-                if (cogType.isNone()) continue;
+                if (cogType.isNone()) {
+                    if (be instanceof IFaceAlignedCogWheelBlockEntity facwbe && !facwbe.tryToPlaceOnOtherFaces()) return PlacementOffset.fail();
+                    else continue;
+                };
                 final PlacementOffset offset = getOffsetForState(player, world, state, pos, ray, axis, cogType, attemptState);
                 if (offset.isSuccessful()) return offset.withGhostState(attemptState);
             };

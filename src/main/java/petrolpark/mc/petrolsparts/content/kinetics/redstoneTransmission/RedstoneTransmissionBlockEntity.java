@@ -23,6 +23,7 @@ import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEnt
 
 public class RedstoneTransmissionBlockEntity extends KineticBlockEntity implements IFaceAlignedCogWheelBlockEntity {
 
+    protected boolean updateBoundingBox = false;
     protected boolean forceUpdate = false;
     protected List<LerpedFloat> cogPositions = new ArrayList<>();
 
@@ -55,20 +56,29 @@ public class RedstoneTransmissionBlockEntity extends KineticBlockEntity implemen
     };
 
     @Override
+    public boolean tryToPlaceOnOtherFaces() {
+        return false;
+    };
+
+    @Override
     public void tick() {
         super.tick();
+        if (updateBoundingBox && getLevel().isClientSide()) {
+            invalidateRenderBoundingBox();
+            updateBoundingBox = false;
+        };
         if (getBlockState().getValue(RedstoneTransmissionBlock.LOWER_CONNECTION)) { // Not the controller
             cogPositions.clear();
             return;
         };
         for (LerpedFloat cogPosition : cogPositions)
             cogPosition.tickChaser();
-        //sendData();
     };
 
     @Override
     protected void read(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         super.read(compound, registries, clientPacket);
+        updateBoundingBox = compound.getBoolean("UpdateBoundingBox");
         forceUpdate = compound.getBoolean("ForceUpdate");
         if (compound.contains("Cogs")) {
             final ListTag list = compound.getList("Cogs", Tag.TAG_COMPOUND);
@@ -88,6 +98,8 @@ public class RedstoneTransmissionBlockEntity extends KineticBlockEntity implemen
     @Override
     protected void write(CompoundTag compound, HolderLookup.Provider registries, boolean clientPacket) {
         super.write(compound, registries, clientPacket);
+        compound.putBoolean("UpdateBoundingBox", updateBoundingBox);
+        if (clientPacket) updateBoundingBox = false;
         compound.putBoolean("ForceUpdate", forceUpdate);
         compound.put("Cogs", NBTHelper.writeCompoundList(cogPositions, LerpedFloat::writeNBT));
     };
