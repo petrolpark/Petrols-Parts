@@ -60,7 +60,9 @@ public class BevelCogWheelAndShaftBlock extends CompositeBevelCogWheelBlock {
     public BlockState withPart(BlockState state, BevelCogWheelPart part) {
         if (!(part instanceof BevelCogWheelPart.Cog cog)) return null;
         final Direction facing = state.getValue(FACING);
-        if (cog.face == facing.getOpposite()) {
+        if (cog.face == facing) {
+            return null;
+        } else if (cog.face == facing.getOpposite()) {
             return getSet().oppositesAndShaftBlock().getDefaultState()
                 .setValue(OppositeBevelCogWheelsAndShaftBlock.AXIS, facing.getAxis())
                 .setValue(OppositeBevelCogWheelsAndShaftBlock.SHAFT_ALONG_FIRST_AXIS, state.getValue(SHAFT_ON_FIRST_AXIS))

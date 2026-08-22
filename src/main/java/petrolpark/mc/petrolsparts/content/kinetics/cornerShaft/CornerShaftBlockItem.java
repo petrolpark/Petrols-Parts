@@ -112,7 +112,7 @@ public class CornerShaftBlockItem extends BlockItem {
 
                 if (world.getBlockState(newPos).canBeReplaced())
                     return PlacementOffset.success(newPos, s -> {
-                        if (s.hasProperty(property)) return s.setValue(property, state.getValue(property));
+                        if (s.hasProperty(property)) return s.setValue(property, axisFunction.apply(state));
                         else if (s.hasProperty(BlockStateProperties.FACING)) return s.setValue(BlockStateProperties.FACING, dir);
                         else return s;
                     }).withGhostState(getSet().straightCornerShaftBlock().getDefaultState());

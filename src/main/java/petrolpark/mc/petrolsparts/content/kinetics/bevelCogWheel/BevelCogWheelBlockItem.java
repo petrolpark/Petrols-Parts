@@ -7,6 +7,7 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
+import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
@@ -204,8 +205,9 @@ public class BevelCogWheelBlockItem extends BlockItem {
 
         @Override
         public PlacementOffset getOffset(Player player, Level world, BlockState state, BlockPos pos, BlockHitResult ray) {
-            final Axis axis = state.getValue(CogWheelBlock.AXIS);
-            if (hitOnShaft(state, ray)) return PlacementOffset.fail();
+            if (!(state.getBlock() instanceof IRotate rotate)) return PlacementOffset.fail();
+            final Axis axis = rotate.getRotationAxis(state);
+            if (ICogWheel.isDedicatedCogWheel(state.getBlock()) && hitOnShaft(state, ray)) return PlacementOffset.fail();
             final List<Direction> perpendicularDirections = IPlacementHelper.orderedByDistanceOnlyAxis(pos, ray.getLocation(), axis);
             return IPlacementHelper.orderedByDistanceExceptAxis(pos, ray.getLocation(), axis).stream()
                 .<PlacementOffset>mapMulti((direction, consumer) -> {

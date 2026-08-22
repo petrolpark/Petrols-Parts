@@ -77,7 +77,7 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
     protected BlockState getPlacementState(BlockPlaceContext context) {
         BlockState state = getBlock().defaultBlockState();
         final BlockState existingState = getSet().getEquivalent(context.getLevel().getBlockState(context.getClickedPos()));
-        if (context.replacingClickedOnBlock()) {
+        if (context.replacingClickedOnBlock() && existingState.getBlock() instanceof AssemblageBlock) {
             state = state.setValue(IAssemblageBlock.AXIS, existingState.getValue(IAssemblageBlock.AXIS));
             final AssemblagePart part = getSet().getTargetedPart(context);
             if (part != null) {

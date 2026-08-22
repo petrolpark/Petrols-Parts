@@ -125,6 +125,11 @@ public class EncasedSingleDiagonalBevelCogWheelBlock extends KineticBlock implem
     };
 
     @Override
+    public boolean hasShaftTowards(LevelReader world, BlockPos pos, BlockState state, Direction face) {
+        return ISingleDiagonalBevelCogWheelBlock.super.hasShaftTowards(world, pos, state, face);
+    };
+
+    @Override
     public BlockState rotate(BlockState state, Rotation direction) {
         return ISingleDiagonalBevelCogWheelBlock.super.rotateDiagonalBevelCogWheel(state, direction);
     };
