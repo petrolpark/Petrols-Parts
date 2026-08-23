@@ -69,6 +69,6 @@ public abstract class PoleHelperMixin<T extends Comparable<T>> implements IPlace
     )
     public BlockState petrolsParts$useAxisFunction(BlockState state, BlockState bState, Operation<BlockState> original) {
         if (property == BlockStateProperties.AXIS) return bState.setValue(BlockStateProperties.AXIS, axisFunction.apply(state));
-        return original.call(bState, state);
+        return original.call(state, bState);
     };
 };

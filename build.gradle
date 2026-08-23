@@ -148,10 +148,10 @@ dependencies {
     // implementation("maven.modrinth:gears-n-kinetics:1.0m")
 
     // Testing - Aeronautics
-    // implementation("dev.eriksonn.aeronautics:aeronautics-neoforge-1.21.1:${aeronautics_version}")
-    // implementation("dev.simulated_team.simulated:simulated-neoforge-1.21.1:${simulated_version}")
-    // implementation("dev.ryanhcode.sable:sable-neoforge-1.21.1:${sable_version}")
-    // implementation("dev.ryanhcode.offroad:offroad-neoforge-1.21.1:${offroad_version}")
+    implementation("dev.eriksonn.aeronautics:aeronautics-neoforge-1.21.1:${aeronautics_version}")
+    implementation("dev.simulated_team.simulated:simulated-neoforge-1.21.1:${simulated_version}")
+    implementation("dev.ryanhcode.sable:sable-neoforge-1.21.1:${sable_version}")
+    //implementation("dev.ryanhcode.offroad:offroad-neoforge-1.21.1:${offroad_version}")
 
     // Jade
     implementation("maven.modrinth:jade:15.10.0+neoforge")
