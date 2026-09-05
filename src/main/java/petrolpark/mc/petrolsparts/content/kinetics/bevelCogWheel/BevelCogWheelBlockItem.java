@@ -8,7 +8,6 @@ import javax.annotation.Nullable;
 
 import com.google.common.collect.Lists;
 import com.simibubi.create.content.kinetics.base.IRotate;
-import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 import com.simibubi.create.content.kinetics.simpleRelays.ShaftBlock;
@@ -214,7 +213,7 @@ public class BevelCogWheelBlockItem extends BlockItem {
                     final BlockPos offsetPos = pos.relative(direction);
                     
                     final BlockState otherCogState = world.getBlockState(offsetPos.relative(perpendicularDirections.get(1)));
-                    final List<Direction> secondaryDirections = (ICogWheel.isSmallCog(otherCogState) && otherCogState.getValue(CogWheelBlock.AXIS) == direction.getAxis()) ? Lists.reverse(perpendicularDirections) : perpendicularDirections;
+                    final List<Direction> secondaryDirections = (ICogWheel.isSmallCog(otherCogState) && otherCogState.getBlock() instanceof IRotate otherRotate && otherRotate.getRotationAxis(otherCogState) == direction.getAxis()) ? Lists.reverse(perpendicularDirections) : perpendicularDirections;
 
                     for (Direction secondaryDirection : secondaryDirections) {
                         final BlockState bevelState = getSet().singleDiagonalBlock().getDefaultState().setValue(ISingleDiagonalBevelCogWheelBlock.ORIENTATION, Orientation.fromTopAndFront(direction.getOpposite(), secondaryDirection).asEdge());

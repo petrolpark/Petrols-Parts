@@ -11,9 +11,11 @@ import com.simibubi.create.AllSpriteShifts;
 import com.simibubi.create.AllTags.AllBlockTags;
 import com.simibubi.create.api.behaviour.display.DisplaySource;
 import com.simibubi.create.api.behaviour.interaction.MovingInteractionBehaviour;
+import com.simibubi.create.api.boiler.BoilerHeater;
 import com.simibubi.create.api.contraption.storage.item.MountedItemStorageType;
 import com.simibubi.create.content.decoration.encasing.EncasedCTBehaviour;
 import com.simibubi.create.content.decoration.encasing.EncasingRegistry;
+import com.simibubi.create.content.fluids.tank.BoilerHeaters;
 import com.simibubi.create.content.kinetics.simpleRelays.BracketedKineticBlockModel;
 import com.simibubi.create.content.kinetics.simpleRelays.CogwheelBlockItem;
 import com.simibubi.create.content.kinetics.simpleRelays.encased.EncasedShaftBlock;
@@ -330,7 +332,8 @@ public class PetrolsPartsBlocks {
         .properties(p -> p
             .noOcclusion()
             .lightLevel(BlazeBurnerBlock::getLight)
-        ).transform(PPCStress.setImpact(4.0d))
+        ).onRegister(block -> BoilerHeater.REGISTRY.register(block, BoilerHeaters::blazeBurner))
+        .transform(PPCStress.setImpact(4.0d))
         .transform(TagGen.axeOrPickaxe())
         .tag(AllBlockTags.PASSIVE_BOILER_HEATERS.tag)
         .item()

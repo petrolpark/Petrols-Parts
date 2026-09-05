@@ -2,6 +2,7 @@ package petrolpark.mc.petrolsparts.content.kinetics.bevelCogWheel.diagonal;
 
 import java.util.function.Predicate;
 
+import com.google.common.base.Predicates;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
 
 import net.createmod.catnip.placement.IPlacementHelper;
@@ -21,7 +22,7 @@ public class CogOnDiagonalBevelPlacementHelper implements IPlacementHelper {
 
     @Override
     public Predicate<ItemStack> getItemPredicate() {
-        return ICogWheel::isSmallCogItem;
+        return Predicates.and(ICogWheel::isSmallCogItem, ICogWheel::isDedicatedCogItem);
     };
 
     @Override
