@@ -38,7 +38,7 @@
     "block.petrolsparts.pneumatic_tube.jammed.hint": "有物品卡在这个气动管道里且_无法排出_",
     "block.petrolsparts.redstone_transmission": "红石变速器",
 
-    "petrolsparts.gui.auto_shaft_placement": "Click a second block face to connect",
+    "petrolsparts.gui.auto_shaft_placement": "点击第二个面以完成连接",
     "petrolsparts.gui.goggles.friction_heater.status": "加热器状态：%1$s",
     "petrolsparts.gui.goggles.friction_heater.part_kinetic_stats": "%1$s侧齿轮：",
     "petrolsparts.gui.goggles.friction_heater.speed_difference": "齿轮转速差：",
