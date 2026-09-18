@@ -44,7 +44,9 @@ public class FourBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBlock
 
     @Override
     public BlockState withoutPart(BlockState state, BevelCogWheelPart part) {
-        return BlockHelper.copyAll(getSet().threeAndShaftBlock().getDefaultState(), getSet().fourBlock().get().withoutPart(state, part));
+        return part instanceof BevelCogWheelPart.Shaft
+            ? BlockHelper.copyAll(getSet().fourBlock().getDefaultState(), state)
+            : BlockHelper.copyAll(getSet().threeAndShaftBlock().getDefaultState(), getSet().fourBlock().get().withoutPart(state, part));
     };
 
     @Override

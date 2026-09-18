@@ -52,9 +52,14 @@ public class ThreeBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBloc
     @Override
     public BlockState withoutPart(BlockState state, BevelCogWheelPart part) {
         if (part instanceof BevelCogWheelPart.Cog cog) {
-            return getSet().cornerAndShaftBlock().getDefaultState()
-                .setValue(CornerBevelCogWheelsAndShaftBlock.ORIENTATION, Orientation.fromTopAndFront(state.getValue(EXCLUDED_FACE).getOpposite(), cog.face.getOpposite()).asEdge())
-                .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
+            if (cog.face == state.getValue(EXCLUDED_FACE).getOpposite())
+                return getSet().oppositesAndShaftBlock().getDefaultState().setValue(OppositeBevelCogWheelsAndShaftBlock.SHAFT_ALONG_FIRST_AXIS, MathsHelper.isTertiaryAxis(getRotationAxis(state), cog.face.getAxis()))
+                    .setValue(OppositeBevelCogWheelsBlock.AXIS, getRotationAxis(state))
+                    .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
+            else
+                return getSet().cornerAndShaftBlock().getDefaultState()
+                    .setValue(CornerBevelCogWheelsAndShaftBlock.ORIENTATION, Orientation.fromTopAndFront(state.getValue(EXCLUDED_FACE).getOpposite(), cog.face.getOpposite()).asEdge())
+                    .setValue(WATERLOGGED, state.getValue(WATERLOGGED));
         } else {
             return BlockHelper.copyAll(getSet().threeBlock().getDefaultState(), state);
         }

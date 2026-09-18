@@ -65,7 +65,8 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
                 final IPlacementHelper helper = PlacementHelpers.get(placementHelperId);
                 if (helper.matchesState(state)) {
                     final InteractionResult result = helper.getOffset(player, level, state, pos, context.getHitResult()).placeInWorld(level, this, player, context.getHand(), context.getHitResult()).result();
-                    if (result.consumesAction()) return result;
+                    if (result.consumesAction())
+                        return result;
                 };
             };
         };
@@ -186,7 +187,8 @@ public class AssemblageCogWheelBlockItem extends AssemblageBlockItem {
                     else continue;
                 };
                 final PlacementOffset offset = getOffsetForState(player, world, state, pos, ray, axis, cogType, attemptState);
-                if (offset.isSuccessful()) return offset.withGhostState(attemptState);
+                if (offset.isSuccessful())
+                    return offset.withGhostState(attemptState);
             };
 
             return PlacementOffset.fail();

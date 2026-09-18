@@ -3,6 +3,7 @@ package petrolpark.mc.petrolsparts.content.kinetics.redstoneTransmission;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 
 import net.createmod.catnip.animation.LerpedFloat;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.petrolsparts.core.block.CogType;
 import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 
@@ -58,6 +60,12 @@ public class RedstoneTransmissionBlockEntity extends KineticBlockEntity implemen
     @Override
     public boolean tryToPlaceOnOtherFaces() {
         return false;
+    };
+
+    @Override
+    public List<BlockPos> addPropagationLocations(IRotate block, BlockState state, List<BlockPos> neighbours) {
+        KineticsHelper.addLargeCogwheelPropagationLocations(getBlockPos(), neighbours);
+        return neighbours;
     };
 
     @Override
