@@ -2,9 +2,13 @@ package petrolpark.mc.petrolsparts.content.kinetics.assemblage;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Stream;
+
+import javax.annotation.Nullable;
 
 import com.simibubi.create.api.equipment.goggles.IHaveGoggleInformation;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
@@ -14,6 +18,7 @@ import com.simibubi.create.content.kinetics.base.IRotate;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.simpleRelays.CogWheelBlock;
 import com.simibubi.create.content.kinetics.simpleRelays.ICogWheel;
+import com.simibubi.create.foundation.blockEntity.behaviour.BehaviourType;
 import com.simibubi.create.foundation.blockEntity.behaviour.BlockEntityBehaviour;
 
 import net.minecraft.client.Minecraft;
@@ -31,17 +36,26 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.phys.AABB;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.api.distmarker.OnlyIn;
+import petrolpark.mc.library.compat.Mods;
 import petrolpark.mc.library.compat.create.core.world.block.composite.CompositeKineticBlockEntity;
 import petrolpark.mc.library.compat.create.core.world.item.ItemStressValues;
 import petrolpark.mc.library.core.world.block.DummyBlock;
 import petrolpark.mc.library.util.KineticsHelper;
 import petrolpark.mc.petrolsparts.PetrolsPartsBlockEntityTypes;
+import petrolpark.mc.petrolsparts.compat.bitsnbobs.AssemblageCogwheelChains;
 import petrolpark.mc.petrolsparts.core.block.CogType;
 import petrolpark.mc.petrolsparts.core.block.entity.IFaceAlignedCogWheelBlockEntity;
 
 public class AssemblageBlockEntity extends CompositeKineticBlockEntity implements IHaveHoveringInformation, IHaveGoggleInformation {
+
+    /**
+     * Behaviours which are applied to every {@link AssemblageBlockEntityPart} on construction (before the Part knows what it is),
+     * but which should only be visible on the part holding the middle cog (e.g. Bits 'n' Bobs cogwheel chains).
+     */
+    public static final Set<BehaviourType<?>> MIDDLE_COG_ONLY_BEHAVIOURS = new HashSet<>();
 
     protected AssemblageBlockEntityPart topCogPart = null;
     protected AssemblageBlockEntityPart middleCogPart = null;
@@ -59,9 +73,26 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         return parts == null ? Collections.emptyList() : parts;
     };
 
+    /**
+     * @return The {@link AssemblageBlockEntityPart part} holding the middle cog, or {@code null} if there is no middle cog
+     */
+    @Nullable
+    public AssemblageBlockEntityPart getMiddleCogPart() {
+        getParts(); // Make sure they're calculated
+        return middleCogPart == null || middleCogPart.middleCogType.isNone() ? null : middleCogPart;
+    };
+
     public void invalidateParts() {
-        if (hasLevel() && !getLevel().isClientSide()) getParts().forEach(AssemblageBlockEntityPart::remove);
+        final List<AssemblageBlockEntityPart> oldParts = parts;
+        final AssemblageBlockEntityPart oldMiddleCogPart = oldParts == null ? null : getMiddleCogPart();
         parts = null;
+        if (oldParts == null || !hasLevel() || getLevel().isClientSide()) return;
+
+        // Calculate the new Parts before removing the old ones, so Behaviours of the old Parts can transfer themselves to the new ones (e.g. Bits 'n' Bobs cogwheel chains)
+        calculateParts();
+        final AssemblageBlockEntityPart newMiddleCogPart = getMiddleCogPart();
+        if (oldMiddleCogPart != null && (newMiddleCogPart == null || newMiddleCogPart.middleCogType != oldMiddleCogPart.middleCogType) && Mods.BITS_N_BOBS.isLoaded()) AssemblageCogwheelChains.onMiddleCogLost(oldMiddleCogPart);
+        oldParts.forEach(AssemblageBlockEntityPart::setRemoved);
     };
 
     protected void calculateParts() {
@@ -128,6 +159,16 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
     };
 
     @Override
+    protected AABB createRenderBoundingBox() {
+        final AABB box = super.createRenderBoundingBox();
+
+        // BnB compat
+        if (!Mods.BITS_N_BOBS.isLoaded()) return box;
+        final AABB chainBox = AssemblageCogwheelChains.getRenderBoundingBox(this);
+        return chainBox == null ? box : box.minmax(chainBox);
+    };
+
+    @Override
     @OnlyIn(Dist.CLIENT)
     public boolean addToTooltip(List<Component> tooltip, boolean isPlayerSneaking) {
         final AssemblageBlockEntityPart part = ((IAssemblageBlock)(getBlockState().getBlock())).getTargetedKineticPart(this, Minecraft.getInstance().player);
@@ -189,6 +230,18 @@ public class AssemblageBlockEntity extends CompositeKineticBlockEntity implement
         };
 
         //
+
+        @Override
+        protected <T extends BlockEntityBehaviour> T getPartSpecificBehaviour(BehaviourType<T> type) {
+            if (middleCogType.isNone() && MIDDLE_COG_ONLY_BEHAVIOURS.contains(type)) return null;
+            return super.getPartSpecificBehaviour(type);
+        };
+
+        @Override
+        protected Stream<BlockEntityBehaviour> streamAllPartSpecificBehaviours() {
+            final Stream<BlockEntityBehaviour> behaviours = super.streamAllPartSpecificBehaviours();
+            return !middleCogType.isNone() ? behaviours : behaviours.filter(behaviour -> !MIDDLE_COG_ONLY_BEHAVIOURS.contains(behaviour.getType()));
+        };
 
         @Override
         public boolean areStatesKineticallyEquivalent(BlockState oldState, BlockState state) {

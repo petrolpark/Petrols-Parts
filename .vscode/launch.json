@@ -1,71 +1,107 @@
 {
-  "version": "0.2.0",
-  "configurations": [
-    {
-      "type": "java",
-      "request": "launch",
-      "name": "Client",
-      "presentation": {
-        "group": "Mod Development - Petrols-Parts",
-        "order": 0
-      },
-      "projectName": "Petrols-Parts",
-      "mainClass": "net.neoforged.devlaunch.Main",
-      "args": [
-        "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\clientRunProgramArgs.txt"
-      ],
-      "vmArgs": [
-        "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\clientRunVmArgs.txt",
-        "-Dfml.modFolders\u003dpetrolsparts%%C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\bin\\main"
-      ],
-      "cwd": "${workspaceFolder}\\run",
-      "env": {},
-      "console": "internalConsole",
-      "shortenCommandLine": "none"
-    },
-    {
-      "type": "java",
-      "request": "launch",
-      "name": "Data",
-      "presentation": {
-        "group": "Mod Development - Petrols-Parts",
-        "order": 1
-      },
-      "projectName": "Petrols-Parts",
-      "mainClass": "net.neoforged.devlaunch.Main",
-      "args": [
-        "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\dataRunProgramArgs.txt"
-      ],
-      "vmArgs": [
-        "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\dataRunVmArgs.txt",
-        "-Dfml.modFolders\u003dpetrolsparts%%C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\bin\\main"
-      ],
-      "cwd": "${workspaceFolder}\\run",
-      "env": {},
-      "console": "internalConsole",
-      "shortenCommandLine": "none"
-    },
-    {
-      "type": "java",
-      "request": "launch",
-      "name": "Server",
-      "presentation": {
-        "group": "Mod Development - Petrols-Parts",
-        "order": 2
-      },
-      "projectName": "Petrols-Parts",
-      "mainClass": "net.neoforged.devlaunch.Main",
-      "args": [
-        "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\serverRunProgramArgs.txt"
-      ],
-      "vmArgs": [
-        "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\serverRunVmArgs.txt",
-        "-Dfml.modFolders\u003dpetrolsparts%%C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\bin\\main"
-      ],
-      "cwd": "${workspaceFolder}\\run",
-      "env": {},
-      "console": "internalConsole",
-      "shortenCommandLine": "none"
-    }
-  ]
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "request": "launch",
+            "name": "Client",
+            "presentation": {
+                "group": "Mod Development - Petrols-Parts",
+                "order": 0
+            },
+            "projectName": "Petrols-Parts",
+            "mainClass": "net.neoforged.devlaunch.Main",
+            "args": [
+                "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\clientRunProgramArgs.txt"
+            ],
+            "vmArgs": [
+                "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\clientRunVmArgs.txt",
+                "-Dfml.modFolders=petrolsparts%%C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\bin\\main"
+            ],
+            "cwd": "${workspaceFolder}\\run",
+            "env": {
+                
+            },
+            "console": "internalConsole",
+            "shortenCommandLine": "none",
+            "classPaths": [
+                "$Auto",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.1/1227f9e0666314f9de41477e3ec277e542ed7f7b/java-objc-bridge-1.1.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/dev.engine-room.flywheel/flywheel-neoforge-api-1.21.1/1.0.6/78de23fcd1796061b2ffe9b8a98d38c2a0e56b3f/flywheel-neoforge-api-1.21.1-1.0.6.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-neoforge/0.5.3/a0919957808de97707c5fb4ce073e66aeef3e187/mixinextras-neoforge-0.5.3.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/maven.modrinth/azimuth-api/1.4.10/911e255bd09a6bcb2ca85ea172d1812e0f4665f1/azimuth-api-1.4.10.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/maven.modrinth/create-bits-n-bobs/2.3.5/50119ba6849f2b165ab692ab312dbe4867444ac0/create-bits-n-bobs-2.3.5.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/net.neoforged/mergetool/2.0.3/1275202cbbb248f49345cf6787ce299afd9a02fb/mergetool-2.0.3-api.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.1.0/7af6a669488450c4a07c2c3254e2151df42d7d04/annotations-24.1.0.jar"
+            ]
+        },
+        {
+            "type": "java",
+            "request": "launch",
+            "name": "Data",
+            "presentation": {
+                "group": "Mod Development - Petrols-Parts",
+                "order": 1
+            },
+            "projectName": "Petrols-Parts",
+            "mainClass": "net.neoforged.devlaunch.Main",
+            "args": [
+                "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\dataRunProgramArgs.txt"
+            ],
+            "vmArgs": [
+                "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\dataRunVmArgs.txt",
+                "-Dfml.modFolders=petrolsparts%%C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\bin\\main"
+            ],
+            "cwd": "${workspaceFolder}\\run",
+            "env": {
+                
+            },
+            "console": "internalConsole",
+            "shortenCommandLine": "none",
+            "classPaths": [
+                "$Auto",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.1/1227f9e0666314f9de41477e3ec277e542ed7f7b/java-objc-bridge-1.1.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/dev.engine-room.flywheel/flywheel-neoforge-api-1.21.1/1.0.6/78de23fcd1796061b2ffe9b8a98d38c2a0e56b3f/flywheel-neoforge-api-1.21.1-1.0.6.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-neoforge/0.5.3/a0919957808de97707c5fb4ce073e66aeef3e187/mixinextras-neoforge-0.5.3.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/maven.modrinth/azimuth-api/1.4.10/911e255bd09a6bcb2ca85ea172d1812e0f4665f1/azimuth-api-1.4.10.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/maven.modrinth/create-bits-n-bobs/2.3.5/50119ba6849f2b165ab692ab312dbe4867444ac0/create-bits-n-bobs-2.3.5.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/net.neoforged/mergetool/2.0.3/1275202cbbb248f49345cf6787ce299afd9a02fb/mergetool-2.0.3-api.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.1.0/7af6a669488450c4a07c2c3254e2151df42d7d04/annotations-24.1.0.jar"
+            ]
+        },
+        {
+            "type": "java",
+            "request": "launch",
+            "name": "Server",
+            "presentation": {
+                "group": "Mod Development - Petrols-Parts",
+                "order": 2
+            },
+            "projectName": "Petrols-Parts",
+            "mainClass": "net.neoforged.devlaunch.Main",
+            "args": [
+                "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\serverRunProgramArgs.txt"
+            ],
+            "vmArgs": [
+                "@C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\build\\moddev\\serverRunVmArgs.txt",
+                "-Dfml.modFolders=petrolsparts%%C:\\Users\\p3tr0\\Documents\\Mod Development\\Petrols-Parts\\bin\\main"
+            ],
+            "cwd": "${workspaceFolder}\\run",
+            "env": {
+                
+            },
+            "console": "internalConsole",
+            "shortenCommandLine": "none",
+            "classPaths": [
+                "$Auto",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/ca.weblite/java-objc-bridge/1.1/1227f9e0666314f9de41477e3ec277e542ed7f7b/java-objc-bridge-1.1.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/dev.engine-room.flywheel/flywheel-neoforge-api-1.21.1/1.0.6/78de23fcd1796061b2ffe9b8a98d38c2a0e56b3f/flywheel-neoforge-api-1.21.1-1.0.6.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/io.github.llamalad7/mixinextras-neoforge/0.5.3/a0919957808de97707c5fb4ce073e66aeef3e187/mixinextras-neoforge-0.5.3.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/maven.modrinth/azimuth-api/1.4.10/911e255bd09a6bcb2ca85ea172d1812e0f4665f1/azimuth-api-1.4.10.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/maven.modrinth/create-bits-n-bobs/2.3.5/50119ba6849f2b165ab692ab312dbe4867444ac0/create-bits-n-bobs-2.3.5.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/net.neoforged/mergetool/2.0.3/1275202cbbb248f49345cf6787ce299afd9a02fb/mergetool-2.0.3-api.jar",
+                "!C:/Users/p3tr0/.gradle/caches/modules-2/files-2.1/org.jetbrains/annotations/24.1.0/7af6a669488450c4a07c2c3254e2151df42d7d04/annotations-24.1.0.jar"
+            ]
+        }
+    ]
 }

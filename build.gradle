@@ -96,6 +96,28 @@ configurations {
     runtimeClasspath.extendsFrom localRuntime
 }
 
+// VS Code launches with the Eclipse classpath, which has no concept of compileOnly, so compileOnly mods
+// (e.g. optional compat targets) would get loaded at runtime. MDG regenerates .vscode/launch.json in
+// afterEvaluate during IDE sync, so once that's done, exclude every jar that's on the compile classpath
+// but not the runtime classpath.
+gradle.projectsEvaluated {
+    def launchFile = rootProject.file('.vscode/launch.json')
+    if (!launchFile.exists()) return
+    def json = new groovy.json.JsonSlurper().parse(launchFile)
+    def configs = json.configurations?.findAll { it.mainClass == 'net.neoforged.devlaunch.Main' }
+    if (!configs) return
+    def runtimeFiles = configurations.runtimeClasspath.files.collect { it.canonicalFile } as Set
+    def compileOnlyJars = configurations.compileClasspath.files
+        .collect { it.canonicalFile }
+        .findAll { it.name.endsWith('.jar') && !runtimeFiles.contains(it) }
+        .collect { "!" + it.path.replace('\\', '/') }
+        .sort()
+    def classPaths = ['$Auto'] + compileOnlyJars
+    if (configs.every { it.classPaths == classPaths }) return
+    configs.each { it.classPaths = classPaths }
+    launchFile.text = groovy.json.JsonOutput.prettyPrint(groovy.json.JsonOutput.toJson(json))
+}
+
 repositories {
     maven { url = 'https://maven.neoforged.net/releases' }
     maven { url = "https://maven.createmod.net" } // Ponder, Flywheel, Create
@@ -142,6 +164,10 @@ dependencies {
     implementation("mezz.jei:jei-${minecraft_version}-neoforge:${jei_version}")
     // pquality
     implementation("petrolpark.mc.pquality:pquality:${pquality_version}")
+    // Bits n' Bobs
+    compileOnly("maven.modrinth:azimuth-api:1.4.10")
+    compileOnly("maven.modrinth:create-bits-n-bobs:2.3.5")
+    // runtimeOnly("maven.modrinth:strut-your-stuff:1.3.1")
     
     // TESTING
 

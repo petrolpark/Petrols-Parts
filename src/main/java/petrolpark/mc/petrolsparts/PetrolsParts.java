@@ -17,8 +17,10 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.neoforge.registries.RegisterEvent;
+import petrolpark.mc.library.compat.Mods;
 import petrolpark.mc.library.shared.GetPetrolparkSharedFeatures;
 import petrolpark.mc.library.shared.SharedFeatureFlag;
+import petrolpark.mc.petrolsparts.compat.bitsnbobs.PetrolsPartsBehaviourApplicators;
 import petrolpark.mc.petrolsparts.core.PetrolsPartsRegistrate;
 import petrolpark.mc.petrolsparts.core.advancement.PetrolsPartsAdvancementTriggers;
 
@@ -57,6 +59,8 @@ public class PetrolsParts {
         PetrolsPartsBlocks.register();
         PetrolsPartsBlockEntityTypes.register();
         PetrolsPartsItems.register();
+
+        Mods.BITS_N_BOBS.executeIfInstalled(() -> PetrolsPartsBehaviourApplicators::register);
 
         PetrolsPartsConfigs.register(modLoadingContext, modContainer);
     

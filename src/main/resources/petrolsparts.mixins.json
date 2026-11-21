@@ -7,6 +7,13 @@
     "mixins": [
         "accessor.DeployerRecipeSearchEventAccessor",
         "accessor.RotationPropagatorAccessor",
+        "compat.bits_n_bobs.CogwheelChainAttachmentMixin",
+        "compat.bits_n_bobs.CogwheelChainBehaviourMixin",
+        "compat.bits_n_bobs.CogwheelChainCandidateMixin",
+        "compat.bits_n_bobs.CogwheelChainMixin",
+        "compat.bits_n_bobs.CogwheelChainWorldMixin",
+        "compat.bits_n_bobs.PartialEditCogwheelChainPacketMixin",
+        "compat.bits_n_bobs.WrenchCogwheelChainPacketMixin",
         "AirCurrentMixin",
         "AssemblyOperatorBlockItemMixin",
         "ICogWheelMixin",

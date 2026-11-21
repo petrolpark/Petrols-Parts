@@ -20,7 +20,9 @@ import net.minecraft.core.Direction.Axis;
 import net.minecraft.core.Direction.AxisDirection;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
+import petrolpark.mc.library.compat.Mods;
 import petrolpark.mc.petrolsparts.PetrolsPartsPartialModels;
+import petrolpark.mc.petrolsparts.compat.bitsnbobs.AssemblageCogwheelChainRenderer;
 
 public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockEntity> {
 
@@ -39,6 +41,8 @@ public class AssemblageRenderer extends SafeBlockEntityRenderer<AssemblageBlockE
         // if (VisualizationManager.supportsVisualization(be.getLevel())) return;
 
         if (be.getParts().isEmpty()) return;
+
+        if (Mods.BITS_N_BOBS.isLoaded()) AssemblageCogwheelChainRenderer.render(be, partialTicks, ms, bufferSource, light, overlay);
 
         final BlockState state = be.getBlockState();
         final Axis axis = state.getValue(IAssemblageBlock.AXIS);

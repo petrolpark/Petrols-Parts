@@ -60,7 +60,6 @@ public interface IFaceAlignedCogWheelBlockEntity {
             final BlockPos offsetPos = pos.relative(perpFace);
 			final BlockState offsetState = worldIn.getBlockState(offsetPos);
 
-            if (large && CompositeKineticBlockEntity.streamAny(worldIn, offsetPos.relative(cogFace)).anyMatch(kbe -> getCogType(kbe, perpFace.getOpposite()) == CogType.LARGE)) return false;
             if (large && (offsetState.getBlock() instanceof IDiagonalBevelCogWheelBlock bevelBlock) && bevelBlock.getCogRotationAxisConnectedToFace(offsetState, cogFace) != null) return false;
 
 			if (!(offsetState.getBlock() instanceof IRotate rotate)) continue;
@@ -80,6 +79,8 @@ public interface IFaceAlignedCogWheelBlockEntity {
 
                 continue;
             };
+
+            if (large && CompositeKineticBlockEntity.streamAny(worldIn, offsetPos.relative(cogFace)).anyMatch(kbe -> getCogType(kbe, perpFace.getOpposite()) == CogType.LARGE)) return false;
 
             if (CompositeKineticBlockEntity.streamAny(worldIn, offsetPos).anyMatch(kbe -> {
                 

@@ -94,7 +94,7 @@ public class CornerBevelCogWheelsAndShaftBlock extends CompositeBevelCogWheelBlo
 
     @Override
     public BlockState transform(BlockState state, StructureTransform transform) {
-        return state.setValue(ORIENTATION, state.getValue(ORIENTATION).mirror(transform.mirror).rotate(transform.rotationAxis, transform.rotation));
+        return state.setValue(ORIENTATION, state.getValue(ORIENTATION).mirror(transform.mirror).rotate(transform.rotationAxis, transform.rotation).asEdge());
     };
     
 };
